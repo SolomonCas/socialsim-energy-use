@@ -50,30 +50,10 @@ public class Main extends Application {
             if (welcomeScreenController.isClosedWithAction()) {
                 Main.hasMadeChoice = true;
 
-                if (WelcomeScreenController.environment.equals("Grocery")) {
-                    mainScreenLoader = ScreenController.getLoader(getClass(), "/com/socialsim/view/GroceryScreen.fxml");
-                    mainRoot = mainScreenLoader.load();
-                    mainScreenController = (GroceryScreenController) mainScreenLoader.getController();
-                    mainTitle = "Grocery SocialSim";
-                }
-                else if (WelcomeScreenController.environment.equals("Mall")) {
-                    mainScreenLoader = ScreenController.getLoader(getClass(), "/com/socialsim/view/MallScreen.fxml");
-                    mainRoot = mainScreenLoader.load();
-                    mainScreenController = (MallScreenController) mainScreenLoader.getController();
-                    mainTitle = "Mall SocialSim";
-                }
-                else if (WelcomeScreenController.environment.equals("Office")) {
-                    mainScreenLoader = ScreenController.getLoader(getClass(), "/com/socialsim/view/OfficeScreen.fxml");
-                    mainRoot = mainScreenLoader.load();
-                    mainScreenController = (OfficeScreenController) mainScreenLoader.getController();
-                    mainTitle = "Office SocialSim";
-                }
-                else if (WelcomeScreenController.environment.equals("University")) {
-                    mainScreenLoader = ScreenController.getLoader(getClass(), "/com/socialsim/view/UniversityScreen.fxml");
-                    mainRoot = mainScreenLoader.load();
-                    mainScreenController = (UniversityScreenController) mainScreenLoader.getController();
-                    mainTitle = "University SocialSim";
-                }
+                mainScreenLoader = ScreenController.getLoader(getClass(), "/com/socialsim/view/OfficeScreen.fxml");
+                mainRoot = mainScreenLoader.load();
+                mainScreenController = (OfficeScreenController) mainScreenLoader.getController();
+                mainTitle = "Office SocialSim";
             }
             else if (!welcomeScreenController.isClosedWithAction()) {
                 break;
