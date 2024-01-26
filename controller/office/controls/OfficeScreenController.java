@@ -227,7 +227,7 @@ public class OfficeScreenController extends ScreenController {
 
         }
 
-        // Research Space 1 & 2 and Office Area
+        // Research Space 1 & 2 and Office Wall
         for (int i = 26; i < 35; i++) {
             for (int j = 8; j < 40; j++) {
                 wallPatches.add(office.getPatch(i, j));
@@ -237,6 +237,33 @@ public class OfficeScreenController extends ScreenController {
         // Open/Common Work Area
         for (int i = 18; i < 23; i++) {
             for (int j = 8; j < 40; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // Learning Area 1, 2, 3, 4 Wall
+        for (int i = 7; i < 15; i++) {
+            for (int j = 8; j < 35; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // Servers?
+        for (int i = 7; i < 10; i++) {
+            for (int j = 35; j < 38; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+        // Control Center
+        for (int i = 10; i < 15; i++) {
+            for (int j = 35; j < 38; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // Open Area
+        for (int i = 11; i < 15; i++) {
+            for (int j = 38; j < 43; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
