@@ -167,8 +167,8 @@ public class OfficeScreenController extends ScreenController {
         exportToCSVButton.setDisable(true);
         exportHeatMapButton.setDisable(true);
 
-        int width = 60;
-        int length = 100;
+        int width = 47;
+        int length = 73;
         int rows = (int) Math.ceil(width / Patch.PATCH_SIZE_IN_SQUARE_METERS);
         int columns = (int) Math.ceil(length / Patch.PATCH_SIZE_IN_SQUARE_METERS);
         Office office = Office.OfficeFactory.create(rows, columns);
@@ -270,43 +270,62 @@ public class OfficeScreenController extends ScreenController {
 
         // Managers and Exec Secretary Area
         for (int i = 18; i < 26; i++) {
-            for (int j = 42; j < 57; j++) {
+            for (int j = 43; j < 58; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // large meeting room
-        for (int i = 28; i < 37; i++) {
-            for (int j = 42; j < 59; j++) {
+        for (int i = 29; i < 38; i++) {
+            for (int j = 43; j < 60; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // pantry
-        for (int i = 35; i < 45; i++) {
-            for (int j = 38; j < 61; j++) {
-                if(i > 36 && i < 43)
+        for (int i = 35; i < 47; i++) {
+            for (int j = 36; j < 63; j++) {
+                if (i < 38 && j < 40){
                     wallPatches.add(office.getPatch(i, j));
-                else if (i > 42) {
-                    if(j < 54)
-                        wallPatches.add(office.getPatch(i, j));
                 }
-                else
-                    if(j < 40)
-                            wallPatches.add(office.getPatch(i,j));
+                else if (i >= 38){
+                    wallPatches.add(office.getPatch(i, j));
+                }
+
             }
         }
 
         // exec dean ofice
         for (int i = 28; i < 43; i++) {
-            for (int j = 61; j < 70; j++) {
+            for (int j = 63; j < 73; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // clinic
-        for (int i = 25; i < 28; i++) {
-            for (int j = 63; j < 70; j++) {
+        for (int i = 23; i < 28; i++) {
+            for (int j = 65; j < 73; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // women's bathroom
+        for (int i = 17; i < 23; i++) {
+            for (int j = 64; j < 73; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // men's bathroom
+        for (int i = 0; i < 6; i++) {
+            for (int j = 64; j < 73; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // Elevator
+        for (int i = 6; i < 17; i++) {
+            for (int j = 68; j < 73; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
