@@ -268,6 +268,49 @@ public class OfficeScreenController extends ScreenController {
             }
         }
 
+        // Managers and Exec Secretary Area
+        for (int i = 18; i < 26; i++) {
+            for (int j = 42; j < 57; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // large meeting room
+        for (int i = 28; i < 37; i++) {
+            for (int j = 42; j < 59; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // pantry
+        for (int i = 35; i < 45; i++) {
+            for (int j = 38; j < 61; j++) {
+                if(i > 36 && i < 43)
+                    wallPatches.add(office.getPatch(i, j));
+                else if (i > 42) {
+                    if(j < 54)
+                        wallPatches.add(office.getPatch(i, j));
+                }
+                else
+                    if(j < 40)
+                            wallPatches.add(office.getPatch(i,j));
+            }
+        }
+
+        // exec dean ofice
+        for (int i = 28; i < 43; i++) {
+            for (int j = 61; j < 70; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // clinic
+        for (int i = 25; i < 28; i++) {
+            for (int j = 63; j < 70; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
 //        // [F] Section Wall
 //        for (int i = 0; i < rows; i++) {
 //            for (int j = 80; j < 100; j++) {
