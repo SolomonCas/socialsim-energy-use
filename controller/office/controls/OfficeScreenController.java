@@ -167,8 +167,8 @@ public class OfficeScreenController extends ScreenController {
         exportToCSVButton.setDisable(true);
         exportHeatMapButton.setDisable(true);
 
-        int width = 47;
-        int length = 73;
+        int width = 100;
+        int length = 100;
         int rows = (int) Math.ceil(width / Patch.PATCH_SIZE_IN_SQUARE_METERS);
         int columns = (int) Math.ceil(length / Patch.PATCH_SIZE_IN_SQUARE_METERS);
         Office office = Office.OfficeFactory.create(rows, columns);
@@ -214,21 +214,21 @@ public class OfficeScreenController extends ScreenController {
 
         // Small Room 1
 
-        for (int i = 9; i < 17; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 9; i < 19; i++) {
+            for (int j = 0; j < 7; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // Human Experience and Data Collection Room
-        for (int i = 20; i < 31; i++) {
-            if(i < 26){
-                for (int j = 0; j < 5; j++) {
+        for (int i = 25; i < 38; i++) {
+            if(i < 31){
+                for (int j = 0; j < 7; j++) {
                     wallPatches.add(office.getPatch(i, j));
                 }
             }
             else{
-                for (int j = 0; j < 8; j++) {
+                for (int j = 0; j < 10; j++) {
                     wallPatches.add(office.getPatch(i, j));
                 }
             }
@@ -236,15 +236,22 @@ public class OfficeScreenController extends ScreenController {
         }
 
         // Research Space and Faculty Room Wall
-        for (int i = 26; i < 35; i++) {
-            for (int j = 8; j < 40; j++) {
+        for (int i = 31; i < 42; i++) {
+            for (int j = 10; j < 44; j++) {
+                wallPatches.add(office.getPatch(i, j));
+            }
+        }
+
+        // large meeting room
+        for (int i = 34; i < 45; i++) {
+            for (int j = 44; j < 64; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // Open/Common Work Area
-        for (int i = 20; i < 25; i++) {
-            for (int j = 6; j < 40; j++) {
+        for (int i = 22; i < 27; i++) {
+            for (int j = 8; j < 42; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
@@ -270,22 +277,13 @@ public class OfficeScreenController extends ScreenController {
             }
         }
 
-
-
-        // large meeting room
-        for (int i = 29; i < 38; i++) {
-            for (int j = 40; j < 60; j++) {
-                wallPatches.add(office.getPatch(i, j));
-            }
-        }
-
         // pantry
-        for (int i = 35; i < 47; i++) {
-            for (int j = 36; j < 63; j++) {
-                if (i < 38 && j < 40){
+        for (int i = 42; i < 56; i++) {
+            for (int j = 38; j < 67; j++) {
+                if (i < 45 && j < 44){
                     wallPatches.add(office.getPatch(i, j));
                 }
-                else if (i >= 38){
+                else if (i >= 45){
                     wallPatches.add(office.getPatch(i, j));
                 }
 
@@ -293,15 +291,15 @@ public class OfficeScreenController extends ScreenController {
         }
 
         // exec dean ofice
-        for (int i = 28; i < 43; i++) {
-            for (int j = 63; j < 73; j++) {
+        for (int i = 37; i < 52; i++) {
+            for (int j = 67; j < 79; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // clinic
-        for (int i = 23; i < 28; i++) {
-            for (int j = 65; j < 73; j++) {
+        for (int i = 29; i < 37; i++) {
+            for (int j = 69; j < 79; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
@@ -314,31 +312,31 @@ public class OfficeScreenController extends ScreenController {
         }
 
         // main entraince
-        for (int i = 20; i < 23; i++) {
-            wallPatches.add(office.getPatch(i, 57));
+        for (int i = 18; i < 23; i++) {
+            wallPatches.add(office.getPatch(i, 61));
         }
 
-        for (int j = 57; j < 65; j++) {
-            wallPatches.add(office.getPatch(23, j));
+        for (int j = 61; j < 69; j++) {
+            wallPatches.add(office.getPatch(22, j));
         }
 
         // women's bathroom
-        for (int i = 17; i < 23; i++) {
-            for (int j = 64; j < 73; j++) {
+        for (int i = 21; i < 29; i++) {
+            for (int j = 68; j < 79; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // men's bathroom
-        for (int i = 0; i < 6; i++) {
-            for (int j = 64; j < 73; j++) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 68; j < 79; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // Elevator
-        for (int i = 6; i < 17; i++) {
-            for (int j = 68; j < 73; j++) {
+        for (int i = 8; i < 21; i++) {
+            for (int j = 72; j < 79; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
@@ -350,7 +348,7 @@ public class OfficeScreenController extends ScreenController {
 
         // Women's Bathroom
         for (int i = 18; i < 22; i++) {
-            for (int j = 65; j < 72; j++) {
+            for (int j = 67; j < 75; j++) {
                 fBathroomPatches.add(office.getPatch(i, j));
             }
         }
@@ -359,7 +357,7 @@ public class OfficeScreenController extends ScreenController {
         // Men's Bathroom
         List<Patch> mBathroomPatches = new ArrayList<>();
         for (int i = 1; i < 5; i++) {
-            for (int j = 65; j < 72; j++) {
+            for (int j = 67; j < 75; j++) {
                 mBathroomPatches.add(office.getPatch(i, j));
             }
         }
