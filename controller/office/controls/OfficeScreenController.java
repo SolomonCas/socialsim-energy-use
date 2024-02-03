@@ -277,10 +277,7 @@ public class OfficeScreenController extends ScreenController {
                 if (i < 45 && j < 44){
                     wallPatches.add(office.getPatch(i, j));
                 }
-                else if (i >= 45 && j < 67){
-                    wallPatches.add(office.getPatch(i, j));
-                }
-                else if (j == 67 && i >= 52) {
+                else {
                     wallPatches.add(office.getPatch(i, j));
                 }
 
@@ -336,21 +333,21 @@ public class OfficeScreenController extends ScreenController {
 
         // Elevator
         for (int i = 8; i < 21; i++) {
-            for (int j = 72; j < 79; j++) {
+            for (int j = 73; j < 79; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // exec dean ofice
-        for (int i = 37; i < 52; i++) {
-            for (int j = 67; j < 79; j++) {
+        for (int i = 35; i < 50; i++) {
+            for (int j = 68; j < 79; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
 
         // clinic
-        for (int i = 29; i < 37; i++) {
-            for (int j = 69; j < 79; j++) {
+        for (int i = 29; i < 35; i++) {
+            for (int j = 68; j < 79; j++) {
                 wallPatches.add(office.getPatch(i, j));
             }
         }
@@ -586,21 +583,35 @@ public class OfficeScreenController extends ScreenController {
 //        WhiteboardMapper.draw(whiteboardPatches);
 //
 
-//        List<Patch> doorRightPatches = new ArrayList<>();
-//        doorRightPatches.add(office.getPatch(13,6));
-//        doorRightPatches.add(office.getPatch(17,6));
-//        doorRightPatches.add(office.getPatch(27,19));
-//        DoorMapper.draw(doorRightPatches, "RIGHT");
+        List<Patch> doorRightPatches = new ArrayList<>();
+        // Small Meeting Room Door
+        doorRightPatches.add(office.getPatch(13,6));
+        doorRightPatches.add(office.getPatch(19,6));
+        DoorMapper.draw(doorRightPatches, "RIGHT");
 
-//        List<Patch> doorLeftPatches = new ArrayList<>();
-//        doorLeftPatches.add(office.getPatch(10,80));
-//        doorLeftPatches.add(office.getPatch(28,80));
+        List<Patch> doorLeftPatches = new ArrayList<>();
+        // Large Meeting Room Door
+        doorLeftPatches.add(office.getPatch(30,68));
+        doorLeftPatches.add(office.getPatch(38,68));
 //        doorLeftPatches.add(office.getPatch(46,80));
-//        DoorMapper.draw(doorLeftPatches, "LEFT");
+        DoorMapper.draw(doorLeftPatches, "LEFT");
 
-//        List<Patch> doorUpPatches = new ArrayList<>();
-//        doorUpPatches.add(office.getPatch(34,59));
-//        DoorMapper.draw(doorUpPatches, "UP");
+        List<Patch> doorUpPatches = new ArrayList<>();
+        // Main Entrance Door
+        doorUpPatches.add(office.getPatch(21,66));
+        // Women's Bathroom Door
+        doorUpPatches.add(office.getPatch(21,70));
+        // Staff Room Door (?)
+        doorUpPatches.add(office.getPatch(34,46));
+        // Large Meeting Room Doors
+        doorUpPatches.add(office.getPatch(34,50));
+        doorUpPatches.add(office.getPatch(34,61));
+        DoorMapper.draw(doorUpPatches, "UP");
+
+        List<Patch> doorDownPatches = new ArrayList<>();
+        // Men's Bathroom Door
+        doorDownPatches.add(office.getPatch(7,70));
+        DoorMapper.draw(doorDownPatches, "DOWN");
 //
 //        List<Patch> meetingDeskPatches = new ArrayList<>();
 //        meetingDeskPatches.add(office.getPatch(10,86));
