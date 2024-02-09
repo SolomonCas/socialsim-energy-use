@@ -62,9 +62,12 @@ public class Office extends Environment {
     private final List<Fridge> fridges;
     private final List<WaterDispenser> waterDispensers;
     private final List<Whiteboard> whiteboards;
-
     private final List<Bathroom> bathrooms;
     private final List<Breakroom> breakrooms;
+    private final List<Laboratory> laboratories;
+    private final List<StudyArea> studyAreas;
+    private final List<StaffOffice> staffOffices;
+    private final List<Cafeteria> cafeterias;
     private final List<MeetingRoom> meetingRooms;
     private final List<OfficeRoom> officeRooms;
     private final List<Reception> receptions;
@@ -111,6 +114,10 @@ public class Office extends Environment {
 
         this.bathrooms = Collections.synchronizedList(new ArrayList<>());
         this.breakrooms = Collections.synchronizedList(new ArrayList<>());
+        this.cafeterias = Collections.synchronizedList(new ArrayList<>());
+        this.studyAreas = Collections.synchronizedList(new ArrayList<>());
+        this.laboratories = Collections.synchronizedList(new ArrayList<>());
+        this.staffOffices = Collections.synchronizedList(new ArrayList<>());
         this.meetingRooms = Collections.synchronizedList(new ArrayList<>());
         this.officeRooms = Collections.synchronizedList(new ArrayList<>());
         this.receptions = Collections.synchronizedList(new ArrayList<>());
@@ -266,6 +273,22 @@ public class Office extends Environment {
 
     public List<MeetingRoom> getMeetingRooms() {
         return meetingRooms;
+    }
+
+    public List<Cafeteria> getCafeterias() {
+        return cafeterias;
+    }
+
+    public List<Laboratory> getLaboratories() {
+        return laboratories;
+    }
+
+    public List<StudyArea> getStudyAreas() {
+        return studyAreas;
+    }
+
+    public List<StaffOffice> getStaffOffices() {
+        return staffOffices;
     }
 
     public List<OfficeRoom> getOfficeRooms() {

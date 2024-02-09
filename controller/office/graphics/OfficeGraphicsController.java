@@ -16,6 +16,7 @@ import com.socialsim.model.core.environment.generic.patchobject.passable.NonObst
 import com.socialsim.model.core.environment.generic.position.Coordinates;
 import com.socialsim.model.core.environment.office.Office;
 import com.socialsim.model.core.environment.office.patchfield.*;
+import com.socialsim.model.core.environment.office.patchobject.passable.gate.OfficeGate;
 import com.socialsim.model.core.environment.office.patchobject.passable.goal.Sink;
 import com.socialsim.model.core.environment.office.patchobject.passable.goal.Toilet;
 import javafx.application.Platform;
@@ -32,6 +33,7 @@ public class OfficeGraphicsController extends Controller {
 
     private static final Image AMENITY_SPRITES = new Image(OfficeAmenityGraphic.AMENITY_SPRITE_SHEET_URL);
     private static final Image AMENITY_SPRITES2 = new Image(OfficeAmenityGraphic.AMENITY_SPRITE_SHEET_URL2);
+    private static final Image AMENITY_SPRITES3 = new Image(OfficeAmenityGraphic.AMENITY_SPRITE_SHEET_URL3);
     private static final Image AGENT_SPRITES1 = new Image(OfficeAgentGraphic.AGENTS_URL_1);
     private static final Image AGENT_SPRITES2 = new Image(OfficeAgentGraphic.AGENTS_URL_2);
     private static final Image AGENT_SPRITES3 = new Image(OfficeAgentGraphic.AGENTS_URL_3);
@@ -143,7 +145,17 @@ public class OfficeGraphicsController extends Controller {
 
                     AmenityGraphicLocation amenityGraphicLocation = drawablePatchAmenity.getGraphicLocation();
 
-                    if (patchAmenity.getClass() == Toilet.class || patchAmenity.getClass() == Sink.class) {
+                    if (patchAmenity.getClass() == OfficeGate.class) {
+                        foregroundGraphicsContext.drawImage(
+                                AMENITY_SPRITES3,
+                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
+                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
+                                column * tileSize + ((OfficeAmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
+                                row * tileSize + ((OfficeAmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
+                                tileSize * ((OfficeAmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
+                                tileSize * ((OfficeAmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
+                    }
+                    else if (patchAmenity.getClass() == Toilet.class || patchAmenity.getClass() == Sink.class) {
                         foregroundGraphicsContext.drawImage(
                                 AMENITY_SPRITES2,
                                 amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
@@ -210,6 +222,31 @@ public class OfficeGraphicsController extends Controller {
                 }
                 else if (patchPatchField.getClass() == SecretaryRoom.class) {
                     patchColor = Color.rgb(244, 174, 67);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+                else if (patchPatchField.getClass() == Laboratory.class) {
+                    if (patchNumPair.getValue() == 1) {
+                        patchColor = Color.rgb(225, 220, 218);
+                    }
+                    else {
+                        patchColor = Color.rgb(227, 200, 220);
+                    }
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+                else if (patchPatchField.getClass() == Cafeteria.class) {
+                    patchColor = Color.rgb(229, 126, 126);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+                else if (patchPatchField.getClass() == StudyArea.class) {
+                    patchColor = Color.rgb(153, 222, 142);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+                else if (patchPatchField.getClass() == StaffOffice.class) {
+                    patchColor = Color.rgb(234, 133, 101);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }

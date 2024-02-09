@@ -13,6 +13,7 @@ public class OfficeAmenityGraphic extends Graphic {
 
     public static final String AMENITY_SPRITE_SHEET_URL = "com/socialsim/view/image/Office/amenity_spritesheet.png";
     public static final String AMENITY_SPRITE_SHEET_URL2 = "com/socialsim/view/image/University/amenity_spritesheet.png";
+    public static final String AMENITY_SPRITE_SHEET_URL3 = "com/socialsim/view/image/Mall/amenity_spritesheet.png";
     public static final HashMap<Class<?>, List<AmenityGraphicLocation>> AMENITY_GRAPHICS = new HashMap<>();
 
     static {
@@ -49,7 +50,7 @@ public class OfficeAmenityGraphic extends Graphic {
         AMENITY_GRAPHICS.put(MeetingDesk.class, meetingDeskGraphic);
 
         final List<AmenityGraphicLocation> officeGateGraphic = new ArrayList<>();
-        officeGateGraphic.add(new AmenityGraphicLocation(8, 0));
+        officeGateGraphic.add(new AmenityGraphicLocation(0, 1));
         AMENITY_GRAPHICS.put(OfficeGate.class, officeGateGraphic);
 
         final List<AmenityGraphicLocation> officeDeskGraphic = new ArrayList<>();
