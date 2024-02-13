@@ -11,7 +11,7 @@ public class MeetingDeskGraphic extends OfficeAmenityGraphic {
     private static final int NORMAL_ROW_OFFSET = 0;
     private static final int NORMAL_COLUMN_OFFSET = 0;
 
-    public MeetingDeskGraphic(MeetingDesk meetingDesk) {
+    public MeetingDeskGraphic(MeetingDesk meetingDesk, String facing) {
         super(meetingDesk, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
     }
 

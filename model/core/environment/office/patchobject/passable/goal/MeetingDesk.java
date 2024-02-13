@@ -18,10 +18,10 @@ public class MeetingDesk extends Goal {
         meetingDeskFactory = new MeetingDesk.MeetingDeskFactory();
     }
 
-    protected MeetingDesk(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected MeetingDesk(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
 
-        this.meetingDeskGraphic = new MeetingDeskGraphic(this);
+        this.meetingDeskGraphic = new MeetingDeskGraphic(this, facing);
     }
 
 
@@ -60,8 +60,8 @@ public class MeetingDesk extends Goal {
     }
 
     public static class MeetingDeskFactory extends GoalFactory {
-        public static MeetingDesk create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new MeetingDesk(amenityBlocks, enabled);
+        public static MeetingDesk create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+            return new MeetingDesk(amenityBlocks, enabled, facing);
         }
     }
 
