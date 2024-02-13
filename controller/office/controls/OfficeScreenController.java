@@ -644,19 +644,20 @@ public class OfficeScreenController extends ScreenController {
         Main.officeSimulator.getOffice().getOfficeRooms().add(OfficeRoom.officeRoomFactory.create(execDeanOfficeAreaPatches, 2));
 
         List<Patch> cabinetDownPatches = new ArrayList<>();
+        // Pantry
         cabinetDownPatches.add(office.getPatch(70,81));
         cabinetDownPatches.add(office.getPatch(70,86));
         cabinetDownPatches.add(office.getPatch(70,88));
         CabinetMapper.draw(cabinetDownPatches, "DOWN");
 
-//        List<Patch> cabinetUpPatches = new ArrayList<>();
-//        cabinetUpPatches.add(office.getPatch(68,44));
-//        cabinetUpPatches.add(office.getPatch(43,46));
-//        cabinetUpPatches.add(office.getPatch(58,39));
-//        cabinetUpPatches.add(office.getPatch(58,42));
+        List<Patch> cabinetUpPatches = new ArrayList<>();
+        cabinetUpPatches.add(office.getPatch(64,20));
+        cabinetUpPatches.add(office.getPatch(64,22));
+        cabinetUpPatches.add(office.getPatch(64,24));
+        cabinetUpPatches.add(office.getPatch(64,26));
 //        cabinetUpPatches.add(office.getPatch(58,50));
 //        cabinetUpPatches.add(office.getPatch(58,53));
-//        CabinetMapper.draw(cabinetUpPatches, "UP");
+        CabinetMapper.draw(cabinetUpPatches, "UP");
 
         List<Patch> chairPatches = new ArrayList<>();
 
@@ -678,31 +679,48 @@ public class OfficeScreenController extends ScreenController {
         chairPatches.add(office.getPatch(25,6));
         ChairMapper.draw(chairPatches);
 
-        List<Patch> collabDeskPatches = new ArrayList<>();
+//        List<Patch> collabDeskPatches = new ArrayList<>();
 //        collabDeskPatches.add(office.getPatch(8,64));
 //        collabDeskPatches.add(office.getPatch(15,64));
 //        collabDeskPatches.add(office.getPatch(22,64));
 //        collabDeskPatches.add(office.getPatch(29,64));
 //        collabDeskPatches.add(office.getPatch(36,64));
-        CollabDeskMapper.draw(collabDeskPatches);
+//        CollabDeskMapper.draw(collabDeskPatches);
 
 //        List<Patch> couchDownPatches = new ArrayList<>();
 //        couchDownPatches.add(office.getPatch(22,7));
 //        couchDownPatches.add(office.getPatch(47,7));
 //        CouchMapper.draw(couchDownPatches, "DOWN");
 //
-//        List<Patch> couchRightPatches = new ArrayList<>();
-//        couchRightPatches.add(office.getPatch(49,3));
-//        couchRightPatches.add(office.getPatch(46,56));
-//        CouchMapper.draw(couchRightPatches, "RIGHT");
+        List<Patch> couchRightPatches = new ArrayList<>();
+        couchRightPatches.add(office.getPatch(39,86));
+        CouchMapper.draw(couchRightPatches, "RIGHT");
 
-//        List<Patch> cubicleUpPatches = new ArrayList<>();
-//        cubicleUpPatches.add(office.getPatch(0,26));
-//        CubicleMapper.draw(cubicleUpPatches, "UP");
+        List<Patch> cubicleUpPatches = new ArrayList<>();
+        // Faculty Cubicle
+        cubicleUpPatches.add(office.getPatch(60,81));
+        cubicleUpPatches.add(office.getPatch(60,77));
+        cubicleUpPatches.add(office.getPatch(60,75));
+        cubicleUpPatches.add(office.getPatch(60,71));
+        cubicleUpPatches.add(office.getPatch(60,69));
 
-//        List<Patch> cubicleDownPatches = new ArrayList<>();
-//        cubicleDownPatches.add(office.getPatch(6,26));
-//        CubicleMapper.draw(cubicleDownPatches, "DOWN");
+        // Open Area 1 & 3 Cubicle
+        cubicleUpPatches.add(office.getPatch(60,71));
+        cubicleUpPatches.add(office.getPatch(60,69));
+        CubicleMapper.draw(cubicleUpPatches, "UP");
+
+        List<Patch> cubicleDownPatches = new ArrayList<>();
+        // Faculty Cubicle
+        cubicleDownPatches.add(office.getPatch(58,81));
+        cubicleDownPatches.add(office.getPatch(58,77));
+        cubicleDownPatches.add(office.getPatch(58,75));
+        cubicleDownPatches.add(office.getPatch(58,71));
+        cubicleDownPatches.add(office.getPatch(58,69));
+
+        // Open Area 2 & 4 Cubicle
+        cubicleDownPatches.add(office.getPatch(58,71));
+        cubicleDownPatches.add(office.getPatch(58,69));
+        CubicleMapper.draw(cubicleDownPatches, "DOWN");
 
         List<Patch> whiteboardPatches = new ArrayList<>();
         // Small Meeting Whiteboard
@@ -857,7 +875,7 @@ public class OfficeScreenController extends ScreenController {
             // Men's Bathroom Toilet
             toiletPatches.add(office.getPatch(1,j));
             // Women's Bathroom Toilet
-            toiletPatches.add(office.getPatch(42,j));
+            toiletPatches.add(office.getPatch(44,j));
         }
         ToiletMapper.draw(toiletPatches);
 
@@ -867,7 +885,7 @@ public class OfficeScreenController extends ScreenController {
             sinkPatches.add(office.getPatch(10,j));
 
             // Women's Bathroom Sink
-            sinkPatches.add(office.getPatch(33,j));
+            sinkPatches.add(office.getPatch(35,j));
         }
 
         // Pantry Sink

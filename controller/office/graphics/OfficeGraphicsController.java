@@ -246,7 +246,7 @@ public class OfficeGraphicsController extends Controller {
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }
                 else if (patchPatchField.getClass() == StaffOffice.class) {
-                    patchColor = Color.rgb(234, 133, 101);
+                    patchColor = Color.rgb(23, 133, 101);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }

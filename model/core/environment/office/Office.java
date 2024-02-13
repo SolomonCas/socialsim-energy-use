@@ -57,6 +57,8 @@ public class Office extends Environment {
     private final List<Table> tables;
     private final List<Sink> sinks;
     private final List<Toilet> toilets;
+    private final List<EatTable> eatTables;
+    private final List<Trash> trashes;
 
     private final List<Bulletin> bulletins;
     private final List<Fridge> fridges;
@@ -253,6 +255,14 @@ public class Office extends Environment {
 
     public List<Fridge> getFridges() {
         return fridges;
+    }
+
+    public List<EatTable> getEatTables() {
+        return eatTables;
+    }
+
+    public List<Trash> getTrashes() {
+        return trashes;
     }
 
     public List<WaterDispenser> getWaterDispensers() {
