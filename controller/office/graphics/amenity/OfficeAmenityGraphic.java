@@ -101,6 +101,19 @@ public class OfficeAmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> fridgeGraphic = new ArrayList<>();
         fridgeGraphic.add(new AmenityGraphicLocation(12, 3));
         AMENITY_GRAPHICS.put(Fridge.class, fridgeGraphic);
+
+        final List<AmenityGraphicLocation> eatTableGraphic = new ArrayList<>();
+        eatTableGraphic.add(new AmenityGraphicLocation(14, 2));
+        AMENITY_GRAPHICS.put(EatTable.class, eatTableGraphic);
+
+        final List<AmenityGraphicLocation> trashGraphic = new ArrayList<>();
+        trashGraphic.add(new AmenityGraphicLocation(1, 1));
+        AMENITY_GRAPHICS.put(Trash.class, trashGraphic);
+
+        final List<AmenityGraphicLocation> studyTableGraphic = new ArrayList<>();
+        studyTableGraphic.add(new AmenityGraphicLocation(0, 2));
+        studyTableGraphic.add(new AmenityGraphicLocation(2, 1));
+        AMENITY_GRAPHICS.put(StudyTable.class, studyTableGraphic);
     }
 
     protected final Amenity amenity;

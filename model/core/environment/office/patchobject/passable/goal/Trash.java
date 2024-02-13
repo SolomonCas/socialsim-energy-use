@@ -1,8 +1,8 @@
 package com.socialsim.model.core.environment.office.patchobject.passable.goal;
 
 import com.socialsim.controller.generic.graphics.amenity.AmenityGraphicLocation;
-import com.socialsim.controller.university.graphics.amenity.UniversityAmenityGraphic;
-import com.socialsim.controller.university.graphics.amenity.graphic.TrashGraphic;
+import com.socialsim.controller.office.graphics.amenity.OfficeAmenityGraphic;
+import com.socialsim.controller.office.graphics.amenity.graphic.TrashGraphic;
 import com.socialsim.model.core.environment.generic.Patch;
 import com.socialsim.model.core.environment.generic.patchobject.passable.goal.Goal;
 
@@ -30,7 +30,7 @@ public class Trash extends Goal {
     }
 
     @Override
-    public UniversityAmenityGraphic getGraphicObject() {
+    public OfficeAmenityGraphic getGraphicObject() {
         return this.trashGraphic;
     }
 

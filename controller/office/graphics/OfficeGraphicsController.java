@@ -17,8 +17,7 @@ import com.socialsim.model.core.environment.generic.position.Coordinates;
 import com.socialsim.model.core.environment.office.Office;
 import com.socialsim.model.core.environment.office.patchfield.*;
 import com.socialsim.model.core.environment.office.patchobject.passable.gate.OfficeGate;
-import com.socialsim.model.core.environment.office.patchobject.passable.goal.Sink;
-import com.socialsim.model.core.environment.office.patchobject.passable.goal.Toilet;
+import com.socialsim.model.core.environment.office.patchobject.passable.goal.*;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -155,7 +154,9 @@ public class OfficeGraphicsController extends Controller {
                                 tileSize * ((OfficeAmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
                                 tileSize * ((OfficeAmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
                     }
-                    else if (patchAmenity.getClass() == Toilet.class || patchAmenity.getClass() == Sink.class) {
+                    else if (   patchAmenity.getClass() == Toilet.class || patchAmenity.getClass() == Sink.class ||
+                                patchAmenity.getClass() == Trash.class || patchAmenity.getClass() == EatTable.class ||
+                                patchAmenity.getClass() == StudyTable.class) {
                         foregroundGraphicsContext.drawImage(
                                 AMENITY_SPRITES2,
                                 amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),

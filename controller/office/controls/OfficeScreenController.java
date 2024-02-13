@@ -807,7 +807,7 @@ public class OfficeScreenController extends ScreenController {
 
         List<Patch> meetingDeskVerticalPatches = new ArrayList<>();
         meetingDeskVerticalPatches.add(office.getPatch(17,6));
-        MeetingDeskMapper.draw(meetingDeskVerticalPatches, "VERTICAL", 4);
+        MeetingDeskMapper.draw(meetingDeskVerticalPatches, "VERTICAL", 5);
 
 //        List<Patch> officeDeskPatches = new ArrayList<>();
 //        officeDeskPatches.add(office.getPatch(52,44));
@@ -869,6 +869,57 @@ public class OfficeScreenController extends ScreenController {
 //        tableRightPatches.add(office.getPatch(40,10));
 //        tableRightPatches.add(office.getPatch(40,14));
 //        TableMapper.draw(tableRightPatches, "RIGHT");
+
+        // TRASH
+        List<Patch> trashPatches = new ArrayList<>();
+        trashPatches.add(office.getPatch(36,16));
+        trashPatches.add(office.getPatch(27,0));
+        trashPatches.add(office.getPatch(29,0));
+        trashPatches.add(office.getPatch(31,0));
+        trashPatches.add(office.getPatch(18,69));
+        trashPatches.add(office.getPatch(20,69));
+        trashPatches.add(office.getPatch(22,69));
+        trashPatches.add(office.getPatch(26,95));
+        trashPatches.add(office.getPatch(33,47));
+        trashPatches.add(office.getPatch(33,49));
+        trashPatches.add(office.getPatch(33,51));
+        TrashMapper.draw(trashPatches);
+
+        // EAT TABLE
+        List<Patch> eatTablePatches = new ArrayList<>();
+        for (int i = 6; i < 24; i++) {
+            if (i == 7 || i == 11 || i == 15 || i == 19 || i == 23) {
+                for (int j = 97; j < 117; j++) {
+                    if (j == 97 || j == 103 || j == 109 || j == 115) {
+                        eatTablePatches.add(office.getPatch(i, j));
+                    }
+                }
+            }
+        }
+        EatTableMapper.draw(eatTablePatches);
+
+        List<Patch> studyTablePatches = new ArrayList<>();
+        studyTablePatches.add(office.getPatch(37, 101));
+        studyTablePatches.add(office.getPatch(41, 101));
+        studyTablePatches.add(office.getPatch(45, 101));
+        studyTablePatches.add(office.getPatch(49, 101));
+        studyTablePatches.add(office.getPatch(53, 101));
+        studyTablePatches.add(office.getPatch(37, 105));
+        studyTablePatches.add(office.getPatch(41, 105));
+        studyTablePatches.add(office.getPatch(45, 105));
+        studyTablePatches.add(office.getPatch(49, 105));
+        studyTablePatches.add(office.getPatch(53, 105));
+        studyTablePatches.add(office.getPatch(37, 111));
+        studyTablePatches.add(office.getPatch(41, 111));
+        studyTablePatches.add(office.getPatch(45, 111));
+        studyTablePatches.add(office.getPatch(49, 111));
+        studyTablePatches.add(office.getPatch(53, 111));
+        studyTablePatches.add(office.getPatch(37, 115));
+        studyTablePatches.add(office.getPatch(41, 115));
+        studyTablePatches.add(office.getPatch(45, 115));
+        studyTablePatches.add(office.getPatch(49, 115));
+        studyTablePatches.add(office.getPatch(53, 115));
+        StudyTableMapper.draw(studyTablePatches, "UP");
 
         List<Patch> toiletPatches = new ArrayList<>();
         for (int j = 133; j < 140; j += 2) {
