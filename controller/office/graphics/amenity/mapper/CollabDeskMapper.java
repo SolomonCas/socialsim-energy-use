@@ -8,10 +8,11 @@ import com.socialsim.model.core.environment.office.patchobject.passable.goal.Col
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CollabDeskMapper extends AmenityMapper {
 
-    public static void draw(List<Patch> patches) {
+    public static void draw(List<Patch> patches, String facing, int length) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
@@ -22,27 +23,51 @@ public class CollabDeskMapper extends AmenityMapper {
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 
-            for (int i = 1; i < 6; i++) {
-                Patch patchBack = Main.officeSimulator.getOffice().getPatch(origPatchRow, origPatchCol + i);
-                Amenity.AmenityBlock amenityBlockBack = null;
-                if (i % 2 == 0) {
-                    amenityBlockBack = amenityBlockFactory.create(patchBack, true, true);
+            if (Objects.equals(facing, "HORIZONTAL")) {
+                for (int i = 1; i < length * 2; i++) {
+                    Patch patchBack = Main.officeSimulator.getOffice().getPatch(origPatchRow, origPatchCol + i);
+                    Amenity.AmenityBlock amenityBlockBack = null;
+                    if (i % 2 == 0) {
+                        amenityBlockBack = amenityBlockFactory.create(patchBack, true, true);
+                    }
+                    else {
+                        amenityBlockBack = amenityBlockFactory.create(patchBack, true, false);
+                    }
+                    amenityBlocks.add(amenityBlockBack);
+                    patchBack.setAmenityBlock(amenityBlockBack);
                 }
-                else {
-                    amenityBlockBack = amenityBlockFactory.create(patchBack, true, false);
+
+//                for (int i = 0; i < 6; i++) {
+//                    Patch patchFront = Main.officeSimulator.getOffice().getPatch(origPatchRow + 1, origPatchCol + i);
+//                    Amenity.AmenityBlock amenityBlockFront = amenityBlockFactory.create(patchFront, true, false);
+//                    amenityBlocks.add(amenityBlockFront);
+//                    patchFront.setAmenityBlock(amenityBlockFront);
+//                }
+            }
+            else {
+                for (int i = 1; i < length * 2; i++) {
+                    Patch patchBack = Main.officeSimulator.getOffice().getPatch(origPatchRow + i, origPatchCol);
+                    Amenity.AmenityBlock amenityBlockBack = null;
+                    if (i % 2 == 0) {
+                        amenityBlockBack = amenityBlockFactory.create(patchBack, true, true);
+                    }
+                    else {
+                        amenityBlockBack = amenityBlockFactory.create(patchBack, true, false);
+                    }
+                    amenityBlocks.add(amenityBlockBack);
+                    patchBack.setAmenityBlock(amenityBlockBack);
                 }
-                amenityBlocks.add(amenityBlockBack);
-                patchBack.setAmenityBlock(amenityBlockBack);
+
+//                for (int i = 0; i < 6; i++) {
+//                    Patch patchFront = Main.officeSimulator.getOffice().getPatch(origPatchRow + i, origPatchCol + 1);
+//                    Amenity.AmenityBlock amenityBlockFront = amenityBlockFactory.create(patchFront, true, false);
+//                    amenityBlocks.add(amenityBlockFront);
+//                    patchFront.setAmenityBlock(amenityBlockFront);
+//                }
             }
 
-            for (int i = 0; i < 6; i++) {
-                Patch patchFront = Main.officeSimulator.getOffice().getPatch(origPatchRow + 1, origPatchCol + i);
-                Amenity.AmenityBlock amenityBlockFront = amenityBlockFactory.create(patchFront, true, false);
-                amenityBlocks.add(amenityBlockFront);
-                patchFront.setAmenityBlock(amenityBlockFront);
-            }
 
-            CollabDesk collabDeskToAdd = CollabDesk.CollabDeskFactory.create(amenityBlocks, true);
+            CollabDesk collabDeskToAdd = CollabDesk.CollabDeskFactory.create(amenityBlocks, true, facing);
             Main.officeSimulator.getOffice().getCollabDesks().add(collabDeskToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }

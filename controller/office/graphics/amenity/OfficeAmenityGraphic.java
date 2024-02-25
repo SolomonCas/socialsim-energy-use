@@ -38,6 +38,8 @@ public class OfficeAmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> cubicleGraphic = new ArrayList<>();
         cubicleGraphic.add(new AmenityGraphicLocation(2, 0));
         cubicleGraphic.add(new AmenityGraphicLocation(2, 2));
+        cubicleGraphic.add(new AmenityGraphicLocation(14, 2));
+        cubicleGraphic.add(new AmenityGraphicLocation(14, 0));
         AMENITY_GRAPHICS.put(Cubicle.class, cubicleGraphic);
 
         final List<AmenityGraphicLocation> doorGraphic = new ArrayList<>();
@@ -92,6 +94,7 @@ public class OfficeAmenityGraphic extends Graphic {
 
         final List<AmenityGraphicLocation> whiteboardGraphic = new ArrayList<>();
         whiteboardGraphic.add(new AmenityGraphicLocation(10, 2));
+        whiteboardGraphic.add(new AmenityGraphicLocation(16, 0));
         AMENITY_GRAPHICS.put(Whiteboard.class, whiteboardGraphic);
 
         final List<AmenityGraphicLocation> waterDispenserGraphic = new ArrayList<>();
@@ -102,10 +105,6 @@ public class OfficeAmenityGraphic extends Graphic {
         fridgeGraphic.add(new AmenityGraphicLocation(12, 3));
         AMENITY_GRAPHICS.put(Fridge.class, fridgeGraphic);
 
-        final List<AmenityGraphicLocation> eatTableGraphic = new ArrayList<>();
-        eatTableGraphic.add(new AmenityGraphicLocation(14, 2));
-        AMENITY_GRAPHICS.put(EatTable.class, eatTableGraphic);
-
         final List<AmenityGraphicLocation> trashGraphic = new ArrayList<>();
         trashGraphic.add(new AmenityGraphicLocation(1, 1));
         AMENITY_GRAPHICS.put(Trash.class, trashGraphic);
@@ -114,6 +113,10 @@ public class OfficeAmenityGraphic extends Graphic {
         studyTableGraphic.add(new AmenityGraphicLocation(0, 2));
         studyTableGraphic.add(new AmenityGraphicLocation(2, 1));
         AMENITY_GRAPHICS.put(StudyTable.class, studyTableGraphic);
+
+        final List<AmenityGraphicLocation> serverGraphic = new ArrayList<>();
+        serverGraphic.add(new AmenityGraphicLocation(16, 2));
+        AMENITY_GRAPHICS.put(Server.class, serverGraphic);
     }
 
     protected final Amenity amenity;

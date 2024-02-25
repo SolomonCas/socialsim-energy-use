@@ -25,7 +25,7 @@ public class DoorMapper extends AmenityMapper {
 
             if(facing.equals("UP") || facing.equals("DOWN")) {
                 Patch rightPatch = Main.officeSimulator.getOffice().getPatch(origPatchRow, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(rightPatch, true, false);
+                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(rightPatch, true, true);
                 amenityBlocks.add(amenityBlock2);
                 rightPatch.setAmenityBlock(amenityBlock2);
                 rightPatch.setPatchField(null);
@@ -35,10 +35,16 @@ public class DoorMapper extends AmenityMapper {
                 amenityBlocks.add(amenityBlock3);
                 rightPatch3.setAmenityBlock(amenityBlock3);
                 rightPatch3.setPatchField(null);
+
+                Patch rightPatch4 = Main.officeSimulator.getOffice().getPatch(origPatchRow, origPatchCol + 3);
+                Amenity.AmenityBlock amenityBlock4 = amenityBlockFactory.create(rightPatch4, true, false);
+                amenityBlocks.add(amenityBlock4);
+                rightPatch4.setAmenityBlock(amenityBlock4);
+                rightPatch4.setPatchField(null);
             }
             else {
                 Patch lowerPatch = Main.officeSimulator.getOffice().getPatch(origPatchRow + 1, origPatchCol);
-                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(lowerPatch, true, false);
+                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(lowerPatch, true, true);
                 amenityBlocks.add(amenityBlock2);
                 lowerPatch.setAmenityBlock(amenityBlock2);
                 lowerPatch.setPatchField(null);
@@ -48,6 +54,12 @@ public class DoorMapper extends AmenityMapper {
                 amenityBlocks.add(amenityBlock3);
                 lowerPatch3.setAmenityBlock(amenityBlock3);
                 lowerPatch3.setPatchField(null);
+
+                Patch lowerPatch4 = Main.officeSimulator.getOffice().getPatch(origPatchRow + 3, origPatchCol);
+                Amenity.AmenityBlock amenityBlock4 = amenityBlockFactory.create(lowerPatch4, true, false);
+                amenityBlocks.add(amenityBlock4);
+                lowerPatch4.setAmenityBlock(amenityBlock4);
+                lowerPatch4.setPatchField(null);
             }
 
             Door doorToAdd = Door.DoorFactory.create(amenityBlocks, true, facing);

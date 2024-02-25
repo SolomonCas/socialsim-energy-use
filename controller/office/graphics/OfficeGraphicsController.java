@@ -155,8 +155,7 @@ public class OfficeGraphicsController extends Controller {
                                 tileSize * ((OfficeAmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
                     }
                     else if (   patchAmenity.getClass() == Toilet.class || patchAmenity.getClass() == Sink.class ||
-                                patchAmenity.getClass() == Trash.class || patchAmenity.getClass() == EatTable.class ||
-                                patchAmenity.getClass() == StudyTable.class) {
+                                patchAmenity.getClass() == Trash.class || patchAmenity.getClass() == StudyTable.class) {
                         foregroundGraphicsContext.drawImage(
                                 AMENITY_SPRITES2,
                                 amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),

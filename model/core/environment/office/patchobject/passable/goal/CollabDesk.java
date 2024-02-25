@@ -18,10 +18,10 @@ public class CollabDesk extends Goal {
         collabDeskFactory = new CollabDesk.CollabDeskFactory();
     }
 
-    protected CollabDesk(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected CollabDesk(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
 
-        this.collabDeskGraphic = new CollabDeskGraphic(this);
+        this.collabDeskGraphic = new CollabDeskGraphic(this, facing);
     }
 
 
@@ -60,8 +60,8 @@ public class CollabDesk extends Goal {
     }
 
     public static class CollabDeskFactory extends GoalFactory {
-        public static CollabDesk create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new CollabDesk(amenityBlocks, enabled);
+        public static CollabDesk create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+            return new CollabDesk(amenityBlocks, enabled, facing);
         }
     }
 

@@ -18,10 +18,10 @@ public class Whiteboard extends Goal {
         whiteboardFactory = new Whiteboard.WhiteboardFactory();
     }
 
-    protected Whiteboard(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected Whiteboard(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
 
-        this.whiteboardGraphic = new WhiteboardGraphic(this);
+        this.whiteboardGraphic = new WhiteboardGraphic(this, facing);
     }
 
 
@@ -60,8 +60,8 @@ public class Whiteboard extends Goal {
     }
 
     public static class WhiteboardFactory extends GoalFactory {
-        public static Whiteboard create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new Whiteboard(amenityBlocks, enabled);
+        public static Whiteboard create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+            return new Whiteboard(amenityBlocks, enabled, facing);
         }
     }
 

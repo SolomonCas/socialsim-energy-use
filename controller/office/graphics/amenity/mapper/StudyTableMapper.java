@@ -21,18 +21,33 @@ public class StudyTableMapper extends AmenityMapper {
             Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
+            patch.setPatchField(null);
 
             if(facing.equals("UP") || facing.equals("DOWN")) {
                 Patch rightPatch = Main.officeSimulator.getOffice().getPatch(origPatchRow, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(rightPatch, true, false);
+                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(rightPatch, true, true);
                 amenityBlocks.add(amenityBlock2);
                 rightPatch.setAmenityBlock(amenityBlock2);
+                rightPatch.setPatchField(null);
+
+                Patch rightPatch2 = Main.officeSimulator.getOffice().getPatch(origPatchRow, origPatchCol + 2);
+                Amenity.AmenityBlock amenityBlock3 = amenityBlockFactory.create(rightPatch2, true, true);
+                amenityBlocks.add(amenityBlock3);
+                rightPatch2.setAmenityBlock(amenityBlock3);
+                rightPatch2.setPatchField(null);
             }
             else {
                 Patch lowerPatch = Main.officeSimulator.getOffice().getPatch(origPatchRow + 1, origPatchCol);
-                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(lowerPatch, true, false);
+                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(lowerPatch, true, true);
                 amenityBlocks.add(amenityBlock2);
                 lowerPatch.setAmenityBlock(amenityBlock2);
+                lowerPatch.setPatchField(null);
+
+                Patch lowerPatch2 = Main.officeSimulator.getOffice().getPatch(origPatchRow + 1, origPatchCol + 2);
+                Amenity.AmenityBlock amenityBlock3 = amenityBlockFactory.create(lowerPatch2, true, true);
+                amenityBlocks.add(amenityBlock3);
+                lowerPatch2.setAmenityBlock(amenityBlock3);
+                lowerPatch2.setPatchField(null);
             }
 
             StudyTable studyTableToAdd = StudyTable.StudyTableFactory.create(amenityBlocks, true, facing);

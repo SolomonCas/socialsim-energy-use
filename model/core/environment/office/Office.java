@@ -57,10 +57,9 @@ public class Office extends Environment {
     private final List<Table> tables;
     private final List<Sink> sinks;
     private final List<Toilet> toilets;
-    private final List<EatTable> eatTables;
     private final List<Trash> trashes;
     private final List<StudyTable> studyTables;
-
+    private final List<Server> servers;
     private final List<Bulletin> bulletins;
     private final List<Fridge> fridges;
     private final List<WaterDispenser> waterDispensers;
@@ -109,9 +108,9 @@ public class Office extends Environment {
         this.tables = Collections.synchronizedList(new ArrayList<>());
         this.sinks = Collections.synchronizedList(new ArrayList<>());
         this.toilets = Collections.synchronizedList(new ArrayList<>());
-        this.eatTables = Collections.synchronizedList(new ArrayList<>());
         this.trashes = Collections.synchronizedList(new ArrayList<>());
         this.studyTables = Collections.synchronizedList(new ArrayList<>());
+        this.servers = Collections.synchronizedList(new ArrayList<>());
 
         this.bulletins = Collections.synchronizedList(new ArrayList<>());
         this.fridges = Collections.synchronizedList(new ArrayList<>());
@@ -257,16 +256,16 @@ public class Office extends Environment {
         return studyTables;
     }
 
+    public List<Server> getServers() {
+        return servers;
+    }
+
     public List<Bulletin> getBulletins() {
         return bulletins;
     }
 
     public List<Fridge> getFridges() {
         return fridges;
-    }
-
-    public List<EatTable> getEatTables() {
-        return eatTables;
     }
 
     public List<Trash> getTrashes() {
@@ -491,11 +490,11 @@ public class Office extends Environment {
         else if (amenityClass == Trash.class) {
             return this.getTrashes();
         }
-        else if (amenityClass == EatTable.class) {
-            return this.getEatTables();
-        }
         else if (amenityClass == StudyTable.class) {
             return this.getStudyTables();
+        }
+        else if (amenityClass == Server.class) {
+            return this.getServers();
         }
         else {
             return null;
