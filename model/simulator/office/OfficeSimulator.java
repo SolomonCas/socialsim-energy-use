@@ -37,22 +37,22 @@ public class OfficeSimulator extends Simulator {
 
     private final int MAX_BOSSES = 1;
     private final int MAX_SECRETARIES = 1;
-    public static List<Integer> MANAGERS_1 = new LinkedList<Integer>(List.of(11));
-    public static List<Integer> MANAGERS_2 = new LinkedList<Integer>(List.of(19));
-    public static List<Integer> MANAGERS_3 = new LinkedList<Integer>(List.of(27));
-    public static List<Integer> MANAGERS_4 = new LinkedList<Integer>(List.of(35));
-    public static List<Integer> BUSINESS_1 = new LinkedList<Integer>(List.of(0, 1, 2, 3, 4));
-    public static List<Integer> BUSINESS_2 = new LinkedList<Integer>(List.of(36, 37, 38, 39, 40, 41, 42));
-    public static List<Integer> BUSINESS_3 = new LinkedList<Integer>(List.of(44, 45, 46, 47, 48, 49, 50));
-    public static List<Integer> BUSINESS_4 = new LinkedList<Integer>(List.of(52, 53, 54, 55, 56, 57, 58));
-    public static List<Integer> RESEARCH_1 = new LinkedList<Integer>(List.of(5, 6, 7, 8, 9));
-    public static List<Integer> RESEARCH_2 = new LinkedList<Integer>(List.of(12, 13, 14, 15, 16, 17, 18));
-    public static List<Integer> RESEARCH_3 = new LinkedList<Integer>(List.of(20, 21, 22, 23, 24, 25, 26));
-    public static List<Integer> RESEARCH_4 = new LinkedList<Integer>(List.of(28, 29, 30, 31, 32, 33, 34));
-    public static List<Integer> TECHNICAL_1 = new LinkedList<Integer>(List.of(10));
-    public static List<Integer> TECHNICAL_2 = new LinkedList<Integer>(List.of(43));
-    public static List<Integer> TECHNICAL_3 = new LinkedList<Integer>(List.of(51));
-    public static List<Integer> TECHNICAL_4 = new LinkedList<Integer>(List.of(59));
+    public static List<Integer> MANAGERS_1 = new LinkedList<Integer>(List.of(0));
+    public static List<Integer> MANAGERS_2 = new LinkedList<Integer>(List.of(1));
+    public static List<Integer> MANAGERS_3 = new LinkedList<Integer>(List.of(2));
+    public static List<Integer> MANAGERS_4 = new LinkedList<Integer>(List.of(3));
+    public static List<Integer> BUSINESS_1 = new LinkedList<Integer>(List.of(20, 21, 22, 23, 24));
+    public static List<Integer> BUSINESS_2 = new LinkedList<Integer>(List.of(25, 26, 27, 28, 29, 30, 31));
+    public static List<Integer> BUSINESS_3 = new LinkedList<Integer>(List.of(32, 33, 34, 35, 36, 37, 38));
+    public static List<Integer> BUSINESS_4 = new LinkedList<Integer>(List.of(39, 40, 41, 42, 43, 44, 45));
+    public static List<Integer> RESEARCH_1 = new LinkedList<Integer>(List.of(46, 47, 48, 49, 50));
+    public static List<Integer> RESEARCH_2 = new LinkedList<Integer>(List.of(51, 52, 53, 54, 55, 4, 6));
+    public static List<Integer> RESEARCH_3 = new LinkedList<Integer>(List.of(7, 8, 9, 10, 11, 12, 14));
+    public static List<Integer> RESEARCH_4 = new LinkedList<Integer>(List.of(15, 18, 19));
+    public static List<Integer> TECHNICAL_1 = new LinkedList<Integer>(List.of(5));
+    public static List<Integer> TECHNICAL_2 = new LinkedList<Integer>(List.of(13));
+    public static List<Integer> TECHNICAL_3 = new LinkedList<Integer>(List.of(16));
+    public static List<Integer> TECHNICAL_4 = new LinkedList<Integer>(List.of(17));
 
     public static int currentManagerCount = 0;
     public static int currentBusinessCount = 0;
@@ -293,19 +293,19 @@ public class OfficeSimulator extends Simulator {
     public void spawnInitialAgents(Office office) {
         office.createInitialAgentDemographics(office.getMAX_CLIENTS(), getOffice().getMAX_DRIVERS(), getOffice().getMAX_VISITORS());
         OfficeAgent janitor = office.getAgents().get(0);
-        janitor.setAgentMovement(new OfficeAgentMovement(office.getPatch(6,23), janitor, 1.27, office.getPatch(6,23).getPatchCenterCoordinates(), -1, 0, null));
+        janitor.setAgentMovement(new OfficeAgentMovement(office.getPatch(60,95), janitor, 1.27, office.getPatch(60,95).getPatchCenterCoordinates(), -1, 0, null));
         office.getAgentPatchSet().add(janitor.getAgentMovement().getCurrentPatch());
         OfficeAgent.janitorCount++;
         OfficeAgent.agentCount++;
 
         OfficeAgent guard = office.getAgents().get(1);
-        guard.setAgentMovement(new OfficeAgentMovement(office.getPatch(57,25), guard, 1.27, office.getPatch(57,25).getPatchCenterCoordinates(), -1, 0, null));
+        guard.setAgentMovement(new OfficeAgentMovement(office.getPatch(33,132), guard, 1.27, office.getPatch(33,132).getPatchCenterCoordinates(), -1, 0, null));
         office.getAgentPatchSet().add(guard.getAgentMovement().getCurrentPatch());
         OfficeAgent.guardCount++;
         OfficeAgent.agentCount++;
 
         OfficeAgent receptionist = office.getAgents().get(2);
-        receptionist.setAgentMovement(new OfficeAgentMovement(office.getPatch(46,31), receptionist, 1.27, office.getPatch(46,32).getPatchCenterCoordinates(), -1, 0, null));
+        receptionist.setAgentMovement(new OfficeAgentMovement(office.getPatch(39,129), receptionist, 1.27, office.getPatch(39,129).getPatchCenterCoordinates(), -1, 0, null));
         office.getAgentPatchSet().add(receptionist.getAgentMovement().getCurrentPatch());
         OfficeAgent.receptionistCount++;
         OfficeAgent.agentCount++;
@@ -2639,7 +2639,14 @@ public class OfficeSimulator extends Simulator {
                     if (action.getName() == OfficeAction.Name.LEAVE_OFFICE) {
                         agentMovement.setSimultaneousInteractionAllowed(false);
                         if (agentMovement.getGoalAmenity() == null) {
-                            agentMovement.setGoalAmenity(Main.officeSimulator.getOffice().getOfficeGates().get(0));
+                            boolean isGate1 = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
+                            if (isGate1) {
+                                agentMovement.setGoalAmenity(Main.officeSimulator.getOffice().getOfficeGates().get(0));
+                            }
+                            else {
+                                agentMovement.setGoalAmenity(Main.officeSimulator.getOffice().getOfficeGates().get(1));
+                            }
+
                             agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
                         }
 
@@ -2823,7 +2830,7 @@ public class OfficeSimulator extends Simulator {
     }
 
     private void spawnAgent(Office office, long currentTick) {
-        OfficeGate gate = office.getOfficeGates().get(1);
+        OfficeGate gate = office.getOfficeGates().get(2);
         OfficeAgent agent = null;
 
         for (int i = 0; i < 2; i++) {
@@ -3024,22 +3031,22 @@ public class OfficeSimulator extends Simulator {
     }
 
     public void replenishStaticVars() {
-        MANAGERS_1 = new LinkedList<Integer>(List.of(11));
-        MANAGERS_2 = new LinkedList<Integer>(List.of(19));
-        MANAGERS_3 = new LinkedList<Integer>(List.of(27));
-        MANAGERS_4 = new LinkedList<Integer>(List.of(35));
-        BUSINESS_1 = new LinkedList<Integer>(List.of(0, 1, 2, 3, 4));
-        BUSINESS_2 = new LinkedList<Integer>(List.of(36, 37, 38, 39, 40, 41, 42));
-        BUSINESS_3 = new LinkedList<Integer>(List.of(44, 45, 46, 47, 48, 49, 50));
-        BUSINESS_4 = new LinkedList<Integer>(List.of(52, 53, 54, 55, 56, 57, 58));
-        RESEARCH_1 = new LinkedList<Integer>(List.of(5, 6, 7, 8, 9));
-        RESEARCH_2 = new LinkedList<Integer>(List.of(12, 13, 14, 15, 16, 17, 18));
-        RESEARCH_3 = new LinkedList<Integer>(List.of(20, 21, 22, 23, 24, 25, 26));
-        RESEARCH_4 = new LinkedList<Integer>(List.of(28, 29, 30, 31, 32, 33, 34));
-        TECHNICAL_1 = new LinkedList<Integer>(List.of(10));
-        TECHNICAL_2 = new LinkedList<Integer>(List.of(43));
-        TECHNICAL_3 = new LinkedList<Integer>(List.of(51));
-        TECHNICAL_4 = new LinkedList<Integer>(List.of(59));
+        MANAGERS_1 = new LinkedList<Integer>(List.of(0));
+        MANAGERS_2 = new LinkedList<Integer>(List.of(1));
+        MANAGERS_3 = new LinkedList<Integer>(List.of(/*2*/));
+        MANAGERS_4 = new LinkedList<Integer>(List.of(/*3*/));
+        BUSINESS_1 = new LinkedList<Integer>(List.of(20, 21, 22, 23, 24));
+        BUSINESS_2 = new LinkedList<Integer>(List.of(25, 26, 27, 28, 29, 30, 31));
+        BUSINESS_3 = new LinkedList<Integer>(List.of(32, 33, 34, 35, 36, 37, 38));
+        BUSINESS_4 = new LinkedList<Integer>(List.of(39, 40, 41, 42, 43, 44, 45));
+        RESEARCH_1 = new LinkedList<Integer>(List.of(46, 47, 48, 49, 50));
+        RESEARCH_2 = new LinkedList<Integer>(List.of(51, 52, 53, 54, 55, 4, 6));
+        RESEARCH_3 = new LinkedList<Integer>(List.of(7, 8, 9, 10, 11, 12, 14));
+        RESEARCH_4 = new LinkedList<Integer>(List.of(15, 18, 19));
+        TECHNICAL_1 = new LinkedList<Integer>(List.of(5));
+        TECHNICAL_2 = new LinkedList<Integer>(List.of(13));
+        TECHNICAL_3 = new LinkedList<Integer>(List.of(16));
+        TECHNICAL_4 = new LinkedList<Integer>(List.of(17));
         currentManagerCount = 0;
         currentBusinessCount = 0;
         currentResearchCount = 0;

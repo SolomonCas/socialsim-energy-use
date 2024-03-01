@@ -7,11 +7,11 @@ import java.util.Objects;
 
 public class CollabDeskGraphic extends OfficeAmenityGraphic {
 
-    private static final int ROW_SPAN_VERTICAL = 2;
+    private static final int ROW_SPAN_VERTICAL = 1;
     private static final int COLUMN_SPAN_VERTICAL = 1;
 
     private static final int ROW_SPAN_HORIZONTAL = 1;
-    private static final int COLUMN_SPAN_HORIZONTAL = 2;
+    private static final int COLUMN_SPAN_HORIZONTAL = 1;
 
     private static final int NORMAL_ROW_OFFSET = 0;
     private static final int NORMAL_COLUMN_OFFSET = 0;

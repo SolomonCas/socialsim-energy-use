@@ -24,36 +24,17 @@ public class CollabDeskMapper extends AmenityMapper {
             patch.setAmenityBlock(amenityBlock);
 
             if (Objects.equals(facing, "HORIZONTAL")) {
-                for (int i = 1; i < length * 2; i++) {
+                for (int i = 1; i < length; i++) {
                     Patch patchBack = Main.officeSimulator.getOffice().getPatch(origPatchRow, origPatchCol + i);
-                    Amenity.AmenityBlock amenityBlockBack = null;
-                    if (i % 2 == 0) {
-                        amenityBlockBack = amenityBlockFactory.create(patchBack, true, true);
-                    }
-                    else {
-                        amenityBlockBack = amenityBlockFactory.create(patchBack, true, false);
-                    }
+                    Amenity.AmenityBlock amenityBlockBack = amenityBlockFactory.create(patchBack, true, true);
                     amenityBlocks.add(amenityBlockBack);
                     patchBack.setAmenityBlock(amenityBlockBack);
                 }
-
-//                for (int i = 0; i < 6; i++) {
-//                    Patch patchFront = Main.officeSimulator.getOffice().getPatch(origPatchRow + 1, origPatchCol + i);
-//                    Amenity.AmenityBlock amenityBlockFront = amenityBlockFactory.create(patchFront, true, false);
-//                    amenityBlocks.add(amenityBlockFront);
-//                    patchFront.setAmenityBlock(amenityBlockFront);
-//                }
             }
             else {
-                for (int i = 1; i < length * 2; i++) {
+                for (int i = 1; i < length; i++) {
                     Patch patchBack = Main.officeSimulator.getOffice().getPatch(origPatchRow + i, origPatchCol);
-                    Amenity.AmenityBlock amenityBlockBack = null;
-                    if (i % 2 == 0) {
-                        amenityBlockBack = amenityBlockFactory.create(patchBack, true, true);
-                    }
-                    else {
-                        amenityBlockBack = amenityBlockFactory.create(patchBack, true, false);
-                    }
+                    Amenity.AmenityBlock amenityBlockBack = amenityBlockFactory.create(patchBack, true, true);
                     amenityBlocks.add(amenityBlockBack);
                     patchBack.setAmenityBlock(amenityBlockBack);
                 }
