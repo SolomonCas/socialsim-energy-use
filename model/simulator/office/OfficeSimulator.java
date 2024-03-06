@@ -299,7 +299,7 @@ public class OfficeSimulator extends Simulator {
         OfficeAgent.agentCount++;
 
         OfficeAgent guard = office.getAgents().get(1);
-        guard.setAgentMovement(new OfficeAgentMovement(office.getPatch(33,132), guard, 1.27, office.getPatch(33,132).getPatchCenterCoordinates(), -1, 0, null));
+        guard.setAgentMovement(new OfficeAgentMovement(office.getPatch(33,127), guard, 1.27, office.getPatch(33,127).getPatchCenterCoordinates(), -1, 0, null));
         office.getAgentPatchSet().add(guard.getAgentMovement().getCurrentPatch());
         OfficeAgent.guardCount++;
         OfficeAgent.agentCount++;
@@ -1147,7 +1147,6 @@ public class OfficeSimulator extends Simulator {
                 break;
 
             case MANAGER: case BUSINESS: case RESEARCHER: case TECHNICAL:
-
                 if (state.getName() == OfficeState.Name.GOING_TO_SECURITY) {
                     if (action.getName() == OfficeAction.Name.GOING_TO_SECURITY_QUEUE) {
                         agentMovement.setSimultaneousInteractionAllowed(false);
@@ -1386,6 +1385,7 @@ public class OfficeSimulator extends Simulator {
                             agentMovement.chooseMeetingGoal(agentMovement.getRoutePlan().getMeetingRoom());
                             agentMovement.getRoutePlan().setAtDesk(false);
                         }
+//                        System.out.println(type);
                         if (agentMovement.chooseNextPatchInPath()) {
                             agentMovement.faceNextPosition();
                             agentMovement.moveSocialForce();
@@ -2639,15 +2639,10 @@ public class OfficeSimulator extends Simulator {
                     if (action.getName() == OfficeAction.Name.LEAVE_OFFICE) {
                         agentMovement.setSimultaneousInteractionAllowed(false);
                         if (agentMovement.getGoalAmenity() == null) {
-                            boolean isGate1 = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
-                            if (isGate1) {
+                            if (agentMovement.getGoalAmenity() == null) {
                                 agentMovement.setGoalAmenity(Main.officeSimulator.getOffice().getOfficeGates().get(0));
+                                agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
                             }
-                            else {
-                                agentMovement.setGoalAmenity(Main.officeSimulator.getOffice().getOfficeGates().get(1));
-                            }
-
-                            agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
                         }
 
                         if (agentMovement.chooseNextPatchInPath()) {

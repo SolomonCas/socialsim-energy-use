@@ -21,6 +21,10 @@ public class OfficeAmenityGraphic extends Graphic {
         chairGraphic.add(new AmenityGraphicLocation(0, 0));
         AMENITY_GRAPHICS.put(Chair.class, chairGraphic);
 
+        final List<AmenityGraphicLocation> collabChairGraphic = new ArrayList<>();
+        collabChairGraphic.add(new AmenityGraphicLocation(0, 0));
+        AMENITY_GRAPHICS.put(CollabChair.class, collabChairGraphic);
+
         final List<AmenityGraphicLocation> cabinetGraphic = new ArrayList<>();
         cabinetGraphic.add(new AmenityGraphicLocation(10, 0));
         cabinetGraphic.add(new AmenityGraphicLocation(8, 2));
@@ -117,6 +121,8 @@ public class OfficeAmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> serverGraphic = new ArrayList<>();
         serverGraphic.add(new AmenityGraphicLocation(16, 2));
         AMENITY_GRAPHICS.put(Server.class, serverGraphic);
+
+
     }
 
     protected final Amenity amenity;

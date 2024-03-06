@@ -54,21 +54,21 @@ public class OfficeRoutePlan {
 
             meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,1L)));
             meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,2L)));
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
+//            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
 
             start = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(2690 - 2550 + 1) + 2550;
             end = (Simulator.RANDOM_NUMBER_GENERATOR.nextInt(1440 - 720 + 1) + 720) + start;
 
             meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,1L)));
             meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,2L)));
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
+//            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
 
             start = end + 60;
             end = (Simulator.RANDOM_NUMBER_GENERATOR.nextInt(1440 - 720 + 1) + 720) + start;
 
             meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,1L)));
             meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,2L)));
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
+//            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
 
             Collections.shuffle(meetingTimes, new Random());
         }

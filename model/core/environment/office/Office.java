@@ -60,6 +60,7 @@ public class Office extends Environment {
     private final List<Trash> trashes;
     private final List<StudyTable> studyTables;
     private final List<Server> servers;
+    private final List<CollabChair> collabChairs;
     private final List<Bulletin> bulletins;
     private final List<Fridge> fridges;
     private final List<WaterDispenser> waterDispensers;
@@ -111,6 +112,7 @@ public class Office extends Environment {
         this.trashes = Collections.synchronizedList(new ArrayList<>());
         this.studyTables = Collections.synchronizedList(new ArrayList<>());
         this.servers = Collections.synchronizedList(new ArrayList<>());
+        this.collabChairs = Collections.synchronizedList(new ArrayList<>());
 
         this.bulletins = Collections.synchronizedList(new ArrayList<>());
         this.fridges = Collections.synchronizedList(new ArrayList<>());
@@ -238,6 +240,9 @@ public class Office extends Environment {
 
     public List<Security> getSecurities() {
         return securities;
+    }
+    public List<CollabChair> getCollabChairs() {
+        return collabChairs;
     }
 
     public List<Table> getTables() {
@@ -494,6 +499,9 @@ public class Office extends Environment {
             return this.getStudyTables();
         }
         else if (amenityClass == Server.class) {
+            return this.getServers();
+        }
+        else if (amenityClass == CollabChair.class) {
             return this.getServers();
         }
         else {
