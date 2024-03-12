@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="705.0" prefWidth="1440.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.socialsim.controller.controls.ScreenController">
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <ScrollPane fx:id="scrollPane" focusTraversable="false" prefHeight="705.0" prefWidth="1230.0">
+                <VBox.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </VBox.margin>
+
+                <Group fx:id="canvasGroup">
+                    <StackPane fx:id="stackPane" prefHeight="1000.0" prefWidth="2200.0">
+                        <Canvas fx:id="backgroundCanvas" height="2000.0" width="4400.0" />
+                        <Canvas fx:id="foregroundCanvas" height="2000.0" mouseTransparent="true" width="4400.0" />
+                        <Canvas fx:id="markingsCanvas" height="2000.0" mouseTransparent="true" width="4400.0" />
+                    </StackPane>
+                </Group>
+            </ScrollPane>
+        </VBox>
+    </center>
+
+    <right>
+        <TabPane fx:id="sidebar" prefHeight="642.0" prefWidth="250.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <Tab fx:id="parameters" text="Parameters">
+                <content>
+                    <VBox alignment="TOP_CENTER" prefHeight="794.0" prefWidth="286.0">
+                        <children>
+<!--                            <Button fx:id="resetToDefaultButton" mnemonicParsing="false" onAction="#resetToDefault" text="Reset to Default">-->
+<!--                                <VBox.margin>-->
+<!--                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />-->
+<!--                                </VBox.margin>-->
+<!--                            </Button>-->
+                            <TitledPane animated="false" prefHeight="70.0" prefWidth="100.0" text="Parameters">
+                                <content>
+                                    <VBox alignment="CENTER" prefHeight="70.0" prefWidth="100.0" spacing="10.0">
+                                        <children>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Nonverbal Mean" />
+                                                    <TextField fx:id="nonverbalMean" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Nonverbal Std. Deviation" />
+                                                    <TextField fx:id="nonverbalStdDev" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Cooperative Mean" />
+                                                    <TextField fx:id="cooperativeMean" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Cooperative Std. Deviation" />
+                                                    <TextField fx:id="cooperativeStdDev" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Exchange Mean" />
+                                                    <TextField fx:id="exchangeMean" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Exchange Std. Deviation" />
+                                                    <TextField fx:id="exchangeStdDev" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+
+
+
+
+
+
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Agent Field of View" />
+                                                    <TextField fx:id="fieldOfView" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                        </children>
+                                    </VBox>
+                                </content>
+                            </TitledPane>
+<!--                            <Button fx:id="configureIOSButton" mnemonicParsing="false" onAction="#openIOSLevels" text="Configure IOS Levels">-->
+<!--                                <VBox.margin>-->
+<!--                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />-->
+<!--                                </VBox.margin>-->
+<!--                            </Button>-->
+<!--                            <Button fx:id="editInteractionButton" mnemonicParsing="false" onAction="#openEditInteractions" text="Edit Interaction Type Chances" />-->
+                        </children>
+                    </VBox>
+                </content>
+            </Tab>
+
+            <Tab text="Simulate">
+                <VBox prefHeight="794.0" prefWidth="286.0">
+                    <TitledPane animated="false" collapsible="false" prefHeight="70.0" prefWidth="100.0" text="Simulation">
+                        <VBox alignment="CENTER" prefHeight="70.0" prefWidth="100.0" spacing="10.0">
+                            <Button id="initializeButton" mnemonicParsing="false" onAction="#initializeAction" text="Initialize" />
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                <Text fx:id="elapsedTimeText" strokeType="OUTSIDE" strokeWidth="0.0" text="Current time: 00:00:00 (0 ticks)" textAlignment="CENTER" />
+                            </HBox>
+
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="230.0" spacing="10.0">
+                                <ToggleButton fx:id="playButton" mnemonicParsing="false" onAction="#playAction" prefHeight="25.0" prefWidth="230.0" text="Play" />
+                                <Button fx:id="resetButton" mnemonicParsing="false" onAction="#initializeAction" prefHeight="25.0" prefWidth="117.0" text="Reset" />
+                            </HBox>
+
+                            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                <Label prefHeight="17.0" prefWidth="248.0" text="Simulation speed:" />
+                                <Slider fx:id="speedSlider" max="300.0" min="1.0" prefWidth="273.0" snapToTicks="true" value="1.0" />
+<!--                                <Button fx:id="exportToCSVButton" mnemonicParsing="false" onAction="#exportToCSV" text="Export to CSV" />-->
+<!--                                <Button fx:id="exportHeatMapButton" mnemonicParsing="false" onAction="#exportHeatMap" text="Generate Heat Map" />-->
+                            </VBox>
+                        </VBox>
+                    </TitledPane>
+
+                    <Label prefHeight="34.0" prefWidth="150.0" text="Statistics" />
+                    <ScrollPane prefHeight="400.0" prefWidth="100.0">
+                        <content>
+                            <VBox alignment="CENTER" prefHeight="70.0" prefWidth="100.0" spacing="10.0">
+
+
+                                <!--Agent Count-->
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Dean(s) (always 1)" />
+                                        <Label fx:id="currentDeanCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Faculty Staff Members" />
+                                        <Label fx:id="currentFacultyCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Students" />
+                                        <Label fx:id="currentStudentCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Maintenance Staff Members" />
+                                        <Label fx:id="currentMaintenanceCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Guards" />
+                                        <Label fx:id="currentGuardCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+
+
+
+                                <!--Types of Interactions-->
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Nonverbal Interactions" />
+                                        <Label fx:id="currentNonverbalCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Cooperative Interactions" />
+                                        <Label fx:id="currentCooperativeCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Exchange Interactions" />
+                                        <Label fx:id="currentExchangeCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Average Nonverbal Duration" />
+                                        <Label fx:id="averageNonverbalDuration" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Average Cooperative Duration" />
+                                        <Label fx:id="averageCooperativeDuration" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Average Exchange Count" />
+                                        <Label fx:id="averageExchangeDuration" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+
+
+                                <!--Dean Interactions-->
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Dean to Faculty Interactions" />
+                                        <Label fx:id="currentDeanFacultyCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Dean to Student Interactions" />
+                                        <Label fx:id="currentDeanStudentCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Dean to Maintenance Interactions" />
+                                        <Label fx:id="currentDeanMaintenanceCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Dean to Guard Interactions" />
+                                        <Label fx:id="currentDeanGuardCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+
+
+                                <!--Faculty Interactions-->
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Faculty to Faculty Interactions" />
+                                        <Label fx:id="currentFacultyFacultyCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Faculty to Student Interactions" />
+                                        <Label fx:id="currentFacultyStudentCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Faculty to Maintenance Interactions" />
+                                        <Label fx:id="currentFacultyMaintenanceCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Faculty to Guard Interactions" />
+                                        <Label fx:id="currentFacultyGuardCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+
+
+                                <!--Student Interactions-->
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Student to Student Interactions" />
+                                        <Label fx:id="currentStudentStudentCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Student to Maintenance Interactions" />
+                                        <Label fx:id="currentStudentMaintenanceCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Student to Guard Interactions" />
+                                        <Label fx:id="currentStudentGuardCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+
+
+                                <!--Maintenance Interactions-->
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Maintenance to Maintenance Interactions" />
+                                        <Label fx:id="currentMaintenanceMaintenanceCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Maintenance to Guard Interactions" />
+                                        <Label fx:id="currentMaintenanceGuardCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+
+
+                                <!--Guard Interactions-->
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Guard to Guard Interactions" />
+                                        <Label fx:id="currentGuardGuardCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </right>
+</BorderPane>

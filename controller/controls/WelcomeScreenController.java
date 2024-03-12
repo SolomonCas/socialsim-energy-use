@@ -11,8 +11,6 @@ public class WelcomeScreenController extends Controller {
     public WelcomeScreenController() {
     }
 
-    public static String environment = "Office";
-
     @FXML
     public void openSimulator() {
         this.setClosedWithAction(true);
