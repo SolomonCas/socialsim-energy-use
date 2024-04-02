@@ -9,11 +9,16 @@ import com.socialsim.model.core.environment.patchfield.*;
 import com.socialsim.model.simulator.SimulationTime;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +31,7 @@ public class ScreenController extends Controller {
     @FXML private Canvas markingsCanvas;
     @FXML private StackPane stackPane;
     @FXML private Button resetButton;
+    @FXML private Button configureIOSButton;
     @FXML private Button exportToCSVButton;
     @FXML private Button exportHeatMapButton;
     @FXML private ToggleButton playButton;
@@ -37,6 +43,7 @@ public class ScreenController extends Controller {
         GraphicsController.tileSize = backgroundCanvas.getHeight() / Main.simulator.getEnvironment().getRows();
         mapEnvironment();
         Main.simulator.spawnInitialAgents(environment);
+        environment.configureDefaultIOS();
         drawInterface();
     }
 
@@ -524,11 +531,26 @@ public class ScreenController extends Controller {
     }
 
     public void disableEdits() {
-        // insert code
+        configureIOSButton.setDisable(true);
     }
 
     public void resetToDefault() {
         // insert code
+    }
+
+    public void openIOSLevels() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/socialsim/view/ConfigureIOS.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Configure IOS Levels");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

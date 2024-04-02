@@ -112,7 +112,7 @@ public class Simulator {
     public void resetToDefaultConfiguration(Environment environment) {
         this.environment = environment;
         replenishStaticVars();
-        Agent.clearOfficeAgentCounts();
+        Agent.clearAgentCounts();
         this.time.reset();
         this.running.set(false);
     }

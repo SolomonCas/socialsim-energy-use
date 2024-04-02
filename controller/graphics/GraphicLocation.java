@@ -2,16 +2,36 @@ package com.socialsim.controller.graphics;
 
 public abstract class GraphicLocation {
 
+    // VARIABLES
     protected final int graphicRow;
     protected final int graphicColumn;
     protected int graphicWidth;
     protected int graphicHeight;
 
+
+
+
+    // CONSTRUCTOR
     public GraphicLocation(int graphicRow, int graphicColumn) {
         this.graphicRow = graphicRow;
         this.graphicColumn = graphicColumn;
     }
 
+
+
+    // METHODS
+    public abstract int getSourceY();
+
+    public abstract int getSourceX();
+
+    public abstract int getSourceWidth();
+
+    public abstract int getSourceHeight();
+
+
+
+
+    // GETTERS
     public int getGraphicRow() {
         return graphicRow;
     }
@@ -20,6 +40,10 @@ public abstract class GraphicLocation {
         return graphicColumn;
     }
 
+
+
+
+    // SETTERS
     public void setGraphicWidth(int graphicWidth) {
         this.graphicWidth = graphicWidth;
     }
@@ -28,12 +52,5 @@ public abstract class GraphicLocation {
         this.graphicHeight = graphicHeight;
     }
 
-    public abstract int getSourceY();
-
-    public abstract int getSourceX();
-
-    public abstract int getSourceWidth();
-
-    public abstract int getSourceHeight();
 
 }

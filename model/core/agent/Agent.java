@@ -1,11 +1,287 @@
 package com.socialsim.model.core.agent;
 
+import com.socialsim.controller.graphics.agent.AgentGraphic;
 import com.socialsim.model.core.environment.patchobject.PatchObject;
+import com.socialsim.model.simulator.Simulator;
 
-public abstract class Agent extends PatchObject {
+import java.util.Objects;
 
-    public static void clearOfficeAgentCounts() {
-        // insert code
+public class Agent extends PatchObject {
+
+    // VARIABLES
+    private static int idCtr = 0;
+    public static int agentCount = 0;
+    public static int directorCount = 0;
+    public static int facultyCount = 0;
+    public static int studentCount = 0;
+    public static int maintenanceCount = 0;
+    public static int guardCount = 0;
+    private final int id;
+    private final Agent.Type type;
+    private Agent.Gender gender;
+    private int team;
+    private Agent.AgeGroup ageGroup = null;
+    private Agent.Persona persona = null;
+    private PersonaActionGroup personaActionGroup = null;
+    private boolean inOnStart;
+
+    private final AgentGraphic agentGraphic;
+//    private AgentMovement agentMovement;
+
+    public static final AgentFactory agentFactory;
+
+    static {
+        agentFactory = new AgentFactory();
     }
+
+
+    public static final double[][][] chancePerActionInteractionType = new double[][][]
+            {
+                    {{0.20, 0.30, 0.50}, {0.20, 0.30, 0.50}, {0.20, 0.30, 0.50}, {0.20, 0.30, 0.50}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.20, 0.30, 0.50}, {0.20, 0.30, 0.50}, {0.20, 0.30, 0.50}, {0.60, 0, 0.40}, {0, 0, 0}, {0.60, 0, 0.40}, {0.60, 0, 0.40}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.20, 0.30, 0.50}, {0.20, 0.30, 0.50}, {0.20, 0.30, 0.50}, {0, 0.50, 0.50}, {0.20, 0.30, 0.50}},
+                    {{0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.50, 0, 0.50}, {0, 0, 0}, {0.50, 0, 0.50}, {0.50, 0, 0.50}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0, 0.50, 0.50}, {0.10, 0.40, 0.50}},
+                    {{0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.50, 0, 0.50}, {0, 0, 0}, {0.50, 0, 0.50}, {0.50, 0, 0.50}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0.10, 0.40, 0.50}, {0, 0.50, 0.50}, {0.10, 0.40, 0.50}},
+                    {{0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.60, 0, 0.40}, {0, 0, 0}, {0.60, 0, 0.40}, {0.60, 0, 0.40}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0, 0.50, 0.50}, {0.40, 0.30, 0.30}},
+                    {{0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.50, 0, 0.50}, {0, 0, 0}, {0.50, 0, 0.50}, {0.50, 0, 0.50}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0, 0.50, 0.50}, {0.20, 0.40, 0.40}},
+                    {{0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.60, 0, 0.40}, {0, 0, 0}, {0.60, 0, 0.40}, {0.60, 0, 0.40}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0, 0.60, 0.40}, {0.40, 0.30, 0.30}, {0, 0.60, 0.40}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0.40, 0.30, 0.30}, {0, 0.50, 0.50}, {0.40, 0.30, 0.30}},
+                    {{0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.50, 0, 0.50}, {0, 0, 0}, {0.50, 0, 0.50}, {0.50, 0, 0.50}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0, 0.60, 0.40}, {0.20, 0.40, 0.40}, {0, 0.60, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0.20, 0.40, 0.40}, {0, 0.50, 0.50}, {0.20, 0.40, 0.40}}
+            };
+
+
+
+
+
+    // CONSTRUCTOR
+    private Agent(Agent.Type type, boolean inOnStart, int team) {
+        this.id = idCtr++;
+        this.type = type;
+        this.team = team;
+        this.inOnStart = inOnStart;
+        this.gender = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? Agent.Gender.FEMALE : Agent.Gender.MALE;
+
+
+
+        // Director
+        if(this.type == Type.DIRECTOR) {
+            this.ageGroup = AgeGroup.FROM_25_TO_54;
+            this.gender = Gender.MALE;
+            this.persona = Persona.DIRECTOR;
+            this.personaActionGroup = PersonaActionGroup.DIRECTOR;
+        }
+
+
+
+        // Faculty
+        else if (this.type == Type.FACULTY) {
+            this.ageGroup = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? Agent.AgeGroup.FROM_25_TO_54 : Agent.AgeGroup.FROM_55_TO_64;
+
+            boolean isStrict = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
+            if (isStrict) {
+                this.persona = Persona.STRICT_FACULTY;
+                this.personaActionGroup = PersonaActionGroup.STRICT_FACULTY;
+            }
+            else {
+                this.persona = Persona.APP_FACULTY;
+                this.personaActionGroup = PersonaActionGroup.APP_FACULTY;
+            }
+        }
+
+
+
+        // Student
+        else if (this.type == Type.STUDENT) {
+            this.ageGroup = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? AgeGroup.FROM_15_TO_24 : AgeGroup.FROM_25_TO_54;
+
+            boolean isIntrovert = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
+            if (isIntrovert) {
+                this.persona = Persona.INT_STUDENT;
+                this.personaActionGroup = PersonaActionGroup.INT_STUDENT;
+            }
+            else {
+                this.persona = Persona.EXT_STUDENT;
+                this.personaActionGroup = PersonaActionGroup.EXT_STUDENT;
+            }
+        }
+
+
+
+        // Maintenance
+        else if (this.type == Type.MAINTENANCE) {
+            this.ageGroup = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? AgeGroup.FROM_25_TO_54 : AgeGroup.FROM_55_TO_64;
+            this.gender = Gender.MALE;
+            this.persona = Persona.MAINTENANCE;
+            this.personaActionGroup = PersonaActionGroup.MAINTENANCE;
+        }
+
+
+
+        // Guard
+        else if (this.type == Agent.Type.GUARD) {
+            this.ageGroup = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? Agent.AgeGroup.FROM_25_TO_54 : Agent.AgeGroup.FROM_55_TO_64;
+            this.persona = Agent.Persona.GUARD;
+            this.personaActionGroup = PersonaActionGroup.GUARD;
+        }
+
+
+        this.agentGraphic = new AgentGraphic(this);
+//        this.agentMovement = null;
+    }
+
+
+
+
+    // METHODS
+    public static void clearAgentCounts() {
+        idCtr = 0;
+        agentCount = 0;
+        directorCount = 0;
+        facultyCount = 0;
+        studentCount = 0;
+        maintenanceCount = 0;
+        guardCount = 0;
+    }
+
+
+
+    // GETTERS
+    public int getId() {
+        return id;
+    }
+
+    public Agent.Type getType() {
+        return type;
+    }
+
+    public Agent.Gender getGender() {
+        return gender;
+    }
+
+    public Agent.AgeGroup getAgeGroup() {
+        return ageGroup;
+    }
+
+    public Agent.Persona getPersona() {
+        return persona;
+    }
+
+    public Agent.PersonaActionGroup getPersonaActionGroup() {
+        return personaActionGroup;
+    }
+
+    public boolean getInOnStart() {
+        return inOnStart;
+    }
+
+    public int getTeam() {
+        return team;
+    }
+
+    public AgentGraphic getAgentGraphic() {
+        return agentGraphic;
+    }
+
+//    public AgentMovement getAgentMovement() {
+//        return agentMovement;
+//    }
+
+
+
+    // SETTERS
+//    public void setAgentMovement(AgentMovement agentMovement) {
+//        this.agentMovement = agentMovement;
+//    }
+
+
+
+
+
+
+
+
+    // OVERRIDE
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Agent agent = (Agent) o;
+
+        return id == agent.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
+
+
+
+
+
+
+    // ENUM
+    public enum Type {
+        DIRECTOR, FACULTY, STUDENT, MAINTENANCE, GUARD
+    }
+
+    public enum Gender {
+        FEMALE, MALE
+    }
+
+    public enum AgeGroup {
+        YOUNGER_THAN_OR_14, FROM_15_TO_24, FROM_25_TO_54, FROM_55_TO_64, OLDER_THAN_OR_65
+    }
+
+    public enum Persona {
+        DIRECTOR(0),
+        STRICT_FACULTY(1), APP_FACULTY(2),
+        INT_STUDENT(3), EXT_STUDENT(4),
+        MAINTENANCE(5),
+        GUARD(6);
+
+        private final int ID;
+
+        Persona(int ID){
+            this.ID = ID;
+        }
+
+        public int getID() {
+            return ID;
+        }
+    }
+
+    public enum PersonaActionGroup {
+        DIRECTOR(),
+        STRICT_FACULTY(),
+        APP_FACULTY(),
+        INT_STUDENT(),
+        EXT_STUDENT(),
+        MAINTENANCE(),
+        GUARD();
+
+        final int ID;
+        PersonaActionGroup(){
+            this.ID = this.ordinal();
+        }
+        public int getID() {
+            return ID;
+        }
+    }
+
+
+
+
+
+    // INNER STATIC CLASS
+    public static class AgentFactory extends ObjectFactory {
+        public Agent create(Agent.Type type, boolean inOnStart, int team) {
+            return new Agent(type, inOnStart, team);
+        }
+    }
+
+
 
 }

@@ -10,11 +10,16 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 
 public class Controller {
+
+    // VARIABLES
     private final HashMap<String, Object> windowInput;
     private final HashMap<String, Object> windowOutput;
     private boolean closedWithAction;
     protected Stage stage;
 
+
+
+    // CONSTRUCTOR(S)
     public Controller() {
         this.closedWithAction = false;
         this.windowInput = new HashMap<>();
@@ -22,31 +27,11 @@ public class Controller {
         this.stage = null;
     }
 
-    public Stage getStage() {
-        return this.stage;
-    }
 
+    // METHODS
     public static FXMLLoader getLoader(Class<?> classType, String interfaceLocation) {
         return new FXMLLoader(classType.getResource(interfaceLocation));
     }
-
-    public boolean isClosedWithAction() {
-        return this.closedWithAction;
-    }
-
-    public void setClosedWithAction(boolean closedWithAction) {
-        this.closedWithAction = closedWithAction;
-    }
-
-    public HashMap<String, Object> getWindowInput() {
-        return windowInput;
-    }
-
-    public HashMap<String, Object> getWindowOutput() {
-        return windowOutput;
-    }
-
-    private void closeAction() {}
 
     public void showWindow(Parent loadedRoot, String title, boolean showAndWait, boolean isAlwaysOnTop) {
 
@@ -92,6 +77,30 @@ public class Controller {
             stage.show();
         }
     }
+
+
+    // GETTERS
+    public Stage getStage() {
+        return this.stage;
+    }
+    public boolean isClosedWithAction() {
+        return this.closedWithAction;
+    }
+    public HashMap<String, Object> getWindowInput() {
+        return windowInput;
+    }
+    public HashMap<String, Object> getWindowOutput() {
+        return windowOutput;
+    }
+
+
+
+    // SETTERS
+    public void setClosedWithAction(boolean closedWithAction) {
+        this.closedWithAction = closedWithAction;
+    }
+    private void closeAction() {}
+
 
 
 }

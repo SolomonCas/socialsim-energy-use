@@ -1,6 +1,7 @@
 package com.socialsim.model.core.environment;
 
 import com.socialsim.controller.Main;
+import com.socialsim.model.core.agent.Agent;
 import com.socialsim.model.core.environment.patchfield.*;
 import com.socialsim.model.core.environment.position.Coordinates;
 import com.socialsim.model.core.environment.position.MatrixPosition;
@@ -36,10 +37,15 @@ public abstract class Environment extends BaseObject implements Serializable {
     private final List<Bathroom> bathrooms;
     private final List<Reception> receptions;
     private final List<DeanRoom> deanRooms;
+    
+    
+
+    private final CopyOnWriteArrayList<Agent> agents;
 
 
 
     private CopyOnWriteArrayList<CopyOnWriteArrayList<CopyOnWriteArrayList<Integer>>> IOSScales;
+    private CopyOnWriteArrayList<CopyOnWriteArrayList<Double>> IOSInteractionChances;
     private CopyOnWriteArrayList<CopyOnWriteArrayList<CopyOnWriteArrayList<Integer>>> interactionTypeChances;
     public static CopyOnWriteArrayList<CopyOnWriteArrayList<CopyOnWriteArrayList<Integer>>> defaultIOS;
     public static CopyOnWriteArrayList<CopyOnWriteArrayList<CopyOnWriteArrayList<Integer>>> defaultInteractionTypeChances;
@@ -51,6 +57,7 @@ public abstract class Environment extends BaseObject implements Serializable {
         this.columns = columns;
         this.patches = new Patch[rows][columns];
         initializePatches();
+        
 
         this.walls = Collections.synchronizedList(new ArrayList<>());
         this.meetingRooms = Collections.synchronizedList(new ArrayList<>());
@@ -68,6 +75,10 @@ public abstract class Environment extends BaseObject implements Serializable {
         this.bathrooms = Collections.synchronizedList(new ArrayList<>());
         this.receptions = Collections.synchronizedList(new ArrayList<>());
         this.deanRooms = Collections.synchronizedList(new ArrayList<>());
+
+
+        this.agents = new CopyOnWriteArrayList<>();
+        this.IOSInteractionChances = new CopyOnWriteArrayList<>();
     }
 
 
@@ -149,8 +160,485 @@ public abstract class Environment extends BaseObject implements Serializable {
         // Insert code
     }
 
-    public static void configureDefaultIOS() {
-        // Insert code
+    public static void configureDefaultIOS(){
+        defaultIOS = new CopyOnWriteArrayList<>();
+        for (int i = 0; i < Agent.Persona.values().length; i++){
+            CopyOnWriteArrayList<CopyOnWriteArrayList<Integer>> personaIOS = new CopyOnWriteArrayList<>();
+            for (int j = 0; j < Agent.Persona.values().length; j++){
+                Agent.Persona persona1 = Agent.Persona.values()[i];
+                Agent.Persona persona2 = Agent.Persona.values()[j];
+                switch (persona1){
+                    case PROFESSIONAL_BOSS -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MANAGER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
+                            case INT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case EXT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case INT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case EXT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case INT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case EXT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                        }
+                    }
+                    case APPROACHABLE_BOSS -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MANAGER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                            case INT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
+                            case EXT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                            case INT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
+                            case EXT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                            case INT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
+                            case EXT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                        }
+                    }
+                    case MANAGER -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
+                            case MANAGER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            }
+                            case INT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                        }
+                    }
+                    case INT_BUSINESS -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case MANAGER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case INT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case EXT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case INT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case EXT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case INT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case EXT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                        }
+                    }
+                    case EXT_BUSINESS -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4, 5)));
+                            case MANAGER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                        }
+                    }
+                    case INT_RESEARCHER -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case MANAGER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case INT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case EXT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case INT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case EXT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case INT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case EXT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                        }
+                    }
+                    case EXT_RESEARCHER -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4, 5)));
+                            case MANAGER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                        }
+                    }
+                    case INT_TECHNICAL -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case MANAGER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case INT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case EXT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case INT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case EXT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case INT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case EXT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                            }
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                        }
+                    }
+                    case EXT_TECHNICAL -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4, 5)));
+                            case MANAGER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_BUSINESS -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_RESEARCHER -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case INT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case EXT_TECHNICAL -> {
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            }
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                        }
+                    }
+                    case JANITOR -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MANAGER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                        }
+                    }
+                    case CLIENT -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MANAGER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                        }
+                    }
+                    case DRIVER -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MANAGER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                        }
+                    }
+                    case VISITOR -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6, 7)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6, 7)));
+                            case MANAGER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                        }
+                    }
+                    case GUARD -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MANAGER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                        }
+                    }
+                    case RECEPTIONIST -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MANAGER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case INT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case EXT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                        }
+                    }
+                    case SECRETARY -> {
+                        switch (persona2){
+                            case PROFESSIONAL_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                            case APPROACHABLE_BOSS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
+                            case MANAGER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case INT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case EXT_BUSINESS -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case INT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case EXT_RESEARCHER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case INT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case EXT_TECHNICAL -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case JANITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case CLIENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+//                            case DRIVER -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case VISITOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case RECEPTIONIST -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case SECRETARY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                        }
+                    }
+                }
+            }
+            defaultIOS.add(personaIOS);
+        }
     }
 
     public static void configureDefaultInteractionTypeChances() {

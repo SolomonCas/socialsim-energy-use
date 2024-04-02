@@ -93,11 +93,11 @@
                                     </VBox>
                                 </content>
                             </TitledPane>
-<!--                            <Button fx:id="configureIOSButton" mnemonicParsing="false" onAction="#openIOSLevels" text="Configure IOS Levels">-->
-<!--                                <VBox.margin>-->
-<!--                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />-->
-<!--                                </VBox.margin>-->
-<!--                            </Button>-->
+                            <Button fx:id="configureIOSButton" mnemonicParsing="false" onAction="#openIOSLevels" text="Configure IOS Levels">
+                                <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                </VBox.margin>
+                            </Button>
 <!--                            <Button fx:id="editInteractionButton" mnemonicParsing="false" onAction="#openEditInteractions" text="Edit Interaction Type Chances" />-->
                         </children>
                     </VBox>
@@ -136,14 +136,14 @@
                                 <!--Agent Count-->
                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                     <children>
-                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Dean(s) (always 1)" />
-                                        <Label fx:id="currentDeanCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Director(s) (always 1)" />
+                                        <Label fx:id="currentDirectorCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                     </children>
                                 </AnchorPane>
 
                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                     <children>
-                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Faculty Staff Members" />
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Faculty Members" />
                                         <Label fx:id="currentFacultyCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                     </children>
                                 </AnchorPane>
@@ -212,32 +212,32 @@
 
 
 
-                                <!--Dean Interactions-->
+                                <!--Director Interactions-->
                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                     <children>
-                                        <Label prefHeight="26.0" prefWidth="150.0" text="Dean to Faculty Interactions" />
-                                        <Label fx:id="currentDeanFacultyCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Director to Faculty Interactions" />
+                                        <Label fx:id="currentDirectorFacultyCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                     </children>
                                 </AnchorPane>
 
                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                     <children>
-                                        <Label prefHeight="26.0" prefWidth="150.0" text="Dean to Student Interactions" />
-                                        <Label fx:id="currentDeanStudentCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Director to Student Interactions" />
+                                        <Label fx:id="currentDirectorStudentCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                     </children>
                                 </AnchorPane>
 
                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                     <children>
-                                        <Label prefHeight="26.0" prefWidth="150.0" text="Dean to Maintenance Interactions" />
-                                        <Label fx:id="currentDeanMaintenanceCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Director to Maintenance Interactions" />
+                                        <Label fx:id="currentDirectorMaintenanceCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                     </children>
                                 </AnchorPane>
 
                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                     <children>
-                                        <Label prefHeight="26.0" prefWidth="150.0" text="Dean to Guard Interactions" />
-                                        <Label fx:id="currentDeanGuardCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Director to Guard Interactions" />
+                                        <Label fx:id="currentDirectorGuardCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                     </children>
                                 </AnchorPane>
 
