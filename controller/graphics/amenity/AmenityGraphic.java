@@ -2,6 +2,8 @@ package com.socialsim.controller.graphics.amenity;
 
 import com.socialsim.controller.graphics.Graphic;
 import com.socialsim.model.core.environment.patchobject.Amenity;
+import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
+import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,18 +11,115 @@ import java.util.List;
 
 public class AmenityGraphic extends Graphic {
 
-    // VARIABLES
+    /***** VARIABLES *****/
 
-    // insert sprites
+    // Sprite Sheets
+    public static final String AMENITY_SPRITE_SHEET_URL = "com/socialsim/view/image/Office/amenity_spritesheet.png";
+    public static final String AMENITY_SPRITE_SHEET_URL2 = "com/socialsim/view/image/University/amenity_spritesheet.png";
+    public static final String AMENITY_SPRITE_SHEET_URL3 = "com/socialsim/view/image/Mall/amenity_spritesheet.png";
+
     public static final HashMap<Class<?>, List<AmenityGraphicLocation>> AMENITY_GRAPHICS = new HashMap<>();
+
     protected final Amenity amenity;
     protected final List<AmenityGraphicLocation> graphics;
     protected int graphicIndex;
     private final AmenityGraphic.AmenityGraphicScale amenityGraphicScale;
     private final AmenityGraphic.AmenityGraphicOffset amenityGraphicOffset;
 
+    static {
+        final List<AmenityGraphicLocation> chairGraphic = new ArrayList<>();
+        chairGraphic.add(new AmenityGraphicLocation(0, 0));
+        AMENITY_GRAPHICS.put(Chair.class, chairGraphic);
 
-    // CONSTRUCTORS
+        final List<AmenityGraphicLocation> collabChairGraphic = new ArrayList<>();
+        collabChairGraphic.add(new AmenityGraphicLocation(0, 0));
+        AMENITY_GRAPHICS.put(CollabChair.class, collabChairGraphic);
+
+        final List<AmenityGraphicLocation> cabinetGraphic = new ArrayList<>();
+        cabinetGraphic.add(new AmenityGraphicLocation(10, 0));
+        cabinetGraphic.add(new AmenityGraphicLocation(8, 2));
+        AMENITY_GRAPHICS.put(Cabinet.class, cabinetGraphic);
+
+        final List<AmenityGraphicLocation> collabDeskGraphic = new ArrayList<>();
+        collabDeskGraphic.add(new AmenityGraphicLocation(6, 2));
+        AMENITY_GRAPHICS.put(CollabDesk.class, collabDeskGraphic);
+
+        final List<AmenityGraphicLocation> couchGraphic = new ArrayList<>();
+        couchGraphic.add(new AmenityGraphicLocation(4, 0));
+        couchGraphic.add(new AmenityGraphicLocation(4, 2));
+        AMENITY_GRAPHICS.put(Couch.class, couchGraphic);
+
+        final List<AmenityGraphicLocation> cubicleGraphic = new ArrayList<>();
+        cubicleGraphic.add(new AmenityGraphicLocation(2, 0));
+        cubicleGraphic.add(new AmenityGraphicLocation(2, 2));
+        cubicleGraphic.add(new AmenityGraphicLocation(14, 2));
+        cubicleGraphic.add(new AmenityGraphicLocation(14, 0));
+        AMENITY_GRAPHICS.put(Cubicle.class, cubicleGraphic);
+
+        final List<AmenityGraphicLocation> doorGraphic = new ArrayList<>();
+        doorGraphic.add(new AmenityGraphicLocation(9, 0));
+        doorGraphic.add(new AmenityGraphicLocation(0, 3));
+        AMENITY_GRAPHICS.put(Door.class, doorGraphic);
+
+        final List<AmenityGraphicLocation> meetingDeskGraphic = new ArrayList<>();
+        meetingDeskGraphic.add(new AmenityGraphicLocation(6, 2));
+        AMENITY_GRAPHICS.put(MeetingDesk.class, meetingDeskGraphic);
+
+        final List<AmenityGraphicLocation> officeGateGraphic = new ArrayList<>();
+        officeGateGraphic.add(new AmenityGraphicLocation(0, 1));
+        AMENITY_GRAPHICS.put(Gate.class, officeGateGraphic);
+
+        final List<AmenityGraphicLocation> officeDeskGraphic = new ArrayList<>();
+        officeDeskGraphic.add(new AmenityGraphicLocation(12, 0));
+        AMENITY_GRAPHICS.put(OfficeDesk.class, officeDeskGraphic);
+
+        final List<AmenityGraphicLocation> plantGraphic = new ArrayList<>();
+        plantGraphic.add(new AmenityGraphicLocation(0, 1));
+        AMENITY_GRAPHICS.put(Plant.class, plantGraphic);
+
+        final List<AmenityGraphicLocation> receptionTable = new ArrayList<>();
+        receptionTable.add(new AmenityGraphicLocation(7, 0));
+        AMENITY_GRAPHICS.put(ReceptionTable.class, receptionTable);
+
+        final List<AmenityGraphicLocation> tableGraphic = new ArrayList<>();
+        tableGraphic.add(new AmenityGraphicLocation(6, 0));
+        tableGraphic.add(new AmenityGraphicLocation(10, 3));
+        AMENITY_GRAPHICS.put(Table.class, tableGraphic);
+
+        final List<AmenityGraphicLocation> sinkGraphic = new ArrayList<>();
+        sinkGraphic.add(new AmenityGraphicLocation(16, 1));
+        AMENITY_GRAPHICS.put(Sink.class, sinkGraphic);
+
+        final List<AmenityGraphicLocation> toiletGraphic = new ArrayList<>();
+        toiletGraphic.add(new AmenityGraphicLocation(16, 0));
+        AMENITY_GRAPHICS.put(Toilet.class, toiletGraphic);
+
+        final List<AmenityGraphicLocation> whiteboardGraphic = new ArrayList<>();
+        whiteboardGraphic.add(new AmenityGraphicLocation(10, 2));
+        whiteboardGraphic.add(new AmenityGraphicLocation(16, 0));
+        AMENITY_GRAPHICS.put(Whiteboard.class, whiteboardGraphic);
+
+        final List<AmenityGraphicLocation> waterDispenserGraphic = new ArrayList<>();
+        waterDispenserGraphic.add(new AmenityGraphicLocation(12, 2));
+        AMENITY_GRAPHICS.put(WaterDispenser.class, waterDispenserGraphic);
+
+        final List<AmenityGraphicLocation> fridgeGraphic = new ArrayList<>();
+        fridgeGraphic.add(new AmenityGraphicLocation(12, 3));
+        AMENITY_GRAPHICS.put(Fridge.class, fridgeGraphic);
+
+        final List<AmenityGraphicLocation> trashGraphic = new ArrayList<>();
+        trashGraphic.add(new AmenityGraphicLocation(1, 1));
+        AMENITY_GRAPHICS.put(Trash.class, trashGraphic);
+
+        final List<AmenityGraphicLocation> serverGraphic = new ArrayList<>();
+        serverGraphic.add(new AmenityGraphicLocation(16, 2));
+        AMENITY_GRAPHICS.put(Server.class, serverGraphic);
+
+
+    }
+
+
+    /***** CONSTRUCTOR *****/
     public AmenityGraphic(Amenity amenity, int rowSpan, int columnSpan, int rowOffset, int columnOffset) {
         this.amenity = amenity;
 
@@ -43,10 +142,7 @@ public class AmenityGraphic extends Graphic {
 
 
 
-    // METHODS
-
-
-    // GETTERS
+    /***** GETTERS *****/
     public AmenityGraphic.AmenityGraphicScale getAmenityGraphicScale() {
         return amenityGraphicScale;
     }
@@ -64,13 +160,8 @@ public class AmenityGraphic extends Graphic {
     }
 
 
-    // SETTERS
 
-
-
-
-    // INNER CLASSES
-
+    /***** INNER STATIC CLASSES *****/
     public static class AmenityGraphicScale {
         private int rowSpan;
         private int columnSpan;

@@ -121,8 +121,8 @@
                             <VBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                                 <Label prefHeight="17.0" prefWidth="248.0" text="Simulation speed:" />
                                 <Slider fx:id="speedSlider" max="300.0" min="1.0" prefWidth="273.0" snapToTicks="true" value="1.0" />
-<!--                                <Button fx:id="exportToCSVButton" mnemonicParsing="false" onAction="#exportToCSV" text="Export to CSV" />-->
-<!--                                <Button fx:id="exportHeatMapButton" mnemonicParsing="false" onAction="#exportHeatMap" text="Generate Heat Map" />-->
+                                <Button fx:id="exportToCSVButton" mnemonicParsing="false" onAction="#exportToCSV" text="Export to CSV" />
+                                <Button fx:id="exportHeatMapButton" mnemonicParsing="false" onAction="#exportHeatMap" text="Generate Heat Map" />
                             </VBox>
                         </VBox>
                     </TitledPane>
@@ -207,6 +207,32 @@
                                     <children>
                                         <Label prefHeight="26.0" prefWidth="150.0" text="Average Exchange Count" />
                                         <Label fx:id="averageExchangeDuration" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+
+
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Team 1" />
+                                        <Label fx:id="currentTeam1Count" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Team 2" />
+                                        <Label fx:id="currentTeam2Count" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Team 3" />
+                                        <Label fx:id="currentTeam3Count" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Team 4" />
+                                        <Label fx:id="currentTeam4Count" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                     </children>
                                 </AnchorPane>
 

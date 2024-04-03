@@ -2,7 +2,9 @@ package com.socialsim.controller.controls;
 
 import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.GraphicsController;
+import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
+import com.socialsim.model.simulator.Simulator;
 
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchfield.*;
@@ -13,10 +15,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,25 +25,259 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScreenController extends Controller {
+
+
+    // VARIABLES
     private final double CANVAS_SCALE = 0.5;
 
+    // Canvas
     @FXML private Canvas backgroundCanvas;
     @FXML private Canvas foregroundCanvas;
     @FXML private Canvas markingsCanvas;
+
+    // StackPane
     @FXML private StackPane stackPane;
-    @FXML private Button resetButton;
-    @FXML private Button configureIOSButton;
-    @FXML private Button exportToCSVButton;
-    @FXML private Button exportHeatMapButton;
+
+    // Text
+    @FXML private Text elapsedTimeText;
+
+    // TextField
+    @FXML private TextField nonverbalMean;
+    @FXML private TextField nonverbalStdDev;
+    @FXML private TextField cooperativeMean;
+    @FXML private TextField cooperativeStdDev;
+    @FXML private TextField exchangeMean;
+    @FXML private TextField exchangeStdDev;
+    @FXML private TextField fieldOfView;
+
+    // Label: Current Agent Count
+    @FXML private Label currentDirectorCount;
+    @FXML private Label currentFacultyCount;
+    @FXML private Label currentStudentCount;
+    @FXML private Label currentMaintenanceCount;
+    @FXML private Label currentGuardCount;
+
+    // Label: Current Interaction Count
+    @FXML private Label currentNonverbalCount;
+    @FXML private Label currentCooperativeCount;
+    @FXML private Label currentExchangeCount;
+
+    // Label: Average Interaction Duration
+    @FXML private Label averageNonverbalDuration;
+    @FXML private Label averageCooperativeDuration;
+    @FXML private Label averageExchangeDuration;
+
+
+    // Label: Current Team Count
+    @FXML private Label currentTeam1Count;
+    @FXML private Label currentTeam2Count;
+    @FXML private Label currentTeam3Count;
+    @FXML private Label currentTeam4Count;
+
+
+    // Label: Current Director to ____ Interaction Count
+    @FXML private Label currentDirectorFacultyCount;
+    @FXML private Label currentDirectorStudentCount;
+    @FXML private Label currentDirectorMaintenanceCount;
+    @FXML private Label currentDirectorGuardCount;
+
+
+    // Label: Current Faculty to ____ Interaction Count
+    @FXML private Label currentFacultyFacultyCount;
+    @FXML private Label currentFacultyStudentCount;
+    @FXML private Label currentFacultyMaintenanceCount;
+    @FXML private Label currentFacultyGuardCount;
+
+
+    // Label: Current Student to ____ Interaction Count
+    @FXML private Label currentStudentStudentCount;
+    @FXML private Label currentStudentMaintenanceCount;
+    @FXML private Label currentStudentGuardCount;
+
+    // Label: Current Maintenance to ____ Interaction Count
+    @FXML private Label currentMaintenanceMaintenanceCount;
+    @FXML private Label currentMaintenanceGuardCount;
+
+    // Label: Current Guard to Guard Interaction Count
+    @FXML private Label currentGuardGuardCount;
+
+
+
+    // Buttons: Parameters
+    @FXML private Button configureIOSButton;    // Configure IOS Levels (Under Parameters)
+    @FXML private Button editInteractionButton; // Edit Interaction Type Chances (Under Parameters)
+    @FXML private Button resetToDefaultButton;
+
+
+    // Buttons: Simulate
+    @FXML private Button resetButton;           // Reset Simulation
     @FXML private ToggleButton playButton;
     @FXML private Slider speedSlider;
+    @FXML private Button exportToCSVButton;
+    @FXML private Button exportHeatMapButton;
+
+    
+    
+    
+    
+    
+
+    // CONSTRUCTOR
     public ScreenController() {
     }
+
+
+    
+    
+    
+    
+    
+    // METHODS: SET PARAMETERS
+
+    public void configureParameters(Environment environment) {
+
+
+        // Interactions
+        environment.setNonverbalMean(Integer.parseInt(nonverbalMean.getText()));
+        environment.setNonverbalStdDev(Integer.parseInt(nonverbalStdDev.getText()));
+        environment.setCooperativeMean(Integer.parseInt(cooperativeMean.getText()));
+        environment.setCooperativeStdDev(Integer.parseInt(cooperativeStdDev.getText()));
+        environment.setExchangeMean(Integer.parseInt(exchangeMean.getText()));
+        environment.setExchangeStdDev(Integer.parseInt(exchangeStdDev.getText()));
+        environment.setFieldOfView(Integer.parseInt(fieldOfView.getText()));
+
+
+
+        // Current Agent Count Per Type
+        currentDirectorCount.setText(String.valueOf(Simulator.currentDirectorCount));
+        currentFacultyCount.setText(String.valueOf(Simulator.currentFacultyCount));
+        currentStudentCount.setText(String.valueOf(Simulator.currentStudentCount));
+        currentMaintenanceCount.setText(String.valueOf(Simulator.currentMaintenanceCount));
+        currentGuardCount.setText(String.valueOf(Simulator.currentGuardCount));
+
+
+
+        currentNonverbalCount.setText(String.valueOf(Simulator.currentNonverbalCount));
+        currentCooperativeCount.setText(String.valueOf(Simulator.currentCooperativeCount));
+        currentExchangeCount.setText(String.valueOf(Simulator.currentExchangeCount));
+        averageNonverbalDuration.setText(String.valueOf(Simulator.averageNonverbalDuration));
+        averageCooperativeDuration.setText(String.valueOf(Simulator.averageCooperativeDuration));
+        averageExchangeDuration.setText(String.valueOf(Simulator.averageExchangeDuration));
+
+
+
+        currentTeam1Count.setText(String.valueOf(Simulator.currentTeam1Count));
+        currentTeam2Count.setText(String.valueOf(Simulator.currentTeam2Count));
+        currentTeam3Count.setText(String.valueOf(Simulator.currentTeam3Count));
+        currentTeam4Count.setText(String.valueOf(Simulator.currentTeam4Count));
+
+
+
+        currentDirectorFacultyCount.setText(String.valueOf(Simulator.currentDirectorFacultyCount));
+        currentDirectorStudentCount.setText(String.valueOf(Simulator.currentDirectorStudentCount));
+        currentDirectorMaintenanceCount.setText(String.valueOf(Simulator.currentDirectorMaintenanceCount));
+        currentDirectorGuardCount.setText(String.valueOf(Simulator.currentDirectorGuardCount));
+
+
+
+        currentFacultyFacultyCount.setText(String.valueOf(Simulator.currentFacultyFacultyCount));
+        currentFacultyStudentCount.setText(String.valueOf(Simulator.currentFacultyStudentCount));
+        currentFacultyMaintenanceCount.setText(String.valueOf(Simulator.currentFacultyMaintenanceCount));
+        currentFacultyGuardCount.setText(String.valueOf(Simulator.currentFacultyGuardCount));
+
+
+
+        currentStudentStudentCount.setText(String.valueOf(Simulator.currentStudentStudentCount));
+        currentStudentMaintenanceCount.setText(String.valueOf(Simulator.currentStudentMaintenanceCount));
+        currentStudentGuardCount.setText(String.valueOf(Simulator.currentStudentGuardCount));
+
+
+
+        currentMaintenanceMaintenanceCount.setText(String.valueOf(Simulator.currentMaintenanceMaintenanceCount));
+        currentMaintenanceGuardCount.setText(String.valueOf(Simulator.currentMaintenanceGuardCount));
+
+
+
+        currentGuardGuardCount.setText(String.valueOf(Simulator.currentGuardGuardCount));
+
+    }
+
+    public boolean validateParameters() {
+        boolean validParameters = Integer.parseInt(nonverbalMean.getText()) >= 0 && Integer.parseInt(nonverbalMean.getText()) >= 0
+                && Integer.parseInt(cooperativeMean.getText()) >= 0 && Integer.parseInt(cooperativeStdDev.getText()) >= 0
+                && Integer.parseInt(exchangeMean.getText()) >= 0 && Integer.parseInt(exchangeStdDev.getText()) >= 0
+                && Integer.parseInt(fieldOfView.getText()) >= 0 && Integer.parseInt(fieldOfView.getText()) <= 360;
+        if (!validParameters) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
+            Label label = new Label("Failed to initialize. Please make sure all values are greater than 0, and field of view is not greater than 360 degrees");
+            label.setWrapText(true);
+            alert.getDialogPane().setContent(label);
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.OK) {
+                alert.close();
+            }
+        }
+        return validParameters;
+    }
+
+    
+
+    public void disableEdits() {
+        configureIOSButton.setDisable(true);
+    }
+
+    public void resetToDefault() {
+        nonverbalMean.setText(Integer.toString(AgentMovement.defaultNonverbalMean));
+        nonverbalStdDev.setText(Integer.toString(AgentMovement.defaultNonverbalStdDev));
+        cooperativeMean.setText(Integer.toString(AgentMovement.defaultCooperativeMean));
+        cooperativeStdDev.setText(Integer.toString(AgentMovement.defaultCooperativeStdDev));
+        exchangeMean.setText(Integer.toString(AgentMovement.defaultExchangeMean));
+        exchangeStdDev.setText(Integer.toString(AgentMovement.defaultExchangeStdDev));
+        fieldOfView.setText(Integer.toString(AgentMovement.defaultFieldOfView));
+    }
+
+    public void openIOSLevels() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/socialsim/view/ConfigureIOS.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Configure IOS Levels");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openEditInteractions() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/socialsim/view/OfficeEditInteractions.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Edit Interaction Type Chances");
+            stage.setScene(new Scene(root));
+            stage.show();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    // METHODS: SIMULATE
 
     public void initialize(Environment environment) {
         GraphicsController.tileSize = backgroundCanvas.getHeight() / Main.simulator.getEnvironment().getRows();
         mapEnvironment();
-        Main.simulator.spawnInitialAgents(environment);
+//        Main.simulator.spawnInitialAgents(environment);
         environment.configureDefaultIOS();
         drawInterface();
     }
@@ -520,33 +755,18 @@ public class ScreenController extends Controller {
         markingsCanvas.setHeight(rowsScaled);
     }
 
-    public boolean validateParameters() {
-        // insert code
-
-        return true;
-    }
-
-    public void configureParameters(Environment environment) {
-        // insert code
-    }
-
-    public void disableEdits() {
-        configureIOSButton.setDisable(true);
-    }
-
-    public void resetToDefault() {
-        // insert code
-    }
-
-    public void openIOSLevels() {
+    public void exportToCSV(){
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/socialsim/view/ConfigureIOS.fxml"));
-            Parent root = fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Configure IOS Levels");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+            Simulator.exportToCSV();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportHeatMap() {
+        try {
+            Simulator.exportHeatMap();
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -555,39 +775,43 @@ public class ScreenController extends Controller {
 
 
 
-
     @FXML
     private void initialize() {
         speedSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             SimulationTime.SLEEP_TIME_MILLISECONDS.set((int) (1.0 / newVal.intValue() * 1000));
         });
-
         resetToDefault();
         playButton.setDisable(true);
-//        exportToCSVButton.setDisable(true);
-//        exportHeatMapButton.setDisable(true);
-
+        exportToCSVButton.setDisable(true);
+        exportHeatMapButton.setDisable(true);
+        
+        
+        // Variables
         int width = 83;
         int length = 150;
         int rows = (int) Math.ceil(width / Patch.PATCH_SIZE_IN_SQUARE_METERS);
         int columns = (int) Math.ceil(length / Patch.PATCH_SIZE_IN_SQUARE_METERS);
-
         Environment environment = Environment.Factory.create(rows, columns);
         Main.simulator.resetToDefaultConfiguration(environment);
 
+        // Configure
         Environment.configureDefaultIOS();
         Environment.configureDefaultInteractionTypeChances();
-
-//        environment.copyDefaultToIOS();
-//        environment.copyDefaultToInteractionTypeChances();
+        
+        // Copy
+        environment.copyDefaultToIOS();
+        environment.copyDefaultToInteractionTypeChances();
     }
 
     @FXML
     public void initializeAction() {
+        
+        
         if (Main.simulator.isRunning()) {
             playAction();
             playButton.setSelected(false);
         }
+        
         if (validateParameters()) {
             Environment environment = Main.simulator.getEnvironment();
             this.configureParameters(environment);
@@ -595,11 +819,12 @@ public class ScreenController extends Controller {
             environment.convertIOSToChances();
             setElements();
             playButton.setDisable(false);
-//            exportToCSVButton.setDisable(true);
-//            exportHeatMapButton.setDisable(true);
+            exportToCSVButton.setDisable(true);
+            exportHeatMapButton.setDisable(true);
             Main.simulator.replenishStaticVars();
             disableEdits();
         }
+        
     }
 
     @FXML

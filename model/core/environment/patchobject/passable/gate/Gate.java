@@ -16,7 +16,12 @@ public class Gate extends NonObstacle implements Drawable {
     private final List<GateBlock> spawners;
     private double chancePerTick;
     private GateMode gateMode;
+    public static final GateFactory gateFactory;
     private final GateGraphic gateGraphic;
+
+    static {
+        gateFactory = new GateFactory();
+    }
 
 
 
@@ -24,16 +29,22 @@ public class Gate extends NonObstacle implements Drawable {
     public Gate(List<AmenityBlock> amenityBlocks, boolean enabled, double chancePerTick, GateMode officeGateMode) {
         super(amenityBlocks, enabled);
 
-        this.spawners = new ArrayList<>();
         if (this.getAmenityBlocks() != null) {
+            this.spawners = new ArrayList<>();
+
             for (AmenityBlock amenityBlock : this.getAmenityBlocks()) {
                 if (amenityBlock instanceof GateBlock) {
                     GateBlock gateBlock = (GateBlock) amenityBlock;
+
+
                     if (gateBlock.isSpawner()) {
                         this.spawners.add(gateBlock);
                     }
                 }
             }
+        }
+        else {
+            this.spawners = null;
         }
 
         this.chancePerTick = chancePerTick;
@@ -100,6 +111,12 @@ public class Gate extends NonObstacle implements Drawable {
 
     public static class GateBlock extends AmenityBlock {
         private final boolean spawner;
+        public static GateBlock.GateBlockFactory gateBlockFactory;
+
+        static {
+            gateBlockFactory = new GateBlock.GateBlockFactory();
+        }
+
 
         public GateBlock(Patch patch, boolean attractor, boolean spawner, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
@@ -109,7 +126,22 @@ public class Gate extends NonObstacle implements Drawable {
         public boolean isSpawner() {
             return spawner;
         }
+
+
+        public static class GateBlockFactory extends AmenityBlockFactory {
+
+            public GateBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new GateBlock(patch, attractor, true, hasGraphic);
+            }
+
+
+            public GateBlock create(Patch patch, boolean attractor, boolean spawner, boolean hasGraphic) {
+                return null;
+            }
+        }
     }
+
+
 
 
 
@@ -130,7 +162,7 @@ public class Gate extends NonObstacle implements Drawable {
 
 
 
-    public class GateFactory {
+    public static class GateFactory {
         public static Gate create(List<AmenityBlock> amenityBlocks, boolean enabled, double chancePerTick, GateMode stationGateMode) {
             return new Gate(amenityBlocks, enabled, chancePerTick, stationGateMode);
         }

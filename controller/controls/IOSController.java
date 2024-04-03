@@ -228,8 +228,8 @@ public class IOSController {
         int otherCtr = 0;
         boolean other = false;
         int[] otherArr = new int[Agent.Persona.values().length];
-        for (int i = 0; i < Agent.Persona.values().length + 1; i++) {
-            for (int j = 0; j < Agent.Persona.values().length + 1; j++) {
+        for (int i = 0; i < Agent.Persona.values().length - 1; i++) {
+            for (int j = 0; j < Agent.Persona.values().length - 1; j++) {
                 if (i == 0 || j == 0) {
                     if (i == 0 && j == 0) {
                         gridPane.add(new Label(""), i, j);
