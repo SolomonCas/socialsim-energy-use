@@ -703,7 +703,7 @@ public class ScreenController extends Controller {
                 execDeanOfficeAreaPatches.add(environment.getPatch(i, j));
             }
         }
-        Main.simulator.getEnvironment().getDeanRooms().add(DeanRoom.deanRoomFactory.create(execDeanOfficeAreaPatches, 1));
+        Main.simulator.getEnvironment().getDeanRooms().add(DirectorRoom.deanRoomFactory.create(execDeanOfficeAreaPatches, 1));
 
 
     }

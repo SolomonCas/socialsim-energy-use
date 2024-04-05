@@ -18,6 +18,11 @@ public class Action {
         this.name = name;
     }
 
+    public Action(Name name, Patch destination){
+        this.name = name;
+        this.destination = destination;
+    }
+
     public Action(Name name, int duration){
         this.name = name;
         this.duration = duration;
@@ -84,7 +89,7 @@ public class Action {
 //        VISITOR_GO_RECEPTIONIST(), VISITOR_GO_OFFICE(),
 //        RECEPTIONIST_STAY_PUT(),
 //        SECRETARY_STAY_PUT(), SECRETARY_CHECK_CABINET(), SECRETARY_GO_BOSS(),
-        GO_TO_STATION(), GO_TO_OFFICE_ROOM(), GO_TO_DIRECTOR(), ASK_DIRECTOR(),
+        GO_TO_STATION(), GO_TO_FACULTY_ROOM(), GO_TO_DIRECTOR_ROOM(), GO_TO_DIRECTOR(), ASK_DIRECTOR(),
         GO_TO_FACULTY(), GO_TO_STUDENT(), ASK_FACULTY(), ASK_STUDENT(), ANSWER_DIRECTOR(),
         ANSWER_FACULTY(), ANSWER_STUDENT(),
         GO_TO_BATHROOM(), RELIEVE_IN_CUBICLE(), FIND_SINK(), WASH_IN_SINK(),

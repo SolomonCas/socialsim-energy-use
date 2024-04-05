@@ -5,7 +5,7 @@ import javafx.util.Pair;
 
 import java.util.List;
 
-public class DeanRoom extends PatchField {
+public class DirectorRoom extends PatchField {
 
     // VARIABLES
     public static DeanRoomFactory deanRoomFactory;
@@ -17,7 +17,7 @@ public class DeanRoom extends PatchField {
 
 
     // CONSTRUCTOR
-    protected DeanRoom(List<Patch> patches, int num) {
+    protected DirectorRoom(List<Patch> patches, int num) {
         super(patches);
 
         Pair<PatchField, Integer> pair = new Pair<>(this, num);
@@ -30,8 +30,8 @@ public class DeanRoom extends PatchField {
 
     // INNER CLASS
     public static class DeanRoomFactory extends PatchFieldFactory {
-        public DeanRoom create(List<Patch> patches, int num) {
-            return new DeanRoom(patches, num);
+        public DirectorRoom create(List<Patch> patches, int num) {
+            return new DirectorRoom(patches, num);
         }
     }
 

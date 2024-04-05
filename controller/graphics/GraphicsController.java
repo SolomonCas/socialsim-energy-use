@@ -239,7 +239,7 @@ public class GraphicsController extends Controller {
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 } // DEAN ROOM
-                else if (patchPatchField.getClass() == DeanRoom.class) {
+                else if (patchPatchField.getClass() == DirectorRoom.class) {
                     patchColor = Color.rgb(129, 204, 235);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
