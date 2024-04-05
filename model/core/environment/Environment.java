@@ -238,31 +238,27 @@ public abstract class Environment extends BaseObject implements Serializable {
                     xCondition = true;
                 }
 
-//                if (xCondition && yCondition) {
-//                    if (environment instanceof University) {
-//                        chosenPatch = Main.universitySimulator.getUniversity().getPatch(truncatedY + rowOffset, truncatedX + columnOffset);
-//                    }
-//
-//                    if ((includeCenterPatch && isCenterPatch) || Coordinates.isWithinFieldOfView(centerPatch.getPatchCenterCoordinates(), chosenPatch.getPatchCenterCoordinates(), heading, fieldOfViewAngle)) {
-//                        patchesToExplore.add(chosenPatch);
-//                    }
-//                }
+                if (xCondition && yCondition) {
+                    if ((includeCenterPatch && isCenterPatch) || Coordinates.isWithinFieldOfView(centerPatch.getPatchCenterCoordinates(), chosenPatch.getPatchCenterCoordinates(), heading, fieldOfViewAngle)) {
+                        patchesToExplore.add(chosenPatch);
+                    }
+                }
             }
         }
 
         return patchesToExplore;
     }
 
-//    public int numBathroomsFree(){
-//        List<? extends Amenity> amenityListInFloor = this.getAmenityList(Toilet.class);
-//        int ctr = 0;
-//        for (Amenity amenity : amenityListInFloor)
-//            if (!amenity.getAmenityBlocks().get(0).getIsReserved()) {
-//                ctr++;
-//                break;
-//            }
-//        return ctr;
-//    }
+    public int numBathroomsFree(){
+        List<? extends Amenity> amenityListInFloor = this.getAmenityList(Toilet.class);
+        int ctr = 0;
+        for (Amenity amenity : amenityListInFloor)
+            if (!amenity.getAmenityBlocks().get(0).getIsReserved()) {
+                ctr++;
+                break;
+            }
+        return ctr;
+    }
 
 
     // METHODS: AMENITIES
@@ -316,107 +312,46 @@ public abstract class Environment extends BaseObject implements Serializable {
         return agents;
     }
 
-//    public void createInitialAgentDemographics(int MAX_CLIENTS, int MAX_DRIVERS, int MAX_VISITORS){
-//        OfficeAgent janitor = OfficeAgent.OfficeAgentFactory.create(Type.JANITOR, true, 0);
-//        this.getAgents().add(janitor);
-//
-//        OfficeAgent guard = OfficeAgent.OfficeAgentFactory.create(Type.GUARD, true, 0);
-//        this.getAgents().add(guard);
-//
-//        OfficeAgent receptionist = OfficeAgent.OfficeAgentFactory.create(Type.RECEPTIONIST, true, 0);
-//        this.getAgents().add(receptionist);
-//
-//        OfficeAgent boss = OfficeAgent.OfficeAgentFactory.create(Type.BOSS, true, 0);
-//        this.getAgents().add(boss);
-//
-//        OfficeAgent manager_1 = OfficeAgent.OfficeAgentFactory.create(Type.MANAGER, true, 1);
-//        this.getAgents().add(manager_1);
-//
-//        OfficeAgent technical_1 = OfficeAgent.OfficeAgentFactory.create(Type.TECHNICAL, true, 1);
-//        this.getAgents().add(technical_1);
-//
-//        for (int i = 0; i < 4; i++){
-//            OfficeAgent business_1 = OfficeAgent.OfficeAgentFactory.create(Type.BUSINESS, true, 1);
-//            this.getAgents().add(business_1);
-//        }
-//
-//        for (int i = 0; i < 4; i++){
-//            OfficeAgent researcher_1 = OfficeAgent.OfficeAgentFactory.create(Type.RESEARCHER, true, 1);
-//            this.getAgents().add(researcher_1);
-//        }
-//
-//        OfficeAgent manager_2 = OfficeAgent.OfficeAgentFactory.create(Type.MANAGER, true, 2);
-//        this.getAgents().add(manager_2);
-//
-//        OfficeAgent technical_2 = OfficeAgent.OfficeAgentFactory.create(Type.TECHNICAL, true, 2);
-//        this.getAgents().add(technical_2);
-//
-//        for (int i = 0; i < 4; i++){
-//            OfficeAgent business_2 = OfficeAgent.OfficeAgentFactory.create(Type.BUSINESS, true, 2);
-//            this.getAgents().add(business_2);
-//        }
-//
-//        for (int i = 0; i < 4; i++){
-//            OfficeAgent researcher_2 = OfficeAgent.OfficeAgentFactory.create(Type.RESEARCHER, true, 2);
-//            this.getAgents().add(researcher_2);
-//        }
-//
-//        OfficeAgent manager_3 = OfficeAgent.OfficeAgentFactory.create(Type.MANAGER, true, 3);
-//        this.getAgents().add(manager_3);
-//
-//        OfficeAgent technical_3 = OfficeAgent.OfficeAgentFactory.create(Type.TECHNICAL, true, 3);
-//        this.getAgents().add(technical_3);
-//
-//        for (int i = 0; i < 4; i++){
-//            OfficeAgent business_3 = OfficeAgent.OfficeAgentFactory.create(Type.BUSINESS, true, 3);
-//            this.getAgents().add(business_3);
-//        }
-//
-//        for (int i = 0; i < 4; i++){
-//            OfficeAgent researcher_3 = OfficeAgent.OfficeAgentFactory.create(Type.RESEARCHER, true, 3);
-//            this.getAgents().add(researcher_3);
-//        }
-//
-//        OfficeAgent manager_4 = OfficeAgent.OfficeAgentFactory.create(Type.MANAGER, true, 4);
-//        this.getAgents().add(manager_4);
-//
-//        OfficeAgent technical_4 = OfficeAgent.OfficeAgentFactory.create(Type.TECHNICAL, true, 4);
-//        this.getAgents().add(technical_4);
-//
-//        for (int i = 0; i < 7; i++){
-//            OfficeAgent business_4 = OfficeAgent.OfficeAgentFactory.create(Type.BUSINESS, true, 4);
-//            this.getAgents().add(business_4);
-//        }
-//
-//        for (int i = 0; i < 7; i++){
-//            OfficeAgent researcher_4 = OfficeAgent.OfficeAgentFactory.create(Type.RESEARCHER, true, 4);
-//            this.getAgents().add(researcher_4);
-//        }
-//
-//        OfficeAgent secretary = OfficeAgent.OfficeAgentFactory.create(Type.SECRETARY, true, 0);
-//        this.getAgents().add(secretary);
-//
-//
-//        int ctr = 0;
-//
-//        while (ctr < MAX_CLIENTS){
-//            OfficeAgent newAgent = OfficeAgent.OfficeAgentFactory.create(Type.CLIENT, true, 0);
-//            ctr++;
-//            this.getAgents().add(newAgent);
-//        }
-//        ctr = 0;
-//        while (ctr < MAX_DRIVERS){
-//            OfficeAgent newAgent = OfficeAgent.OfficeAgentFactory.create(Type.DRIVER, true, 0);
-//            ctr++;
-//            this.getAgents().add(newAgent);
-//        }
-//        ctr = 0;
-//        while (ctr < MAX_VISITORS){
-//            OfficeAgent newAgent = OfficeAgent.OfficeAgentFactory.create(Type.VISITOR, true, 0);
-//            ctr++;
-//            this.getAgents().add(newAgent);
-//        }
-//    }
+    public void createInitialAgentDemographics(){
+        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0);
+        this.getAgents().add(janitor);
+
+        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0);
+        this.getAgents().add(guard);
+
+        Agent director = Agent.AgentFactory.create(Type.DIRECTOR, true, 0);
+        this.getAgents().add(director);
+
+        Agent faculty_1 = Agent.AgentFactory.create(Type.FACULTY, true, 1);
+        this.getAgents().add(faculty_1);
+
+        for (int i = 0; i < 4; i++){
+            Agent student_1 = Agent.AgentFactory.create(Type.STUDENT, true, 1);
+            this.getAgents().add(student_1);
+        }
+
+        Agent faculty_2 = Agent.AgentFactory.create(Type.FACULTY, true, 2);
+        this.getAgents().add(faculty_2);
+
+        for (int i = 0; i < 4; i++){
+            Agent student_2 = Agent.AgentFactory.create(Type.STUDENT, true, 2);
+            this.getAgents().add(student_2);
+        }
+
+        Agent faculty_3 = Agent.AgentFactory.create(Type.FACULTY, true, 2);
+        this.getAgents().add(faculty_3);
+
+        for (int i = 0; i < 4; i++){
+            Agent student_3 = Agent.AgentFactory.create(Type.STUDENT, true, 2);
+            this.getAgents().add(student_3);
+        }
+
+        for (int i = 0; i < 4; i++){
+            Agent other_students = Agent.AgentFactory.create(Type.STUDENT, true, 0);
+            this.getAgents().add(other_students);
+        }
+
+    }
 
 
 
@@ -570,52 +505,48 @@ public abstract class Environment extends BaseObject implements Serializable {
         }
     }
     public void convertIOSToChances(){
-//        IOSInteractionChances = new CopyOnWriteArrayList<>();
-//        IOSScales.toString();
-//
-//        for(int i = 0; i < agents.size(); i++){
-//            IOSInteractionChances.add(new CopyOnWriteArrayList<>());
-//
-//            for(int j = 0; j < agents.size(); j++){
-//                if (i == j){
-//                    IOSInteractionChances.get(i).add((double) 0);
-//                }
-//                else{
-//                    Agent agent1 = agents.get(i), agent2 = agents.get(j);
-//                    int IOS;
-//
-//                    if (   agent1.getPersonaActionGroup() == PersonaActionGroup.MANAGER
-//                        || agent1.getPersonaActionGroup() == PersonaActionGroup.INT_WORKER
-//                        || agent1.getPersonaActionGroup() == PersonaActionGroup.EXT_WORKER
-//                        || agent1.getPersonaActionGroup() == PersonaActionGroup.INT_TECHNICAL
-//                        || agent1.getPersonaActionGroup() == PersonaActionGroup.EXT_TECHNICAL) {
-//
-//                        int offset;
-//                        switch (agent2.getPersona()){
-//                            case PROFESSIONAL_BOSS, APPROACHABLE_BOSS, MANAGER -> offset = 0;
-//                            case INT_BUSINESS -> offset = 1;
-//                            case EXT_BUSINESS -> offset = 2;
-//                            case INT_RESEARCHER -> offset = 3;
-//                            case EXT_RESEARCHER -> offset = 4;
-//                            case INT_TECHNICAL -> offset = 5;
-//                            case EXT_TECHNICAL -> offset = 6;
-//                            default -> offset = 7;
-//                        }
-//                        if (agent2.getTeam() == 0){
-//                            IOS = IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset).get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset).size()));
-//                        }
-//                        else if (agent1.getTeam() > 0 && agent1.getTeam() == agent2.getTeam())
-//                            IOS = IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset).get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset).size()));
-//                        else
-//                            IOS = IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset + 1).get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset + 1).size()));
-//                    }
-//
-//                    else
-//                        IOS = IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID()).get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID()).size()));
-//                    IOSInteractionChances.get(i).add(this.convertToChanceInteraction(IOS));
-//                }
-//            }
-//        }
+        IOSInteractionChances = new CopyOnWriteArrayList<>();
+        IOSScales.toString();
+
+        for(int i = 0; i < agents.size(); i++){
+            IOSInteractionChances.add(new CopyOnWriteArrayList<>());
+
+            for(int j = 0; j < agents.size(); j++){
+                if (i == j){
+                    IOSInteractionChances.get(i).add((double) 0);
+                }
+                else{
+                    Agent agent1 = agents.get(i), agent2 = agents.get(j);
+                    int IOS;
+
+                    if (   agent1.getPersonaActionGroup() == PersonaActionGroup.STRICT_FACULTY
+                        || agent1.getPersonaActionGroup() == PersonaActionGroup.APP_FACULTY
+                        || agent1.getPersonaActionGroup() == PersonaActionGroup.INT_STUDENT
+                        || agent1.getPersonaActionGroup() == PersonaActionGroup.EXT_STUDENT) {
+
+                        int offset;
+                        switch (agent2.getPersona()){
+                            case DIRECTOR, STRICT_FACULTY, APP_FACULTY -> offset = 0;
+                            case INT_STUDENT -> offset = 1;
+                            case EXT_STUDENT -> offset = 2;
+                            case MAINTENANCE -> offset = 3;
+                            default -> offset = 4;
+                        }
+                        if (agent2.getTeam() == 0){
+                            IOS = IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset).get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset).size()));
+                        }
+                        else if (agent1.getTeam() > 0 && agent1.getTeam() == agent2.getTeam())
+                            IOS = IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset).get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset).size()));
+                        else
+                            IOS = IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset + 1).get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID() + offset + 1).size()));
+                    }
+
+                    else
+                        IOS = IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID()).get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(IOSScales.get(agent1.getPersona().getID()).get(agent2.getPersona().getID()).size()));
+                    IOSInteractionChances.get(i).add(this.convertToChanceInteraction(IOS));
+                }
+            }
+        }
     }
 
     public void copyDefaultToIOS() {
@@ -1026,13 +957,6 @@ public abstract class Environment extends BaseObject implements Serializable {
                 }
             }
         }
-    }
-
-
-
-    public int numBathroomsFree(){
-        // Insert code
-        return 0;
     }
 
 

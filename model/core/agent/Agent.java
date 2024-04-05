@@ -277,7 +277,7 @@ public class Agent extends PatchObject {
 
     // INNER STATIC CLASS
     public static class AgentFactory extends ObjectFactory {
-        public Agent create(Agent.Type type, boolean inOnStart, int team) {
+        public static Agent create(Agent.Type type, boolean inOnStart, int team) {
             return new Agent(type, inOnStart, team);
         }
     }

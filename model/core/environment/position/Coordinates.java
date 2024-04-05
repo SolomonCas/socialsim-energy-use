@@ -4,6 +4,16 @@ import com.socialsim.model.core.environment.Patch;
 
 public class Coordinates extends Location {
 
+        /***** VARIABLES *****/
+
+        /***** CONSTRUCTOR *****/
+
+        /***** METHODS *****/
+
+        /***** GETTERS *****/
+
+        /***** SETTERS *****/
+
     private double x;
     private double y;
 
