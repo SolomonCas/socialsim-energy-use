@@ -8,10 +8,10 @@ import java.util.List;
 public class DirectorRoom extends PatchField {
 
     // VARIABLES
-    public static DeanRoomFactory deanRoomFactory;
+    public static DirectorRoomFactory directorRoomFactory;
 
     static {
-        deanRoomFactory = new DeanRoomFactory();
+        directorRoomFactory = new DirectorRoomFactory();
     }
 
 
@@ -29,7 +29,7 @@ public class DirectorRoom extends PatchField {
 
 
     // INNER CLASS
-    public static class DeanRoomFactory extends PatchFieldFactory {
+    public static class DirectorRoomFactory extends PatchFieldFactory {
         public DirectorRoom create(List<Patch> patches, int num) {
             return new DirectorRoom(patches, num);
         }

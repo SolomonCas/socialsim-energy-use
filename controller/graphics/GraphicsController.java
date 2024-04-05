@@ -1,6 +1,9 @@
 package com.socialsim.controller.graphics;
 
 import com.socialsim.controller.controls.Controller;
+import com.socialsim.controller.graphics.agent.AgentGraphic;
+import com.socialsim.controller.graphics.agent.AgentGraphicLocation;
+import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.model.core.agent.Agent;
 import com.socialsim.model.core.environment.Environment;
@@ -10,10 +13,15 @@ import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.Drawable;
 import com.socialsim.model.core.environment.patchobject.passable.NonObstacle;
 import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
+import com.socialsim.model.core.environment.patchobject.passable.goal.Sink;
+import com.socialsim.model.core.environment.patchobject.passable.goal.Toilet;
+import com.socialsim.model.core.environment.patchobject.passable.goal.Trash;
 import com.socialsim.model.core.environment.position.Coordinates;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
@@ -26,7 +34,13 @@ public class GraphicsController extends Controller {
 
     // VARIABLES
 
-        // INSERT SPRITE SHEETS
+    private static final Image AMENITY_SPRITES = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL);
+    private static final Image AMENITY_SPRITES2 = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL2);
+    private static final Image AMENITY_SPRITES3 = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL3);
+    private static final Image AGENT_SPRITES1 = new Image(AgentGraphic.AGENTS_URL_1);
+    private static final Image AGENT_SPRITES2 = new Image(AgentGraphic.AGENTS_URL_2);
+    private static final Image AGENT_SPRITES3 = new Image(AgentGraphic.AGENTS_URL_3);
+    private static final Image AGENT_SPRITES4 = new Image(AgentGraphic.AGENTS_URL_4);
 
     public static List<Amenity.AmenityBlock> firstPortalAmenityBlocks;
     public static double tileSize;
@@ -97,8 +111,8 @@ public class GraphicsController extends Controller {
         }
         else {
             SortedSet<Patch> amenityAgentSet = new TreeSet<>();
-//            amenityAgentSet.addAll(new ArrayList<>(environment.getAmenityPatchSet()));
-//            amenityAgentSet.addAll(new ArrayList<>(environment.getAgentPatchSet()));
+            amenityAgentSet.addAll(new ArrayList<>(environment.getAmenityPatchSet()));
+            amenityAgentSet.addAll(new ArrayList<>(environment.getAgentPatchSet()));
             patches = new ArrayList<>(amenityAgentSet);
         }
 
@@ -140,21 +154,39 @@ public class GraphicsController extends Controller {
 
 
                     // IF STATEMENTS
-                    if (patchAmenity instanceof NonObstacle) {
-                        if (!((NonObstacle) patchAmenity).isEnabled()) {
-                            drawGraphicTransparently = true;
-                        }
-                    }
-
-                    if (drawGraphicTransparently) {
-                        foregroundGraphicsContext.setGlobalAlpha(0.2);
-                    }
-
                     if (patchAmenity.getClass() == Gate.class) {
-                        // INSERT CODE
+                        foregroundGraphicsContext.drawImage(
+                                AMENITY_SPRITES3,
+                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
+                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
+                                column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
+                                row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
+                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
+                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
+                    }
+                    else if (   patchAmenity.getClass() == Toilet.class || patchAmenity.getClass() == Sink.class ||
+                            patchAmenity.getClass() == Trash.class) {
+                        foregroundGraphicsContext.drawImage(
+                                AMENITY_SPRITES2,
+                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
+                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
+                                column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
+                                row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
+                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
+                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
+                    }
+                    else {
+                        foregroundGraphicsContext.drawImage(
+                                AMENITY_SPRITES,
+                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
+                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
+                                column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
+                                row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
+                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
+                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
                     }
 
-                    // ADD OTHER IF STATEMENTS FOR AMENITIES (3 MORE)
+
 
 
                     if (drawGraphicTransparently) {
@@ -238,7 +270,7 @@ public class GraphicsController extends Controller {
                     patchColor = Color.rgb(250, 189, 193);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // DEAN ROOM
+                } // DIRECTOR ROOM
                 else if (patchPatchField.getClass() == DirectorRoom.class) {
                     patchColor = Color.rgb(129, 204, 235);
                     backgroundGraphicsContext.setFill(patchColor);
@@ -286,7 +318,37 @@ public class GraphicsController extends Controller {
                 }
 
 
-                    // INSERT AGENT CODE
+                // INSERT AGENT CODE
+//                if (!background) {
+//                    if (!patch.getAgents().isEmpty()) {
+//                        for (Agent agent : patch.getAgents()) {
+//                            Agent agent = (Agent) agent;
+//                            AgentGraphicLocation agentGraphicLocation = agent.getAgentGraphic().getGraphicLocation();
+//
+//                            Image CURRENT_URL = null;
+//                            if (agent.getType() == Agent.Type.GUARD || agent.getType() == Agent.Type.RECEPTIONIST || Agent.getType() == Agent.Type.JANITOR || Agent.getType() == Agent.Type.VISITOR || agent.getType() == Agent.Type.SECRETARY || agent.getType() == Agent.Type.DRIVER) {
+//                                CURRENT_URL = AGENT_SPRITES1;
+//                            }
+//                            else if (agent.getType() == Agent.Type.BUSINESS || agent.getType() == Agent.Type.RESEARCHER) {
+//                                CURRENT_URL = AGENT_SPRITES2;
+//                            }
+//                            else if (agent.getType() == Agent.Type.TECHNICAL || agent.getType() == Agent.Type.BOSS || agent.getType() == Agent.Type.MANAGER) {
+//                                CURRENT_URL = AGENT_SPRITES3;
+//                            }
+//                            else if (agent.getType() == Agent.Type.CLIENT) {
+//                                CURRENT_URL = AGENT_SPRITES4;
+//                            }
+//
+//                            foregroundGraphicsContext.drawImage(
+//                                    CURRENT_URL,
+//                                    agentGraphicLocation.getSourceX(), agentGraphicLocation.getSourceY(),
+//                                    agentGraphicLocation.getSourceWidth(), agentGraphicLocation.getSourceHeight(),
+//                                    getScaledAgentCoordinates(agent).getX() * tileSize,
+//                                    getScaledAgentCoordinates(agent).getY() * tileSize,
+//                                    tileSize * 0.7, tileSize * 0.7);
+//                        }
+//                    }
+//                }
 
 
             }
@@ -305,7 +367,9 @@ public class GraphicsController extends Controller {
 
     // GETTERS
     public static Coordinates getScaledAgentCoordinates(Agent agent) {
-        // insert code
+//        Coordinates agentPosition = agent.getAgentMovement().getPosition();
+//
+//        return OfficeGraphicsController.getScaledCoordinates(agentPosition);
         return null;
     }
 

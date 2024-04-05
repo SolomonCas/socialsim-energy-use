@@ -19,6 +19,8 @@ public class CubicleGraphic extends AmenityGraphic {
         switch (facing) {
             case "UP" -> this.graphicIndex = 0;
             case "DOWN" -> this.graphicIndex = 1;
+            case "LEFT" -> this.graphicIndex = 2;
+            case "RIGHT" -> this.graphicIndex = 3;
         }
     }
 
