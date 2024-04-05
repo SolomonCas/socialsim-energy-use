@@ -56,7 +56,7 @@ public class IOSController {
     public void openHelp() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "", ButtonType.OK);
         ImageView img = new ImageView();
-        img.setImage(new Image(getClass().getResource("../../../view/image/IOS_help.png").toExternalForm()));
+        img.setImage(new Image(getClass().getResource("../../view/image/IOS_help.png").toExternalForm()));
         alert.initStyle(StageStyle.TRANSPARENT);
         alert.getDialogPane().setContent(img);
         alert.showAndWait();
@@ -100,7 +100,7 @@ public class IOSController {
                 if (i > 0) {
                     newIOS.add(new CopyOnWriteArrayList<>());
                 }
-                for (int j = 0; j < Agent.Persona.values().length + 1 + 7; j++) {
+                for (int j = 0; j < Agent.Persona.values().length + 1 + 4; j++) {
                     int index = 1 + j * (Agent.Persona.values().length + 1) + i;
                     if (index > Agent.Persona.values().length + 1 && index % (Agent.Persona.values().length + 1) - 1 != 0) {
                         String s = ((TextField) gridPane.getChildren().get(index)).getText();
@@ -228,8 +228,8 @@ public class IOSController {
         int otherCtr = 0;
         boolean other = false;
         int[] otherArr = new int[Agent.Persona.values().length];
-        for (int i = 0; i < Agent.Persona.values().length - 1; i++) {
-            for (int j = 0; j < Agent.Persona.values().length - 1; j++) {
+        for (int i = 0; i < Agent.Persona.values().length + 1; i++) {
+            for (int j = 0; j < Agent.Persona.values().length + 1; j++) {
                 if (i == 0 || j == 0) {
                     if (i == 0 && j == 0) {
                         gridPane.add(new Label(""), i, j);
