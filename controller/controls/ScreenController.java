@@ -761,8 +761,10 @@ public class ScreenController extends Controller {
                 execDirectorOfficeAreaPatches.add(environment.getPatch(i, j));
             }
         }
+        Main.simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(execDirectorOfficeAreaPatches, 1));
 
-        
+
+
         /** AMENITIES **/
 
 
