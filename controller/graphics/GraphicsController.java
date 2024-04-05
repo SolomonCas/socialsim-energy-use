@@ -33,7 +33,6 @@ public class GraphicsController extends Controller {
 
 
     // VARIABLES
-
     private static final Image AMENITY_SPRITES = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL);
     private static final Image AMENITY_SPRITES2 = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL2);
     private static final Image AMENITY_SPRITES3 = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL3);
@@ -150,8 +149,17 @@ public class GraphicsController extends Controller {
 
                     // VARIABLES
                     Drawable drawablePatchAmenity = (Drawable) patchAmenity;
-                    AmenityGraphicLocation amenityGraphicLocation = drawablePatchAmenity.getGraphicLocation();
+                    if (patchAmenity instanceof NonObstacle) {
+                        if (!((NonObstacle) patchAmenity).isEnabled()) {
+                            drawGraphicTransparently = true;
+                        }
+                    }
 
+                    if (drawGraphicTransparently) {
+                        foregroundGraphicsContext.setGlobalAlpha(0.2);
+                    }
+
+                    AmenityGraphicLocation amenityGraphicLocation = drawablePatchAmenity.getGraphicLocation();
 
                     // IF STATEMENTS
                     if (patchAmenity.getClass() == Gate.class) {
@@ -316,45 +324,43 @@ public class GraphicsController extends Controller {
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }
+                else if (patchPatchField.getClass() == BreakArea.class) {
+                    patchColor = Color.rgb(255, 232, 173);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
 
 
                 // INSERT AGENT CODE
-//                if (!background) {
-//                    if (!patch.getAgents().isEmpty()) {
-//                        for (Agent agent : patch.getAgents()) {
-//                            Agent agent = (Agent) agent;
-//                            AgentGraphicLocation agentGraphicLocation = agent.getAgentGraphic().getGraphicLocation();
-//
-//                            Image CURRENT_URL = null;
-//                            if (agent.getType() == Agent.Type.GUARD || agent.getType() == Agent.Type.RECEPTIONIST || Agent.getType() == Agent.Type.JANITOR || Agent.getType() == Agent.Type.VISITOR || agent.getType() == Agent.Type.SECRETARY || agent.getType() == Agent.Type.DRIVER) {
-//                                CURRENT_URL = AGENT_SPRITES1;
-//                            }
-//                            else if (agent.getType() == Agent.Type.BUSINESS || agent.getType() == Agent.Type.RESEARCHER) {
-//                                CURRENT_URL = AGENT_SPRITES2;
-//                            }
-//                            else if (agent.getType() == Agent.Type.TECHNICAL || agent.getType() == Agent.Type.BOSS || agent.getType() == Agent.Type.MANAGER) {
-//                                CURRENT_URL = AGENT_SPRITES3;
-//                            }
-//                            else if (agent.getType() == Agent.Type.CLIENT) {
-//                                CURRENT_URL = AGENT_SPRITES4;
-//                            }
-//
-//                            foregroundGraphicsContext.drawImage(
-//                                    CURRENT_URL,
-//                                    agentGraphicLocation.getSourceX(), agentGraphicLocation.getSourceY(),
-//                                    agentGraphicLocation.getSourceWidth(), agentGraphicLocation.getSourceHeight(),
-//                                    getScaledAgentCoordinates(agent).getX() * tileSize,
-//                                    getScaledAgentCoordinates(agent).getY() * tileSize,
-//                                    tileSize * 0.7, tileSize * 0.7);
-//                        }
-//                    }
-//                }
+                if (!background) {
+                    if (!patch.getAgents().isEmpty()) {
+                        for (Agent agent : patch.getAgents()) {
+                            Agent officeAgent = agent;
+                            AgentGraphicLocation agentGraphicLocation = officeAgent.getAgentGraphic().getGraphicLocation();
 
+                            Image CURRENT_URL = null;
+                            if (agent.getType() == Agent.Type.GUARD || agent.getType() == Agent.Type.MAINTENANCE) {
+                                CURRENT_URL = AGENT_SPRITES1;
+                            }
+                            else if (agent.getType() == Agent.Type.DIRECTOR || agent.getType() == Agent.Type.STUDENT) {
+                                CURRENT_URL = AGENT_SPRITES2;
+                            }
+                            else if (agent.getType() == Agent.Type.FACULTY) {
+                                CURRENT_URL = AGENT_SPRITES3;
+                            }
 
+                            foregroundGraphicsContext.drawImage(
+                                    CURRENT_URL,
+                                    agentGraphicLocation.getSourceX(), agentGraphicLocation.getSourceY(),
+                                    agentGraphicLocation.getSourceWidth(), agentGraphicLocation.getSourceHeight(),
+                                    getScaledAgentCoordinates(officeAgent).getX() * tileSize,
+                                    getScaledAgentCoordinates(officeAgent).getY() * tileSize,
+                                    tileSize * 0.7, tileSize * 0.7);
+                        }
+                    }
+                }
             }
-
         }
-
     }
 
 
@@ -367,10 +373,9 @@ public class GraphicsController extends Controller {
 
     // GETTERS
     public static Coordinates getScaledAgentCoordinates(Agent agent) {
-//        Coordinates agentPosition = agent.getAgentMovement().getPosition();
-//
-//        return OfficeGraphicsController.getScaledCoordinates(agentPosition);
-        return null;
+        Coordinates agentPosition = agent.getAgentMovement().getPosition();
+
+        return GraphicsController.getScaledCoordinates(agentPosition);
     }
 
     public static Coordinates getScaledCoordinates(Coordinates coordinates) {

@@ -26,7 +26,7 @@ public class Agent extends PatchObject {
     private boolean inOnStart;
 
     private final AgentGraphic agentGraphic;
-//    private AgentMovement agentMovement;
+    private AgentMovement agentMovement;
 
     public static final AgentFactory agentFactory;
 
@@ -179,16 +179,16 @@ public class Agent extends PatchObject {
         return agentGraphic;
     }
 
-//    public AgentMovement getAgentMovement() {
-//        return agentMovement;
-//    }
+    public AgentMovement getAgentMovement() {
+        return agentMovement;
+    }
 
 
 
     // SETTERS
-//    public void setAgentMovement(AgentMovement agentMovement) {
-//        this.agentMovement = agentMovement;
-//    }
+    public void setAgentMovement(AgentMovement agentMovement) {
+        this.agentMovement = agentMovement;
+    }
 
 
 

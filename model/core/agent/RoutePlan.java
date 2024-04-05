@@ -341,12 +341,6 @@ public class RoutePlan {
     public int getBATH_LUNCH() {
         return BATH_LUNCH;
     }
-    public int getPRINT_BUSINESS() {
-        return PRINT_BUSINESS;
-    }
-    public int getPRINT_RESEARCH() {
-        return PRINT_RESEARCH;
-    }
     public int getDISPENSER_LUNCH(){return this.DISPENSER_LUNCH;}
     public int getDISPENSER_PM(){return this.DISPENSER_PM;}
     public boolean isFromBathPM() {
@@ -421,12 +415,6 @@ public class RoutePlan {
     }
     public void setBATH_LUNCH(int BATH_LUNCH) {
         this.BATH_LUNCH -= BATH_LUNCH;
-    }
-    public void setPRINT_BUSINESS() {
-        this.PRINT_BUSINESS -= 1;
-    }
-    public void setPRINT_RESEARCH() {
-        this.PRINT_RESEARCH -= 1;
     }
     public void setDISPENSER_LUNCH(int DISPENSER_LUNCH) {
         this.DISPENSER_LUNCH = DISPENSER_LUNCH;

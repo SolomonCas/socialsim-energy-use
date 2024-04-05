@@ -8,7 +8,7 @@ import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
-public class ReceptionTable extends Goal {
+public class ReceptionTable extends QueueableGoal {
 
     /***** VARIABLES *****/
     public static final long serialVersionUID = -5458621245735102190L;
@@ -20,8 +20,8 @@ public class ReceptionTable extends Goal {
     }
 
     /***** CONSTRUCTOR *****/
-    protected ReceptionTable(List<AmenityBlock> amenityBlocks, boolean enabled) {
-        super(amenityBlocks, enabled);
+    protected ReceptionTable(List<AmenityBlock> amenityBlocks, boolean enabled, int waitingTime) {
+        super(amenityBlocks, enabled, waitingTime);
 
         this.receptionTableGraphic = new ReceptionTableGraphic(this);
     }
@@ -63,9 +63,9 @@ public class ReceptionTable extends Goal {
         }
     }
 
-    public static class ReceptionTableFactory extends GoalFactory {
-        public static ReceptionTable create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new ReceptionTable(amenityBlocks, enabled);
+    public static class ReceptionTableFactory extends Goal.GoalFactory {
+        public static ReceptionTable create(List<AmenityBlock> amenityBlocks, boolean enabled, int waitingTime) {
+            return new ReceptionTable(amenityBlocks, enabled, waitingTime);
         }
     }
 }

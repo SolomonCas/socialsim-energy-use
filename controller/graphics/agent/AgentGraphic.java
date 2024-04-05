@@ -86,9 +86,9 @@ public class AgentGraphic extends Graphic {
         
         femaleExtStudentGraphics = new ArrayList<>();
         for (int i = 0; i < 4; i++)
-            femaleIntStudentGraphics.add(new AgentGraphicLocation(7, i));
+            femaleExtStudentGraphics.add(new AgentGraphicLocation(7, i));
         for (int i = 0; i < 4; i++)
-            femaleIntStudentGraphics.add(new AgentGraphicLocation(15, i));
+            femaleExtStudentGraphics.add(new AgentGraphicLocation(15, i));
 
         
         // Maintenance
@@ -212,45 +212,45 @@ public class AgentGraphic extends Graphic {
 
 
     // METHOD
-//    public void change() {
-//        Agent agent = this.agent;
-//
-//        double agentHeading = agent.getAgentMovement().getHeading();
-//        double agentHeadingDegrees = Math.toDegrees(agentHeading);
-//
-//        if (agentHeadingDegrees >= 315 && agentHeadingDegrees < 360 || agentHeadingDegrees >= 0 && agentHeadingDegrees < 45) {
-//            if (this.agent.getAgentMovement().isInteracting()) {
-//                this.graphicIndex = 5;
-//            }
-//            else {
-//                this.graphicIndex = 1;
-//            }
-//        }
-//        else if (agentHeadingDegrees >= 45 && agentHeadingDegrees < 135) {
-//            if (this.agent.getAgentMovement().isInteracting()) {
-//                this.graphicIndex = 4;
-//            }
-//            else {
-//                this.graphicIndex = 0;
-//            }
-//        }
-//        else if (agentHeadingDegrees >= 135 && agentHeadingDegrees < 225) {
-//            if (this.agent.getAgentMovement().isInteracting()) {
-//                this.graphicIndex = 7;
-//            }
-//            else {
-//                this.graphicIndex = 3;
-//            }
-//        }
-//        else if (agentHeadingDegrees >= 225 && agentHeadingDegrees < 315) {
-//            if (this.agent.getAgentMovement().isInteracting()) {
-//                this.graphicIndex = 6;
-//            }
-//            else {
-//                this.graphicIndex = 2;
-//            }
-//        }
-//    }
+    public void change() {
+        Agent agent = this.agent;
+
+        double agentHeading = agent.getAgentMovement().getHeading();
+        double agentHeadingDegrees = Math.toDegrees(agentHeading);
+
+        if (agentHeadingDegrees >= 315 && agentHeadingDegrees < 360 || agentHeadingDegrees >= 0 && agentHeadingDegrees < 45) {
+            if (this.agent.getAgentMovement().isInteracting()) {
+                this.graphicIndex = 5;
+            }
+            else {
+                this.graphicIndex = 1;
+            }
+        }
+        else if (agentHeadingDegrees >= 45 && agentHeadingDegrees < 135) {
+            if (this.agent.getAgentMovement().isInteracting()) {
+                this.graphicIndex = 4;
+            }
+            else {
+                this.graphicIndex = 0;
+            }
+        }
+        else if (agentHeadingDegrees >= 135 && agentHeadingDegrees < 225) {
+            if (this.agent.getAgentMovement().isInteracting()) {
+                this.graphicIndex = 7;
+            }
+            else {
+                this.graphicIndex = 3;
+            }
+        }
+        else if (agentHeadingDegrees >= 225 && agentHeadingDegrees < 315) {
+            if (this.agent.getAgentMovement().isInteracting()) {
+                this.graphicIndex = 6;
+            }
+            else {
+                this.graphicIndex = 2;
+            }
+        }
+    }
 
 
 

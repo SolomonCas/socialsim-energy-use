@@ -38,29 +38,21 @@ public class ReceptionTableMapper extends AmenityMapper {
             amenityBlocks.add(amenityBlock4);
             patch4.setAmenityBlock(amenityBlock4);
 
-            ReceptionTable receptionTableToAdd = ReceptionTable.ReceptionTableFactory.create(amenityBlocks, true);
+            ReceptionTable receptionTableToAdd = ReceptionTable.ReceptionTableFactory.create(amenityBlocks, true, 5);
             Main.simulator.getEnvironment().getReceptionTables().add(receptionTableToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
 
-            List<Patch> securityFieldPatches = new ArrayList<>();
-//            securityFieldPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
-//            for (int i = origPatchRow + 1; i < Main.simulator.getEnvironment().getRows(); i++) {
-//                Patch currentPatch = Main.simulator.getEnvironment().getPatch(i, origPatchCol);
-//                if (currentPatch.getQueueingPatchField() == null && currentPatch.getAmenityBlock() == null) {
-//                    securityFieldPatches.add(currentPatch);
-//                }
-//            }
-            securityFieldPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol));
-            securityFieldPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol));
-            securityFieldPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
+            List<Patch> receptionQueuePatches = new ArrayList<>();
+            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol));
+            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol));
             for (int i = origPatchRow - 2; i > Main.simulator.getEnvironment().getGates().get(1).getAmenityBlocks().get(0).getPatch().getMatrixPosition().getRow(); i--) {
                 Patch currentPatch = Main.simulator.getEnvironment().getPatch(i, origPatchCol);
                 if (currentPatch.getQueueingPatchField() == null && currentPatch.getAmenityBlock() == null) {
 //                    System.out.println(currentPatch);
-                    securityFieldPatches.add(currentPatch);
+                    receptionQueuePatches.add(currentPatch);
                 }
             }
-            Main.simulator.getEnvironment().getReceptionQueues().add(ReceptionQueue.receptionQueueFactory.create(securityFieldPatches, receptionTableToAdd, 1));
+            Main.simulator.getEnvironment().getReceptionQueues().add(ReceptionQueue.receptionQueueFactory.create(receptionQueuePatches, receptionTableToAdd, 1));
         }
     }
 

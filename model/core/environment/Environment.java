@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public abstract class Environment extends BaseObject implements Serializable {
+public class Environment extends BaseObject implements Serializable {
 
     // VARIABLES
 
@@ -46,6 +46,7 @@ public abstract class Environment extends BaseObject implements Serializable {
     private final List<Reception> receptions;
     private final List<ReceptionQueue> receptionQueues;
     private final List<DirectorRoom> directorRooms;
+    private final List<BreakArea> breakAreas;
 
 
 
@@ -143,6 +144,7 @@ public abstract class Environment extends BaseObject implements Serializable {
         this.receptions = Collections.synchronizedList(new ArrayList<>());
         this.receptionQueues = Collections.synchronizedList(new ArrayList<>());
         this.directorRooms = Collections.synchronizedList(new ArrayList<>());
+        this.breakAreas = Collections.synchronizedList(new ArrayList<>());
 
         // Amenities
         this.amenityPatchSet = Collections.synchronizedSortedSet(new TreeSet<>());
@@ -269,24 +271,24 @@ public abstract class Environment extends BaseObject implements Serializable {
 
     // METHODS: AGENTS
 
-//    public CopyOnWriteArrayList<Agent> getMovableAgents() {
-//        CopyOnWriteArrayList<Agent> movable = new CopyOnWriteArrayList<>();
-//        for (Agent agent: getAgents()){
-//            if (agent.getAgentMovement() != null)
-//                movable.add(agent);
-//        }
-//        return movable;
-//    }
+    public CopyOnWriteArrayList<Agent> getMovableAgents() {
+        CopyOnWriteArrayList<Agent> movable = new CopyOnWriteArrayList<>();
+        for (Agent agent: getAgents()){
+            if (agent.getAgentMovement() != null)
+                movable.add(agent);
+        }
+        return movable;
+    }
 
-//    public CopyOnWriteArrayList<Agent> getUnspawnedWorkingAgents() {
-//        CopyOnWriteArrayList<Agent> unspawned = new CopyOnWriteArrayList<>();
-//        ArrayList<Type> working = new ArrayList<>(Arrays.asList(Type.BOSS, Type.MANAGER, Type.BUSINESS, Type.RESEARCHER, Type.TECHNICAL, Type.SECRETARY));
-//        for (Agent agent: getAgents()){
-//            if (agent.getAgentMovement() == null && working.contains(agent.getType()))
-//                unspawned.add(agent);
-//        }
-//        return unspawned;
-//    }
+    public CopyOnWriteArrayList<Agent> getUnspawnedWorkingAgents() {
+        CopyOnWriteArrayList<Agent> unspawned = new CopyOnWriteArrayList<>();
+        ArrayList<Type> working = new ArrayList<>(Arrays.asList(Type.DIRECTOR, Type.FACULTY, Type.STUDENT));
+        for (Agent agent: getAgents()){
+            if (agent.getAgentMovement() == null && working.contains(agent.getType()))
+                unspawned.add(agent);
+        }
+        return unspawned;
+    }
 
 
     // MIGHT NOT BE NEEDED
@@ -337,17 +339,30 @@ public abstract class Environment extends BaseObject implements Serializable {
             this.getAgents().add(student_2);
         }
 
-        Agent faculty_3 = Agent.AgentFactory.create(Type.FACULTY, true, 2);
+        Agent faculty_3 = Agent.AgentFactory.create(Type.FACULTY, true, 3);
         this.getAgents().add(faculty_3);
 
         for (int i = 0; i < 4; i++){
-            Agent student_3 = Agent.AgentFactory.create(Type.STUDENT, true, 2);
+            Agent student_3 = Agent.AgentFactory.create(Type.STUDENT, true, 3);
             this.getAgents().add(student_3);
+        }
+
+        Agent faculty_4 = Agent.AgentFactory.create(Type.FACULTY, true, 4);
+        this.getAgents().add(faculty_4);
+
+        for (int i = 0; i < 4; i++){
+            Agent student_4 = Agent.AgentFactory.create(Type.STUDENT, true, 4);
+            this.getAgents().add(student_4);
         }
 
         for (int i = 0; i < 4; i++){
             Agent other_students = Agent.AgentFactory.create(Type.STUDENT, true, 0);
             this.getAgents().add(other_students);
+        }
+
+        for (int i = 0; i < 2; i++){
+            Agent other_faculty = Agent.AgentFactory.create(Type.FACULTY, true, 0);
+            this.getAgents().add(other_faculty);
         }
 
     }
@@ -663,7 +678,7 @@ public abstract class Environment extends BaseObject implements Serializable {
                             case CLOSE_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_STATION -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GO_TO_FACULTY_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
-                            case GO_TO_DIRECTOR_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 20, 30)));
+                            case GO_TO_DIRECTOR_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 20, 80)));
                             case GO_TO_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case ASK_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_STUDENT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
@@ -948,6 +963,7 @@ public abstract class Environment extends BaseObject implements Serializable {
                             case CLOSE_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_STATION -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_FACULTY_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case GO_TO_DIRECTOR_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case ASK_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_STUDENT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -1078,6 +1094,9 @@ public abstract class Environment extends BaseObject implements Serializable {
     }
     public List<DirectorRoom> getDirectorRooms() {
         return directorRooms;
+    }
+    public List<BreakArea> getBreakAreas() {
+        return breakAreas;
     }
     public List<Wall> getWalls() {
         return walls;

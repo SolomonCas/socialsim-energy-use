@@ -287,11 +287,10 @@ public class ScreenController extends Controller {
     
     // METHODS: SIMULATE
 
-    public void initialize(Environment environment) {
+    public void initializeEnvironment(Environment environment) {
         GraphicsController.tileSize = backgroundCanvas.getHeight() / Main.simulator.getEnvironment().getRows();
         mapEnvironment();
-//        Main.simulator.spawnInitialAgents(environment);
-        environment.configureDefaultIOS();
+        Main.simulator.spawnInitialAgents(environment);
         drawInterface();
     }
 
@@ -676,6 +675,15 @@ public class ScreenController extends Controller {
             }
         }
         Main.simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(openAreaPatches4, 4));
+
+        // Break Area
+        List<Patch> breakAreaPatches = new ArrayList<>();
+        for (int i = 38; i < 48; i++) {
+            for (int j = 92; j < 95; j++) {
+                breakAreaPatches.add(environment.getPatch(i, j));
+            }
+        }
+        Main.simulator.getEnvironment().getBreakAreas().add(BreakArea.breakAreaFactory.create(breakAreaPatches, 1));
 
 
         // Staff Area Top
@@ -1665,7 +1673,7 @@ public class ScreenController extends Controller {
         if (validateParameters()) {
             Environment environment = Main.simulator.getEnvironment();
             this.configureParameters(environment);
-            initialize(environment);
+            initializeEnvironment(environment);
             environment.convertIOSToChances();
             setElements();
             playButton.setDisable(false);
