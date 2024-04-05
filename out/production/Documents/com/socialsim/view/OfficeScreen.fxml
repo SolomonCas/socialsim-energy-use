@@ -193,6 +193,30 @@
                                 </AnchorPane>
                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                     <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Aircon Interactions" />
+                                        <Label fx:id="currentAirconInteractionCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Light Interactions" />
+                                        <Label fx:id="currentLightInteractionCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Fridge Interactions" />
+                                        <Label fx:id="currentFridgeInteractionCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
+                                        <Label prefHeight="26.0" prefWidth="150.0" text="Current Water Dispenser Interactions" />
+                                        <Label fx:id="currentWaterDispenserInteractionCount" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <children>
                                         <Label prefHeight="26.0" prefWidth="150.0" text="Average Nonverbal Duration" />
                                         <Label fx:id="averageNonverbalDuration" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                     </children>

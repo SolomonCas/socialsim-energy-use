@@ -61,6 +61,12 @@ public class ScreenController extends Controller {
     @FXML private Label currentMaintenanceCount;
     @FXML private Label currentGuardCount;
 
+    // Current Interaction With Appliance Count
+    @FXML private Label currentAirconInteractionCount;
+    @FXML private Label currentLightInteractionCount;
+    @FXML private Label currentFridgeInteractionCount;
+    @FXML private Label currentWaterDispenserInteractionCount;
+
     // Label: Current Interaction Count
     @FXML private Label currentNonverbalCount;
     @FXML private Label currentCooperativeCount;
@@ -150,16 +156,12 @@ public class ScreenController extends Controller {
         environment.setExchangeStdDev(Integer.parseInt(exchangeStdDev.getText()));
         environment.setFieldOfView(Integer.parseInt(fieldOfView.getText()));
 
-
-
         // Current Agent Count Per Type
         currentDirectorCount.setText(String.valueOf(Simulator.currentDirectorCount));
         currentFacultyCount.setText(String.valueOf(Simulator.currentFacultyCount));
         currentStudentCount.setText(String.valueOf(Simulator.currentStudentCount));
         currentMaintenanceCount.setText(String.valueOf(Simulator.currentMaintenanceCount));
         currentGuardCount.setText(String.valueOf(Simulator.currentGuardCount));
-
-
 
         currentNonverbalCount.setText(String.valueOf(Simulator.currentNonverbalCount));
         currentCooperativeCount.setText(String.valueOf(Simulator.currentCooperativeCount));
@@ -168,7 +170,11 @@ public class ScreenController extends Controller {
         averageCooperativeDuration.setText(String.valueOf(Simulator.averageCooperativeDuration));
         averageExchangeDuration.setText(String.valueOf(Simulator.averageExchangeDuration));
 
-
+        // Current Appliance Interaction Count
+        currentAirconInteractionCount.setText(String.valueOf(Simulator.currentAirconInteractionCount));
+        currentLightInteractionCount.setText(String.valueOf(Simulator.currentLightInteractionCount));
+        currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
+        currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
 
         currentTeam1Count.setText(String.valueOf(Simulator.currentTeam1Count));
         currentTeam2Count.setText(String.valueOf(Simulator.currentTeam2Count));
@@ -1542,6 +1548,12 @@ public class ScreenController extends Controller {
         currentNonverbalCount.setText(String.valueOf(Simulator.currentNonverbalCount));
         currentCooperativeCount.setText(String.valueOf(Simulator.currentCooperativeCount));
         currentExchangeCount.setText(String.valueOf(Simulator.currentExchangeCount));
+
+        // Current Appliance Interaction Count
+        currentAirconInteractionCount.setText(String.valueOf(Simulator.currentAirconInteractionCount));
+        currentLightInteractionCount.setText(String.valueOf(Simulator.currentLightInteractionCount));
+        currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
+        currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
 
 
         // Average Interaction Duration
