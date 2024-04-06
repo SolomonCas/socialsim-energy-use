@@ -349,6 +349,10 @@ public class GraphicsController extends Controller {
                                 CURRENT_URL = AGENT_SPRITES3;
                             }
 
+                            System.out.println("current url" + CURRENT_URL);
+                            System.out.println("AGENT GRAPHIC LOCATION X = "+ agentGraphicLocation.getSourceX() + " Y = "+ agentGraphicLocation.getSourceY());
+                            System.out.println("Patch " +patch);
+
                             foregroundGraphicsContext.drawImage(
                                     CURRENT_URL,
                                     agentGraphicLocation.getSourceX(), agentGraphicLocation.getSourceY(),

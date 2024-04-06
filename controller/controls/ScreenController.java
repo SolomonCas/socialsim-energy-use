@@ -771,11 +771,7 @@ public class ScreenController extends Controller {
         }
         Main.simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(execDirectorOfficeAreaPatches, 1));
 
-
-
         /** AMENITIES **/
-
-
 
         // Pantry Down Cabinets
         List<Patch> cabinetDownPatches = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.socialsim.model.core.agent;
 
+import com.socialsim.controller.Main;
 import com.socialsim.model.core.agent.pathfinding.AgentPath;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
@@ -827,15 +828,15 @@ public class AgentMovement {
             if (newX < 0) {
                 newX = 0.0;
             }
-            else if (newX > 120 - 1) {
-                newX = 120 - 0.5;
+            else if (newX > Main.simulator.getEnvironment().getColumns() - 1) {
+                newX = Main.simulator.getEnvironment().getColumns() - 0.5;
             }
 
             if (newY < 0) {
                 newY = 0.0;
             }
-            else if (newY > 60 - 1) {
-                newY = 60 - 0.5;
+            else if (newY > Main.simulator.getEnvironment().getRows()- 1) {
+                newY = Main.simulator.getEnvironment().getRows() - 0.5;
             }
 
             return new Coordinates(newX, newY);

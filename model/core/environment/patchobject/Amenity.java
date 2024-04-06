@@ -2,6 +2,7 @@ package com.socialsim.model.core.environment.patchobject;
 
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.BaseObject;
+import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,20 +24,20 @@ public abstract class Amenity extends PatchObject {
             for (AmenityBlock amenityBlock : this.amenityBlocks) {
                 amenityBlock.setParent(this);
                 amenityBlock.getPatch().setAmenityBlock(amenityBlock);
-//                if (amenityBlock.getParent().getClass() != Door.class
-//                        && amenityBlock.getParent().getClass() != com.socialsim.model.core.environment.patchobject.passable.goal.Door.class
-//                        && amenityBlock.getParent().getClass() != com.socialsim.model.core.environment.patchobject.passable.goal.Chair.class
-//                        && amenityBlock.getParent().getClass() != com.socialsim.model.core.environment.patchobject.passable.goal.Table.class
-//                        && amenityBlock.getParent().getClass() != com.socialsim.model.core.environment.patchobject.passable.goal.MeetingDesk.class
-//                        && amenityBlock.getParent().getClass() != com.socialsim.model.core.environment.patchobject.passable.goal.Toilet.class
-//                        && amenityBlock.getParent().getClass() != com.socialsim.model.core.environment.patchobject.passable.goal.Sink.class
-//                        && amenityBlock.getParent().getClass() != Security.class) {
-//                    amenityBlock.getPatch().signalAddAmenityBlock();
-//                }
-//
-//                if (amenityBlock.isAttractor()) {
-//                    this.attractors.add(amenityBlock);
-//                }
+                if (amenityBlock.getParent().getClass() != Door.class
+                        && amenityBlock.getParent().getClass() != Door.class
+                        && amenityBlock.getParent().getClass() != Chair.class
+                        && amenityBlock.getParent().getClass() != Table.class
+                        && amenityBlock.getParent().getClass() != MeetingDesk.class
+                        && amenityBlock.getParent().getClass() != Toilet.class
+                        && amenityBlock.getParent().getClass() != Sink.class
+                        && amenityBlock.getParent().getClass() != ReceptionTable.class) {
+                    amenityBlock.getPatch().signalAddAmenityBlock();
+                }
+
+                if (amenityBlock.isAttractor()) {
+                    this.attractors.add(amenityBlock);
+                }
             }
         }
         else {

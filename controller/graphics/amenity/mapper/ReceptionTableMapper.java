@@ -43,10 +43,14 @@ public class ReceptionTableMapper extends AmenityMapper {
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
 
             List<Patch> receptionQueuePatches = new ArrayList<>();
-            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol));
+            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 4));
             receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol));
+            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 2));
+            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 3));
+            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 4));
             for (int i = origPatchRow - 2; i > Main.simulator.getEnvironment().getGates().get(1).getAmenityBlocks().get(0).getPatch().getMatrixPosition().getRow(); i--) {
-                Patch currentPatch = Main.simulator.getEnvironment().getPatch(i, origPatchCol);
+                Patch currentPatch = Main.simulator.getEnvironment().getPatch(i, origPatchCol + 4);
                 if (currentPatch.getQueueingPatchField() == null && currentPatch.getAmenityBlock() == null) {
 //                    System.out.println(currentPatch);
                     receptionQueuePatches.add(currentPatch);
