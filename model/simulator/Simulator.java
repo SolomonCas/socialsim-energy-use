@@ -74,6 +74,12 @@ public class Simulator {
     public static int currentCooperativeCount = 0;
     public static int currentExchangeCount = 0;
 
+    // Current Power Consumption Interaction Count
+    public static int currentAirconInteractionCount = 0;
+    public static int currentLightInteractionCount = 0;
+    public static int currentFridgeInteractionCount = 0;
+    public static int currentWaterDispenserInteractionCount = 0;
+
 
 
     // Average Interaction Duration
@@ -132,7 +138,11 @@ public class Simulator {
     public static int[] compiledCurrentCooperativeCount;
     public static int[] compiledCurrentExchangeCount;
 
-
+    // Current Power Consumption Interaction Count
+    public static int[] compiledCurrentAirconInteractionCount;
+    public static int[] compiledCurrentLightInteractionCount;
+    public static int[] compiledCurrentFridgeInteractionCount;
+    public static int[] compiledCurrentWaterDispenserInteractionCount;
 
     // Average Interaction Duration
     public static float[] compiledAverageNonverbalDuration;
@@ -404,13 +414,18 @@ public class Simulator {
         compiledCurrentStudentCount[(int) currentTick] = currentStudentCount;
         compiledCurrentMaintenanceCount[(int) currentTick] = currentMaintenanceCount;
         compiledCurrentGuardCount[(int) currentTick] = currentGuardCount;
-        
+
 
         // Current Interaction Count
         compiledCurrentNonverbalCount[(int) currentTick] = currentNonverbalCount;
         compiledCurrentCooperativeCount[(int) currentTick] = currentCooperativeCount;
         compiledCurrentExchangeCount[(int) currentTick] = currentExchangeCount;
 
+        // Current Power Consumption Interaction Count
+        compiledCurrentAirconInteractionCount[(int) currentTick] = currentNonverbalCount;
+        compiledCurrentLightInteractionCount[(int) currentTick] = currentCooperativeCount;
+        compiledCurrentFridgeInteractionCount[(int) currentTick] = currentExchangeCount;
+        compiledCurrentWaterDispenserInteractionCount[(int) currentTick] = currentExchangeCount;
 
         // Average Interaction Duration
         compiledAverageNonverbalDuration[(int) currentTick] = averageNonverbalDuration;
@@ -423,7 +438,7 @@ public class Simulator {
         compiledCurrentTeam2Count[(int) currentTick] = currentTeam2Count;
         compiledCurrentTeam3Count[(int) currentTick] = currentTeam3Count;
         compiledCurrentTeam4Count[(int) currentTick] = currentTeam4Count;
-        
+
 
         // Current Director to ____ Interaction Count
         compiledCurrentDirectorFacultyCount[(int) currentTick] = currentDirectorFacultyCount;
@@ -2072,7 +2087,11 @@ public class Simulator {
         currentCooperativeCount = 0;
         currentExchangeCount = 0;
 
-
+        // Current Power Consumption Interaction Count
+        currentAirconInteractionCount = 0;
+        currentLightInteractionCount = 0;
+        currentFridgeInteractionCount = 0;
+        currentWaterDispenserInteractionCount = 0;
 
         // Average Interaction Duration
         averageNonverbalDuration = 0;
@@ -2129,6 +2148,11 @@ public class Simulator {
         compiledCurrentCooperativeCount = new int[6481];
         compiledCurrentExchangeCount = new int[6481];
 
+        // Current Power Consumption Interaction Count
+        compiledCurrentAirconInteractionCount = new int[6481];
+        compiledCurrentLightInteractionCount = new int[6481];
+        compiledCurrentFridgeInteractionCount = new int[6481];
+        compiledCurrentWaterDispenserInteractionCount = new int[6481];
 
 
         // Average Interaction Duration
@@ -2198,6 +2222,14 @@ public class Simulator {
         sb.append(",");
         sb.append("Current Exchange Count");
         sb.append(",");
+        sb.append("Current Aircon Interaction Count");
+        sb.append(",");
+        sb.append("Current Light Interaction Count");
+        sb.append(",");
+        sb.append("Current Fridge Interaction Count");
+        sb.append(",");
+        sb.append("Current Water Dispenser Interaction Count");
+        sb.append(",");
         sb.append("Average Nonverbal Duration");
         sb.append(",");
         sb.append("Average Cooperative Duration");
@@ -2256,6 +2288,14 @@ public class Simulator {
             sb.append(compiledCurrentCooperativeCount[i]);
             sb.append(",");
             sb.append(compiledCurrentExchangeCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentAirconInteractionCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentLightInteractionCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentFridgeInteractionCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentWaterDispenserInteractionCount[i]);
             sb.append(",");
             sb.append(compiledAverageNonverbalDuration[i]);
             sb.append(",");
