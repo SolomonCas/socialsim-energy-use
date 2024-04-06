@@ -297,6 +297,16 @@ public class ScreenController extends Controller {
     public void mapEnvironment() {
         Environment environment = Main.simulator.getEnvironment();
 
+        List<Patch> floorPatches = new ArrayList<>();
+
+        for (int i = 0; i < environment.getRows(); i++) {
+            for (int j = 0; j < environment.getColumns(); j++) {
+                floorPatches.add(environment.getPatch(i, j));
+            }
+        }
+
+        Main.simulator.getEnvironment().getElevLobbies().add(ElevLobby.elevLobbyFactory.create(floorPatches, 1));
+
         List<Patch> wallPatches = new ArrayList<>();
 
         /** WALL PATCHES **/

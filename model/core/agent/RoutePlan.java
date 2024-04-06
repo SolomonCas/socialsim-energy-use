@@ -115,10 +115,10 @@ public class RoutePlan {
             setFromBathPM(false);
             setAtDesk(false);
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_DIRECTOR_ROOM, environment.getChairs().getLast().getAttractors().getFirst().getPatch()));
@@ -146,10 +146,10 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentCubicle(assignedCubicle);
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION, assignedCubicle.getAttractors().get(0).getPatch()));
@@ -176,10 +176,10 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentCubicle(assignedCubicle);
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION, assignedCubicle.getAttractors().get(0).getPatch()));

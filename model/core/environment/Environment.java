@@ -47,6 +47,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<ReceptionQueue> receptionQueues;
     private final List<DirectorRoom> directorRooms;
     private final List<BreakArea> breakAreas;
+    private final List<ElevLobby> elevLobbies;
 
 
 
@@ -145,6 +146,7 @@ public class Environment extends BaseObject implements Serializable {
         this.receptionQueues = Collections.synchronizedList(new ArrayList<>());
         this.directorRooms = Collections.synchronizedList(new ArrayList<>());
         this.breakAreas = Collections.synchronizedList(new ArrayList<>());
+        this.elevLobbies = Collections.synchronizedList(new ArrayList<>());
 
         // Amenities
         this.amenityPatchSet = Collections.synchronizedSortedSet(new TreeSet<>());
@@ -1097,6 +1099,9 @@ public class Environment extends BaseObject implements Serializable {
     }
     public List<BreakArea> getBreakAreas() {
         return breakAreas;
+    }
+    public List<ElevLobby> getElevLobbies() {
+        return elevLobbies;
     }
     public List<Wall> getWalls() {
         return walls;

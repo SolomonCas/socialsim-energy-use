@@ -222,7 +222,8 @@ public class GraphicsController extends Controller {
 
 
                 // BATHROOM
-                } else if (patchPatchField.getClass() == Bathroom.class) {
+                }
+                else if (patchPatchField.getClass() == Bathroom.class) {
 
                     // FEMALE
                     if (patchNumPair.getValue() == 1) {
@@ -247,7 +248,7 @@ public class GraphicsController extends Controller {
 
                 } // ELEVATOR LOBBY
                 else if (patchPatchField.getClass() == ElevLobby.class) {
-                    patchColor = Color.rgb(255, 238, 204);
+                    patchColor = Color.rgb(244, 244, 244);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
 
@@ -330,7 +331,7 @@ public class GraphicsController extends Controller {
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }
 
-
+                System.out.println("background: " + background);
                 // INSERT AGENT CODE
                 if (!background) {
                     if (!patch.getAgents().isEmpty()) {
@@ -363,6 +364,7 @@ public class GraphicsController extends Controller {
                         }
                     }
                 }
+
             }
         }
     }

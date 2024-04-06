@@ -257,17 +257,18 @@ public class Simulator {
     /** Agents **/
 
     private void spawnAgent(Environment environment, long currentTick) {
-        Gate gate = environment.getGates().get(2);;
-//        Gate gate1 = environment.getGates().get(0);
-//        Gate gate2 = environment.getGates().get(1);
-//        Gate gate3 = environment.getGates().get(2);
+//        Gate gate = environment.getGates().get(2);
+        Gate gate = null;
+        Gate gate1 = environment.getGates().get(0);
+        Gate gate2 = environment.getGates().get(1);
+        Gate gate3 = environment.getGates().get(2);
 
-//        int gateNum = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(3);
-//        switch (gateNum) {
-//            case 0 -> gate = gate1;
-//            case 1 -> gate = gate2;
-//            case 2 -> gate = gate3;
-//        }
+        int gateNum = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(3);
+        switch (gateNum) {
+            case 0 -> gate = gate1;
+            case 1 -> gate = gate2;
+            case 2 -> gate = gate3;
+        }
         
         Agent agent = null;
 
@@ -276,7 +277,7 @@ public class Simulator {
             int spawnChance = (int) gate.getChancePerTick();
             int CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
 
-            if (CHANCE > spawnChance) {
+//            if (CHANCE > spawnChance) {
                 if (environment.getUnspawnedWorkingAgents().size() > 0){
                     agent = environment.getUnspawnedWorkingAgents().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getUnspawnedWorkingAgents().size()));
                     int team = agent.getTeam();
@@ -375,14 +376,14 @@ public class Simulator {
                         Agent.agentCount++;
                     }
                 }
-            }
+//            }
         }
     }
 
     public void spawnInitialAgents(Environment environment) {
         environment.createInitialAgentDemographics();
         Agent janitor = environment.getAgents().get(0);
-        janitor.setAgentMovement(new AgentMovement(environment.getPatch(53,95), janitor, 1.27, environment.getPatch(53,95).getPatchCenterCoordinates(), -1, 0, null));
+        janitor.setAgentMovement(new AgentMovement(environment.getPatch(60,95), janitor, 1.27, environment.getPatch(60,95).getPatchCenterCoordinates(), -1, 0, null));
         environment.getAgentPatchSet().add(janitor.getAgentMovement().getCurrentPatch());
         Agent.maintenanceCount++;
         Agent.agentCount++;
