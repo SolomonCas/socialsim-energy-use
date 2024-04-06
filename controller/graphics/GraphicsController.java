@@ -331,7 +331,6 @@ public class GraphicsController extends Controller {
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }
 
-                System.out.println("background: " + background);
                 // INSERT AGENT CODE
                 if (!background) {
                     if (!patch.getAgents().isEmpty()) {
