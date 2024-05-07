@@ -16,17 +16,20 @@ public class Cubicle extends Goal {
     static {
         cubicleFactory = new Cubicle.CubicleFactory();
     }
+    private final boolean withAppliance;
 
     /***** CONSTRUCTOR *****/
-    protected Cubicle(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+    protected Cubicle(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, boolean withAppliance) {
         super(amenityBlocks, enabled);
-
-        this.cubicleGraphic = new CubicleGraphic(this, facing);
+        this.withAppliance = withAppliance;
+        this.cubicleGraphic = new CubicleGraphic(this, facing, withAppliance);
     }
 
-    /***** METHODS *****/
-
     /***** GETTERS *****/
+    public boolean withAppliance() {
+        return withAppliance;
+    }
+
 
     /***** OVERRIDE *****/
     @Override
@@ -65,8 +68,8 @@ public class Cubicle extends Goal {
     }
 
     public static class CubicleFactory extends GoalFactory {
-        public static Cubicle create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
-            return new Cubicle(amenityBlocks, enabled, facing);
+        public static Cubicle create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, boolean withAppliance) {
+            return new Cubicle(amenityBlocks, enabled, facing, withAppliance);
         }
     }
 }

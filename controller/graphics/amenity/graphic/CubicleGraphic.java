@@ -13,14 +13,24 @@ public class CubicleGraphic extends AmenityGraphic {
     private static final int NORMAL_COLUMN_OFFSET = 0;
 
     /***** CONSTRUCTOR *****/
-    public CubicleGraphic(Cubicle cubicle, String facing) {
+    public CubicleGraphic(Cubicle cubicle, String facing, boolean withAppliance) {
         super(cubicle, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
 
-        switch (facing) {
-            case "UP" -> this.graphicIndex = 0;
-            case "DOWN" -> this.graphicIndex = 1;
-            case "LEFT" -> this.graphicIndex = 2;
-            case "RIGHT" -> this.graphicIndex = 3;
+        if (withAppliance) {
+            switch (facing) {
+                case "UP" -> this.graphicIndex = 0;
+                case "DOWN" -> this.graphicIndex = 1;
+                case "LEFT" -> this.graphicIndex = 2;
+                case "RIGHT" -> this.graphicIndex = 3;
+            }
+        }
+        else {
+            switch (facing) {
+                case "UP" -> this.graphicIndex = 4;
+                case "DOWN" -> this.graphicIndex = 5;
+                case "LEFT" -> this.graphicIndex = 6;
+                case "RIGHT" -> this.graphicIndex = 7;
+            }
         }
     }
 
