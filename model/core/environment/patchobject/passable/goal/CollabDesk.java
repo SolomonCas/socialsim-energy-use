@@ -6,6 +6,8 @@ import com.socialsim.controller.graphics.amenity.graphic.CollabDeskGraphic;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CollabDesk extends Goal {
@@ -13,6 +15,8 @@ public class CollabDesk extends Goal {
     /***** VARIABLES *****/
     public static final CollabDesk.CollabDeskFactory collabDeskFactory;
     private final CollabDeskGraphic collabDeskGraphic;
+
+    private final List<CollabChair> collabChairs;
 
     static {
         collabDeskFactory = new CollabDesk.CollabDeskFactory();
@@ -22,7 +26,14 @@ public class CollabDesk extends Goal {
     protected CollabDesk(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
 
+        this.collabChairs = Collections.synchronizedList(new ArrayList<>());
+
         this.collabDeskGraphic = new CollabDeskGraphic(this, facing);
+    }
+
+    /***** GETTER *****/
+    public List<CollabChair> getCollabChairs() {
+        return collabChairs;
     }
 
     /***** OVERRIDE *****/

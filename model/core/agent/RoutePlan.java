@@ -1,5 +1,6 @@
 package com.socialsim.model.core.agent;
 
+import com.socialsim.controller.Main;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
@@ -54,29 +55,43 @@ public class RoutePlan {
         this.routePlan = new ArrayList<>();
         ArrayList<Action> actions;
 
-        if(meetingTimes.size() == 0){
+        if(meetingTimes.isEmpty()){
             long start = 0, end = 0;
 
-            start = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(600 - 300 + 1) + 300;
-            end = (Simulator.RANDOM_NUMBER_GENERATOR.nextInt(1440 - 720 + 1) + 720) + start;
+            start = /*Simulator.RANDOM_NUMBER_GENERATOR.nextInt(600 - 300 + 1) +*/ 300;
+            end = (/*Simulator.RANDOM_NUMBER_GENERATOR.nextInt(1440 - 720 + 1) +*/ 720) + start;
 
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,1L)));
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,2L)));
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
+            for (int i = 0; i < Main.simulator.getEnvironment().getMeetingRooms().size(); i++) {
+                meetingTimes.add(new ArrayList<Long>(Arrays.asList(start, end, (long) i + 1)));
+            }
 
-            start = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(2690 - 2550 + 1) + 2550;
-            end = (Simulator.RANDOM_NUMBER_GENERATOR.nextInt(1440 - 720 + 1) + 720) + start;
+            start = /*Simulator.RANDOM_NUMBER_GENERATOR.nextInt(2690 - 2550 + 1) +*/ 2550;
+            end = (/*Simulator.RANDOM_NUMBER_GENERATOR.nextInt(1440 - 720 + 1) + */720) + start;
 
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,1L)));
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,2L)));
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
+            for (int i = 0; i < Main.simulator.getEnvironment().getMeetingRooms().size(); i++) {
+                meetingTimes.add(new ArrayList<Long>(Arrays.asList(start, end, (long) i + 1)));
+            }
 
             start = end + 60;
-            end = (Simulator.RANDOM_NUMBER_GENERATOR.nextInt(1440 - 720 + 1) + 720) + start;
+            end = (/*Simulator.RANDOM_NUMBER_GENERATOR.nextInt(1440 - 720 + 1) + */720) + start;
 
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,1L)));
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,2L)));
-            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
+            for (int i = 0; i < Main.simulator.getEnvironment().getMeetingRooms().size(); i++) {
+                meetingTimes.add(new ArrayList<Long>(Arrays.asList(start, end, (long) i + 1)));
+            }
+
+
+
+
+//
+//            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,1L)));
+//            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,2L)));
+//            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
+//
+
+//
+//            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,1L)));
+//            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,2L)));
+//            meetingTimes.add(new ArrayList<Long>(Arrays.asList(start,end,3L)));
 
             Collections.shuffle(meetingTimes, new Random());
         }
@@ -173,6 +188,7 @@ public class RoutePlan {
         else if (agent.getPersona() == Agent.Persona.INT_STUDENT || agent.getPersona() == Agent.Persona.EXT_STUDENT) {
             setFromBathAM(false);
             setFromBathPM(false);
+            setCOLLABORATE_COUNT(2);
             setAtDesk(false);
             setAgentCubicle(assignedCubicle);
 

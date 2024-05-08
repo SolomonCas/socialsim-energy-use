@@ -592,7 +592,6 @@ public class AgentMovement {
     public boolean chooseCollaborationChair(){
         if(this.goalAmenity == null){
             List<Amenity> temp = new ArrayList<>();
-            int start1 = 0, start2 = 0;
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
             int count = 1;
             int table = -1;
@@ -605,7 +604,7 @@ public class AgentMovement {
                     break;
                 }
                 count++;
-                if(count>5){
+                if(count>Main.simulator.getEnvironment().getCollabDesks().size()){
                     count = 0;
                     break;
                 }
@@ -620,86 +619,15 @@ public class AgentMovement {
                         amenity.getAttractors().get(0).getPatch().setTeam(this.team);
                         break;
                     }
-                    if(count == 5){
+                    if(count == Main.simulator.getEnvironment().getCollabDesks().size()){
                         break;
                     }
                 }
             }
 
             if (table != -1) {
-                switch (table) {
-                    case 1 -> {
-                        start1 = 0;
-                        start2 = 3;
-                    }
-                    case 2 -> {
-                        start1 = 6;
-                        start2 = 9;
-                    }
-                    case 3 -> {
-                        start1 = 12;
-                        start2 = 15;
-                    }
-                    case 4 -> {
-                        start1 = 18;
-                        start2 = 21;
-                    }
-                    case 5 -> {
-                        start1 = 48;
-                        start2 = 51;
-                    }
-                    case 6 -> {
-                        start1 = 54;
-                        start2 = 57;
-                    }
-                    case 7 -> {
-                        start1 = 60;
-                        start2 = 63;
-                    }
-                    case 8 -> {
-                        start1 = 66;
-                        start2 = 69;
-                    }
-                    case 9 -> {
-                        start1 = 72;
-                        start2 = 75;
-                    }
-                    case 10 -> {
-                        start1 = 78;
-                        start2 = 81;
-                    }
-                    case 11 -> {
-                        start1 = 84;
-                        start2 = 87;
-                    }
-                    case 12 -> {
-                        start1 = 90;
-                        start2 = 93;
-                    }
-                    case 13 -> {
-                        start1 = 97;
-                        start2 = 100;
-                    }
-                    case 14 -> {
-                        start1 = 103;
-                        start2 = 107;
-                    }
-                    case 15 -> {
-                        start1 = 110;
-                        start2 = 113;
-                    }
-                    case 16 -> {
-                        start1 = 116;
-                        start2 = 119;
-                    }
-                }
 
-                for (int i = start1; i < start1 + 3; i++) {
-                    temp.add(this.environment.getCollabChairs().get(i));
-                }
-                for (int i = start2; i < start2 + 3; i++) {
-                    temp.add(this.environment.getCollabChairs().get(i));
-                }
+                temp.addAll(Main.simulator.getEnvironment().getCollabDesks().get(table - 1).getCollabChairs());
 
                 for (Amenity amenity : temp) {
                     for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
@@ -746,48 +674,11 @@ public class AgentMovement {
         if(this.goalAmenity == null){
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
 
-            int start1, start2;
             List<Amenity> temp = new ArrayList<>();
 
-            if (room == 3) {
-                room = Simulator.rollIntIN(2) + 1;
-            }
-
-            // Large Meeting Room
-            if(room == 1){
-                start1 = 16;
-                start2 = 17;
-//                for(int i = 54; i<58; i++){
-//                    temp.add(this.office.getChairs().get(i));
-//                }
-                temp.add(this.environment.getChairs().get(12));
-                temp.add(this.environment.getChairs().get(13));
-
-                for(int i = start1; i < start1 + 9; i += 2){
-                    temp.add(this.environment.getChairs().get(i));
-                }
-
-                for(int i = start2; i < start2 + 9; i += 2){
-                    temp.add(this.environment.getChairs().get(i));
-                }
-            }
-            else if(room == 2){ // Small Meeting Room
-                start1 = 26;
-                start2 = 27;
-//                for(int i = 58; i<62; i++){
-//                    temp.add(this.office.getChairs().get(i));
-//                }
-                temp.add(this.environment.getChairs().get(14));
-                temp.add(this.environment.getChairs().get(15));
-
-                for(int i = start1; i < start1 + 5; i += 2){
-                    temp.add(this.environment.getChairs().get(i));
-                }
-
-                for(int i = start2; i < start2 + 5; i += 2){
-                    temp.add(this.environment.getChairs().get(i));
-                }
-            }
+            System.out.println("Meeting Room Number :" + (room - 1));
+            System.out.println("Number of Meeting Chairs: " + Main.simulator.getEnvironment().getMeetingDesks().get(room - 1).getMeetingChairs().size());
+            temp.addAll(Main.simulator.getEnvironment().getMeetingDesks().get(room - 1).getMeetingChairs());
 
             for (Amenity amenity : temp) {
                 for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {

@@ -18,10 +18,15 @@ public class CollabDeskMapper extends AmenityMapper {
             int origPatchRow = patch.getMatrixPosition().getRow();
             int origPatchCol = patch.getMatrixPosition().getColumn();
 
+            List<Patch> collabChairPatches = new ArrayList<>();
+
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = CollabDesk.CollabDeskBlock.collabDeskBlockFactory;
             Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
+
+            collabChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol));
+            collabChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
 
             if (Objects.equals(facing, "HORIZONTAL")) {
                 for (int i = 1; i < length; i++) {
@@ -29,6 +34,9 @@ public class CollabDeskMapper extends AmenityMapper {
                     Amenity.AmenityBlock amenityBlockBack = amenityBlockFactory.create(patchBack, true, true);
                     amenityBlocks.add(amenityBlockBack);
                     patchBack.setAmenityBlock(amenityBlockBack);
+
+                    collabChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + i));
+                    collabChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + i));
                 }
             }
             else {
@@ -37,19 +45,19 @@ public class CollabDeskMapper extends AmenityMapper {
                     Amenity.AmenityBlock amenityBlockBack = amenityBlockFactory.create(patchBack, true, true);
                     amenityBlocks.add(amenityBlockBack);
                     patchBack.setAmenityBlock(amenityBlockBack);
+
+                    collabChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + i));
+                    collabChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + i));
                 }
 
-//                for (int i = 0; i < 6; i++) {
-//                    Patch patchFront = Main.officeSimulator.getOffice().getPatch(origPatchRow + i, origPatchCol + 1);
-//                    Amenity.AmenityBlock amenityBlockFront = amenityBlockFactory.create(patchFront, true, false);
-//                    amenityBlocks.add(amenityBlockFront);
-//                    patchFront.setAmenityBlock(amenityBlockFront);
-//                }
             }
 
 
             CollabDesk collabDeskToAdd = CollabDesk.CollabDeskFactory.create(amenityBlocks, true, facing);
             Main.simulator.getEnvironment().getCollabDesks().add(collabDeskToAdd);
+            int index = Main.simulator.getEnvironment().getCollabDesks().indexOf(collabDeskToAdd);
+            CollabChairMapper.draw(collabChairPatches, index);
+
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }
     }

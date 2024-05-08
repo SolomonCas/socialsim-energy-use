@@ -32,10 +32,10 @@ public class OfficeGateMapper extends AmenityMapper {
             amenityBlocks.add(amenityBlock3);
             patch3.setAmenityBlock(amenityBlock3);
 
-//            Patch patch4 = Main.simulator.getEnvironment().getPatch(origPatchRow  + 3, origPatchCol);
-//            Amenity.AmenityBlock amenityBlock4 = amenityBlockFactory.create(patch4, true, false);
-//            amenityBlocks.add(amenityBlock4);
-//            patch4.setAmenityBlock(amenityBlock4);
+            Patch patch4 = Main.simulator.getEnvironment().getPatch(origPatchRow  + 3, origPatchCol);
+            Amenity.AmenityBlock amenityBlock4 = amenityBlockFactory.create(patch4, true, false);
+            amenityBlocks.add(amenityBlock4);
+            patch4.setAmenityBlock(amenityBlock4);
 
             Gate officeGateToAdd =Gate.GateFactory.create(amenityBlocks, true, 10, ugMode);
             Main.simulator.getEnvironment().getGates().add(officeGateToAdd);

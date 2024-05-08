@@ -60,7 +60,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<Cabinet> cabinets;
     private final List<Chair> chairs;
     private final List<CollabDesk> collabDesks;
-    private final List<CollabChair> collabChairs;
+//    private final List<CollabChair> collabChairs;
     private final List<Couch> couches;
     private final List<Cubicle> cubicles;
     private final List<Door> doors;
@@ -155,7 +155,7 @@ public class Environment extends BaseObject implements Serializable {
         this.cabinets = Collections.synchronizedList(new ArrayList<>());
         this.chairs = Collections.synchronizedList(new ArrayList<>());
         this.collabDesks = Collections.synchronizedList(new ArrayList<>());
-        this.collabChairs = Collections.synchronizedList(new ArrayList<>());
+//        this.collabChairs = Collections.synchronizedList(new ArrayList<>());
         this.couches = Collections.synchronizedList(new ArrayList<>());
         this.cubicles = Collections.synchronizedList(new ArrayList<>());
         this.doors = Collections.synchronizedList(new ArrayList<>());
@@ -1130,9 +1130,9 @@ public class Environment extends BaseObject implements Serializable {
         return collabDesks;
     }
 
-    public List<CollabChair> getCollabChairs() {
-        return collabChairs;
-    }
+//    public List<CollabChair> getCollabChairs() {
+//        return collabChairs;
+//    }
 
     public List<Couch> getCouches() {
         return couches;

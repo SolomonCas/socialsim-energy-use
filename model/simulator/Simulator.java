@@ -1219,66 +1219,83 @@ public class Simulator {
                                     }
                                 }
                             }
-                            else if ((currentTick < 2060 || (currentTick < 5660 && currentTick > 2520)) && agentMovement.getRoutePlan().getCanUrgent() <= 0) {
-                                double CHANCE = Simulator.roll();
-
-                                if (CHANCE < RoutePlan.BATH_CHANCE) {
-                                    if (currentTick < 2160 && agentMovement.getRoutePlan().getBATH_AM() > 0) {
-                                        agentMovement.getRoutePlan().setFromBathAM(true);
-                                        agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
-                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
-                                        agentMovement.setNextState(agentMovement.getStateIndex());
-                                        agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                        agentMovement.setActionIndex(0);
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                        agentMovement.resetGoal();
+                            else if (agentMovement.getRoutePlan().getCanUrgent() <= 0) {
+                                ArrayList<Agent> agents = environmentInstance.getTeamMembers(agent.getTeam());
+                                for(Agent agent1 : agents) {
+                                    if (agent1.getAgentMovement().getCurrentAction() != null && agent1.getAgentMovement().getCurrentAction().getName() == Action.Name.GO_TO_STATION) {
+                                        agent1.getAgentMovement().setStateIndex(agent1.getAgentMovement().getStateIndex() - 1);
+                                        agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agent1.getAgentMovement().getStateIndex() + 1, agent1.getAgentMovement().getRoutePlan().addUrgentRoute("COLLABORATION", agent));
+                                        agent1.getAgentMovement().setNextState(agent1.getAgentMovement().getStateIndex());
+                                        agent1.getAgentMovement().setStateIndex(agent1.getAgentMovement().getStateIndex() + 1);
+                                        agent1.getAgentMovement().setActionIndex(0);
+                                        agent1.getAgentMovement().setCurrentAction(agent1.getAgentMovement().getCurrentState().getActions().get(agent1.getAgentMovement().getActionIndex()));
+                                        agent1.getAgentMovement().resetGoal();
                                     }
-                                    else if (agentMovement.getRoutePlan().getBATH_PM() > 0) {
-                                        agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
-                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
-                                        agentMovement.setNextState(agentMovement.getStateIndex());
-                                        agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                        agentMovement.setActionIndex(0);
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                        agentMovement.resetGoal();
-                                        agentMovement.getRoutePlan().setFromBathPM(true);
-                                    }
-                                }
-                                else {
-
-
-                                    if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0){
-                                        agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
-                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent));
-                                        agentMovement.setNextState(agentMovement.getStateIndex());
-                                        agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                        agentMovement.setActionIndex(0);
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                        agentMovement.resetGoal();
-                                    }
-
-                                    if ((currentTick < 1660 || (currentTick < 5260 && currentTick > 2520)) &&
-                                            agentMovement.getRoutePlan().getCOLLABORATE_COUNT() > 0 &&
-                                            agentMovement.getRoutePlan().getCanUrgent() <= 0 &&
-                                            CHANCE < agentMovement.getRoutePlan().getCooperate(persona) + RoutePlan.BATH_CHANCE) {
-                                        ArrayList<Agent> agents = environmentInstance.getTeamMembers(agent.getTeam());
-                                        for(Agent agent1 : agents) {
-                                            if (agent1.getAgentMovement().getCurrentAction() != null && agent1.getAgentMovement().getCurrentAction().getName() == Action.Name.GO_TO_STATION) {
-                                                agent1.getAgentMovement().setStateIndex(agent1.getAgentMovement().getStateIndex() - 1);
-                                                agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agent1.getAgentMovement().getStateIndex() + 1, agent1.getAgentMovement().getRoutePlan().addUrgentRoute("COLLABORATION", agent));
-                                                agent1.getAgentMovement().setNextState(agent1.getAgentMovement().getStateIndex());
-                                                agent1.getAgentMovement().setStateIndex(agent1.getAgentMovement().getStateIndex() + 1);
-                                                agent1.getAgentMovement().setActionIndex(0);
-                                                agent1.getAgentMovement().setCurrentAction(agent1.getAgentMovement().getCurrentState().getActions().get(agent1.getAgentMovement().getActionIndex()));
-                                                agent1.getAgentMovement().resetGoal();
-                                            }
-                                            else {
-                                                agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agent1.getAgentMovement().getStateIndex() + 1, agent1.getAgentMovement().getRoutePlan().addUrgentRoute("COLLABORATION", agent));
-                                            }
-                                        }
+                                    else {
+                                        agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agent1.getAgentMovement().getStateIndex() + 1, agent1.getAgentMovement().getRoutePlan().addUrgentRoute("COLLABORATION", agent));
                                     }
                                 }
                             }
+//                            else if ((currentTick < 2060 || (currentTick < 5660 && currentTick > 2520)) && agentMovement.getRoutePlan().getCanUrgent() <= 0) {
+//                                double CHANCE = Simulator.roll();
+//
+//                                if (CHANCE < RoutePlan.BATH_CHANCE) {
+//                                    if (currentTick < 2160 && agentMovement.getRoutePlan().getBATH_AM() > 0) {
+//                                        agentMovement.getRoutePlan().setFromBathAM(true);
+//                                        agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+//                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
+//                                        agentMovement.setNextState(agentMovement.getStateIndex());
+//                                        agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+//                                        agentMovement.setActionIndex(0);
+//                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                        agentMovement.resetGoal();
+//                                    }
+//                                    else if (agentMovement.getRoutePlan().getBATH_PM() > 0) {
+//                                        agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+//                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
+//                                        agentMovement.setNextState(agentMovement.getStateIndex());
+//                                        agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+//                                        agentMovement.setActionIndex(0);
+//                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                        agentMovement.resetGoal();
+//                                        agentMovement.getRoutePlan().setFromBathPM(true);
+//                                    }
+//                                }
+//                                else {
+//
+//
+//                                    if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0){
+//                                        agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+//                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent));
+//                                        agentMovement.setNextState(agentMovement.getStateIndex());
+//                                        agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+//                                        agentMovement.setActionIndex(0);
+//                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                        agentMovement.resetGoal();
+//                                    }
+//
+//                                    if ((currentTick < 1660 || (currentTick < 5260 && currentTick > 2520)) &&
+//                                            agentMovement.getRoutePlan().getCOLLABORATE_COUNT() > 0 &&
+//                                            agentMovement.getRoutePlan().getCanUrgent() <= 0 &&
+//                                            CHANCE < agentMovement.getRoutePlan().getCooperate(persona) + RoutePlan.BATH_CHANCE) {
+//                                        ArrayList<Agent> agents = environmentInstance.getTeamMembers(agent.getTeam());
+//                                        for(Agent agent1 : agents) {
+//                                            if (agent1.getAgentMovement().getCurrentAction() != null && agent1.getAgentMovement().getCurrentAction().getName() == Action.Name.GO_TO_STATION) {
+//                                                agent1.getAgentMovement().setStateIndex(agent1.getAgentMovement().getStateIndex() - 1);
+//                                                agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agent1.getAgentMovement().getStateIndex() + 1, agent1.getAgentMovement().getRoutePlan().addUrgentRoute("COLLABORATION", agent));
+//                                                agent1.getAgentMovement().setNextState(agent1.getAgentMovement().getStateIndex());
+//                                                agent1.getAgentMovement().setStateIndex(agent1.getAgentMovement().getStateIndex() + 1);
+//                                                agent1.getAgentMovement().setActionIndex(0);
+//                                                agent1.getAgentMovement().setCurrentAction(agent1.getAgentMovement().getCurrentState().getActions().get(agent1.getAgentMovement().getActionIndex()));
+//                                                agent1.getAgentMovement().resetGoal();
+//                                            }
+//                                            else {
+//                                                agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agent1.getAgentMovement().getStateIndex() + 1, agent1.getAgentMovement().getRoutePlan().addUrgentRoute("COLLABORATION", agent));
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
                         }
                     }
                     else if (state.getName() == State.Name.NEEDS_COLLAB) {

@@ -534,7 +534,7 @@ public class ScreenController extends Controller {
                 if (i < 58 || i > 59) {
                     researchCenterPatches.add(environment.getPatch(i, j));
                 }
-                else if ((i == 58 || i == 59) && (j < 23 || (j > 24 && j < 42) || j > 43)) {
+                else if (j < 23 || j > 24 && j < 42 || j > 43) {
                     researchCenterPatches.add(environment.getPatch(i, j));
                 }
 
@@ -851,27 +851,27 @@ public class ScreenController extends Controller {
 
 
         // Large Meeting Chairs
-        chairPatches.add(environment.getPatch(62,107));
-        chairPatches.add(environment.getPatch(62,118));
+//        chairPatches.add(environment.getPatch(62,107));
+//        chairPatches.add(environment.getPatch(62,118));
 
 
         // Small Meeting Chairs
-        chairPatches.add(environment.getPatch(16,6));
-        chairPatches.add(environment.getPatch(25,6));
+//        chairPatches.add(environment.getPatch(16,6));
+//        chairPatches.add(environment.getPatch(25,6));
 
 
         // Large Meeting Chairs
-        for (int j = 109; j < 118; j+=2) {
-            chairPatches.add(environment.getPatch(60,j));
-            chairPatches.add(environment.getPatch(65,j));
-        }
+//        for (int j = 109; j < 118; j+=2) {
+//            chairPatches.add(environment.getPatch(60,j));
+//            chairPatches.add(environment.getPatch(65,j));
+//        }
 
 
         // Small Meeting Chairs
-        for (int i = 18; i < 24; i+=2) {
-            chairPatches.add(environment.getPatch(i,5));
-            chairPatches.add(environment.getPatch(i,8));
-        }
+//        for (int i = 18; i < 24; i+=2) {
+//            chairPatches.add(environment.getPatch(i,5));
+//            chairPatches.add(environment.getPatch(i,8));
+//        }
 
 
 
@@ -904,12 +904,12 @@ public class ScreenController extends Controller {
 
 
         // Executive Director Meeting Chairs
-        for (int i = 63; i < 69; i+=2) {
-            chairPatches.add(environment.getPatch(i,143));
-            chairPatches.add(environment.getPatch(i,146));
-        }
-        chairPatches.add(environment.getPatch(61,144));
-        chairPatches.add(environment.getPatch(70,144));
+//        for (int i = 63; i < 69; i+=2) {
+//            chairPatches.add(environment.getPatch(i,143));
+//            chairPatches.add(environment.getPatch(i,146));
+//        }
+//        chairPatches.add(environment.getPatch(61,144));
+//        chairPatches.add(environment.getPatch(70,144));
 
         chairPatches.add(environment.getPatch(73,137));
 
@@ -919,30 +919,30 @@ public class ScreenController extends Controller {
 
 
 
-        // Initialize collabChairPatches
-        List<Patch> collabChairPatches = new ArrayList<>();
-
-
-        // Learning Area 1-4 Chairs
-        for (int i = 17; i < 23; i += 5) {
-            for (int j = 22; j < 80; j += 16) {
-                collabChairPatches.add(environment.getPatch(i,j));
-                collabChairPatches.add(environment.getPatch(i,j + 1));
-                collabChairPatches.add(environment.getPatch(i,j + 2));
-                collabChairPatches.add(environment.getPatch(i + 2,j));
-                collabChairPatches.add(environment.getPatch(i + 2,j + 1));
-                collabChairPatches.add(environment.getPatch(i + 2,j + 2));
-
-                collabChairPatches.add(environment.getPatch(i,j + 8));
-                collabChairPatches.add(environment.getPatch(i,j + 9));
-                collabChairPatches.add(environment.getPatch(i,j + 10));
-                collabChairPatches.add(environment.getPatch(i + 2,j + 8));
-                collabChairPatches.add(environment.getPatch(i + 2,j + 9));
-                collabChairPatches.add(environment.getPatch(i + 2,j + 10));
-            }
-        }
-
-        CollabChairMapper.draw(collabChairPatches);
+//        // Initialize collabChairPatches
+//        List<Patch> collabChairPatches = new ArrayList<>();
+//
+//
+//        // Learning Area 1-4 Chairs
+//        for (int i = 17; i < 23; i += 5) {
+//            for (int j = 22; j < 80; j += 16) {
+//                collabChairPatches.add(environment.getPatch(i,j));
+//                collabChairPatches.add(environment.getPatch(i,j + 1));
+//                collabChairPatches.add(environment.getPatch(i,j + 2));
+//                collabChairPatches.add(environment.getPatch(i + 2,j));
+//                collabChairPatches.add(environment.getPatch(i + 2,j + 1));
+//                collabChairPatches.add(environment.getPatch(i + 2,j + 2));
+//
+//                collabChairPatches.add(environment.getPatch(i,j + 8));
+//                collabChairPatches.add(environment.getPatch(i,j + 9));
+//                collabChairPatches.add(environment.getPatch(i,j + 10));
+//                collabChairPatches.add(environment.getPatch(i + 2,j + 8));
+//                collabChairPatches.add(environment.getPatch(i + 2,j + 9));
+//                collabChairPatches.add(environment.getPatch(i + 2,j + 10));
+//            }
+//        }
+//
+//        CollabChairMapper.draw(collabChairPatches);
 
         List<Patch> learningAreaCollabDeskPatches = new ArrayList<>();
 
@@ -964,11 +964,8 @@ public class ScreenController extends Controller {
 
 
 
-
-
         // Initialize cubicleUpPatches
         List<Patch> cubicleUpPatches = new ArrayList<>();
-
 
 
         // Faculty Cubicle
@@ -978,19 +975,11 @@ public class ScreenController extends Controller {
         cubicleUpPatches.add(environment.getPatch(60,79));
         cubicleUpPatches.add(environment.getPatch(60,77));
 
-
-        // Control Center Cubicle
-        cubicleUpPatches.add(environment.getPatch(23,86));
+        CubicleMapper.draw(cubicleUpPatches, "UP", true);
 
 
-        // Open Area 2 & 4 Cubicle
-        cubicleUpPatches.add(environment.getPatch(39,34));
-        cubicleUpPatches.add(environment.getPatch(39,68));//
-        CubicleMapper.draw(cubicleUpPatches, "UP");
 
         List<Patch> cubicleDownPatches = new ArrayList<>();
-
-
 
         // Faculty Cubicle
         cubicleDownPatches.add(environment.getPatch(58,89));
@@ -1000,20 +989,11 @@ public class ScreenController extends Controller {
         cubicleDownPatches.add(environment.getPatch(58,77));
 
 
-
         // Control Center Cubicle
         cubicleDownPatches.add(environment.getPatch(21,86));
 
 
-        // Open Area 1 & 3 Cubicle
-        cubicleDownPatches.add(environment.getPatch(42,27));
-        cubicleDownPatches.add(environment.getPatch(42,75));//
-
-        CubicleMapper.draw(cubicleDownPatches, "DOWN");
-
-
-
-
+        CubicleMapper.draw(cubicleDownPatches, "DOWN", true);
 
 
 
@@ -1021,39 +1001,81 @@ public class ScreenController extends Controller {
         List<Patch> cubicleLeftPatches = new ArrayList<>();
 
 
+        // Research Center
+        cubicleLeftPatches.add(environment.getPatch(61,54));
+        cubicleLeftPatches.add(environment.getPatch(59,61));
+
+
+        CubicleMapper.draw(cubicleLeftPatches, "LEFT", true);
+
+
+
+        //Initializa cubicleDownWithoutAppliance
+        List<Patch> cubicleDownWithoutAppliancePatches = new ArrayList<>();
+
+
         // Control Center Cubicle
-        cubicleLeftPatches.add(environment.getPatch(19,93));
-        cubicleLeftPatches.add(environment.getPatch(21,93));
-        cubicleLeftPatches.add(environment.getPatch(23,93));
-        cubicleLeftPatches.add(environment.getPatch(25,93));
+        cubicleDownWithoutAppliancePatches.add(environment.getPatch(23,86));
+
+
+        // Open Area 2 & 4 Cubicle
+        cubicleDownWithoutAppliancePatches.add(environment.getPatch(39,34));
+        cubicleDownWithoutAppliancePatches.add(environment.getPatch(39,68));
+
+
+        CubicleMapper.draw(cubicleDownWithoutAppliancePatches, "DOWN", false);
+
+
+
+        // Initialize cubicleUpWithoutAppliance
+        List<Patch> cubicleUpWithoutAppliancePatches = new ArrayList<>();
+
+
+        // Open Area 1 & 3 Cubicle
+        cubicleUpWithoutAppliancePatches.add(environment.getPatch(42,27));
+        cubicleUpWithoutAppliancePatches.add(environment.getPatch(42,75));
+
+
+        CubicleMapper.draw(cubicleUpWithoutAppliancePatches, "UP", false);
+
+
+
+        // Initialize cubicleLeftWithoutAppliancePatches
+        List<Patch> cubicleLeftWithoutAppliancePatches = new ArrayList<>();
+
+
+        // Control Center Cubicle
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(19,93));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(21,93));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(23,93));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(25,93));
 
 
         // Research Area Cubicle
-        cubicleLeftPatches.add(environment.getPatch(57,28));
-        cubicleLeftPatches.add(environment.getPatch(59,28));
-        cubicleLeftPatches.add(environment.getPatch(61,28));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(57,28));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(59,28));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(61,28));
 
-        cubicleLeftPatches.add(environment.getPatch(57,35));
-        cubicleLeftPatches.add(environment.getPatch(59,35));
-        cubicleLeftPatches.add(environment.getPatch(61,35));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(57,35));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(59,35));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(61,35));
 
-        cubicleLeftPatches.add(environment.getPatch(57,47));
-        cubicleLeftPatches.add(environment.getPatch(59,47));
-        cubicleLeftPatches.add(environment.getPatch(61,47));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(57,47));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(59,47));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(61,47));
 
-        cubicleLeftPatches.add(environment.getPatch(57,54));
-        cubicleLeftPatches.add(environment.getPatch(59,54));
-        cubicleLeftPatches.add(environment.getPatch(61,54));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(57,54));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(59,54));
 
-        cubicleLeftPatches.add(environment.getPatch(57,61));
-        cubicleLeftPatches.add(environment.getPatch(59,61));
-        cubicleLeftPatches.add(environment.getPatch(61,61));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(57,61));
 
-        cubicleLeftPatches.add(environment.getPatch(57,69));
-        cubicleLeftPatches.add(environment.getPatch(59,69));
-        cubicleLeftPatches.add(environment.getPatch(61,69));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(61,61));
 
-        CubicleMapper.draw(cubicleLeftPatches, "LEFT");
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(57,69));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(59,69));
+        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(61,69));
+
+        CubicleMapper.draw(cubicleLeftWithoutAppliancePatches, "LEFT", false);
 
         List<Patch> cubicleRightPatches = new ArrayList<>();
         cubicleRightPatches.add(environment.getPatch(57,30));
@@ -1080,7 +1102,7 @@ public class ScreenController extends Controller {
         cubicleRightPatches.add(environment.getPatch(59,71));
         cubicleRightPatches.add(environment.getPatch(61,71));
 
-        CubicleMapper.draw(cubicleRightPatches, "RIGHT");
+        CubicleMapper.draw(cubicleRightPatches, "RIGHT", false);
 
 
 
@@ -1302,8 +1324,7 @@ public class ScreenController extends Controller {
         // Large Meeting Room Desk
         List<Patch> meetingDeskHorizontalPatches = new ArrayList<>();
         meetingDeskHorizontalPatches.add(environment.getPatch(61,108));
-        meetingDeskHorizontalPatches.add(environment.getPatch(63,108));
-        MeetingDeskMapper.draw(meetingDeskHorizontalPatches, "HORIZONTAL", 5);
+        MeetingDeskMapper.draw(meetingDeskHorizontalPatches, "HORIZONTAL", 5, true);
 
         // Small Meeting Room Desk
         List<Patch> meetingDeskVerticalPatches = new ArrayList<>();
@@ -1311,7 +1332,7 @@ public class ScreenController extends Controller {
 
         // Executive Meeting Desk
         meetingDeskVerticalPatches.add(environment.getPatch(62,144));
-        MeetingDeskMapper.draw(meetingDeskVerticalPatches, "VERTICAL", 4);
+        MeetingDeskMapper.draw(meetingDeskVerticalPatches, "VERTICAL", 4, false);
 
         // Executive Director's Office Desk
         List<Patch> horizontalOfficeDeskPatches = new ArrayList<>();

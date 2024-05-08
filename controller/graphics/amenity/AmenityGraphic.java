@@ -35,6 +35,10 @@ public class AmenityGraphic extends Graphic {
         collabChairGraphic.add(new AmenityGraphicLocation(0, 0));
         AMENITY_GRAPHICS.put(CollabChair.class, collabChairGraphic);
 
+        final List<AmenityGraphicLocation> meetingChairGraphic = new ArrayList<>();
+        meetingChairGraphic.add(new AmenityGraphicLocation(0, 0));
+        AMENITY_GRAPHICS.put(MeetingChair.class, meetingChairGraphic);
+
         final List<AmenityGraphicLocation> cabinetGraphic = new ArrayList<>();
         cabinetGraphic.add(new AmenityGraphicLocation(10, 0));
         cabinetGraphic.add(new AmenityGraphicLocation(8, 2));
@@ -50,10 +54,17 @@ public class AmenityGraphic extends Graphic {
         AMENITY_GRAPHICS.put(Couch.class, couchGraphic);
 
         final List<AmenityGraphicLocation> cubicleGraphic = new ArrayList<>();
-        cubicleGraphic.add(new AmenityGraphicLocation(2, 0));
-        cubicleGraphic.add(new AmenityGraphicLocation(2, 2));
-        cubicleGraphic.add(new AmenityGraphicLocation(14, 2));
-        cubicleGraphic.add(new AmenityGraphicLocation(14, 0));
+        // With Appliance
+        cubicleGraphic.add(new AmenityGraphicLocation(2, 0)); // Upward
+        cubicleGraphic.add(new AmenityGraphicLocation(2, 2)); // Downward
+        cubicleGraphic.add(new AmenityGraphicLocation(14, 2)); // Left
+        cubicleGraphic.add(new AmenityGraphicLocation(14, 0)); // Right
+        // Without Appliance
+        cubicleGraphic.add(new AmenityGraphicLocation(20, 2)); // Upward
+        cubicleGraphic.add(new AmenityGraphicLocation(20, 0)); // Downward
+        cubicleGraphic.add(new AmenityGraphicLocation(18, 0)); // Left
+        cubicleGraphic.add(new AmenityGraphicLocation(18, 2)); // Right
+
         AMENITY_GRAPHICS.put(Cubicle.class, cubicleGraphic);
 
         final List<AmenityGraphicLocation> doorGraphic = new ArrayList<>();

@@ -6,6 +6,8 @@ import com.socialsim.controller.graphics.amenity.graphic.MeetingDeskGraphic;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MeetingDesk extends Goal {
@@ -13,6 +15,8 @@ public class MeetingDesk extends Goal {
     /***** VARIABLES *****/
     public static final MeetingDesk.MeetingDeskFactory meetingDeskFactory;
     private final MeetingDeskGraphic meetingDeskGraphic;
+
+    private final List<MeetingChair> meetingChairs;
 
     static {
         meetingDeskFactory = new MeetingDesk.MeetingDeskFactory();
@@ -22,7 +26,14 @@ public class MeetingDesk extends Goal {
     protected MeetingDesk(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
 
+        this.meetingChairs = Collections.synchronizedList(new ArrayList<>());
+
         this.meetingDeskGraphic = new MeetingDeskGraphic(this, facing);
+    }
+
+    /***** GETTER *****/
+    public List<MeetingChair> getMeetingChairs() {
+        return meetingChairs;
     }
 
     /***** OVERRIDE *****/
