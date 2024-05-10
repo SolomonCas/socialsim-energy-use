@@ -37,6 +37,8 @@ public class RoutePlan {
     State LUNCH_INSTANCE = null;
 
     public static final double DIRECTOR_LUNCH = 0.7;
+    public static final double GUARD_LUNCH = 0.7;
+    public static final double MAINTENANCE_LUNCH = 0.7;
     public static final double INT_LUNCH = 0.3;
     public static final double EXT_LUNCH = 1.0;
     public static final double STRICT_FACULTY_COOPERATE = 0.6;
@@ -103,26 +105,50 @@ public class RoutePlan {
         }
 
         if (agent.getPersona() == Agent.Persona.GUARD) {
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GUARD_STAY_PUT, spawnPatch, 5760));
-            routePlan.add(new State(State.Name.GUARD, this, agent, actions));
+            setFromBathAM(false);
+            setFromBathPM(false);
+            setAtDesk(false);
 
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(0).getAmenityBlocks().get(0).getPatch()));
+            actions.add(new Action(Action.Name.GUARD_STAY_PUT, environment.getReceptionTables().getFirst().getReceptionChairs()
+                    .getFirst().getAttractors().getFirst().getPatch()));
+            routePlan.add(new State(State.Name.GUARD, this, agent, actions));
+
+
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_LUNCH, environment.
+                    getChairs().get(4).getAttractors().get(0).getPatch()));
+            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
+            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+
+
+
+
+            actions = new ArrayList<>();
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_STATION, environment.getReceptionTables().getFirst().getReceptionChairs()
+                    .getFirst().getAttractors().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.MAINTENANCE) {
+            setFromBathAM(false);
+            setFromBathPM(false);
+            setAtDesk(false);
             actions = new ArrayList<>();
             Patch randomToilet = environment.getToilets().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(3)).getAmenityBlocks().get(0).getPatch();
             actions.add(new Action(Action.Name.MAINTENANCE_CLEAN_TOILET, randomToilet, 10));
             routePlan.add(new State(State.Name.MAINTENANCE_BATHROOM, this, agent, actions));
+
             actions = new ArrayList<>();
             Patch randomPlant = environment.getPlants().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(9)).getAmenityBlocks().get(0).getPatch();
             actions.add(new Action(Action.Name.MAINTENANCE_WATER_PLANT, randomPlant, 10));
             routePlan.add(new State(State.Name.MAINTENANCE_PLANT, this, agent, actions));
 
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(0).getAmenityBlocks().get(0).getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_STATION, environment.getStaffRooms().getFirst().getAssociatedPatches().getFirst().getAmenityBlock().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.DIRECTOR) {
@@ -150,7 +176,7 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(3);
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
@@ -181,7 +207,7 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(3);
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
@@ -212,7 +238,7 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(3);
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
@@ -221,6 +247,14 @@ public class RoutePlan {
     }
 
     /***** METHODS *****/
+    public int findIndexState(State.Name name) {
+        for(int i = 0; i < this.routePlan.size(); i++) {
+            if (this.routePlan.get(i).getName() == name) {
+                return i;
+            }
+        }
+        return -1;
+    }
     public State addUrgentRoute(String s, Agent agent){
         ArrayList<Action> actions;
         State officeState;
@@ -406,6 +440,10 @@ public class RoutePlan {
 
 
     /***** SETTERS *****/
+    public State setState(int i) {
+        this.currentState = this.routePlan.get(i);
+        return this.currentState;
+    }
     public State setNextState(int i) {
         this.currentState = this.routePlan.get(i+1);
         return this.currentState;

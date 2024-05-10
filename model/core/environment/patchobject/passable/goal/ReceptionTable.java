@@ -6,6 +6,8 @@ import com.socialsim.controller.graphics.amenity.graphic.ReceptionTableGraphic;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ReceptionTable extends QueueableGoal {
@@ -15,6 +17,8 @@ public class ReceptionTable extends QueueableGoal {
     public static final ReceptionTable.ReceptionTableFactory receptionTableFactory;
     private final ReceptionTableGraphic receptionTableGraphic;
 
+    private final List<ReceptionChair> receptionChairs;
+
     static {
         receptionTableFactory = new ReceptionTable.ReceptionTableFactory();
     }
@@ -23,7 +27,14 @@ public class ReceptionTable extends QueueableGoal {
     protected ReceptionTable(List<AmenityBlock> amenityBlocks, boolean enabled, int waitingTime) {
         super(amenityBlocks, enabled, waitingTime);
 
+        this.receptionChairs = Collections.synchronizedList(new ArrayList<>());
+
         this.receptionTableGraphic = new ReceptionTableGraphic(this);
+    }
+
+    /***** GETTER *****/
+    public List<ReceptionChair> getReceptionChairs() {
+        return receptionChairs;
     }
 
     /***** OVERRIDE *****/

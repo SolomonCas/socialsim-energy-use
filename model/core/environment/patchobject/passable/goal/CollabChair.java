@@ -26,7 +26,7 @@ public class CollabChair extends Goal {
     /***** OVERRIDE *****/
     @Override
     public String toString() {
-        return "CollbChair" + ((this.enabled) ? "" : " (disabled)");
+        return "CollabChair" + ((this.enabled) ? "" : " (disabled)");
     }
 
     @Override

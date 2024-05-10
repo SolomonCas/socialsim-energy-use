@@ -845,72 +845,6 @@ public class ScreenController extends Controller {
         chairPatches.add(environment.getPatch(53,5));
 
 
-
-        // Reception Chair
-        chairPatches.add(environment.getPatch(40,128));
-
-
-        // Large Meeting Chairs
-//        chairPatches.add(environment.getPatch(62,107));
-//        chairPatches.add(environment.getPatch(62,118));
-
-
-        // Small Meeting Chairs
-//        chairPatches.add(environment.getPatch(16,6));
-//        chairPatches.add(environment.getPatch(25,6));
-
-
-        // Large Meeting Chairs
-//        for (int j = 109; j < 118; j+=2) {
-//            chairPatches.add(environment.getPatch(60,j));
-//            chairPatches.add(environment.getPatch(65,j));
-//        }
-
-
-        // Small Meeting Chairs
-//        for (int i = 18; i < 24; i+=2) {
-//            chairPatches.add(environment.getPatch(i,5));
-//            chairPatches.add(environment.getPatch(i,8));
-//        }
-
-
-
-        // Pantry Chairs
-        chairPatches.add(environment.getPatch(74,129));
-        chairPatches.add(environment.getPatch(73,130));
-        chairPatches.add(environment.getPatch(75,131));
-        chairPatches.add(environment.getPatch(76,130));
-
-        chairPatches.add(environment.getPatch(77,94));
-        chairPatches.add(environment.getPatch(76,95));
-        chairPatches.add(environment.getPatch(78,96));
-        chairPatches.add(environment.getPatch(77,97));
-
-        chairPatches.add(environment.getPatch(77,104));
-        chairPatches.add(environment.getPatch(76,105));
-        chairPatches.add(environment.getPatch(78,106));
-        chairPatches.add(environment.getPatch(77,107));
-
-        chairPatches.add(environment.getPatch(73,118));
-        chairPatches.add(environment.getPatch(72,119));
-        chairPatches.add(environment.getPatch(74,120));
-        chairPatches.add(environment.getPatch(73,121));
-
-        chairPatches.add(environment.getPatch(78,118));
-        chairPatches.add(environment.getPatch(77,119));
-        chairPatches.add(environment.getPatch(79,120));
-        chairPatches.add(environment.getPatch(78,121));
-
-
-
-        // Executive Director Meeting Chairs
-//        for (int i = 63; i < 69; i+=2) {
-//            chairPatches.add(environment.getPatch(i,143));
-//            chairPatches.add(environment.getPatch(i,146));
-//        }
-//        chairPatches.add(environment.getPatch(61,144));
-//        chairPatches.add(environment.getPatch(70,144));
-
         chairPatches.add(environment.getPatch(73,137));
 
         ChairMapper.draw(chairPatches);
@@ -1401,20 +1335,33 @@ public class ScreenController extends Controller {
 
         List<Patch> receptionTablePatches = new ArrayList<>();
         // Reception Table
-        receptionTablePatches.add(environment.getPatch(39,126));
+        receptionTablePatches.add(environment.getPatch(39,121));
         ReceptionTableMapper.draw(receptionTablePatches);
 
 
+        // PANTRY TABLE UP PATCHES
 
+        List<Patch> pantryTableRightPatches = new ArrayList<>();
+        // Pantry Table
+        pantryTableRightPatches.add(environment.getPatch(74,130));
+        PantryTableMapper.draw(pantryTableRightPatches, "RIGHT");
+
+
+        // PANTRY TABLE RIGHT PATCHES
+
+        List<Patch> pantryTableUpPatches = new ArrayList<>();
+        // Pantry Tables
+        pantryTableUpPatches.add(environment.getPatch(77,95));
+        pantryTableUpPatches.add(environment.getPatch(77,105));
+        pantryTableUpPatches.add(environment.getPatch(73,119));
+        pantryTableUpPatches.add(environment.getPatch(78,119));
+        PantryTableMapper.draw(pantryTableUpPatches, "UP");
 
 
 
         // TABLE UP PATCHES
 
         List<Patch> tableUpPatches = new ArrayList<>();
-        // Pantry Table
-        tableUpPatches.add(environment.getPatch(74,130));
-
         // Management and Executive Secretary Table
         tableUpPatches.add(environment.getPatch(38,101));
         tableUpPatches.add(environment.getPatch(40,101));
@@ -1430,18 +1377,7 @@ public class ScreenController extends Controller {
 
         List<Patch> tableRightPatches = new ArrayList<>();
 
-
-
-
         // TABLE RIGHT PATCHES
-
-
-        // Pantry Tables
-        tableRightPatches.add(environment.getPatch(77,95));
-        tableRightPatches.add(environment.getPatch(77,105));
-        tableRightPatches.add(environment.getPatch(73,119));
-        tableRightPatches.add(environment.getPatch(78,119));
-
 
 
         // Management and Executive Secretary Table

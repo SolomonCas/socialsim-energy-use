@@ -430,7 +430,7 @@ public class AgentMovement {
                         || goalAmenity.getClass() == MeetingDesk.class
                         || goalAmenity.getClass() == Cubicle.class
                         || goalAmenity.getClass() == OfficeDesk.class
-                        || goalAmenity.getClass() == ReceptionTable.class
+                        || goalAmenity.getClass() == ReceptionChair.class
                         || goalAmenity.getClass() == CollabChair.class
                         || goalAmenity.getClass() == CollabDesk.class) {
                     path.push(goalPatch);
@@ -538,28 +538,25 @@ public class AgentMovement {
 
     public boolean chooseBreakSeat() {
         if (this.goalAmenity == null) {
-            List<? extends Amenity> tables = this.environment.getAmenityList(Couch.class);
-            List<? extends Amenity> couches = this.environment.getAmenityList(Chair.class);
-            List<? extends Amenity> amenityListInFloor = Stream.concat(tables.stream(), couches.stream()).collect(Collectors.toList());
-
+            List<Amenity> temp = new ArrayList<>();
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
 
-            for (Amenity amenity : amenityListInFloor) {
-                if (amenity.getAmenityBlocks().get(0).getPatch().getPatchField() != null && amenity.getAmenityBlocks().get(0).getPatch().getPatchField().getKey() == this.environment.getPantries().get(0)) {
-                    for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                        double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                        distancesToAttractors.put(attractor, distanceToAttractor);
-                    }
-                }
-                else if (amenity.getAmenityBlocks().get(0).getPatch().getPatchField() != null && amenity.getAmenityBlocks().get(0).getPatch().getPatchField().getKey() == this.environment.getBreakAreas().get(0)) {
-                    for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                        double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                        distancesToAttractors.put(attractor, distanceToAttractor);
-                    }
+            for(int i = 0; i < this.environment.getPantryTables().size(); i++) {
+                temp.addAll(this.environment.getPantryTables().get(i).getPantryChairs());
+            }
+            temp.addAll(this.environment.getCouches());
+            temp.addAll(this.environment.getChairs());
+
+            for (Amenity amenity : temp) {
+                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+                    double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
+                    distancesToAttractors.put(attractor, distanceToAttractor);
                 }
             }
 
-            List<Map.Entry<Amenity.AmenityBlock, Double> > list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+            List<Map.Entry<Amenity.AmenityBlock, Double> > list =
+                    new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+
 
             Collections.sort(list, new Comparator<Map.Entry<Amenity.AmenityBlock, Double> >() {
                 public int compare(Map.Entry<Amenity.AmenityBlock, Double> o1, Map.Entry<Amenity.AmenityBlock, Double> o2) {
@@ -842,13 +839,12 @@ public class AgentMovement {
                     && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != BreakArea.class)
                     && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != MeetingRoom.class)) {
                 for (Agent otherAgent : patch.getAgents()) {
-                    Agent universityAgent = (Agent) otherAgent;
                     if (agentsProcessed == agentsProcessedLimit) {
                         break;
                     }
 
                     if (!otherAgent.equals(this.getParent())) {
-                        double distanceToOtherAgent = Coordinates.distance(this.position, universityAgent.getAgentMovement().getPosition());
+                        double distanceToOtherAgent = Coordinates.distance(this.position, otherAgent.getAgentMovement().getPosition());
 
                         if (distanceToOtherAgent <= slowdownStartDistance) {
                             final int maximumAgentCountTolerated = 5;
@@ -858,7 +854,7 @@ public class AgentMovement {
                             final double minimumDistance = 0.7;
 
                             double computedMaximumDistance = computeMaximumRepulsionDistance(numberOfObstacles, maximumAgentCountTolerated, minimumAgentCount, maximumDistance, maximumAgentCount, minimumDistance);
-                            Vector agentRepulsiveForce = computeSocialForceFromAgent(universityAgent, distanceToOtherAgent, computedMaximumDistance, minimumAgentStopDistance, this.preferredWalkingDistance);
+                            Vector agentRepulsiveForce = computeSocialForceFromAgent(otherAgent, distanceToOtherAgent, computedMaximumDistance, minimumAgentStopDistance, this.preferredWalkingDistance);
                             this.repulsiveForceFromAgents.add(agentRepulsiveForce);
 
                             agentsProcessed++;
@@ -871,7 +867,6 @@ public class AgentMovement {
         this.attractiveForce = this.computeAttractiveForce(new Coordinates(this.position), this.proposedHeading, proposedNewPosition, this.preferredWalkingDistance);
         vectorsToAdd.add(attractiveForce);
 
-        double previousWalkingDistance = this.currentWalkingDistance;
         vectorsToAdd.addAll(this.repulsiveForceFromAgents);
         Vector partialMotivationForce = Vector.computeResultantVector(new Coordinates(this.position), vectorsToAdd);
         if (partialMotivationForce != null) {
@@ -1218,14 +1213,11 @@ public class AgentMovement {
         }
         else if (patch.getAmenityBlock() != null && !patch.getAmenityBlock().getParent().equals(amenity)) {
             if (patch.getAmenityBlock().getParent().getClass() == Door.class ||
-                    patch.getAmenityBlock().getParent().getClass() == ReceptionTable.class ||
+                    patch.getAmenityBlock().getParent().getClass() == ReceptionChair.class ||
                     patch.getAmenityBlock().getParent().getClass() == Chair.class ||
                     patch.getAmenityBlock().getParent().getClass() == Toilet.class ||
-                    patch.getAmenityBlock().getParent().getClass() == Couch.class ||
-                    patch.getAmenityBlock().getParent().getClass() == Table.class ||
-                    patch.getAmenityBlock().getParent().getClass() == MeetingDesk.class ||
+                    patch.getAmenityBlock().getParent().getClass() == MeetingChair.class ||
                     patch.getAmenityBlock().getParent().getClass() == CollabChair.class ||
-                    patch.getAmenityBlock().getParent().getClass() == CollabDesk.class ||
                     patch.getAmenityBlock().getParent().getClass() == Trash.class
             ) {
                 return false;
@@ -1486,6 +1478,9 @@ public class AgentMovement {
     }
     public void setActionIndex(int actionIndex) {
         this.actionIndex = actionIndex;
+    }
+    public void setState(int i) {
+        this.currentState = this.currentState.getRoutePlan().setState(i);
     }
     public void setNextState(int i) {
         this.currentState = this.currentState.getRoutePlan().setNextState(i);
