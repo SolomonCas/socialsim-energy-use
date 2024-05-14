@@ -296,12 +296,14 @@ public class Simulator {
                         environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
                         Agent.guardCount++;
                         Agent.agentCount++;
+                        currentGuardCount++;
                     }
                     else if (currentTick == agent.getTimeIn() && agent.getType() == Agent.Type.MAINTENANCE && Agent.maintenanceCount != 2) { // Agent.maintenanceCount != 2 isn't dynamic yet
                         agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), currentTick, agent.getTeam(), null));
                         environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
                         Agent.maintenanceCount++;
                         Agent.agentCount++;
+                        currentMaintenanceCount++;
                     }
 //                    if (agent.getType() == Agent.Type.DIRECTOR && Agent.directorCount != MAX_DIRECTORS) {
 //                        agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), currentTick, 0, null));
@@ -937,12 +939,13 @@ public class Simulator {
                                     agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                     agentMovement.resetGoal();
-                                }else{
+                                }
+                                else{
                                     agentMovement.setGoalAmenity(Main.simulator.getEnvironment().getGates().get(0));
                                     agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
                                 }
-                            }else if (agentMovement.getGoalAmenity() == Main.simulator.getEnvironment().getGates().get(0)
-                                    && agentMovement.chooseNextPatchInPath()) {
+                            }else if (/*agentMovement.getGoalAmenity() == Main.simulator.getEnvironment().getGates().get(0)
+                                    && */ agentMovement.chooseNextPatchInPath()) {
                                 agentMovement.faceNextPosition();
                                 agentMovement.moveSocialForce();
                                 if (agentMovement.hasReachedNextPatchInPath()) {

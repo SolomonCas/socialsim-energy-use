@@ -148,7 +148,6 @@ public class RoutePlan {
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
-            actions.add(new Action(Action.Name.GO_TO_STATION, environment.getStaffRooms().getFirst().getAssociatedPatches().getFirst().getAmenityBlock().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.DIRECTOR) {
