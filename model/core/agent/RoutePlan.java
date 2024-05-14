@@ -114,6 +114,11 @@ public class RoutePlan {
                     .getFirst().getAttractors().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GUARD, this, agent, actions));
 
+            actions = new ArrayList<>();
+            for(int i = 0; i < environment.getDoors().size(); i++) {
+
+            }
+            routePlan.add(new State(State.Name.INSPECT_ROOMS, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_LUNCH, environment.

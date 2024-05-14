@@ -26,9 +26,13 @@ public abstract class Amenity extends PatchObject {
                 amenityBlock.getPatch().setAmenityBlock(amenityBlock);
                 if (amenityBlock.getParent().getClass() != Door.class
                         && amenityBlock.getParent().getClass() != Door.class
+                        && amenityBlock.getParent().getClass() != MainEntranceDoor.class
+                        && amenityBlock.getParent().getClass() != MaleBathroomDoor.class
+                        && amenityBlock.getParent().getClass() != FemaleBathroomDoor.class
                         && amenityBlock.getParent().getClass() != Chair.class
                         && amenityBlock.getParent().getClass() != Table.class
                         && amenityBlock.getParent().getClass() != MeetingDesk.class
+                        && amenityBlock.getParent().getClass() != CollabDesk.class
                         && amenityBlock.getParent().getClass() != Toilet.class
                         && amenityBlock.getParent().getClass() != Sink.class
                         && amenityBlock.getParent().getClass() != ReceptionTable.class) {

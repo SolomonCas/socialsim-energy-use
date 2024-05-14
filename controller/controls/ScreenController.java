@@ -1152,9 +1152,6 @@ public class ScreenController extends Controller {
         // Initialize doorUpPatches
         List<Patch> doorUpPatches = new ArrayList<>();
 
-        // Women's Bathroom Door
-        doorUpPatches.add(environment.getPatch(34,135));
-
 
         // Staff Room Door (?)
         doorUpPatches.add(environment.getPatch(56,98));
@@ -1205,9 +1202,6 @@ public class ScreenController extends Controller {
         List<Patch> doorDownPatches = new ArrayList<>();
 
 
-        // Main Entrance Door
-        doorDownPatches.add(environment.getPatch(29,130));
-
 
         // Learning Area 1 Door (Leftmost)
         doorDownPatches.add(environment.getPatch(29,31));
@@ -1237,10 +1231,6 @@ public class ScreenController extends Controller {
         doorDownPatches.add(environment.getPatch(29,108));
 
 
-        // Men's Bathroom Door
-        doorDownPatches.add(environment.getPatch(11,135));
-
-
         // Open Area 2 Door (LeftMost)
         doorDownPatches.add(environment.getPatch(44,34));
 
@@ -1250,7 +1240,20 @@ public class ScreenController extends Controller {
 
         DoorMapper.draw(doorDownPatches, "DOWN");
 
+        List<Patch> maleBathroomDoorPatches = new ArrayList<>();
+        // Men's Bathroom Door
+        maleBathroomDoorPatches.add(environment.getPatch(11,135));
+        MaleBathroomDoorMapper.draw(maleBathroomDoorPatches, "DOWN");
 
+        List<Patch> femaleBathroomDoorPatches = new ArrayList<>();
+        // Women's Bathroom Door
+        femaleBathroomDoorPatches.add(environment.getPatch(34,135));
+        FemaleBathroomDoorMapper.draw(femaleBathroomDoorPatches, "DOWN");
+
+        List<Patch> mainEntranceDoorPatches = new ArrayList<>();
+        // Main Entrance Door
+        mainEntranceDoorPatches.add(environment.getPatch(29,130));
+        MainEntranceDoorMapper.draw(mainEntranceDoorPatches, "DOWN");
 
 
         // DESK PATCHES

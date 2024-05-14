@@ -80,6 +80,21 @@ public class AmenityGraphic extends Graphic {
         doorGraphic.add(new AmenityGraphicLocation(0, 3));
         AMENITY_GRAPHICS.put(Door.class, doorGraphic);
 
+        final List<AmenityGraphicLocation> maleBathroomDoorGraphic = new ArrayList<>();
+        maleBathroomDoorGraphic.add(new AmenityGraphicLocation(9, 0));
+        maleBathroomDoorGraphic.add(new AmenityGraphicLocation(0, 3));
+        AMENITY_GRAPHICS.put(MaleBathroomDoor.class, maleBathroomDoorGraphic);
+
+        final List<AmenityGraphicLocation> femaleBathroomDoorGraphic = new ArrayList<>();
+        femaleBathroomDoorGraphic.add(new AmenityGraphicLocation(9, 0));
+        femaleBathroomDoorGraphic.add(new AmenityGraphicLocation(0, 3));
+        AMENITY_GRAPHICS.put(FemaleBathroomDoor.class, femaleBathroomDoorGraphic);
+
+        final List<AmenityGraphicLocation> mainEntranceDoorGraphic = new ArrayList<>();
+        mainEntranceDoorGraphic.add(new AmenityGraphicLocation(9, 0));
+        mainEntranceDoorGraphic.add(new AmenityGraphicLocation(0, 3));
+        AMENITY_GRAPHICS.put(MainEntranceDoor.class, mainEntranceDoorGraphic);
+
         final List<AmenityGraphicLocation> meetingDeskGraphic = new ArrayList<>();
         meetingDeskGraphic.add(new AmenityGraphicLocation(6, 2));
         AMENITY_GRAPHICS.put(MeetingDesk.class, meetingDeskGraphic);

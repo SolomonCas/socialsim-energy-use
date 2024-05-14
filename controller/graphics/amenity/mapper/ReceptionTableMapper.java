@@ -45,7 +45,7 @@ public class ReceptionTableMapper extends AmenityMapper {
 
             int index = Main.simulator.getEnvironment().getReceptionTables().indexOf(receptionTableToAdd);
             List<Patch> receptionChairPatches = new ArrayList<>();
-            receptionChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 3));
+            receptionChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 3));
             ReceptionChairMapper.draw(receptionChairPatches, index);
 
 
