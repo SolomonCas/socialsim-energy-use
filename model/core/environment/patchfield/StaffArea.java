@@ -26,7 +26,11 @@ public class StaffArea extends PatchField {
         }
     }
 
-
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Staff Area";
+    }
 
     // INNER CLASS
     public static class StaffAreaFactory extends PatchFieldFactory {

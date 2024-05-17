@@ -26,6 +26,11 @@ public class FacultyRoom extends PatchField {
         }
     }
 
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Faculty Room";
+    }
 
     // INNER CLASS
     public static class FacultyRoomFactory extends PatchFieldFactory {

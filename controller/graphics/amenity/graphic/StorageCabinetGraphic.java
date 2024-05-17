@@ -1,9 +1,9 @@
 package com.socialsim.controller.graphics.amenity.graphic;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Cabinet;
+import com.socialsim.model.core.environment.patchobject.passable.goal.StorageCabinet;
 
-public class CabinetGraphic extends AmenityGraphic {
+public class StorageCabinetGraphic extends AmenityGraphic {
 
     /***** VARIABLES *****/
     private static final int ROW_SPAN = 2;
@@ -15,8 +15,8 @@ public class CabinetGraphic extends AmenityGraphic {
 
 
     /***** CONSTRUCTOR *****/
-    public CabinetGraphic(Cabinet cabinet, String facing) {
-        super(cabinet, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
+    public StorageCabinetGraphic(StorageCabinet storageCabinet, String facing) {
+        super(storageCabinet, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
 
         switch (facing) {
             case "UP" -> this.graphicIndex = 0;

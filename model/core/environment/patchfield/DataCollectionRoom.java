@@ -26,6 +26,12 @@ public class DataCollectionRoom extends PatchField {
         }
     }
 
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Data Collection";
+    }
+
 
     // INNER CLASS
     public static class DataCollectionRoomFactory extends PatchFieldFactory {

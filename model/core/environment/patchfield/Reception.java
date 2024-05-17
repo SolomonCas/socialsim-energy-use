@@ -27,6 +27,11 @@ public class Reception extends PatchField {
         }
     }
 
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Reception Room";
+    }
 
     // INNER CLASS
     public static class ReceptionFactory extends PatchFieldFactory {

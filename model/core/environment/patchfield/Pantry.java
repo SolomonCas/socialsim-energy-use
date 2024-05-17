@@ -27,6 +27,11 @@ public class Pantry extends PatchField {
         }
     }
 
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Pantry Room";
+    }
 
     // INNER CLASS
     public static class PantryFactory extends PatchFieldFactory {

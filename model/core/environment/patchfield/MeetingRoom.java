@@ -28,7 +28,11 @@ public class MeetingRoom extends PatchField {
         }
     }
 
-
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Meeting Room";
+    }
 
     // INNER CLASS
     public static class MeetingRoomFactory extends PatchFieldFactory {

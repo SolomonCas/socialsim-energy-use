@@ -13,6 +13,7 @@ public class Plant extends Goal {
     /***** VARIABLES *****/
     public static final Plant.PlantFactory plantFactory;
     private final PlantGraphic plantGraphic;
+    private boolean isWatered = false;
 
     static {
         plantFactory = new Plant.PlantFactory();
@@ -23,6 +24,17 @@ public class Plant extends Goal {
         super(amenityBlocks, enabled);
 
         this.plantGraphic = new PlantGraphic(this);
+    }
+
+
+    /***** GETTER *****/
+    public boolean isWatered() {
+        return isWatered;
+    }
+
+    /***** SETTER *****/
+    public void setWatered(boolean watered) {
+        isWatered = watered;
     }
 
     /***** OVERRIDE *****/

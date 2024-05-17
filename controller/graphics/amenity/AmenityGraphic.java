@@ -52,6 +52,11 @@ public class AmenityGraphic extends Graphic {
         cabinetGraphic.add(new AmenityGraphicLocation(8, 2));
         AMENITY_GRAPHICS.put(Cabinet.class, cabinetGraphic);
 
+        final List<AmenityGraphicLocation> storageCabinetGraphic = new ArrayList<>();
+        storageCabinetGraphic.add(new AmenityGraphicLocation(10, 0));
+        storageCabinetGraphic.add(new AmenityGraphicLocation(8, 2));
+        AMENITY_GRAPHICS.put(StorageCabinet.class, storageCabinetGraphic);
+
         final List<AmenityGraphicLocation> collabDeskGraphic = new ArrayList<>();
         collabDeskGraphic.add(new AmenityGraphicLocation(6, 2));
         AMENITY_GRAPHICS.put(CollabDesk.class, collabDeskGraphic);
@@ -121,17 +126,25 @@ public class AmenityGraphic extends Graphic {
         AMENITY_GRAPHICS.put(Table.class, tableGraphic);
 
         final List<AmenityGraphicLocation> pantryTableGraphic = new ArrayList<>();
-        pantryTableGraphic.add(new AmenityGraphicLocation(6, 0));
-        pantryTableGraphic.add(new AmenityGraphicLocation(10, 3));
+        pantryTableGraphic.add(new AmenityGraphicLocation(6, 0)); // Horizontal
+        pantryTableGraphic.add(new AmenityGraphicLocation(10, 3)); // Vertical
         AMENITY_GRAPHICS.put(PantryTable.class, pantryTableGraphic);
 
         final List<AmenityGraphicLocation> sinkGraphic = new ArrayList<>();
         sinkGraphic.add(new AmenityGraphicLocation(16, 1));
         AMENITY_GRAPHICS.put(Sink.class, sinkGraphic);
 
+        final List<AmenityGraphicLocation> officeSinkGraphic = new ArrayList<>();
+        officeSinkGraphic.add(new AmenityGraphicLocation(16, 1));
+        AMENITY_GRAPHICS.put(OfficeSink.class, officeSinkGraphic);
+
         final List<AmenityGraphicLocation> toiletGraphic = new ArrayList<>();
         toiletGraphic.add(new AmenityGraphicLocation(16, 0));
         AMENITY_GRAPHICS.put(Toilet.class, toiletGraphic);
+
+        final List<AmenityGraphicLocation> officeToiletGraphic = new ArrayList<>();
+        officeToiletGraphic.add(new AmenityGraphicLocation(16, 0));
+        AMENITY_GRAPHICS.put(OfficeToilet.class, officeToiletGraphic);
 
         final List<AmenityGraphicLocation> whiteboardGraphic = new ArrayList<>();
         whiteboardGraphic.add(new AmenityGraphicLocation(10, 2));

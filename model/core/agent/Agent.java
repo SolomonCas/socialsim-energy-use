@@ -243,7 +243,10 @@ public class Agent extends PatchObject {
     }
 
     public enum AgeGroup {
-        YOUNGER_THAN_OR_14, FROM_15_TO_24, FROM_25_TO_54, FROM_55_TO_64, OLDER_THAN_OR_65
+        YOUNGER_THAN_OR_14,
+        FROM_15_TO_24,
+        FROM_25_TO_54,
+        FROM_55_TO_64, OLDER_THAN_OR_65
     }
 
     public enum Persona {

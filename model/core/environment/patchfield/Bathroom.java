@@ -28,6 +28,11 @@ public class Bathroom extends PatchField {
         }
     }
 
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Bathroom";
+    }
 
     // INNER CLASS
     public static class BathroomFactory extends PatchFieldFactory {

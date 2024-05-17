@@ -26,6 +26,12 @@ public class ControlCenter extends PatchField {
         }
     }
 
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Control Center";
+    }
+
 
     // INNER CLASS
     public static class ControlCenterFactory extends PatchFieldFactory {

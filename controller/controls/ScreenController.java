@@ -311,7 +311,7 @@ public class ScreenController extends Controller {
             }
         }
 
-        Main.simulator.getEnvironment().getElevLobbies().add(ElevLobby.elevLobbyFactory.create(floorPatches, 1));
+        Main.simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floorPatches, 1));
 
         List<Patch> wallPatches = new ArrayList<>();
 
@@ -789,6 +789,11 @@ public class ScreenController extends Controller {
 
         /** AMENITIES **/
 
+        // Storage Cabinet RIGHT
+        List<Patch> storageCabinetPatches = new ArrayList<>();
+        storageCabinetPatches.add(environment.getPatch(52,135));
+        StorageCabinetMapper.draw(storageCabinetPatches, "RIGHT");
+
         // Pantry Down Cabinets
         List<Patch> cabinetDownPatches = new ArrayList<>();
 
@@ -848,35 +853,6 @@ public class ScreenController extends Controller {
         chairPatches.add(environment.getPatch(73,137));
 
         ChairMapper.draw(chairPatches);
-
-
-
-
-
-//        // Initialize collabChairPatches
-//        List<Patch> collabChairPatches = new ArrayList<>();
-//
-//
-//        // Learning Area 1-4 Chairs
-//        for (int i = 17; i < 23; i += 5) {
-//            for (int j = 22; j < 80; j += 16) {
-//                collabChairPatches.add(environment.getPatch(i,j));
-//                collabChairPatches.add(environment.getPatch(i,j + 1));
-//                collabChairPatches.add(environment.getPatch(i,j + 2));
-//                collabChairPatches.add(environment.getPatch(i + 2,j));
-//                collabChairPatches.add(environment.getPatch(i + 2,j + 1));
-//                collabChairPatches.add(environment.getPatch(i + 2,j + 2));
-//
-//                collabChairPatches.add(environment.getPatch(i,j + 8));
-//                collabChairPatches.add(environment.getPatch(i,j + 9));
-//                collabChairPatches.add(environment.getPatch(i,j + 10));
-//                collabChairPatches.add(environment.getPatch(i + 2,j + 8));
-//                collabChairPatches.add(environment.getPatch(i + 2,j + 9));
-//                collabChairPatches.add(environment.getPatch(i + 2,j + 10));
-//            }
-//        }
-//
-//        CollabChairMapper.draw(collabChairPatches);
 
         List<Patch> learningAreaCollabDeskPatches = new ArrayList<>();
 
@@ -1338,7 +1314,7 @@ public class ScreenController extends Controller {
 
         List<Patch> receptionTablePatches = new ArrayList<>();
         // Reception Table
-        receptionTablePatches.add(environment.getPatch(39,121));
+        receptionTablePatches.add(environment.getPatch(39,122));
         ReceptionTableMapper.draw(receptionTablePatches);
 
 
@@ -1408,9 +1384,9 @@ public class ScreenController extends Controller {
 
 
         // Executive Director's Toilet
-
-        toiletPatches.add(environment.getPatch(46,147));
-        ToiletMapper.draw(toiletPatches);
+        List<Patch> officeToiletPatches = new ArrayList<>();
+        officeToiletPatches.add(environment.getPatch(46,147));
+        OfficeToiletMapper.draw(officeToiletPatches);
 
 
 
@@ -1427,13 +1403,13 @@ public class ScreenController extends Controller {
             // Women's Bathroom Sink
             sinkPatches.add(environment.getPatch(35,j));
         }
+        SinkMapper.draw(sinkPatches);
 
 
-
-
+        List<Patch> officeSinkPatches = new ArrayList<>();
         // Executive Directors's Sink
 
-        sinkPatches.add(environment.getPatch(46,144));
+        officeSinkPatches.add(environment.getPatch(46,144));
 
 
 
@@ -1441,8 +1417,8 @@ public class ScreenController extends Controller {
 
         // Pantry Sink
 
-        sinkPatches.add(environment.getPatch(70,92));
-        SinkMapper.draw(sinkPatches);
+        officeSinkPatches.add(environment.getPatch(70,92));
+        OfficeSinkMapper.draw(officeSinkPatches);
 
 
 

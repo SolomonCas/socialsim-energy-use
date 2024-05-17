@@ -27,7 +27,11 @@ public class SoloRoom extends PatchField {
         }
     }
 
-
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Solo Room";
+    }
 
     // INNER CLASS
     public static class SoloRoomFactory extends PatchFieldFactory {

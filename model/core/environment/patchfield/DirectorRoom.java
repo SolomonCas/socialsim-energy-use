@@ -26,7 +26,11 @@ public class DirectorRoom extends PatchField {
         }
     }
 
-
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Director Room";
+    }
 
     // INNER CLASS
     public static class DirectorRoomFactory extends PatchFieldFactory {

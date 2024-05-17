@@ -17,25 +17,28 @@ public abstract class Amenity extends PatchObject {
     // CONSTRUCTOR
     protected Amenity(List<AmenityBlock> amenityBlocks) {
         this.amenityBlocks = amenityBlocks;
-
+        // Only proceed when this amenity has blocks
         if (this.amenityBlocks != null) {
             this.attractors = new ArrayList<>();
-
+            // Set the parent of each amenity block to this amenity
+            // In turn, set the contents of the patch in each amenity block to the amenity block
+            // Signal to this patch's neighbors that an amenity was placed in here
+            // Also, set all this amenity's attractors to the pertinent list
             for (AmenityBlock amenityBlock : this.amenityBlocks) {
                 amenityBlock.setParent(this);
                 amenityBlock.getPatch().setAmenityBlock(amenityBlock);
                 if (amenityBlock.getParent().getClass() != Door.class
-                        && amenityBlock.getParent().getClass() != Door.class
                         && amenityBlock.getParent().getClass() != MainEntranceDoor.class
                         && amenityBlock.getParent().getClass() != MaleBathroomDoor.class
                         && amenityBlock.getParent().getClass() != FemaleBathroomDoor.class
                         && amenityBlock.getParent().getClass() != Chair.class
+                        && amenityBlock.getParent().getClass() != ReceptionChair.class
+                        && amenityBlock.getParent().getClass() != CollabChair.class
                         && amenityBlock.getParent().getClass() != Table.class
-                        && amenityBlock.getParent().getClass() != MeetingDesk.class
-                        && amenityBlock.getParent().getClass() != CollabDesk.class
                         && amenityBlock.getParent().getClass() != Toilet.class
                         && amenityBlock.getParent().getClass() != Sink.class
-                        && amenityBlock.getParent().getClass() != ReceptionTable.class) {
+                        && amenityBlock.getParent().getClass() != OfficeToilet.class
+                        && amenityBlock.getParent().getClass() != OfficeSink.class) {
                     amenityBlock.getPatch().signalAddAmenityBlock();
                 }
 

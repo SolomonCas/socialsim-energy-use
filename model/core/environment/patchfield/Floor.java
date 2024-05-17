@@ -5,20 +5,20 @@ import javafx.util.Pair;
 
 import java.util.List;
 
-public class ElevLobby extends PatchField {
+public class Floor extends PatchField {
 
 
     // VARIABLES
-    public static ElevLobbyFactory elevLobbyFactory;
+    public static FloorFactory floorFactory;
 
     static {
-        elevLobbyFactory = new ElevLobbyFactory();
+        floorFactory = new FloorFactory();
     }
 
 
 
     // CONSTRUCTOR
-    protected ElevLobby(List<Patch> patches, int num) {
+    protected Floor(List<Patch> patches, int num) {
         super(patches);
 
         Pair<PatchField, Integer> pair = new Pair<>(this, num);
@@ -30,9 +30,9 @@ public class ElevLobby extends PatchField {
 
 
     // INNER CLASS
-    public static class ElevLobbyFactory extends PatchFieldFactory {
-        public ElevLobby create(List<Patch> patches, int num) {
-            return new ElevLobby(patches, num);
+    public static class FloorFactory extends PatchFieldFactory {
+        public Floor create(List<Patch> patches, int num) {
+            return new Floor(patches, num);
         }
     }
 

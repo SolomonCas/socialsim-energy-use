@@ -203,41 +203,28 @@ public class AgentMovement {
             this.recentPatches.remove(patchToForget);
         }
     }
-    public boolean chooseBathroomGoal(Class<? extends Amenity> nextAmenityClass){
-        if(this.goalAmenity == null){
-            List<? extends Amenity> amenityListInFloor = this.environment.getAmenityList(nextAmenityClass);
-            Amenity chosenAmenity = null;
-            Amenity.AmenityBlock chosenAttractor = null;
-            HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
 
-            for (Amenity amenity : amenityListInFloor) {
-                if (parent.getType() == Agent.Type.DIRECTOR) {
-                    if (amenity.getAmenityBlocks().get(0).getPatch().getPatchField().getValue() == 3) {
-                        for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                            double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                            distancesToAttractors.put(attractor, distanceToAttractor);
-                        }
-                    }
-                }
-                else if (parent.getGender() == Agent.Gender.MALE) {
-                    if (amenity.getAmenityBlocks().get(0).getPatch().getPatchField().getValue() == 2) {
-                        for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                            double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                            distancesToAttractors.put(attractor, distanceToAttractor);
-                        }
-                    }
-                }
-                else {
-                    if (amenity.getAmenityBlocks().get(0).getPatch().getPatchField().getValue() == 1) {
-                        for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                            double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                            distancesToAttractors.put(attractor, distanceToAttractor);
-                        }
-                    }
+    public boolean choosePlantGoal() {
+        if (this.goalAmenity == null) {
+            List<Amenity> temp = new ArrayList<>();
+            HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
+            for(int i = 0; i < this.environment.getPlants().size(); i++) {
+                if (!this.environment.getPlants().get(i).isWatered()) {
+                    temp.add(this.environment.getPlants().get(i));
                 }
             }
 
-            List<Map.Entry<Amenity.AmenityBlock, Double> > list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+
+            for (Amenity amenity : temp) {
+                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+                    double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
+                    distancesToAttractors.put(attractor, distanceToAttractor);
+                }
+            }
+
+            List<Map.Entry<Amenity.AmenityBlock, Double> > list =
+                    new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+
 
             Collections.sort(list, new Comparator<Map.Entry<Amenity.AmenityBlock, Double> >() {
                 public int compare(Map.Entry<Amenity.AmenityBlock, Double> o1, Map.Entry<Amenity.AmenityBlock, Double> o2) {
@@ -253,25 +240,90 @@ public class AgentMovement {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
                 if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
-                    chosenAmenity = candidateAttractor.getParent();
-                    chosenAttractor = candidateAttractor;
-                    candidateAttractor.getPatch().getAmenityBlock().setIsReserved(true);
-                    break;
+                    this.goalAmenity =  candidateAttractor.getParent();
+                    this.goalAttractor = candidateAttractor;
+
+                    getGoalAttractor().setIsReserved(true);
+                    return true;
                 }
             }
 
-            if (chosenAmenity != null) {
-                this.goalAmenity = chosenAmenity;
-                this.goalAttractor = chosenAttractor;
-
-                return true;
-            }
-            else {
-                return false;
-            }
+            return false;
         }
 
         return false;
+    }
+
+    public boolean chooseBathroomGoal(Class<? extends Amenity> nextAmenityClass){
+        if(this.goalAmenity == null){
+            List<Amenity> temp = new ArrayList<>();
+            HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
+
+            if (parent.getType() == Agent.Type.DIRECTOR) {
+                temp.addAll(environment.getAmenityList(nextAmenityClass));
+            }
+            else if (parent.getType() == Agent.Type.MAINTENANCE &&
+                    this.currentAction.getName() == Action.Name.MAINTENANCE_CLEAN_TOILET) {
+                for(int i = 0; i < this.environment.getOfficeToilets().size(); i++) {
+                    if (!this.environment.getOfficeToilets().get(i).isClean()) {
+                        temp.add(this.environment.getOfficeToilets().get(i));
+                    }
+                }
+            }
+            else {
+
+                for (Amenity amenity : environment.getAmenityList(nextAmenityClass)) {
+                    if (parent.getGender() == Agent.Gender.MALE) {
+                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == 2) {
+                            temp.add(amenity);
+                        }
+                    }
+                    else if (parent.getGender() == Agent.Gender.FEMALE) {
+                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == 1) {
+                            temp.add(amenity);
+                        }
+                    }
+                }
+            }
+
+            for (Amenity amenity : temp) {
+                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+                    double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
+                    distancesToAttractors.put(attractor, distanceToAttractor);
+                }
+            }
+
+            List<Map.Entry<Amenity.AmenityBlock, Double> > list =
+                    new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+
+
+            Collections.sort(list, new Comparator<Map.Entry<Amenity.AmenityBlock, Double> >() {
+                public int compare(Map.Entry<Amenity.AmenityBlock, Double> o1, Map.Entry<Amenity.AmenityBlock, Double> o2) {
+                    return (o1.getValue()).compareTo(o2.getValue());
+                }
+            });
+
+            HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+            for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
+                sortedDistances.put(aa.getKey(), aa.getValue());
+            }
+
+            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
+                Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
+                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                    this.goalAmenity =  candidateAttractor.getParent();
+                    this.goalAttractor = candidateAttractor;
+
+                    getGoalAttractor().setIsReserved(true);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return false;
+
     }
 
     public void rollAgentInteraction(Agent agent){
@@ -478,6 +530,13 @@ public class AgentMovement {
         return null;
     }
 
+
+    // This is hardcoded specifically for this environment.
+    // Developer Note: The group decided that the bathroom layout in Mckinley microcampus shouldn't be edited.
+    // Because the bathroom isn't only for DLSU staff and student, but for all people in that floor.
+    // Hence, it is outside the design of DLSU Mckinley microcampus and shouldn't be edited.
+    // If you are deciding to add more bathrooms inside the DLSU Mckinley microcampus,
+    // you are required to change this whatever you want
     public boolean chooseWaitPatch(){
         ArrayList<Patch> patchesToConsider = new ArrayList<>();
         if (this.getParent().getGender() == Agent.Gender.MALE){
@@ -550,8 +609,9 @@ public class AgentMovement {
             for(int i = 0; i < this.environment.getPantryTables().size(); i++) {
                 temp.addAll(this.environment.getPantryTables().get(i).getPantryChairs());
             }
-            temp.addAll(this.environment.getCouches());
             temp.addAll(this.environment.getChairs());
+            temp.addAll(this.environment.getCouches());
+
 
             for (Amenity amenity : temp) {
                 for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
@@ -673,14 +733,13 @@ public class AgentMovement {
         return false;
     }
 
+
+
     public void chooseMeetingGoal(int room){
         if(this.goalAmenity == null){
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
 
             List<Amenity> temp = new ArrayList<>();
-
-            System.out.println("Meeting Room Number :" + (room - 1));
-            System.out.println("Number of Meeting Chairs: " + Main.simulator.getEnvironment().getMeetingDesks().get(room - 1).getMeetingChairs().size());
             temp.addAll(Main.simulator.getEnvironment().getMeetingDesks().get(room - 1).getMeetingChairs());
 
             for (Amenity amenity : temp) {
@@ -1056,6 +1115,9 @@ public class AgentMovement {
     }
     public boolean hasAgentReachedFinalPatchInPath() { // Check if this agent has reached the final patch in its current path
         return this.currentPath.getPath().isEmpty();
+    }
+    public boolean isCloseToFinalPatchInPath() {
+        return (this.currentPath.getPath().size() == 1);
     }
     public void despawn() {
         if (this.currentPatch != null) {
@@ -1493,7 +1555,7 @@ public class AgentMovement {
     public void setActionIndex(int actionIndex) {
         this.actionIndex = actionIndex;
     }
-    public void setState(int i) {
+    public void setCurrentState(int i) {
         this.currentState = this.currentState.getRoutePlan().setState(i);
     }
     public void setNextState(int i) {

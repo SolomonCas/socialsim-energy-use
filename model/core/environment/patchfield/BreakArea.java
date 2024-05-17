@@ -23,6 +23,12 @@ public class BreakArea extends PatchField{
         breakAreaFactory = new BreakArea.BreakAreaFactory();
     }
 
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Break Area";
+    }
+
     public static class BreakAreaFactory extends PatchFieldFactory {
         public BreakArea create(List<Patch> patches, int num) {
             return new BreakArea(patches, num);

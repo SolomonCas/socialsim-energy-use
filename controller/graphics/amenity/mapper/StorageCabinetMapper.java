@@ -4,13 +4,13 @@ import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.amenity.AmenityMapper;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Cabinet;
+import com.socialsim.model.core.environment.patchobject.passable.goal.StorageCabinet;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CabinetMapper extends AmenityMapper {
+public class StorageCabinetMapper extends AmenityMapper {
 
     public static void draw(List<Patch> patches, String facing) {
         for (Patch patch : patches) {
@@ -19,7 +19,7 @@ public class CabinetMapper extends AmenityMapper {
             int origPatchCol = patch.getMatrixPosition().getColumn();
 
             if (Objects.equals(facing, "UP")) {
-                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cabinet.CabinetBlock.cabinetBlockFactory;
+                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = StorageCabinet.StorageCabinetBlock.storageCabinetBlockFactory;
                 Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
                 amenityBlocks.add(amenityBlock);
                 patch.setAmenityBlock(amenityBlock);
@@ -41,7 +41,7 @@ public class CabinetMapper extends AmenityMapper {
 
             }
             else if (Objects.equals(facing, "DOWN")){
-                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cabinet.CabinetBlock.cabinetBlockFactory;
+                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = StorageCabinet.StorageCabinetBlock.storageCabinetBlockFactory;
                 Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
                 amenityBlocks.add(amenityBlock);
                 patch.setAmenityBlock(amenityBlock);
@@ -61,9 +61,8 @@ public class CabinetMapper extends AmenityMapper {
                 amenityBlocks.add(amenityBlock4);
                 patch4.setAmenityBlock(amenityBlock4);
             }
-
             else if (Objects.equals(facing, "LEFT")){
-                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cabinet.CabinetBlock.cabinetBlockFactory;
+                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = StorageCabinet.StorageCabinetBlock.storageCabinetBlockFactory;
                 Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
                 amenityBlocks.add(amenityBlock);
                 patch.setAmenityBlock(amenityBlock);
@@ -84,7 +83,7 @@ public class CabinetMapper extends AmenityMapper {
                 patch4.setAmenityBlock(amenityBlock4);
             }
             else if (Objects.equals(facing, "RIGHT")){
-                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cabinet.CabinetBlock.cabinetBlockFactory;
+                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = StorageCabinet.StorageCabinetBlock.storageCabinetBlockFactory;
                 Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
                 amenityBlocks.add(amenityBlock);
                 patch.setAmenityBlock(amenityBlock);
@@ -105,8 +104,8 @@ public class CabinetMapper extends AmenityMapper {
                 patch4.setAmenityBlock(amenityBlock4);
             }
 
-            Cabinet cabinetToAdd = Cabinet.CabinetFactory.create(amenityBlocks, true, facing);
-            Main.simulator.getEnvironment().getCabinets().add(cabinetToAdd);
+            StorageCabinet storageCabinetToAdd = StorageCabinet.StorageCabinetFactory.create(amenityBlocks, true, facing);
+            Main.simulator.getEnvironment().getStorageCabinets().add(storageCabinetToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }
     }

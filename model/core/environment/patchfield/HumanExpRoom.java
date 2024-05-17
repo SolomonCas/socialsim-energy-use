@@ -26,6 +26,11 @@ public class HumanExpRoom extends PatchField {
         }
     }
 
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Human Experience Room";
+    }
 
     // INNER CLASS
     public static class HumanExpRoomFactory extends PatchFieldFactory {

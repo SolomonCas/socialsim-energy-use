@@ -20,7 +20,6 @@ public class Environment extends BaseObject implements Serializable {
 
     // VARIABLES
 
-
     // General
     private final int rows;
     private final int columns;
@@ -47,7 +46,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<ReceptionQueue> receptionQueues;
     private final List<DirectorRoom> directorRooms;
     private final List<BreakArea> breakAreas;
-    private final List<ElevLobby> elevLobbies;
+    private final List<Floor> floors;
 
 
 
@@ -79,6 +78,9 @@ public class Environment extends BaseObject implements Serializable {
     private final List<MaleBathroomDoor> maleBathroomDoors;
     private final List<FemaleBathroomDoor> femaleBathroomDoors;
     private final List<MainEntranceDoor> mainEntranceDoors;
+    private final List<StorageCabinet> storageCabinets;
+    private final List<OfficeSink> officeSinks;
+    private final List<OfficeToilet> officeToilets;
 
     
 
@@ -147,7 +149,7 @@ public class Environment extends BaseObject implements Serializable {
         this.receptionQueues = Collections.synchronizedList(new ArrayList<>());
         this.directorRooms = Collections.synchronizedList(new ArrayList<>());
         this.breakAreas = Collections.synchronizedList(new ArrayList<>());
-        this.elevLobbies = Collections.synchronizedList(new ArrayList<>());
+        this.floors = Collections.synchronizedList(new ArrayList<>());
 
         // Amenities
         this.amenityPatchSet = Collections.synchronizedSortedSet(new TreeSet<>());
@@ -175,6 +177,9 @@ public class Environment extends BaseObject implements Serializable {
         this.maleBathroomDoors = Collections.synchronizedList(new ArrayList<>());
         this.femaleBathroomDoors = Collections.synchronizedList(new ArrayList<>());
         this.mainEntranceDoors = Collections.synchronizedList(new ArrayList<>());
+        this.storageCabinets = Collections.synchronizedList(new ArrayList<>());
+        this.officeSinks = Collections.synchronizedList(new ArrayList<>());
+        this.officeToilets = Collections.synchronizedList(new ArrayList<>());
 
         // Agents
         this.agents = new CopyOnWriteArrayList<>();
@@ -312,7 +317,7 @@ public class Environment extends BaseObject implements Serializable {
         Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080, 7560);
         this.getAgents().add(janitor2);
 
-        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, 0, 1080/*10440*/);
+        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, 0, 10440);
         this.getAgents().add(guard);
 
         Agent director = Agent.AgentFactory.create(Type.DIRECTOR, true, 0, 0, 7560);
@@ -976,6 +981,14 @@ public class Environment extends BaseObject implements Serializable {
         }
     }
 
+    public void setPlantWatered(Patch plantWatered) {
+        for(int i = 0; i < this.getPlants().size(); i++) {
+            if(this.getPlants().get(i).getAmenityBlocks()
+                    .getFirst().getPatch().equals(plantWatered)) {
+                this.getPlants().get(i).setWatered(true);
+            }
+        }
+    }
 
 
     // GETTERS: GENERAL
@@ -1056,8 +1069,8 @@ public class Environment extends BaseObject implements Serializable {
     public List<BreakArea> getBreakAreas() {
         return breakAreas;
     }
-    public List<ElevLobby> getElevLobbies() {
-        return elevLobbies;
+    public List<Floor> getFloors() {
+        return floors;
     }
     public List<Wall> getWalls() {
         return walls;
@@ -1142,9 +1155,24 @@ public class Environment extends BaseObject implements Serializable {
         return mainEntranceDoors;
     }
 
+    public List<StorageCabinet> getStorageCabinets() {
+        return storageCabinets;
+    }
+
+    public List<OfficeSink> getOfficeSinks() {
+        return officeSinks;
+    }
+
+    public List<OfficeToilet> getOfficeToilets() {
+        return officeToilets;
+    }
+
     public List<? extends Amenity> getAmenityList(Class<? extends Amenity> amenityClass) {
         if (amenityClass == Gate.class) {
             return this.getGates();
+        }
+        else if (amenityClass == Server.class) {
+            return this.getServers();
         }
         else if (amenityClass == Cabinet.class) {
             return this.getCabinets();
@@ -1208,6 +1236,12 @@ public class Environment extends BaseObject implements Serializable {
         }
         else if(amenityClass == Whiteboard.class) {
             return this.getWhiteboards();
+        }
+        else if(amenityClass == OfficeSink.class) {
+            return this.getOfficeSinks();
+        }
+        else if(amenityClass == OfficeToilet.class) {
+            return this.getOfficeToilets();
         }
         else {
             return null;

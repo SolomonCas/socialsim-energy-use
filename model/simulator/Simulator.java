@@ -280,31 +280,35 @@ public class Simulator {
             case 2 -> gate = gate3;
         }
         
-        Agent agent = null;
+//        Agent agent = null;
 
         for (int i = 0; i < gate.getSpawners().size(); i++) {
             Gate.GateBlock spawner = gate.getSpawners().get(i);
             int spawnChance = (int) gate.getChancePerTick();
             int CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
 
+
 //            if (CHANCE > spawnChance) {
                 if (environment.getUnspawnedWorkingAgents().size() > 0){
-                    agent = environment.getUnspawnedWorkingAgents().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getUnspawnedWorkingAgents().size()));
-                    int team = agent.getTeam();
-                    if (currentTick == agent.getTimeIn() && agent.getType() == Agent.Type.GUARD && Agent.guardCount != 1) { // Agent.guardCount != 1 isn't dynamic yet
-                        agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), currentTick, agent.getTeam(), null));
-                        environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
-                        Agent.guardCount++;
-                        Agent.agentCount++;
-                        currentGuardCount++;
+                    for (Agent agent : environment.getUnspawnedWorkingAgents()){
+                        agent = environment.getUnspawnedWorkingAgents().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getUnspawnedWorkingAgents().size()));
+                        int team = agent.getTeam();
+                        if (currentTick >= agent.getTimeIn() && agent.getType() == Agent.Type.GUARD && Agent.guardCount != 1) { // Agent.guardCount != 1 isn't dynamic yet
+                            agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), currentTick, agent.getTeam(), null));
+                            environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
+                            Agent.guardCount++;
+                            Agent.agentCount++;
+                            currentGuardCount++;
+                        }
+                        else if (currentTick >= agent.getTimeIn() && agent.getType() == Agent.Type.MAINTENANCE && Agent.maintenanceCount != 2) { // Agent.maintenanceCount != 2 isn't dynamic yet
+                            agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), currentTick, agent.getTeam(), null));
+                            environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
+                            Agent.maintenanceCount++;
+                            Agent.agentCount++;
+                            currentMaintenanceCount++;
+                        }
                     }
-                    else if (currentTick == agent.getTimeIn() && agent.getType() == Agent.Type.MAINTENANCE && Agent.maintenanceCount != 2) { // Agent.maintenanceCount != 2 isn't dynamic yet
-                        agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), currentTick, agent.getTeam(), null));
-                        environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
-                        Agent.maintenanceCount++;
-                        Agent.agentCount++;
-                        currentMaintenanceCount++;
-                    }
+
 //                    if (agent.getType() == Agent.Type.DIRECTOR && Agent.directorCount != MAX_DIRECTORS) {
 //                        agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), currentTick, 0, null));
 //                        environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
@@ -476,61 +480,61 @@ public class Simulator {
         int bathroomReserves = environment.numBathroomsFree();
         for (Agent agent : environment.getMovableAgents()) {
             try {
-                if (currentTick == 2160 && agent.getAgentMovement().getRoutePlan().getLUNCH_INSTANCE() != null) {
-                    agent.getAgentMovement().setNextState(agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().indexOf(agent.getAgentMovement().getRoutePlan().getLUNCH_INSTANCE()) - 1);
-                    agent.getAgentMovement().setStateIndex(agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().indexOf(agent.getAgentMovement().getRoutePlan().getLUNCH_INSTANCE()));
-                    agent.getAgentMovement().setActionIndex(0);
-                    agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(0));
-                    agent.getAgentMovement().resetGoal();
-                }
+//                if (currentTick == 2160 && agent.getAgentMovement().getRoutePlan().getLUNCH_INSTANCE() != null) {
+//                    agent.getAgentMovement().setNextState(agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().indexOf(agent.getAgentMovement().getRoutePlan().getLUNCH_INSTANCE()) - 1);
+//                    agent.getAgentMovement().setStateIndex(agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().indexOf(agent.getAgentMovement().getRoutePlan().getLUNCH_INSTANCE()));
+//                    agent.getAgentMovement().setActionIndex(0);
+//                    agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(0));
+//                    agent.getAgentMovement().resetGoal();
+//                }
 
-                if(currentTick == 4320){
-                    agent.getAgentMovement().getRoutePlan().setBATH_LUNCH(-1);
-                    agent.getAgentMovement().getRoutePlan().setBREAK_COUNT(-1);
-                }
+//                if(currentTick == 4320){
+//                    agent.getAgentMovement().getRoutePlan().setBATH_LUNCH(-1);
+//                    agent.getAgentMovement().getRoutePlan().setBREAK_COUNT(-1);
+//                }
 
                 if (currentTick == agent.getTimeOut()) {
                     int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.GOING_HOME);
                     agent.getAgentMovement().getRoutePlan().setBATH_PM(-1);
-                    agent.getAgentMovement().setState(index);
+                    agent.getAgentMovement().setCurrentState(index);
                     agent.getAgentMovement().setStateIndex(index);
                     agent.getAgentMovement().setActionIndex(0);
                     agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                     agent.getAgentMovement().resetGoal();
                 }
 
-                if(agent.getAgentMovement() != null && agent.getTeam() > 0 && currentTick == agent.getAgentMovement().getRoutePlan().getMeetingStart()){
-                    if (agent.getAgentMovement().getCurrentState().getName() == State.Name.WORKING) {
-                        agent.getAgentMovement().setStateIndex(agent.getAgentMovement().getStateIndex() - 1);
-                    }
-                    else if (agent.getAgentMovement().getCurrentState().getName() == State.Name.EATING_LUNCH) {
-                        agent.getAgentMovement().getRoutePlan().setLunchAmenity(null);
-                        agent.getAgentMovement().getRoutePlan().setLunchAttractor(null);
-                    }
-
-                    if (agent.getAgentMovement().getGoalAttractor() != null) {
-                        agent.getAgentMovement().getGoalAttractor().setIsReserved(false);
-                    }
-                    agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agent.getAgentMovement().getStateIndex() + 1, agent.getAgentMovement().getRoutePlan().addUrgentRoute("MEETING", agent));
-                    agent.getAgentMovement().setNextState(agent.getAgentMovement().getStateIndex());
-                    agent.getAgentMovement().setStateIndex(agent.getAgentMovement().getStateIndex() + 1);
-                    agent.getAgentMovement().setActionIndex(0);
-                    agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
-                    agent.getAgentMovement().resetGoal();
-                }
-                if (agent.getAgentMovement().getCurrentState().getName() == State.Name.WAIT_INFRONT_OF_BATHROOM){
-                    if (bathroomReserves > 0){
-                        agent.getAgentMovement().setNextState(agent.getAgentMovement().getStateIndex());
-                        agent.getAgentMovement().setStateIndex(agent.getAgentMovement().getStateIndex() + 1);
-                        agent.getAgentMovement().setActionIndex(0);
-                        agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
-                        if (agent.getAgentMovement().getGoalAttractor() != null) {
-                            agent.getAgentMovement().getGoalAttractor().setIsReserved(false);
-                        }
-                        agent.getAgentMovement().resetGoal();
-                        bathroomReserves--;
-                    }
-                }
+//                if(agent.getAgentMovement() != null && agent.getTeam() > 0 && currentTick == agent.getAgentMovement().getRoutePlan().getMeetingStart()){
+//                    if (agent.getAgentMovement().getCurrentState().getName() == State.Name.WORKING) {
+//                        agent.getAgentMovement().setStateIndex(agent.getAgentMovement().getStateIndex() - 1);
+//                    }
+//                    else if (agent.getAgentMovement().getCurrentState().getName() == State.Name.EATING_LUNCH) {
+//                        agent.getAgentMovement().getRoutePlan().setLunchAmenity(null);
+//                        agent.getAgentMovement().getRoutePlan().setLunchAttractor(null);
+//                    }
+//
+//                    if (agent.getAgentMovement().getGoalAttractor() != null) {
+//                        agent.getAgentMovement().getGoalAttractor().setIsReserved(false);
+//                    }
+//                    agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agent.getAgentMovement().getStateIndex() + 1, agent.getAgentMovement().getRoutePlan().addUrgentRoute("MEETING", agent));
+//                    agent.getAgentMovement().setNextState(agent.getAgentMovement().getStateIndex());
+//                    agent.getAgentMovement().setStateIndex(agent.getAgentMovement().getStateIndex() + 1);
+//                    agent.getAgentMovement().setActionIndex(0);
+//                    agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+//                    agent.getAgentMovement().resetGoal();
+//                }
+//                if (agent.getAgentMovement().getCurrentState().getName() == State.Name.WAIT_INFRONT_OF_BATHROOM){
+//                    if (bathroomReserves > 0){
+//                        agent.getAgentMovement().setNextState(agent.getAgentMovement().getStateIndex());
+//                        agent.getAgentMovement().setStateIndex(agent.getAgentMovement().getStateIndex() + 1);
+//                        agent.getAgentMovement().setActionIndex(0);
+//                        agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+//                        if (agent.getAgentMovement().getGoalAttractor() != null) {
+//                            agent.getAgentMovement().getGoalAttractor().setIsReserved(false);
+//                        }
+//                        agent.getAgentMovement().resetGoal();
+//                        bathroomReserves--;
+//                    }
+//                }
 
                 moveOne(agent, currentTick);
             } catch (Throwable ex) {
@@ -553,7 +557,50 @@ public class Simulator {
         if (!agentMovement.isInteracting() || agentMovement.isSimultaneousInteractionAllowed()) {
             switch (type) {
                 case GUARD:
-                    if (state.getName() == State.Name.GUARD) {
+                    if (state.getName() == State.Name.GOING_TO_WORK) {
+                        if (action.getName() == Action.Name.GO_TO_STATION) {
+                            agentMovement.setSimultaneousInteractionAllowed(false);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                            }
+
+                            if (agentMovement.chooseNextPatchInPath() && !agentMovement.getRoutePlan().isAtDesk()) {
+                                agentMovement.faceNextPosition();
+                                agentMovement.moveSocialForce();
+                                if (agentMovement.hasReachedNextPatchInPath()) {
+                                    agentMovement.reachPatchInPath();
+                                    if(agentMovement.hasAgentReachedFinalPatchInPath()){
+                                        agentMovement.getRoutePlan().setAtDesk(true);
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                                        agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                    }
+                                }
+                            }else{
+                                agentMovement.setDuration(agentMovement.getDuration() - 1);
+                                if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+//                                    int index = agentMovement.getRoutePlan().findIndexState(State.Name.INSPECT_ROOMS); // setting next state
+                                    agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                    agentMovement.setActionIndex(0); // JIC if needed
+                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    }
+                                    agentMovement.resetGoal();
+                                }
+                                if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                }
+                            }
+                        }
+                    }
+                    else if (state.getName() == State.Name.GUARD) {
                         if (action.getName() == Action.Name.GUARD_STAY_PUT) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
@@ -561,19 +608,21 @@ public class Simulator {
                                 agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
                             }
 
-                            if (agentMovement.chooseNextPatchInPath() && agentMovement.getRoutePlan().getCanUrgent() != -1) {
+                            if (agentMovement.chooseNextPatchInPath() && !agentMovement.getRoutePlan().isAtDesk()) {
                                 agentMovement.faceNextPosition();
                                 agentMovement.moveSocialForce();
-                                if (agentMovement.hasReachedNextPatchInPath()) {
+                                if (agentMovement.hasReachedNextPatchInPath()) { // checks if the agent is right next to the patch
                                     agentMovement.reachPatchInPath();
-                                    if (agentMovement.hasAgentReachedFinalPatchInPath()) {
+                                    if (agentMovement.hasAgentReachedFinalPatchInPath()) { // checks if the agent is in the patch itself
                                         agentMovement.getRoutePlan().setCanUrgent(-1);
                                         agentMovement.getRoutePlan().setAtDesk(true);
                                     }
                                 }
+
                             }
                             else if ((currentTick < 2060 || (currentTick < 5660 && currentTick > 2520)) && agentMovement.getRoutePlan().getCanUrgent() <= 0) {
                                 double CHANCE = Simulator.roll();
+                                System.out.println("CHANCE: " + CHANCE);
                                 if (CHANCE < RoutePlan.BATH_CHANCE) {
                                     if (currentTick < 2160 && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                         agentMovement.getRoutePlan().setFromBathAM(true);
@@ -599,40 +648,69 @@ public class Simulator {
                             }
                         }
                     }
+                    else if (state.getName() == State.Name.INSPECT_ROOMS) {
+                        if (action.getName() == Action.Name.INSPECTING_ROOM) {
+                            agentMovement.setSimultaneousInteractionAllowed(false);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                            }
+
+                            if (agentMovement.chooseNextPatchInPath() && !agentMovement.getRoutePlan().isAtDesk()) { // isAtDesk can essentially depict as checking if the agent is in the goal
+                                agentMovement.faceNextPosition();
+                                agentMovement.moveSocialForce();
+                                if (agentMovement.hasReachedNextPatchInPath()) {
+                                    agentMovement.reachPatchInPath();
+                                    if (agentMovement.isCloseToFinalPatchInPath()) {
+                                        agentMovement.getRoutePlan().setAtDesk(true);
+                                    }
+                                }
+                            }else{
+                                agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                agentMovement.setDuration(agentMovement.getDuration() - 1);
+                                if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                    agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                    agentMovement.setActionIndex(0); // JIC needed
+                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    }
+                                    agentMovement.resetGoal();
+                                }
+                                if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                }
+                            }
+                        }
+                    }
                     else if (state.getName() == State.Name.NEEDS_BATHROOM) {
                         if (action.getName()== Action.Name.GO_TO_BATHROOM) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if (!agentMovement.chooseBathroomGoal(Toilet.class)) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() - 1, agentMovement.getRoutePlan().addWaitingRoute(agent));
-                                    agentMovement.setPreviousState(agentMovement.getStateIndex());
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() -1);
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    if(agentMovement.getGoalAttractor() != null) {
-                                        agentMovement.getGoalAttractor().setIsReserved(false);
-                                    }
-                                    agentMovement.resetGoal();
-                                    isFull = true;
+                                    // If full add waiting state
+                                    // Should be +1 to the state index because it will be removed eventually
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addWaitingRoute(agent));
                                     agentMovement.setNextState(agentMovement.getStateIndex());
                                     agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                     agentMovement.resetGoal();
-                                    if (agentMovement.getRoutePlan().isFromBathAM()) {
-                                        agentMovement.getRoutePlan().setFromBathAM(false);
-                                    }
-                                    else if (agentMovement.getRoutePlan().isFromBathPM()) {
-                                        agentMovement.getRoutePlan().setFromBathPM(false);
-                                    }
+                                    isFull = true;
                                 }
                                 else {
-                                    agentMovement.getRoutePlan().setAtDesk(false);
-                                    if (agentMovement.getRoutePlan().isFromBathAM()) {
+                                    agentMovement.getRoutePlan().setAtDesk(false); // The agent is leaving to his or her current location
+                                    if (agentMovement.getRoutePlan().isFromBathAM()) { // Take a bathroom break at the morning
                                         agentMovement.getRoutePlan().setFromBathAM(false);
                                         agentMovement.getRoutePlan().setBATH_AM(1);
                                     }
-                                    else if (agentMovement.getRoutePlan().isFromBathPM()) {
+                                    else if (agentMovement.getRoutePlan().isFromBathPM()) { // Take a bathroom break at the evening
                                         agentMovement.getRoutePlan().setFromBathPM(false);
                                         agentMovement.getRoutePlan().setBATH_PM(1);
                                     }
@@ -642,6 +720,7 @@ public class Simulator {
                                     agentMovement.getRoutePlan().resetCanUrgent();
                                 }
                             }
+
                             if (isFull) {
                                 isFull = false;
                             }
@@ -652,8 +731,13 @@ public class Simulator {
                                     if (agentMovement.hasReachedNextPatchInPath()) {
                                         agentMovement.reachPatchInPath();
                                         if (agentMovement.hasAgentReachedFinalPatchInPath()) {
-                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
-                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                            agentMovement.setActionIndex(0); // JIC needed
+                                            if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            }
+//                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                             agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
                                         }
                                     }
@@ -664,11 +748,29 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
                             agentMovement.setDuration(agentMovement.getDuration() - 1);
-                            if (agentMovement.getDuration() <= 0) {
-                                agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                            if (agentMovement.getDuration() <= 0) {
+//                                agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+//                                agentMovement.getGoalAttractor().setIsReserved(false);
+//                                agentMovement.resetGoal();
+//                            }
+
+                            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+                                agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                agentMovement.setActionIndex(0); // JIC needed
+                                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                }
+                                agentMovement.resetGoal();
+                            }
+                            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
                                 agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
-                                agentMovement.getGoalAttractor().setIsReserved(false);
                                 agentMovement.resetGoal();
                             }
                         }
@@ -676,10 +778,12 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if (!agentMovement.chooseBathroomGoal(Sink.class)) {
+                                    // if full skip washing hands HAHAHAHA
                                     isFull = true;
-                                    agentMovement.setNextState(agentMovement.getStateIndex());
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                    agentMovement.setActionIndex(0);
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                     agentMovement.resetGoal();
                                 }
@@ -694,8 +798,15 @@ public class Simulator {
                                     if (agentMovement.hasReachedNextPatchInPath()) {
                                         agentMovement.reachPatchInPath();
                                         if (agentMovement.hasAgentReachedFinalPatchInPath()) {
-                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
-                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+
+                                            agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                            agentMovement.setActionIndex(0); // JIC needed
+                                            if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            }
+//                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                             agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
                                         }
                                     }
@@ -706,114 +817,101 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(true);
                             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
                             agentMovement.setDuration(agentMovement.getDuration() - 1);
-                            if (agentMovement.getDuration() <= 0) {
-                                agentMovement.setNextState(agentMovement.getStateIndex());
-                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                agentMovement.setActionIndex(0);
+//                            if (agentMovement.getDuration() <= 0) {
+//                                agentMovement.setNextState(agentMovement.getStateIndex());
+//                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+//                                agentMovement.setActionIndex(0);
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.getGoalAttractor().setIsReserved(false);
+//                                agentMovement.resetGoal();
+//                            }
+
+                            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+                                agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                agentMovement.setActionIndex(0); // JIC needed
+                                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                }
+                                agentMovement.resetGoal();
+                            }
+                            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
                                 agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.getGoalAttractor().setIsReserved(false);
                                 agentMovement.resetGoal();
                             }
                         }
                     }
-                    else if (state.getName() == State.Name.EATING_LUNCH) {
-                        if (action.getName() == Action.Name.GO_TO_LUNCH) {
+                    else if(state.getName() == State.Name.WAIT_INFRONT_OF_BATHROOM){
+                        if (action.getName() == Action.Name.GO_TO_WAIT_AREA) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
-                                if (agentMovement.getRoutePlan().getLunchAmenity() == null) {
-                                    double CHANCE = Simulator.roll();
-
-                                    if (CHANCE < RoutePlan.GUARD_LUNCH) {
-                                        if (!agentMovement.chooseBreakSeat()) {
-                                            agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
-                                            agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
-                                        }
-                                    }
-                                    else {
-                                        agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
-                                        agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
-                                    }
+                                if(!agentMovement.chooseWaitPatch()){
+                                    System.out.println("False wait patch");
                                 }
-                                else {
-                                    agentMovement.setGoalAmenity(agentMovement.getRoutePlan().getLunchAmenity());
-                                    agentMovement.setGoalAttractor(agentMovement.getRoutePlan().getLunchAttractor());
-                                }
-
                             }
-
-                            if (agentMovement.chooseNextPatchInPath()) {
-                                agentMovement.getRoutePlan().setAtDesk(false);
-                                agentMovement.faceNextPosition();
-                                agentMovement.moveSocialForce();
-                                if (agentMovement.hasReachedNextPatchInPath()) {
-                                    agentMovement.reachPatchInPath();
-                                    if (agentMovement.hasAgentReachedFinalPatchInPath()) {
-                                        agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                        if (agentMovement.getRoutePlan().getLastDuration() == -1) {
+                            else {
+                                if (agentMovement.chooseNextPatchInPath()) {
+                                    agentMovement.faceNextPosition();
+                                    agentMovement.moveSocialForce();
+                                    if (agentMovement.hasReachedNextPatchInPath()) {
+                                        agentMovement.reachPatchInPath();
+                                        if (agentMovement.hasAgentReachedFinalPatchInPath()) {
+                                            agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                            agentMovement.setActionIndex(0); // JIC needed
+                                            if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            }
+//                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                             agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
                                         }
-                                        else {
-                                            agentMovement.setDuration(agentMovement.getRoutePlan().getLastDuration());
-                                            agentMovement.getRoutePlan().setLastDuration(-1);
-                                        }
-                                        agentMovement.getRoutePlan().setCanUrgent(-1);
-                                        agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
-                                        agentMovement.getRoutePlan().setLunchAmenity(agentMovement.getGoalAmenity());
-                                        agentMovement.getRoutePlan().setLunchAttractor(agentMovement.getGoalAttractor());
                                     }
                                 }
+//                                else{
+//                                    agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+//                                }
                             }
                         }
-                        else if (action.getName() == Action.Name.EAT_LUNCH) {
+                        else if(action.getName() == Action.Name.WAIT_FOR_VACANT){
                             agentMovement.setSimultaneousInteractionAllowed(true);
                             agentMovement.setDuration(agentMovement.getDuration() - 1);
-                            if (agentMovement.getDuration() <= 0) {
-                                agentMovement.setNextState(agentMovement.getStateIndex());
-                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                agentMovement.setActionIndex(0);
-                                agentMovement.getGoalAttractor().setIsReserved(false);
-                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.resetGoal();
-                                agentMovement.getRoutePlan().setLunchAmenity(null);
-                                agentMovement.getRoutePlan().setLunchAttractor(null);
-                            }
-                            else if (agentMovement.getRoutePlan().getCanUrgent() <= 0) {
-                                double CHANCE = Simulator.roll();
+//                            if (agentMovement.getDuration() <= 0) {
+//                                agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+//                                agentMovement.getGoalAttractor().setIsReserved(false);
+//                                agentMovement.resetGoal();
+//                            }
 
-                                if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.getRoutePlan().getBATH_LUNCH() > 0) {
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
-                                    agentMovement.setNextState(agentMovement.getStateIndex());
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                    agentMovement.setActionIndex(0);
+                            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+                                agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                agentMovement.setActionIndex(0); // JIC needed
+                                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                    agentMovement.getRoutePlan().setLastDuration(agentMovement.getDuration());
                                 }
-                                else if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.DISPENSER_CHANCE && agentMovement.getRoutePlan().getDISPENSER_LUNCH() > 0){
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("DISPENSER", agent));
-                                    agentMovement.setNextState(agentMovement.getStateIndex());
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                    agentMovement.getRoutePlan().setLastDuration(agentMovement.getDuration());
+                                agentMovement.resetGoal();
+                            }
+                            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setPreviousState(agentMovement.getStateIndex()); // Go back to NEED_BATHROOM State
+                                agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                if (agentMovement.getGoalAttractor() != null) {
+                                    agentMovement.getGoalAttractor().setIsReserved(false);
                                 }
-                                else if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.DISPENSER_CHANCE + RoutePlan.REFRIGERATOR_CHANCE && agentMovement.getRoutePlan().getREFRIGERATOR_LUNCH() > 0){
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("REFRIGERATOR", agent));
-                                    agentMovement.setNextState(agentMovement.getStateIndex());
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                    agentMovement.getRoutePlan().setLastDuration(agentMovement.getDuration());
-                                }
+                                agentMovement.resetGoal();
                             }
                         }
                     }
+
                     else if(state.getName() == State.Name.DISPENSER){
                         if(action.getName() == Action.Name.GOING_DISPENSER){
                             agentMovement.setSimultaneousInteractionAllowed(false);
@@ -844,9 +942,15 @@ public class Simulator {
                                     if (agentMovement.hasReachedNextPatchInPath()) {
                                         agentMovement.reachPatchInPath();
                                         if (agentMovement.hasAgentReachedFinalPatchInPath()) {
-                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
-                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                            agentMovement.setActionIndex(0); // JIC needed
+                                            if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            }
+//                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                             agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+
                                         }
                                     }
                                 }
@@ -856,12 +960,29 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
                             agentMovement.setDuration(agentMovement.getDuration() - 1);
-                            if (agentMovement.getDuration() <= 0) {
-                                agentMovement.setNextState(agentMovement.getStateIndex());
-                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                agentMovement.setActionIndex(0);
+//                            if (agentMovement.getDuration() <= 0) {
+//                                agentMovement.setNextState(agentMovement.getStateIndex());
+//                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+//                                agentMovement.setActionIndex(0);
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.getGoalAttractor().setIsReserved(false);
+//                                agentMovement.resetGoal();
+//                            }
+                            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+                                agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                agentMovement.setActionIndex(0); // JIC needed
+                                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                }
+                                agentMovement.resetGoal();
+                            }
+                            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
                                 agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.getGoalAttractor().setIsReserved(false);
                                 agentMovement.resetGoal();
                             }
                         }
@@ -908,12 +1029,29 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
                             agentMovement.setDuration(agentMovement.getDuration() - 1);
-                            if (agentMovement.getDuration() <= 0) {
-                                agentMovement.setNextState(agentMovement.getStateIndex());
-                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                agentMovement.setActionIndex(0);
+//                            if (agentMovement.getDuration() <= 0) {
+//                                agentMovement.setNextState(agentMovement.getStateIndex());
+//                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+//                                agentMovement.setActionIndex(0);
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.getGoalAttractor().setIsReserved(false);
+//                                agentMovement.resetGoal();
+//                            }
+                            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+                                agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                agentMovement.setActionIndex(0); // JIC needed
+                                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                }
+                                agentMovement.resetGoal();
+                            }
+                            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
                                 agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.getGoalAttractor().setIsReserved(false);
                                 agentMovement.resetGoal();
                             }
                         }
@@ -925,7 +1063,7 @@ public class Simulator {
                                 if(agentMovement.getRoutePlan().getBATH_PM() > 0){
                                     double CHANCE = Simulator.roll();
                                     if(CHANCE < RoutePlan.BATH_CHANCE){
-                                        agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                        agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
                                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
                                         agentMovement.setNextState(agentMovement.getStateIndex());
                                         agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
@@ -966,6 +1104,7 @@ public class Simulator {
                             if (agentMovement.chooseNextPatchInPath()) {
                                 agentMovement.faceNextPosition();
                                 agentMovement.moveSocialForce();
+                                agentMovement.checkIfStuck();
                                 if (agentMovement.hasReachedNextPatchInPath()) {
                                     agentMovement.reachPatchInPath();
                                     if(agentMovement.hasAgentReachedFinalPatchInPath()){
@@ -985,33 +1124,285 @@ public class Simulator {
                         }
                     }
 
-                    break;
-                case MAINTENANCE:
-                    if (state.getName() == State.Name.MAINTENANCE_BATHROOM) {
-                        if (action.getName() == Action.Name.MAINTENANCE_CLEAN_TOILET) {
+                    else if (state.getName() == State.Name.EATING_LUNCH) {
+                        if (action.getName() == Action.Name.GO_TO_LUNCH) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
-                                agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
-                                agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
-                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                                if (agentMovement.getRoutePlan().getLunchAmenity() == null) {
+                                    double CHANCE = Simulator.roll();
+
+                                    if (CHANCE < RoutePlan.GUARD_LUNCH) {
+                                        if (!agentMovement.chooseBreakSeat()) {
+                                            agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                            agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
+                                        }
+                                        else {
+
+                                        }
+                                    }
+                                    else {
+                                        // The destination will be based on the route plan of an agent
+                                        agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                        agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
+                                    }
+                                }
+                                else {
+                                    agentMovement.setGoalAmenity(agentMovement.getRoutePlan().getLunchAmenity());
+                                    agentMovement.setGoalAttractor(agentMovement.getRoutePlan().getLunchAttractor());
+                                }
+
                             }
 
                             if (agentMovement.chooseNextPatchInPath()) {
+                                agentMovement.getRoutePlan().setAtDesk(false);
                                 agentMovement.faceNextPosition();
                                 agentMovement.moveSocialForce();
-                                agentMovement.checkIfStuck();
                                 if (agentMovement.hasReachedNextPatchInPath()) {
                                     agentMovement.reachPatchInPath();
+                                    if (agentMovement.hasAgentReachedFinalPatchInPath()) {
+
+                                        agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+//                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        if (agentMovement.getRoutePlan().getLastDuration() == -1) {
+                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                                        }
+                                        else {
+                                            agentMovement.setDuration(agentMovement.getRoutePlan().getLastDuration());
+                                            agentMovement.getRoutePlan().setLastDuration(-1);
+                                        }
+                                        agentMovement.getRoutePlan().setCanUrgent(-1);
+                                        agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                        agentMovement.getRoutePlan().setLunchAmenity(agentMovement.getGoalAmenity());
+                                        agentMovement.getRoutePlan().setLunchAttractor(agentMovement.getGoalAttractor());
+                                    }
                                 }
                             }
-                            else {
-                                agentMovement.setDuration(agentMovement.getDuration() - 1);
-                                agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
-                                if (agentMovement.getDuration() <= 0) {
+                        }
+                        else if (action.getName() == Action.Name.EAT_LUNCH) {
+                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setDuration(agentMovement.getDuration() - 1);
+
+                            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the amenity
+                                agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                agentMovement.setActionIndex(0); // JIC needed
+                                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                }
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setLunchAmenity(null);
+                                agentMovement.getRoutePlan().setLunchAttractor(null);
+                            }
+//                            if (agentMovement.getDuration() <= 0) {
+//                                agentMovement.setNextState(agentMovement.getStateIndex());
+//                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+//                                agentMovement.setActionIndex(0);
+//                                agentMovement.getGoalAttractor().setIsReserved(false);
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.resetGoal();
+//                                agentMovement.getRoutePlan().setLunchAmenity(null);
+//                                agentMovement.getRoutePlan().setLunchAttractor(null);
+//                            }
+                            else if (agentMovement.getRoutePlan().getCanUrgent() <= 0) {
+                                double CHANCE = Simulator.roll();
+
+                                if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.getRoutePlan().getBATH_LUNCH() > 0) {
+                                    agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
                                     agentMovement.setNextState(agentMovement.getStateIndex());
                                     agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
                                     agentMovement.setActionIndex(0);
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                    agentMovement.getRoutePlan().setLastDuration(agentMovement.getDuration());
+                                }
+                                else if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.DISPENSER_CHANCE && agentMovement.getRoutePlan().getDISPENSER_LUNCH() > 0){
+                                    agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("DISPENSER", agent));
+                                    agentMovement.setNextState(agentMovement.getStateIndex());
+                                    agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+                                    agentMovement.setActionIndex(0);
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                    agentMovement.getRoutePlan().setLastDuration(agentMovement.getDuration());
+                                }
+                                else if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.DISPENSER_CHANCE + RoutePlan.REFRIGERATOR_CHANCE && agentMovement.getRoutePlan().getREFRIGERATOR_LUNCH() > 0){
+                                    agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("REFRIGERATOR", agent));
+                                    agentMovement.setNextState(agentMovement.getStateIndex());
+                                    agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+                                    agentMovement.setActionIndex(0);
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                    agentMovement.getRoutePlan().setLastDuration(agentMovement.getDuration());
+                                }
+                            }
+
+                            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setPreviousState(agentMovement.getStateIndex()); // Go back to NEED_BATHROOM State
+                                agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                if (agentMovement.getGoalAttractor() != null) {
                                     agentMovement.getGoalAttractor().setIsReserved(false);
+                                }
+                                agentMovement.resetGoal();
+                            }
+                        }
+                    }
+
+
+
+                    break;
+                case MAINTENANCE:
+                    if (state.getName() == State.Name.GOING_TO_WORK) {
+                        if (action.getName() == Action.Name.GO_TO_STATION) {
+                            agentMovement.setSimultaneousInteractionAllowed(false);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                            }
+
+                            if (agentMovement.chooseNextPatchInPath() && !agentMovement.getRoutePlan().isAtDesk()) {
+                                agentMovement.faceNextPosition();
+                                agentMovement.moveSocialForce();
+                                if (agentMovement.hasReachedNextPatchInPath()) {
+                                    agentMovement.reachPatchInPath();
+                                    if(agentMovement.hasAgentReachedFinalPatchInPath()){
+                                        agentMovement.getRoutePlan().setAtDesk(true);
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                                        agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                    }
+                                }
+                            }else{
+                                agentMovement.setDuration(agentMovement.getDuration() - 1);
+                                if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+//                                    int index = agentMovement.getRoutePlan().findIndexState(State.Name.INSPECT_ROOMS); // setting next state
+                                    agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                    agentMovement.setActionIndex(0); // JIC if needed
+                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    }
+                                    agentMovement.resetGoal();
+                                }
+                                if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                }
+                            }
+                        }
+                    }
+                    else if (state.getName() == State.Name.MAINTENANCE_BATHROOM) {
+                        if (action.getName() == Action.Name.MAINTENANCE_CLEAN_TOILET) {
+                            agentMovement.setSimultaneousInteractionAllowed(false);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                if (!agentMovement.chooseBathroomGoal(OfficeToilet.class)) {
+                                    // If full cleaning is already been done
+                                    isFull = true;
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                }
+                            }
+                            if(isFull) {
+                                isFull = false;
+                            }
+                            else {
+                                if (agentMovement.chooseNextPatchInPath()) {
+                                    agentMovement.faceNextPosition();
+                                    agentMovement.moveSocialForce();
+                                    agentMovement.checkIfStuck();
+                                    if (agentMovement.hasReachedNextPatchInPath()) {
+                                        agentMovement.reachPatchInPath();
+                                        if (agentMovement.hasAgentReachedFinalPatchInPath()) {
+                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                                            agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                        }
+                                    }
+                                }
+                                else {
+
+                                    agentMovement.setDuration(agentMovement.getDuration() - 1);
+                                    if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.getGoalAttractor().setIsReserved(false);
+                                        agentMovement.resetGoal();
+
+                                    }
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.resetGoal();
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    else if (state.getName() == State.Name.INSPECT_ROOMS) {
+                        if (action.getName() == Action.Name.INSPECTING_ROOM) {
+                            agentMovement.setSimultaneousInteractionAllowed(false);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                            }
+
+                            if (agentMovement.chooseNextPatchInPath() && !agentMovement.getRoutePlan().isAtDesk()) { // isAtDesk can essentially depict as checking if the agent is in the goal
+                                agentMovement.faceNextPosition();
+                                agentMovement.moveSocialForce();
+                                if (agentMovement.hasReachedNextPatchInPath()) {
+                                    agentMovement.reachPatchInPath();
+                                    if (agentMovement.isCloseToFinalPatchInPath()) {
+                                        agentMovement.getRoutePlan().setAtDesk(true);
+                                    }
+                                }
+                            }else{
+                                agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                agentMovement.setDuration(agentMovement.getDuration() - 1);
+                                if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                    agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                    agentMovement.setActionIndex(0); // JIC needed
+                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    }
+                                    agentMovement.resetGoal();
+                                }
+                                if (agentMovement.getCurrentState().getActions().isEmpty()){
+//                                    int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.GUARD); // setting next state
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+//                                    agentMovement.getRoutePlan().setAtDesk(false);
+//                                    agentMovement.setCurrentState(index);
+//                                    agentMovement.setStateIndex(index);
+//                                    agentMovement.setActionIndex(0);
+//                                    agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                    agentMovement.resetGoal();
+
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                     agentMovement.resetGoal();
                                 }
@@ -1022,28 +1413,104 @@ public class Simulator {
                         if (action.getName() == Action.Name.MAINTENANCE_WATER_PLANT) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
-                                agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
-                                agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().get(0));
-                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
-                            }
-
-                            if (agentMovement.chooseNextPatchInPath()) {
-                                agentMovement.faceNextPosition();
-                                agentMovement.moveSocialForce();
-                                agentMovement.checkIfStuck();
-                                if (agentMovement.hasReachedNextPatchInPath()) {
-                                    agentMovement.reachPatchInPath();
-                                }
-                            }
-                            else {
-                                agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
-                                agentMovement.setDuration(agentMovement.getDuration() - 1);
-                                if (agentMovement.getDuration() <= 0) {
-                                    agentMovement.setPreviousState(agentMovement.getStateIndex());
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
-                                    agentMovement.setActionIndex(0);
+                                if (!agentMovement.choosePlantGoal()) {
+                                    // If full cleaning is already been done
+                                    isFull = true;
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                     agentMovement.resetGoal();
+                                }
+                            }
+                            if(isFull) {
+                                isFull = false;
+                            }
+                            else {
+                                if (agentMovement.chooseNextPatchInPath()) {
+                                    agentMovement.faceNextPosition();
+                                    agentMovement.moveSocialForce();
+                                    agentMovement.checkIfStuck();
+                                    if (agentMovement.hasReachedNextPatchInPath()) {
+                                        agentMovement.reachPatchInPath();
+                                        if (agentMovement.hasAgentReachedFinalPatchInPath()) {
+                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                                            agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                        }
+                                    }
+                                }
+                                else {
+                                    agentMovement.setDuration(agentMovement.getDuration() - 1);
+                                    if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        environmentInstance.setPlantWatered(agentMovement.getGoalAmenity().getAttractors().getFirst().getPatch()); // set the plant to watered
+                                        agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.resetGoal();
+                                    }
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+//                                    agentMovement.setPreviousState(agentMovement.getStateIndex());
+//                                    agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0);
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.resetGoal();
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    else if (state.getName() == State.Name.WAIT_FOR_ACTIVITY) {
+                        if (action.getName() == Action.Name.GO_TO_WAIT_AREA) {
+                            agentMovement.setSimultaneousInteractionAllowed(false);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                if (!agentMovement.chooseBreakSeat()) {
+                                    agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                    agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                                }
+                            }
+
+                            if (agentMovement.chooseNextPatchInPath() && !agentMovement.getRoutePlan().isAtDesk()) {
+                                agentMovement.faceNextPosition();
+                                agentMovement.moveSocialForce();
+                                if (agentMovement.hasReachedNextPatchInPath()) { // checks if the agent is right next to the patch
+                                    agentMovement.reachPatchInPath();
+                                    if (agentMovement.hasAgentReachedFinalPatchInPath()) {
+                                        agentMovement.getRoutePlan().setCanUrgent(-1);
+                                        agentMovement.getRoutePlan().setAtDesk(true);
+                                    }
+                                }
+                            }
+                            else if ((currentTick < 2060 || (currentTick < 5660 && currentTick > 2520)) && agentMovement.getRoutePlan().getCanUrgent() <= 0) {
+                                double CHANCE = Simulator.roll();
+                                System.out.println("CHANCE: " + CHANCE);
+                                if (CHANCE < RoutePlan.BATH_CHANCE) {
+                                    if (currentTick < 2160 && agentMovement.getRoutePlan().getBATH_AM() > 0) {
+                                        agentMovement.getRoutePlan().setFromBathAM(true);
+                                        agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
+                                        agentMovement.setNextState(agentMovement.getStateIndex());
+                                        agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+                                        agentMovement.setActionIndex(0);
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.resetGoal();
+                                    }
+                                    else if(agentMovement.getRoutePlan().getBATH_PM() > 0) {
+                                        agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
+                                        agentMovement.setNextState(agentMovement.getStateIndex());
+                                        agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+                                        agentMovement.setActionIndex(0);
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setFromBathPM(true);
+                                    }
                                 }
                             }
                         }
@@ -1053,35 +1520,23 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if (!agentMovement.chooseBathroomGoal(Toilet.class)) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() - 1, agentMovement.getRoutePlan().addWaitingRoute(agent));
-                                    agentMovement.setPreviousState(agentMovement.getStateIndex());
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() -1);
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    if(agentMovement.getGoalAttractor() != null) {
-                                        agentMovement.getGoalAttractor().setIsReserved(false);
-                                    }
-                                    agentMovement.resetGoal();
-                                    isFull = true;
+                                    // If full add waiting state
+                                    // Should be +1 to the state index because it will be removed eventually
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() + 1, agentMovement.getRoutePlan().addWaitingRoute(agent));
                                     agentMovement.setNextState(agentMovement.getStateIndex());
                                     agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                     agentMovement.resetGoal();
-                                    if (agentMovement.getRoutePlan().isFromBathAM()) {
-                                        agentMovement.getRoutePlan().setFromBathAM(false);
-                                    }
-                                    else if (agentMovement.getRoutePlan().isFromBathPM()) {
-                                        agentMovement.getRoutePlan().setFromBathPM(false);
-                                    }
+                                    isFull = true;
                                 }
                                 else {
-                                    agentMovement.getRoutePlan().setAtDesk(false);
-                                    if (agentMovement.getRoutePlan().isFromBathAM()) {
+                                    agentMovement.getRoutePlan().setAtDesk(false); // The agent is leaving to his or her current location
+                                    if (agentMovement.getRoutePlan().isFromBathAM()) { // Take a bathroom break at the morning
                                         agentMovement.getRoutePlan().setFromBathAM(false);
                                         agentMovement.getRoutePlan().setBATH_AM(1);
                                     }
-                                    else if (agentMovement.getRoutePlan().isFromBathPM()) {
+                                    else if (agentMovement.getRoutePlan().isFromBathPM()) { // Take a bathroom break at the evening
                                         agentMovement.getRoutePlan().setFromBathPM(false);
                                         agentMovement.getRoutePlan().setBATH_PM(1);
                                     }
@@ -1091,6 +1546,7 @@ public class Simulator {
                                     agentMovement.getRoutePlan().resetCanUrgent();
                                 }
                             }
+
                             if (isFull) {
                                 isFull = false;
                             }
@@ -1101,8 +1557,13 @@ public class Simulator {
                                     if (agentMovement.hasReachedNextPatchInPath()) {
                                         agentMovement.reachPatchInPath();
                                         if (agentMovement.hasAgentReachedFinalPatchInPath()) {
-                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
-                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                            agentMovement.setActionIndex(0); // JIC needed
+                                            if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            }
+//                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                             agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
                                         }
                                     }
@@ -1113,11 +1574,29 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
                             agentMovement.setDuration(agentMovement.getDuration() - 1);
-                            if (agentMovement.getDuration() <= 0) {
-                                agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                            if (agentMovement.getDuration() <= 0) {
+//                                agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+//                                agentMovement.getGoalAttractor().setIsReserved(false);
+//                                agentMovement.resetGoal();
+//                            }
+
+                            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+                                agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                agentMovement.setActionIndex(0); // JIC needed
+                                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                }
+                                agentMovement.resetGoal();
+                            }
+                            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
                                 agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
-                                agentMovement.getGoalAttractor().setIsReserved(false);
                                 agentMovement.resetGoal();
                             }
                         }
@@ -1125,10 +1604,12 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if (!agentMovement.chooseBathroomGoal(Sink.class)) {
+                                    // if full skip washing hands HAHAHAHA
                                     isFull = true;
-                                    agentMovement.setNextState(agentMovement.getStateIndex());
-                                    agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                    agentMovement.setActionIndex(0);
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                     agentMovement.resetGoal();
                                 }
@@ -1143,8 +1624,15 @@ public class Simulator {
                                     if (agentMovement.hasReachedNextPatchInPath()) {
                                         agentMovement.reachPatchInPath();
                                         if (agentMovement.hasAgentReachedFinalPatchInPath()) {
-                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
-                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+
+                                            agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                            agentMovement.setActionIndex(0); // JIC needed
+                                            if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            }
+//                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                             agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
                                         }
                                     }
@@ -1155,16 +1643,101 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(true);
                             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
                             agentMovement.setDuration(agentMovement.getDuration() - 1);
-                            if (agentMovement.getDuration() <= 0) {
-                                agentMovement.setNextState(agentMovement.getStateIndex());
-                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
-                                agentMovement.setActionIndex(0);
+//                            if (agentMovement.getDuration() <= 0) {
+//                                agentMovement.setNextState(agentMovement.getStateIndex());
+//                                agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);
+//                                agentMovement.setActionIndex(0);
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.getGoalAttractor().setIsReserved(false);
+//                                agentMovement.resetGoal();
+//                            }
+
+                            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+                                agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                agentMovement.setActionIndex(0); // JIC needed
+                                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                }
+                                agentMovement.resetGoal();
+                            }
+                            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
                                 agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.getGoalAttractor().setIsReserved(false);
                                 agentMovement.resetGoal();
                             }
                         }
                     }
+                    else if(state.getName() == State.Name.WAIT_INFRONT_OF_BATHROOM){
+                        if (action.getName() == Action.Name.GO_TO_WAIT_AREA) {
+                            agentMovement.setSimultaneousInteractionAllowed(false);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                if(!agentMovement.chooseWaitPatch()){
+                                    System.out.println("False wait patch");
+                                }
+                            }
+                            else {
+                                if (agentMovement.chooseNextPatchInPath()) {
+                                    agentMovement.faceNextPosition();
+                                    agentMovement.moveSocialForce();
+                                    if (agentMovement.hasReachedNextPatchInPath()) {
+                                        agentMovement.reachPatchInPath();
+                                        if (agentMovement.hasAgentReachedFinalPatchInPath()) {
+                                            agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                            agentMovement.setActionIndex(0); // JIC needed
+                                            if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            }
+//                                            agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                                        }
+                                    }
+                                }
+//                                else{
+//                                    agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+//                                }
+                            }
+                        }
+                        else if(action.getName() == Action.Name.WAIT_FOR_VACANT){
+                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setDuration(agentMovement.getDuration() - 1);
+//                            if (agentMovement.getDuration() <= 0) {
+//                                agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+//                                agentMovement.getGoalAttractor().setIsReserved(false);
+//                                agentMovement.resetGoal();
+//                            }
+
+                            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
+                                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+                                agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
+                                agentMovement.setActionIndex(0); // JIC needed
+                                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                }
+                                agentMovement.resetGoal();
+                            }
+                            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setPreviousState(agentMovement.getStateIndex()); // Go back to NEED_BATHROOM State
+                                agentMovement.setStateIndex(agentMovement.getStateIndex() - 1);
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                if (agentMovement.getGoalAttractor() != null) {
+                                    agentMovement.getGoalAttractor().setIsReserved(false);
+                                }
+                                agentMovement.resetGoal();
+                            }
+                        }
+                    }
+
                     else if (state.getName() == State.Name.EATING_LUNCH) {
                         if (action.getName() == Action.Name.GO_TO_LUNCH) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
@@ -1741,7 +2314,7 @@ public class Simulator {
                         if (action.getName()== Action.Name.GO_TO_BATHROOM) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
-                                if (!agentMovement.chooseBathroomGoal(Toilet.class)) {
+                                if (!agentMovement.chooseBathroomGoal(OfficeToilet.class)) {
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex() - 1, agentMovement.getRoutePlan().addWaitingRoute(agent));
                                     agentMovement.setPreviousState(agentMovement.getStateIndex());
                                     agentMovement.setStateIndex(agentMovement.getStateIndex() -1);
@@ -1813,7 +2386,7 @@ public class Simulator {
                         else if (action.getName() == Action.Name.FIND_SINK) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
-                                if (!agentMovement.chooseBathroomGoal(Sink.class)) {
+                                if (!agentMovement.chooseBathroomGoal(OfficeSink.class)) {
                                     isFull = true;
                                     agentMovement.setNextState(agentMovement.getStateIndex());
                                     agentMovement.setStateIndex(agentMovement.getStateIndex() + 1);

@@ -27,7 +27,11 @@ public class StorageRoom extends PatchField {
         }
     }
 
-
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Storage Room";
+    }
 
     // INNER CLASS
     public static class StorageRoomFactory extends PatchFieldFactory {

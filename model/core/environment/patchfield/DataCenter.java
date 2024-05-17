@@ -28,7 +28,11 @@ public class DataCenter extends PatchField {
         }
     }
 
-
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Data Center";
+    }
 
     // INNER CLASS
     public static class DataCenterFactory extends PatchFieldFactory {

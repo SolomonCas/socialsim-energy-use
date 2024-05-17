@@ -15,7 +15,11 @@ public class LearningSpace extends PatchField {
         learningSpaceFactory = new LearningSpaceFactory();
     }
 
-
+    // OVERRIDE
+    @Override
+    public String toString() {
+        return "Learning Space Room";
+    }
 
     // CONSTRUCTOR
     protected LearningSpace(List<Patch> patches, int num) {

@@ -13,14 +13,11 @@ import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.Drawable;
 import com.socialsim.model.core.environment.patchobject.passable.NonObstacle;
 import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Sink;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Toilet;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Trash;
+import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.core.environment.position.Coordinates;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -173,7 +170,8 @@ public class GraphicsController extends Controller {
                                 tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
                     }
                     else if (   patchAmenity.getClass() == Toilet.class || patchAmenity.getClass() == Sink.class ||
-                            patchAmenity.getClass() == Trash.class) {
+                            patchAmenity.getClass() == Trash.class || patchAmenity.getClass() == OfficeToilet.class ||
+                            patchAmenity.getClass() == OfficeSink.class) {
                         foregroundGraphicsContext.drawImage(
                                 AMENITY_SPRITES2,
                                 amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
@@ -246,8 +244,8 @@ public class GraphicsController extends Controller {
 
 
 
-                } // ELEVATOR LOBBY
-                else if (patchPatchField.getClass() == ElevLobby.class) {
+                } // Floor
+                else if (patchPatchField.getClass() == Floor.class) {
                     patchColor = Color.rgb(244, 244, 244);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
