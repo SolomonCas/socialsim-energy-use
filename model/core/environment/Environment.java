@@ -311,13 +311,13 @@ public class Environment extends BaseObject implements Serializable {
     }
 
     public void createInitialAgentDemographics(){
-        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080, 7560);
+        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080, 4000/*7560*/);
         this.getAgents().add(janitor);
 
-        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080, 7560);
+        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080, 4000/*7560*/);
         this.getAgents().add(janitor2);
 
-        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, 0, 10440);
+        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, 0, 4000/*10440*/);
         this.getAgents().add(guard);
 
         Agent director = Agent.AgentFactory.create(Type.DIRECTOR, true, 0, 0, 7560);

@@ -37,7 +37,7 @@ public class AgentMovement {
     private double proposedHeading;
     private double heading;
     private int team;
-    private Cubicle assignedCubicle;
+    private Amenity assignedSeat;
     private Patch currentPatch;
     private Amenity currentAmenity;
     private PatchField currentPatchField;
@@ -87,11 +87,11 @@ public class AgentMovement {
 
 
     /***** CONSTRUCTOR *****/
-    public AgentMovement(Patch spawnPatch, Agent parent, double baseWalkingDistance, Coordinates coordinates, long tickEntered, int team, Cubicle assignedCubicle) { // For inOnStart agents
+    public AgentMovement(Patch spawnPatch, Agent parent, double baseWalkingDistance, Coordinates coordinates, long tickEntered, int team, Amenity assignedSeat) { // For inOnStart agents
         this.parent = parent;
         this.position = new Coordinates(coordinates.getX(), coordinates.getY());
         this.team = team;
-        this.assignedCubicle = assignedCubicle;
+        this.assignedSeat = assignedSeat;
 
         final double interQuartileRange = 0.12;
         this.baseWalkingDistance = baseWalkingDistance + Simulator.RANDOM_NUMBER_GENERATOR.nextGaussian() * interQuartileRange;
@@ -121,7 +121,7 @@ public class AgentMovement {
         repulsiveForcesFromObstacles = new ArrayList<>();
         resetGoal();
 
-        this.routePlan = new RoutePlan(parent, environment, currentPatch, (int) tickEntered, team, assignedCubicle);
+        this.routePlan = new RoutePlan(parent, environment, currentPatch, (int) tickEntered, team, assignedSeat);
         this.stateIndex = 0;
         this.actionIndex = 0;
         this.currentState = this.routePlan.getCurrentState();
@@ -545,12 +545,19 @@ public class AgentMovement {
             }
         }
         else{
-            for (int i = 31; i < 36; i++) {
+            for (int i = 35; i > 30; i--) {
                 patchesToConsider.add(environment.getPatch(i, 135));
             }
         }
-        this.waitPatch = patchesToConsider.get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(patchesToConsider.size()));
-        return true;
+//        this.waitPatch = patchesToConsider.get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(patchesToConsider.size()));
+        for(Patch patch : patchesToConsider) {
+            if(!patch.getAmenityBlock().getIsReserved()) {
+                this.waitPatch = patch;
+                getWaitPatch().getAmenityBlock().setIsReserved(true);
+                return true;
+            }
+        }
+        return false;
     }
     public void removeCollaborationTeam(){
         if(this.collabTablePatch != null && this.collabTablePatch.getTeam() != -1){
@@ -1119,10 +1126,19 @@ public class AgentMovement {
     public boolean isCloseToFinalPatchInPath() {
         return (this.currentPath.getPath().size() == 1);
     }
-    public void despawn() {
+    public void despawn(long returnOfficeTime) {
         if (this.currentPatch != null) {
             this.currentPatch.getAgents().remove(this.parent);
             this.getEnvironment().getAgents().remove(this.parent);
+
+            // If agent will eat outside the office
+            // Since the agent will be removed in the list
+            // Add the agent again but changing it's timeIn value based on the randomized returnOfficeTime
+            // While retaining everything
+            if (Action.Name.EXIT_LUNCH == this.getCurrentAction().getName()) {
+                this.parent.setTimeIn(returnOfficeTime);
+                this.getEnvironment().getAgents().add(this.parent);
+            }
 
             SortedSet<Patch> currentPatchSet = this.getEnvironment().getAgentPatchSet();
             if (currentPatchSet.contains(this.currentPatch) && hasNoAgent(this.currentPatch)) {
@@ -1356,8 +1372,8 @@ public class AgentMovement {
         return team;
     }
 
-    public Cubicle getAssignedCubicle() {
-        return assignedCubicle;
+    public Amenity getAssignedSeat() {
+        return assignedSeat;
     }
 
     public double getCurrentWalkingDistance() {
@@ -1604,4 +1620,7 @@ public class AgentMovement {
         this.interactionType = interactionType;
     }
 
+    public void setAssignedSeat(Amenity assignedSeat) {
+        this.assignedSeat = assignedSeat;
+    }
 }

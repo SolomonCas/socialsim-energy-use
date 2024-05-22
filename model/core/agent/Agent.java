@@ -201,12 +201,13 @@ public class Agent extends PatchObject {
         this.agentMovement = agentMovement;
     }
 
+    public void setTimeIn(long timeIn) {
+        this.timeIn = timeIn;
+    }
 
-
-
-
-
-
+    public void setTimeOut(long timeOut) {
+        this.timeOut = timeOut;
+    }
 
     // OVERRIDE
     @Override

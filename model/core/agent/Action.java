@@ -20,11 +20,11 @@ public class Action {
         this.duration = duration;
     }
     public Action(Name name){
-        this(name, null, 0);
+        this(name, null, -1);
     }
 
     public Action(Name name, Patch destination){
-        this(name, destination, 0);
+        this(name, destination, -1);
     }
 
     public Action(Name name, int duration){
@@ -77,7 +77,8 @@ public class Action {
 
         GO_TO_DIRECTOR_ROOM(), GO_TO_FACULTY_ROOM(),
         INSPECTING_ROOM(),
-        LEAVE_OFFICE(), GO_TO_LUNCH(), EAT_LUNCH(), EXIT_LUNCH(),
+        LEAVE_OFFICE(), GO_TO_LUNCH(), EAT_LUNCH(),
+        EXIT_LUNCH(),
         GOING_TO_RECEPTION_QUEUE(), FILL_UP_NAME(),
         GUARD_STAY_PUT(), GREET_PERSON(),
         MAINTENANCE_CLEAN_TOILET(), MAINTENANCE_WATER_PLANT(),
@@ -86,8 +87,10 @@ public class Action {
         SET_AC_TO_COOL(), SET_AC_TO_WARM(),
         OPEN_BLINDS(), CLOSE_BLINDS(),
         GO_TO_STATION(), GO_TO_DIRECTOR(), ASK_DIRECTOR(),
-        GO_TO_FACULTY(), GO_TO_STUDENT(), ASK_FACULTY(), ASK_STUDENT(), ANSWER_DIRECTOR(),
-        ANSWER_FACULTY(), ANSWER_STUDENT(),
+        GO_TO_FACULTY(), GO_TO_STUDENT(), ASK_FACULTY(), ASK_STUDENT(),
+        ANSWER_DIRECTOR(),
+        ANSWER_FACULTY(),
+        ANSWER_STUDENT(),
         GO_TO_BATHROOM(), RELIEVE_IN_CUBICLE(), FIND_SINK(), WASH_IN_SINK(),
         GO_TO_COLLAB(), WAIT_FOR_COLLAB(), COLLABORATE(),
         GO_MEETING(), WAIT_MEETING(), MEETING(), GOING_DISPENSER(),

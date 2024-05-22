@@ -1379,7 +1379,7 @@ public class ScreenController extends Controller {
             // Women's Bathroom Toilet
             toiletPatches.add(environment.getPatch(44,j));
         }
-
+        ToiletMapper.draw(toiletPatches);
 
 
 
