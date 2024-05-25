@@ -18,10 +18,10 @@ public class Reception extends PatchField {
 
 
     // CONSTRUCTOR
-    protected Reception(List<Patch> patches, int num) {
+    protected Reception(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -35,8 +35,8 @@ public class Reception extends PatchField {
 
     // INNER CLASS
     public static class ReceptionFactory extends PatchFieldFactory {
-        public Reception create(List<Patch> patches, int num) {
-            return new Reception(patches, num);
+        public Reception create(List<Patch> patches, String str) {
+            return new Reception(patches, str);
         }
     }
 

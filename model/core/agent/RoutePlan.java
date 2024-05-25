@@ -47,11 +47,11 @@ public class RoutePlan {
     public static final double INT_STUDENT_COOPERATE = 0.6;
     public static final double EXT_STUDENT_COOPERATE = 0.9;
     public static final double  BATH_CHANCE = 0.15,
-                                DISPENSER_CHANCE = 0.1,
-                                REFRIGERATOR_CHANCE = 0.3,
-                                MAINTENANCE_BREAK_CHANCE = 0.1,
-                                GUARD_BREAK_CHANCE = 0.5,
-                                BREAK_CHANCE = 0.1;
+            DISPENSER_CHANCE = 0.1,
+            REFRIGERATOR_CHANCE = 0.3,
+            MAINTENANCE_BREAK_CHANCE = 0.1,
+            GUARD_BREAK_CHANCE = 0.5,
+            BREAK_CHANCE = 0.1;
     public static ArrayList<ArrayList<Long>> meetingTimes = new ArrayList<>();
 
     /***** CONSTRUCTOR *****/
@@ -268,8 +268,8 @@ public class RoutePlan {
                 maintenanceInspect(environment.getDirectorRooms().get(i), environment, actions);
             }
             // Inspect Break Room/s
-            for(int i = 0; i < environment.getBreakAreas().size(); i++) {
-                maintenanceInspect(environment.getBreakAreas().get(i), environment, actions);
+            for(int i = 0; i < environment.getBreakerRoom().size(); i++) {
+                maintenanceInspect(environment.getBreakerRoom().get(i), environment, actions);
             }
             routePlan.add(new State(State.Name.INSPECT_ROOMS, this, agent, actions));
 

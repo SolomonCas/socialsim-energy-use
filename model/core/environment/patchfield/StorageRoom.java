@@ -18,10 +18,10 @@ public class StorageRoom extends PatchField {
 
 
     // CONSTRUCTOR
-    protected StorageRoom(List<Patch> patches, int num) {
+    protected StorageRoom(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -35,8 +35,8 @@ public class StorageRoom extends PatchField {
 
     // INNER CLASS
     public static class StorageRoomFactory extends PatchFieldFactory {
-        public StorageRoom create(List<Patch> patches, int num) {
-            return new StorageRoom(patches, num);
+        public StorageRoom create(List<Patch> patches, String str) {
+            return new StorageRoom(patches, str);
         }
     }
 

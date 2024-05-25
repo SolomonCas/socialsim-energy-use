@@ -46,7 +46,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<Reception> receptions;
     private final List<ReceptionQueue> receptionQueues;
     private final List<DirectorRoom> directorRooms;
-    private final List<BreakArea> breakAreas;
+    private final List<BreakerRoom> breakerRoom;
     private final List<Floor> floors;
 
 
@@ -84,7 +84,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<OfficeToilet> officeToilets;
     private final List<DirectorTable> directorTables;
 
-    
+
 
 
     // Agents
@@ -131,7 +131,7 @@ public class Environment extends BaseObject implements Serializable {
         this.columns = columns;
         this.patches = new Patch[rows][columns];
         initializePatches();
-        
+
         // Environment
         this.walls = Collections.synchronizedList(new ArrayList<>());
         this.meetingRooms = Collections.synchronizedList(new ArrayList<>());
@@ -150,7 +150,7 @@ public class Environment extends BaseObject implements Serializable {
         this.receptions = Collections.synchronizedList(new ArrayList<>());
         this.receptionQueues = Collections.synchronizedList(new ArrayList<>());
         this.directorRooms = Collections.synchronizedList(new ArrayList<>());
-        this.breakAreas = Collections.synchronizedList(new ArrayList<>());
+        this.breakerRoom = Collections.synchronizedList(new ArrayList<>());
         this.floors = Collections.synchronizedList(new ArrayList<>());
 
         // Amenities
@@ -455,9 +455,9 @@ public class Environment extends BaseObject implements Serializable {
                     int IOS;
 
                     if (   agent1.getPersonaActionGroup() == PersonaActionGroup.STRICT_FACULTY
-                        || agent1.getPersonaActionGroup() == PersonaActionGroup.APP_FACULTY
-                        || agent1.getPersonaActionGroup() == PersonaActionGroup.INT_STUDENT
-                        || agent1.getPersonaActionGroup() == PersonaActionGroup.EXT_STUDENT) {
+                            || agent1.getPersonaActionGroup() == PersonaActionGroup.APP_FACULTY
+                            || agent1.getPersonaActionGroup() == PersonaActionGroup.INT_STUDENT
+                            || agent1.getPersonaActionGroup() == PersonaActionGroup.EXT_STUDENT) {
 
                         int offset;
                         switch (agent2.getPersona()){
@@ -996,8 +996,8 @@ public class Environment extends BaseObject implements Serializable {
     public List<DirectorRoom> getDirectorRooms() {
         return directorRooms;
     }
-    public List<BreakArea> getBreakAreas() {
-        return breakAreas;
+    public List<BreakerRoom> getBreakerRoom() {
+        return breakerRoom;
     }
     public List<Floor> getFloors() {
         return floors;

@@ -19,10 +19,10 @@ public class MeetingRoom extends PatchField {
 
 
     // CONSTRUCTOR
-    protected MeetingRoom(List<Patch> patches, int num) {
+    protected MeetingRoom(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -36,8 +36,8 @@ public class MeetingRoom extends PatchField {
 
     // INNER CLASS
     public static class MeetingRoomFactory extends PatchFieldFactory {
-        public MeetingRoom create(List<Patch> patches, int num) {
-            return new MeetingRoom(patches, num);
+        public MeetingRoom create(List<Patch> patches, String str) {
+            return new MeetingRoom(patches, str);
         }
     }
 

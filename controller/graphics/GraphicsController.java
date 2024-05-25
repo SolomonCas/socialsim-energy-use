@@ -126,7 +126,7 @@ public class GraphicsController extends Controller {
             drawGraphicTransparently = false;
 
             Amenity.AmenityBlock patchAmenityBlock = currentPatch.getAmenityBlock();
-            Pair<PatchField, Integer> patchNumPair = currentPatch.getPatchField();
+            Pair<PatchField, String> patchNumPair = currentPatch.getPatchField();
             Color patchColor;
 
 
@@ -205,126 +205,248 @@ public class GraphicsController extends Controller {
 
 
 
-            // PATCH NUM PAIR
+            // PATCH COLORS
             if (patchNumPair != null) {
                 PatchField patchPatchField = patchNumPair.getKey();
 
 
-                // WALLS
+                /*** WALLS ***/
                 if (patchPatchField.getClass() == Wall.class) {
 
 
-                    patchColor = Color.rgb(104, 101, 101);
+                    // OFFICE OUTLINE
+
+                    // Top of Wall
+                    if (patchNumPair.getValue().toString().equals("outlineWallTop")) {
+                        patchColor = Color.rgb(0, 0, 0);
+
+                        // Wall
+                    } else if (patchNumPair.getValue().toString().equals("outlineWall")) {
+                        patchColor = Color.rgb(32, 32, 32);
+
+                        // INSIDE OFFICE
+
+                        // Top of Wall
+                    } else if (patchNumPair.getValue().toString().equals("WallTopIn")) {
+                        patchColor = Color.rgb(11, 13, 62);
+
+                        // Wall
+                    } else if (patchNumPair.getValue().toString().equals("wallIn")) {
+                        patchColor = Color.rgb(50, 50, 67);
+
+                        // Wall (signifies entry point)
+                    } else if (patchNumPair.getValue().toString().equals("doorWallIn")) {
+                        patchColor = Color.rgb(119, 129, 144);
+
+
+                        // OUTSIDE OFFICE
+
+                        // Top of Wall
+                    } else if (patchNumPair.getValue().toString().equals("WallTopOut")) {
+                        patchColor = Color.rgb(16, 19, 81);
+
+                        // Wall
+                    } else if (patchNumPair.getValue().toString().equals("wallOut")) {
+                        patchColor = Color.rgb(35, 66, 125);
+
+                        // Wall (signifies entry point)
+                    } else if (patchNumPair.getValue().toString().equals("doorWallOut")) {
+                        patchColor = Color.rgb(89, 134, 187);
+
+
+                        // Outside of Building (NOT ACTUALLY A WALL)
+                    } else {
+                        patchColor = Color.rgb(83, 99, 130);
+                    }
+
                     backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.setStroke(null);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-
-
-                // BATHROOM
                 }
+
+
+                /*** BATHROOM ***/
                 else if (patchPatchField.getClass() == Bathroom.class) {
 
-                    // FEMALE
-                    if (patchNumPair.getValue() == 1) {
+                    // Male Bathroom
+                    if (patchNumPair.getValue().toString().equals("male")) {
+                        patchColor = Color.rgb(189, 234, 254);
+
+                        // Female Bathroom
+                    } else if (patchNumPair.getValue().toString().equals("female")) {
                         patchColor = Color.rgb(233, 127, 146);
 
 
-                    // MALE
-                    } else if (patchNumPair.getValue() == 2) {
-                        patchColor = Color.rgb(140, 211, 242);
-
-                    // UNISEX
+                        // Director's Bathroom
                     } else {
-                        patchColor = Color.rgb(169, 204, 164);
+                        patchColor = Color.rgb(136, 158, 152);
                     }
-
 
 
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
 
 
+                /*** RECEPTION ***/
+                else if (patchPatchField.getClass() == Reception.class) {
+                    patchColor = Color.rgb(253, 238, 208);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
 
-                } // Floor
+
+                /*** ELEVATOR LOBBY ***/
+
                 else if (patchPatchField.getClass() == Floor.class) {
                     patchColor = Color.rgb(244, 244, 244);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
 
-                } // RECEPTION
-                else if (patchPatchField.getClass() == Reception.class) {
-                    patchColor = Color.rgb(255, 238, 204);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
 
-                } // MEETING ROOM
-                else if (patchPatchField.getClass() == MeetingRoom.class) {
-                    patchColor = Color.rgb(222, 211, 252);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-
-                } // FACULTY ROOM
-                else if (patchPatchField.getClass() == FacultyRoom.class) {
-                    patchColor = Color.rgb(222, 211, 252);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // CONTROL CENTER
-                else if (patchPatchField.getClass() == ControlCenter.class) {
-                    patchColor = Color.rgb(240, 189, 207);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // DATA CENTER
-                else if (patchPatchField.getClass() == DataCenter.class) {
-                    patchColor = Color.rgb(250, 189, 193);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // DIRECTOR ROOM
-                else if (patchPatchField.getClass() == DirectorRoom.class) {
-                    patchColor = Color.rgb(129, 204, 235);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // DATA COLLECTION
-                else if (patchPatchField.getClass() == DataCollectionRoom.class) {
-                    patchColor = Color.rgb(155, 235, 197);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // HUMAN EXPERIENCE
-                else if (patchPatchField.getClass() == HumanExpRoom.class) {
-                    patchColor = Color.rgb(185, 219, 207);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // RESEARCH CENTER
-                else if (patchPatchField.getClass() == ResearchCenter.class) {
-                    patchColor = Color.rgb(169, 204, 164);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // LEARNING SPACE
-                else if (patchPatchField.getClass() == LearningSpace.class) {
-                    patchColor = Color.rgb(169, 204, 164);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // STAFF AREA
+                /*** STAFF AREA ***/
                 else if (patchPatchField.getClass() == StaffArea.class) {
-                    patchColor = Color.rgb(254, 195, 162);
+                    patchColor = Color.rgb(255, 231, 203);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // PANTRY
-                else if (patchPatchField.getClass() == Pantry.class) {
-                    patchColor = Color.rgb(239, 213, 189);
+                }
+
+                /*** SOLO ROOMS ***/
+                else if (patchPatchField.getClass() == SoloRoom.class) {
+
+                    // Solo Room 1
+                    if (patchNumPair.getValue().toString().equals("SR1")) {
+                        patchColor = Color.rgb(231, 175, 209);
+
+                        // Solo Room 2
+                    } else if (patchNumPair.getValue().toString().equals("SR2")) {
+                        patchColor = Color.rgb(219, 192, 246);
+
+                        // Solo Room 3
+                    } else if (patchNumPair.getValue().toString().equals("SR3")) {
+                        patchColor = Color.rgb(163, 173, 208);
+
+                        // Solo Room 4
+                    } else {
+                        patchColor = Color.rgb(182, 172, 243);
+                    }
+
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // STORAGE ROOM
+                }
+
+
+                /*** DATA CENTER ***/
+                else if (patchPatchField.getClass() == DataCenter.class) {
+                    patchColor = Color.rgb(235, 223, 214);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** CONTROL CENTER ***/
+                else if (patchPatchField.getClass() == ControlCenter.class) {
+                    patchColor = Color.rgb(215, 195, 181);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** LEARNING SPACES ***/
+                else if (patchPatchField.getClass() == LearningSpace.class) {
+
+                    // Learning Space 1
+                    if (patchNumPair.getValue().toString().equals("LS1")) {
+                        patchColor = Color.rgb(206, 223, 214);
+
+                        // Learning Space 2
+                    } else if (patchNumPair.getValue().toString().equals("LS2")) {
+                        patchColor = Color.rgb(221, 210, 224);
+
+                        // Learning Space 3
+                    } else if (patchNumPair.getValue().toString().equals("LS3")) {
+                        patchColor = Color.rgb(237, 213, 213);
+
+                        // Learning Space 4
+                    } else if (patchNumPair.getValue().toString().equals("LS4")) {
+                        patchColor = Color.rgb(194, 208, 221);
+
+                        // Glass in between
+                    } else {
+                        patchColor = Color.rgb(159, 174, 195);
+                    }
+
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** MEETING ROOM ***/
+                else if (patchPatchField.getClass() == MeetingRoom.class) {
+                    patchColor = Color.rgb(233, 212, 220);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** CONFERENCE ROOM ***/
+                else if (patchPatchField.getClass() == ConferenceRoom.class) {
+                    patchColor = Color.rgb(235, 230, 251);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** STORAGE ROOM ***/
                 else if (patchPatchField.getClass() == StorageRoom.class) {
                     patchColor = Color.rgb(178, 159, 141);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // SOLO ROOM
-                else if (patchPatchField.getClass() == SoloRoom.class) {
-                    patchColor = Color.rgb(169, 204, 164);
+                }
+
+
+                /*** FACULTY ROOM ***/
+                else if (patchPatchField.getClass() == FacultyRoom.class) {
+                    patchColor = Color.rgb(218, 224, 238);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }
-                else if (patchPatchField.getClass() == BreakArea.class) {
-                    patchColor = Color.rgb(255, 232, 173);
+
+                /*** RESEARCH CENTER ***/
+                else if (patchPatchField.getClass() == ResearchCenter.class) {
+                    patchColor = Color.rgb(182, 206, 199);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** DATA COLLECTION ***/
+                else if (patchPatchField.getClass() == DataCollectionRoom.class) {
+                    patchColor = Color.rgb(220, 203, 218);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** HUMAN EXPERIENCE ***/
+                else if (patchPatchField.getClass() == HumanExpRoom.class) {
+                    patchColor = Color.rgb(216, 222, 255);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** CLINIC ***/
+                else if (patchPatchField.getClass() == Clinic.class) {
+                    patchColor = Color.rgb(157, 160, 163);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+
+                /*** DIRECTOR'S ROOM ***/
+                else if (patchPatchField.getClass() == DirectorRoom.class) {
+                    patchColor = Color.rgb(136, 168, 172);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** PANTRY ***/
+                else if (patchPatchField.getClass() == Pantry.class) {
+                    patchColor = Color.rgb(240, 234, 223);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }

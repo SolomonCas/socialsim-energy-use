@@ -13,7 +13,6 @@ public abstract class PatchField extends BaseObject {
     // CONSTRUCTOR
     protected PatchField() {
         super();
-
         this.associatedPatches = new ArrayList<>();
     }
 

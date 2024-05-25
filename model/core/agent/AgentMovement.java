@@ -271,12 +271,12 @@ public class AgentMovement {
 
                 for (Amenity amenity : environment.getAmenityList(nextAmenityClass)) {
                     if (parent.getGender() == Agent.Gender.MALE) {
-                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == 2) {
+                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == "male") {
                             temp.add(amenity);
                         }
                     }
                     else if (parent.getGender() == Agent.Gender.FEMALE) {
-                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == 1) {
+                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == "female") {
                             temp.add(amenity);
                         }
                     }
@@ -506,10 +506,10 @@ public class AgentMovement {
                         || (patchToExploreNeighbor.getAmenityBlock() != null && patchToExploreNeighbor.getPatchField() == null && patchToExploreNeighbor.getAmenityBlock().getParent() == goalAmenity)
                         || (patchToExploreNeighbor.getAmenityBlock() != null && patchToExploreNeighbor.getPatchField() != null && patchToExploreNeighbor.getAmenityBlock().getParent() == goalAmenity)
                         || (patchToExploreNeighbor.getAmenityBlock() != null && (patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == Door.class
-                            || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == MainEntranceDoor.class
-                            || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == MaleBathroomDoor.class
-                            || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == FemaleBathroomDoor.class
-                            || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == ReceptionTable.class))
+                        || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == MainEntranceDoor.class
+                        || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == MaleBathroomDoor.class
+                        || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == FemaleBathroomDoor.class
+                        || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == ReceptionTable.class))
                         || (patchToExploreNeighbor.getPatchField() != null && patchToExploreNeighbor.getPatchField().getKey().getClass() != Wall.class)
                         || (!includeStartingPatch && patchToExplore.equals(startingPatch) || !includeGoalPatch && patchToExploreNeighbor.equals(goalPatch))) {
                     double obstacleClosenessPenalty = (patchToExploreNeighbor.getAmenityBlocksAround() + patchToExploreNeighbor.getWallsAround()) * 2.0;
@@ -910,7 +910,7 @@ public class AgentMovement {
             if(this.currentState.getName() != State.Name.GOING_TO_RECEPTION && this.currentState.getName() != State.Name.GOING_HOME
                     && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != Bathroom.class)
                     && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != FacultyRoom.class)
-                    && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != BreakArea.class)
+                    && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != BreakerRoom.class)
                     && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != MeetingRoom.class)) {
                 for (Agent otherAgent : patch.getAgents()) {
                     if (agentsProcessed == agentsProcessedLimit) {
@@ -1323,9 +1323,9 @@ public class AgentMovement {
         if (this.currentAmenity == null) {
             if (this.currentPatch.getAmenityBlock() != null &&
                     this.currentPatch.getAmenityBlock().getParent().getClass() != Door.class &&
-                            this.currentPatch.getAmenityBlock().getParent().getClass() != MainEntranceDoor.class &&
-                            this.currentPatch.getAmenityBlock().getParent().getClass() != FemaleBathroomDoor.class &&
-                            this.currentPatch.getAmenityBlock().getParent().getClass() != MaleBathroomDoor.class &&  this.currentPatch.getAmenityBlock().getParent() != this.goalAmenity) {
+                    this.currentPatch.getAmenityBlock().getParent().getClass() != MainEntranceDoor.class &&
+                    this.currentPatch.getAmenityBlock().getParent().getClass() != FemaleBathroomDoor.class &&
+                    this.currentPatch.getAmenityBlock().getParent().getClass() != MaleBathroomDoor.class &&  this.currentPatch.getAmenityBlock().getParent() != this.goalAmenity) {
                 List<Patch> candidatePatches = this.currentPatch.getNeighbors();
                 for (Patch candidate: candidatePatches) {
                     if (candidate.getAmenityBlock() == null && (candidate.getPatchField() == null || (candidate.getPatchField() != null && candidate.getPatchField().getKey().getClass() != Wall.class))) {

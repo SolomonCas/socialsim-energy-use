@@ -59,7 +59,7 @@ public class ReceptionTableMapper extends AmenityMapper {
                     receptionQueuePatches.add(currentPatch);
                 }
             }
-            Main.simulator.getEnvironment().getReceptionQueues().add(ReceptionQueue.receptionQueueFactory.create(receptionQueuePatches, receptionTableToAdd, 1));
+            Main.simulator.getEnvironment().getReceptionQueues().add(ReceptionQueue.receptionQueueFactory.create(receptionQueuePatches, receptionTableToAdd, "str"));
         }
     }
 

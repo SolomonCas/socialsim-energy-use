@@ -18,10 +18,10 @@ public class Pantry extends PatchField {
 
 
     // CONSTRUCTOR
-    protected Pantry(List<Patch> patches, int num) {
+    protected Pantry(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -35,8 +35,8 @@ public class Pantry extends PatchField {
 
     // INNER CLASS
     public static class PantryFactory extends PatchFieldFactory {
-        public Pantry create(List<Patch> patches, int num) {
-            return new Pantry(patches, num);
+        public Pantry create(List<Patch> patches, String str) {
+            return new Pantry(patches, str);
         }
     }
 

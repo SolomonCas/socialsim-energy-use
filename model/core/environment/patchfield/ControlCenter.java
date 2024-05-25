@@ -17,10 +17,10 @@ public class ControlCenter extends PatchField {
 
     // CONSTRUCTOR
 
-    protected ControlCenter(List<Patch> patches, int num) {
+    protected ControlCenter(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -35,8 +35,8 @@ public class ControlCenter extends PatchField {
 
     // INNER CLASS
     public static class ControlCenterFactory extends PatchFieldFactory {
-        public ControlCenter create(List<Patch> patches, int num) {
-            return new ControlCenter(patches, num);
+        public ControlCenter create(List<Patch> patches, String str) {
+            return new ControlCenter(patches, str);
         }
     }
 

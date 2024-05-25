@@ -17,10 +17,10 @@ public class ResearchCenter extends PatchField {
 
     // CONSTRUCTOR
 
-    protected ResearchCenter(List<Patch> patches, int num) {
+    protected ResearchCenter(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -34,8 +34,8 @@ public class ResearchCenter extends PatchField {
 
     // INNER CLASS
     public static class ResearchCenterFactory extends PatchFieldFactory {
-        public ResearchCenter create(List<Patch> patches, int num) {
-            return new ResearchCenter(patches, num);
+        public ResearchCenter create(List<Patch> patches, String str) {
+            return new ResearchCenter(patches, str);
         }
     }
 
