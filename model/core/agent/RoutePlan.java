@@ -6,19 +6,16 @@ import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchfield.PatchField;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.*;
-import com.socialsim.model.core.environment.position.Coordinates;
 import com.socialsim.model.simulator.Simulator;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class RoutePlan {
 
     /***** VARIABLES *****/
     private State currentState;
     private ArrayList<State> routePlan;
-    private boolean fromBathPM, fromBathAM, isAtDesk;
+    private boolean bathPM, bathAM, isAtDesk, hadBreak;
     private int lastDuration = -1;
     private int canUrgent = 2;
     private long collaborationEnd = 0, meetingStart = -1, meetingEnd, meetingRoom;
@@ -29,6 +26,8 @@ public class RoutePlan {
     private int COLLABORATE_COUNT = 0, BREAK_COUNT = 2;
     private int DISPENSER_LUNCH = 1, DISPENSER_PM = 1;
     private int REFRIGERATOR_LUNCH = 1, REFRIGERATOR_PM = 1;
+    private int bathroomBreakCooldown;
+    private int breakCooldown;
 
     private Amenity agentSeat;
 
@@ -57,7 +56,7 @@ public class RoutePlan {
 
     /***** CONSTRUCTOR *****/
 
-    public RoutePlan(Agent agent, Environment environment, Patch spawnPatch, int tickEntered, int team, Amenity assignedSeat) {
+    public RoutePlan(Agent agent, Environment environment, Patch spawnPatch, int team, Amenity assignedSeat) {
         this.routePlan = new ArrayList<>();
         ArrayList<Action> actions;
 
@@ -109,14 +108,16 @@ public class RoutePlan {
         }
 
         if (agent.getPersona() == Agent.Persona.GUARD) {
-            setFromBathAM(false);
-            setFromBathPM(false);
+            setBathAM(false);
+            setBathPM(false);
             setAtDesk(false);
+            setBathroomBreakCooldown(1440);  // 2 hour cooldown
+            setBreakCooldown(1440); // 2 hour cooldown
             setAgentSeat(assignedSeat);
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
-//            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
+            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
 
 //            actions = new ArrayList<>();
 //            // Inspect Meeting Room/s
@@ -198,9 +199,11 @@ public class RoutePlan {
 
         }
         else if (agent.getPersona() == Agent.Persona.MAINTENANCE) {
-            setFromBathAM(false);
-            setFromBathPM(false);
+            setBathAM(false);
+            setBathPM(false);
             setAtDesk(false);
+            setBathroomBreakCooldown(1440);  // 2 hour cooldown
+            setBreakCooldown(1440); // 2 hour cooldown
             setAgentSeat(assignedSeat);
 
 
@@ -297,9 +300,12 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.DIRECTOR) {
-            setFromBathAM(false);
-            setFromBathPM(false);
+            setBathAM(false);
+            setBathPM(false);
             setAtDesk(false);
+            setBathroomBreakCooldown(1440);  // 2 hour cooldown
+            setBreakCooldown(1440); // 2 hour cooldown
+            setAgentSeat(assignedSeat);
 
 //            actions = new ArrayList<>();
 //            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
@@ -321,12 +327,13 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.STRICT_FACULTY || agent.getPersona() == Agent.Persona.APP_FACULTY) {
-            setFromBathAM(false);
-            setFromBathPM(false);
-            setCOLLABORATE_COUNT(2);
+//            setCOLLABORATE_COUNT(2);
+            setBathAM(false);
+            setBathPM(false);
             setAtDesk(false);
+            setBathroomBreakCooldown(1440);  // 2 hour cooldown
+            setBreakCooldown(1440); // 2 hour cooldown
             setAgentSeat(assignedSeat);
-
 //            actions = new ArrayList<>();
 //            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
 //            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
@@ -348,10 +355,12 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.INT_STUDENT || agent.getPersona() == Agent.Persona.EXT_STUDENT) {
-            setFromBathAM(false);
-            setFromBathPM(false);
-            setCOLLABORATE_COUNT(2);
+//            setCOLLABORATE_COUNT(2);
+            setBathAM(false);
+            setBathPM(false);
             setAtDesk(false);
+            setBathroomBreakCooldown(1440);  // 2 hour cooldown
+            setBreakCooldown(1440); // 2 hour cooldown
             setAgentSeat(assignedSeat);
 
 //            actions = new ArrayList<>();
@@ -527,8 +536,19 @@ public class RoutePlan {
         actions.add(new Action(Action.Name.WAIT_FOR_VACANT,5,20));
         return new State(State.Name.WAIT_INFRONT_OF_BATHROOM,this, agent, actions);
     }
+    public void decrementBathroomBreakCoolDown() {
+        bathroomBreakCooldown--;
+    }
+    public void decrementBreakCoolDown() {
+        breakCooldown--;
+    }
+    public void resetBathroomBreakCoolDown() {
+        this.bathroomBreakCooldown = 1440;
+    }
 
-    public void resetCanUrgent(){this.canUrgent = 2;}
+    public void resetBreakCoolDown() {
+        this.breakCooldown = 1440;
+    }
 
     /***** GETTERS *****/
     public ArrayList<State> getCurrentRoutePlan() {
@@ -553,11 +573,11 @@ public class RoutePlan {
     }
     public int getDISPENSER_LUNCH(){return this.DISPENSER_LUNCH;}
     public int getDISPENSER_PM(){return this.DISPENSER_PM;}
-    public boolean isFromBathPM() {
-        return fromBathPM;
+    public boolean isBathPM() {
+        return bathPM;
     }
-    public boolean isFromBathAM() {
-        return fromBathAM;
+    public boolean isBathAM() {
+        return bathAM;
     }
     public int getREFRIGERATOR_LUNCH(){return this.REFRIGERATOR_LUNCH;}
     public int getCanUrgent() {
@@ -597,7 +617,15 @@ public class RoutePlan {
     public int getBREAK_COUNT() {
         return BREAK_COUNT;
     }
-
+    public boolean isHadBreak() {
+        return hadBreak;
+    }
+    public int getBathroomBreakCooldown() {
+        return bathroomBreakCooldown;
+    }
+    public int getBreakCooldown() {
+        return breakCooldown;
+    }
 
     /***** SETTERS *****/
     public State setState(int i) {
@@ -612,11 +640,11 @@ public class RoutePlan {
         this.currentState = this.routePlan.get(i-1);
         return this.currentState;
     }
-    public void setFromBathPM(boolean fromBathPM) {
-        this.fromBathPM = fromBathPM;
+    public void setBathPM(boolean bathPM) {
+        this.bathPM = bathPM;
     }
-    public void setFromBathAM(boolean fromBathAM) {
-        this.fromBathAM = fromBathAM;
+    public void setBathAM(boolean bathAM) {
+        this.bathAM = bathAM;
     }
     public void setAgentSeat(Amenity agentSeat) {
         this.agentSeat = agentSeat;
@@ -631,22 +659,22 @@ public class RoutePlan {
         this.BATH_LUNCH -= BATH_LUNCH;
     }
     public void setDISPENSER_LUNCH(int DISPENSER_LUNCH) {
-        this.DISPENSER_LUNCH = DISPENSER_LUNCH;
+        this.DISPENSER_LUNCH -= DISPENSER_LUNCH;
     }
     public void setDISPENSER_PM(int DISPENSER_PM) {
-        this.DISPENSER_PM = DISPENSER_PM;
+        this.DISPENSER_PM -= DISPENSER_PM;
     }
     public void setREFRIGERATOR_LUNCH(int REFRIGERATOR_LUNCH) {
-        this.REFRIGERATOR_LUNCH = REFRIGERATOR_LUNCH;
+        this.REFRIGERATOR_LUNCH -= REFRIGERATOR_LUNCH;
     }
     public void setREFRIGERATOR_PM(int REFRIGERATOR_PM) {
-        this.REFRIGERATOR_PM = REFRIGERATOR_PM;
+        this.REFRIGERATOR_PM -= REFRIGERATOR_PM;
     }
     public void setLastDuration(int lastDuration) {
         this.lastDuration = lastDuration;
     }
     public void setCanUrgent(int canUrgent) {
-        this.canUrgent += canUrgent;
+        this.canUrgent -= canUrgent;
     }
     public void setCOLLABORATE_COUNT(int count) {
         this.COLLABORATE_COUNT += count;
@@ -666,5 +694,13 @@ public class RoutePlan {
     public void setBREAK_COUNT(int BREAK_COUNT) {
         this.BREAK_COUNT -= BREAK_COUNT;
     }
-
+    public void setHadBreak(boolean hadBreak) {
+        this.hadBreak = hadBreak;
+    }
+    public void setBathroomBreakCooldown(int bathroomBreakCooldown) {
+        this.bathroomBreakCooldown = bathroomBreakCooldown;
+    }
+    public void setBreakCooldown(int breakCooldown) {
+        this.breakCooldown = breakCooldown;
+    }
 }
