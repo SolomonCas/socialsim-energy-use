@@ -127,7 +127,7 @@ public class AgentMovement {
         this.currentState = this.routePlan.getCurrentState();
         this.currentAction = this.routePlan.getCurrentState().getActions().get(actionIndex);
         if (!parent.getInOnStart()) {
-            this.currentAmenity = environment.getGates().get(1); // Getting Entrance Gate
+            this.currentAmenity = environment.getGates().getFirst(); // Getting Entrance Gate
         }
         if (this.currentAction.getDestination() != null) {
             this.goalAttractor = this.currentAction.getDestination().getAmenityBlock();
@@ -617,7 +617,12 @@ public class AgentMovement {
                 temp.addAll(this.environment.getPantryTables().get(i).getPantryChairs());
             }
             temp.addAll(this.environment.getChairs());
-            temp.addAll(this.environment.getCouches());
+
+            // Agents are not allowed to eat their lunch on the couch
+            if(this.getCurrentAction().getName() != Action.Name.GO_TO_LUNCH) {
+                temp.addAll(this.environment.getCouches());
+            }
+
 
 
             for (Amenity amenity : temp) {

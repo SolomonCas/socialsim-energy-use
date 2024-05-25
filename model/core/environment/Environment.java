@@ -81,6 +81,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<StorageCabinet> storageCabinets;
     private final List<OfficeSink> officeSinks;
     private final List<OfficeToilet> officeToilets;
+    private final List<DirectorTable> directorTables;
 
     
 
@@ -180,6 +181,7 @@ public class Environment extends BaseObject implements Serializable {
         this.storageCabinets = Collections.synchronizedList(new ArrayList<>());
         this.officeSinks = Collections.synchronizedList(new ArrayList<>());
         this.officeToilets = Collections.synchronizedList(new ArrayList<>());
+        this.directorTables = Collections.synchronizedList(new ArrayList<>());
 
         // Agents
         this.agents = new CopyOnWriteArrayList<>();
@@ -208,56 +210,6 @@ public class Environment extends BaseObject implements Serializable {
             }
         }
     }
-
-//    public static List<Patch> get7x7Field(Environment environment, Patch centerPatch, double heading, boolean includeCenterPatch, double fieldOfViewAngle) {
-//        int truncatedX = (int) (centerPatch.getPatchCenterCoordinates().getX() / Patch.PATCH_SIZE_IN_SQUARE_METERS);
-//        int truncatedY = (int) (centerPatch.getPatchCenterCoordinates().getY() / Patch.PATCH_SIZE_IN_SQUARE_METERS);
-//
-//        Patch chosenPatch = null;
-//        List<Patch> patchesToExplore = new ArrayList<>();
-//
-//        for (int rowOffset = -3; rowOffset <= 3; rowOffset++) {
-//            for (int columnOffset = -3; columnOffset <= 3; columnOffset++) {
-//                boolean xCondition;
-//                boolean yCondition;
-//                boolean isCenterPatch = rowOffset == 0 && columnOffset == 0;
-//
-//                if (!includeCenterPatch) {
-//                    if (isCenterPatch) {
-//                        continue;
-//                    }
-//                }
-//
-//                if (rowOffset < 0) {
-//                    yCondition = truncatedY + rowOffset > 0;
-//                }
-//                else if (rowOffset > 0) {
-//                    yCondition = truncatedY + rowOffset < 60;
-//                }
-//                else {
-//                    yCondition = true;
-//                }
-//
-//                if (columnOffset < 0) {
-//                    xCondition = truncatedX + columnOffset > 0;
-//                }
-//                else if (columnOffset > 0) {
-//                    xCondition = truncatedX + columnOffset < 120;
-//                }
-//                else {
-//                    xCondition = true;
-//                }
-//
-//                if (xCondition && yCondition) {
-//                    if ((includeCenterPatch && isCenterPatch) || Coordinates.isWithinFieldOfView(centerPatch.getPatchCenterCoordinates(), chosenPatch.getPatchCenterCoordinates(), heading, fieldOfViewAngle)) {
-//                        patchesToExplore.add(chosenPatch);
-//                    }
-//                }
-//            }
-//        }
-//
-//        return patchesToExplore;
-//    }
 
     public int numBathroomsFree(){
         List<? extends Amenity> amenityListInFloor = this.getAmenityList(Toilet.class);
@@ -291,7 +243,7 @@ public class Environment extends BaseObject implements Serializable {
 
     public CopyOnWriteArrayList<Agent> getUnspawnedWorkingAgents() {
         CopyOnWriteArrayList<Agent> unspawned = new CopyOnWriteArrayList<>();
-        ArrayList<Type> working = new ArrayList<>(Arrays.asList(Type.GUARD, Type.MAINTENANCE/*, Type.DIRECTOR, Type.FACULTY, Type.STUDENT*/));
+        ArrayList<Type> working = new ArrayList<>(Arrays.asList(Type.GUARD/*, Type.MAINTENANCE, Type.DIRECTOR, Type.FACULTY, Type.STUDENT*/));
         for (Agent agent: getAgents()){
             if (agent.getAgentMovement() == null && working.contains(agent.getType()))
                 unspawned.add(agent);
@@ -299,10 +251,11 @@ public class Environment extends BaseObject implements Serializable {
         return unspawned;
     }
 
+    // Get all team members that are present in the office
     public ArrayList<Agent> getTeamMembers(int team){
         ArrayList<Agent> agents = new ArrayList<>();
         for (Agent agent: getAgents()){
-            if (agent.getTeam() == team){
+            if (agent.getAgentMovement() != null && agent.getTeam() == team){
                 agents.add(agent);
             }
         }
@@ -310,14 +263,17 @@ public class Environment extends BaseObject implements Serializable {
         return agents;
     }
 
+    // Developer Note: The timeIn and timeOut of janitors and guard are set this way for this is based on our interview
+    // where they specifically indicate what time they enter and exit the office
     public void createInitialAgentDemographics(){
-        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080, 4000/*7560*/);
+        int offset = 360; // equivalent to 30 mins
+        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080 + Simulator.rollIntIN(offset), 4000/*7560*/ + Simulator.rollIntIN(offset));
         this.getAgents().add(janitor);
 
-        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080, 4000/*7560*/);
+        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080 + Simulator.rollIntIN(offset), 4000/*7560*/ + Simulator.rollIntIN(offset));
         this.getAgents().add(janitor2);
 
-        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, 0, 4000/*10440*/);
+        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, 0 + Simulator.rollIntIN(offset), 4000/*10440*/ + Simulator.rollIntIN(offset));
         this.getAgents().add(guard);
 
         Agent director = Agent.AgentFactory.create(Type.DIRECTOR, true, 0, 0, 7560);
@@ -601,6 +557,7 @@ public class Environment extends BaseObject implements Serializable {
                         switch(action){
                             case LEAVE_OFFICE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GO_TO_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case GO_TO_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case EAT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case EXIT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GOING_TO_RECEPTION_QUEUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 40, 40)));
@@ -653,6 +610,7 @@ public class Environment extends BaseObject implements Serializable {
                         switch(action){
                             case LEAVE_OFFICE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GO_TO_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
+                            case GO_TO_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case EAT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case EXIT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GOING_TO_RECEPTION_QUEUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(40, 30, 30)));
@@ -705,6 +663,7 @@ public class Environment extends BaseObject implements Serializable {
                         switch(action){
                             case LEAVE_OFFICE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GO_TO_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case GO_TO_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case EAT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case EXIT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GOING_TO_RECEPTION_QUEUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 40, 40)));
@@ -757,6 +716,7 @@ public class Environment extends BaseObject implements Serializable {
                         switch(action){
                             case LEAVE_OFFICE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GO_TO_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
+                            case GO_TO_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case EAT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case EXIT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GOING_TO_RECEPTION_QUEUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(40, 30, 30)));
@@ -809,6 +769,7 @@ public class Environment extends BaseObject implements Serializable {
                         switch(action){
                             case LEAVE_OFFICE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GO_TO_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case GO_TO_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case EAT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case EXIT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GOING_TO_RECEPTION_QUEUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 40, 40)));
@@ -861,6 +822,7 @@ public class Environment extends BaseObject implements Serializable {
                         switch(action){
                             case LEAVE_OFFICE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case GO_TO_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case EAT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case EXIT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GOING_TO_RECEPTION_QUEUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -913,6 +875,7 @@ public class Environment extends BaseObject implements Serializable {
                         switch(action){
                             case LEAVE_OFFICE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case GO_TO_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case EAT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case EXIT_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GOING_TO_RECEPTION_QUEUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -1142,29 +1105,26 @@ public class Environment extends BaseObject implements Serializable {
     public List<Whiteboard> getWhiteboards() {
         return whiteboards;
     }
-
     public List<MaleBathroomDoor> getMaleBathroomDoors() {
         return maleBathroomDoors;
     }
-
     public List<FemaleBathroomDoor> getFemaleBathroomDoors() {
         return femaleBathroomDoors;
     }
-
     public List<MainEntranceDoor> getMainEntranceDoors() {
         return mainEntranceDoors;
     }
-
     public List<StorageCabinet> getStorageCabinets() {
         return storageCabinets;
     }
-
     public List<OfficeSink> getOfficeSinks() {
         return officeSinks;
     }
-
     public List<OfficeToilet> getOfficeToilets() {
         return officeToilets;
+    }
+    public List<DirectorTable> getDirectorTables() {
+        return directorTables;
     }
 
     public List<? extends Amenity> getAmenityList(Class<? extends Amenity> amenityClass) {

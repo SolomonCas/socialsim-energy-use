@@ -47,6 +47,10 @@ public class AmenityGraphic extends Graphic {
         pantryChairGraphic.add(new AmenityGraphicLocation(0, 0));
         AMENITY_GRAPHICS.put(PantryChair.class, pantryChairGraphic);
 
+        final List<AmenityGraphicLocation> directorChairGraphic = new ArrayList<>();
+        directorChairGraphic.add(new AmenityGraphicLocation(0, 0));
+        AMENITY_GRAPHICS.put(Chair.class, directorChairGraphic);
+
         final List<AmenityGraphicLocation> cabinetGraphic = new ArrayList<>();
         cabinetGraphic.add(new AmenityGraphicLocation(10, 0));
         cabinetGraphic.add(new AmenityGraphicLocation(8, 2));
@@ -111,6 +115,11 @@ public class AmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> officeDeskGraphic = new ArrayList<>();
         officeDeskGraphic.add(new AmenityGraphicLocation(12, 0));
         AMENITY_GRAPHICS.put(OfficeDesk.class, officeDeskGraphic);
+
+        final List<AmenityGraphicLocation> directorTableGraphic = new ArrayList<>();
+        directorTableGraphic.add(new AmenityGraphicLocation(12, 0)); // Horizontal
+        directorTableGraphic.add(new AmenityGraphicLocation(12, 0)); // Vertical
+        AMENITY_GRAPHICS.put(DirectorTable.class, directorTableGraphic);
 
         final List<AmenityGraphicLocation> plantGraphic = new ArrayList<>();
         plantGraphic.add(new AmenityGraphicLocation(0, 1));

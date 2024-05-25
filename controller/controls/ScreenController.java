@@ -849,14 +849,9 @@ public class ScreenController extends Controller {
         chairPatches.add(environment.getPatch(53,3));
         chairPatches.add(environment.getPatch(53,5));
 
-
-        chairPatches.add(environment.getPatch(73,137));
-
         ChairMapper.draw(chairPatches);
 
         List<Patch> learningAreaCollabDeskPatches = new ArrayList<>();
-
-
 
         // Learning Area 1-4 Study Tables
         for (int i = 18; i < 24; i+=5) {
@@ -1250,7 +1245,7 @@ public class ScreenController extends Controller {
         // Executive Director's Office Desk
         List<Patch> horizontalOfficeDeskPatches = new ArrayList<>();
         horizontalOfficeDeskPatches.add(environment.getPatch(72,136));
-        OfficeDeskMapper.draw(horizontalOfficeDeskPatches, "HORIZONTAL", 2);
+        DirectorTableMapper.draw(horizontalOfficeDeskPatches, "HORIZONTAL");
 
         List<Patch> horizontalCollabDeskPatches = new ArrayList<>();
         horizontalCollabDeskPatches.add(environment.getPatch(52,1));
@@ -1422,7 +1417,7 @@ public class ScreenController extends Controller {
 
 
 
-        // Refridgerator
+        // Refrigerator
 
         List<Patch> fridgePatches = new ArrayList<>();
         fridgePatches.add(environment.getPatch(70,101));
