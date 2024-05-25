@@ -12,6 +12,7 @@ import com.socialsim.model.core.environment.position.Coordinates;
 import com.socialsim.model.core.environment.position.Vector;
 import com.socialsim.model.simulator.Simulator;
 
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -58,7 +59,6 @@ public class AgentMovement {
     private boolean hasEncounteredAgentToFollow;
     private Agent agentFollowedWhenAssembling;
     private double distanceMovedInTick;
-    private int tickEntered;
     private int duration;
     private int noMovementCounter;
     private int movementCounter;
@@ -84,10 +84,8 @@ public class AgentMovement {
         NON_VERBAL, COOPERATIVE, EXCHANGE
     }
 
-
-
     /***** CONSTRUCTOR *****/
-    public AgentMovement(Patch spawnPatch, Agent parent, double baseWalkingDistance, Coordinates coordinates, long tickEntered, int team, Amenity assignedSeat) { // For inOnStart agents
+    public AgentMovement(Patch spawnPatch, Agent parent, double baseWalkingDistance, Coordinates coordinates, int team, Amenity assignedSeat) { // For inOnStart agents
         this.parent = parent;
         this.position = new Coordinates(coordinates.getX(), coordinates.getY());
         this.team = team;
@@ -114,14 +112,13 @@ public class AgentMovement {
         }
 
         this.currentPatchField = null;
-        this.tickEntered = (int) tickEntered;
 
         this.recentPatches = new ConcurrentHashMap<>();
         repulsiveForceFromAgents = new ArrayList<>();
         repulsiveForcesFromObstacles = new ArrayList<>();
         resetGoal();
 
-        this.routePlan = new RoutePlan(parent, environment, currentPatch, (int) tickEntered, team, assignedSeat);
+        this.routePlan = new RoutePlan(parent, environment, currentPatch, team, assignedSeat);
         this.stateIndex = 0;
         this.actionIndex = 0;
         this.currentState = this.routePlan.getCurrentState();
@@ -1131,7 +1128,7 @@ public class AgentMovement {
     public boolean isCloseToFinalPatchInPath() {
         return (this.currentPath.getPath().size() == 1);
     }
-    public void despawn(long returnOfficeTime) {
+    public void despawn(LocalTime returnOfficeTime) {
         if (this.currentPatch != null) {
             this.currentPatch.getAgents().remove(this.parent);
             this.getEnvironment().getAgents().remove(this.parent);
@@ -1461,9 +1458,6 @@ public class AgentMovement {
     public int getDuration() {
         return this.duration;
     }
-    public int getTickEntered() {
-        return tickEntered;
-    }
     public double getFieldOfViewAngle() {
         return fieldOfViewAngle;
     }
@@ -1608,9 +1602,6 @@ public class AgentMovement {
     }
     public void setDuration(int duration) {
         this.duration = duration;
-    }
-    public void setTickEntered(int tickEntered) {
-        this.tickEntered = tickEntered;
     }
     public void setInteracting(boolean interacting) {
         isInteracting = interacting;

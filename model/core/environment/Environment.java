@@ -13,6 +13,7 @@ import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import static com.socialsim.model.core.agent.Agent.*;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -266,60 +267,26 @@ public class Environment extends BaseObject implements Serializable {
     // Developer Note: The timeIn and timeOut of janitors and guard are set this way for this is based on our interview
     // where they specifically indicate what time they enter and exit the office
     public void createInitialAgentDemographics(){
-        int offset = 360; // equivalent to 30 mins
-        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080 + Simulator.rollIntIN(offset), 4000/*7560*/ + Simulator.rollIntIN(offset));
+        int offset = 30; // equivalent to 30 mins
+        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
         this.getAgents().add(janitor);
 
-        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, 1080 + Simulator.rollIntIN(offset), 4000/*7560*/ + Simulator.rollIntIN(offset));
+        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
         this.getAgents().add(janitor2);
 
-        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, 0 + Simulator.rollIntIN(offset), 4000/*10440*/ + Simulator.rollIntIN(offset));
+        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(10,0 + Simulator.rollIntIN(offset)));
         this.getAgents().add(guard);
 
-        Agent director = Agent.AgentFactory.create(Type.DIRECTOR, true, 0, 0, 7560);
-        this.getAgents().add(director);
-
-        Agent faculty_1 = Agent.AgentFactory.create(Type.FACULTY, true, 1, 0, 7560);
-        this.getAgents().add(faculty_1);
-
-        for (int i = 0; i < 4; i++){
-            Agent student_1 = Agent.AgentFactory.create(Type.STUDENT, true, 1, 0, 7560);
-            this.getAgents().add(student_1);
-        }
-
-        Agent faculty_2 = Agent.AgentFactory.create(Type.FACULTY, true, 2, 0, 7560);
-        this.getAgents().add(faculty_2);
-
-        for (int i = 0; i < 4; i++){
-            Agent student_2 = Agent.AgentFactory.create(Type.STUDENT, true, 2, 0, 7560);
-            this.getAgents().add(student_2);
-        }
-
-        Agent faculty_3 = Agent.AgentFactory.create(Type.FACULTY, true, 3, 0, 7560);
-        this.getAgents().add(faculty_3);
-
-        for (int i = 0; i < 4; i++){
-            Agent student_3 = Agent.AgentFactory.create(Type.STUDENT, true, 3, 0, 7560);
-            this.getAgents().add(student_3);
-        }
-
-        Agent faculty_4 = Agent.AgentFactory.create(Type.FACULTY, true, 4, 0, 7560);
-        this.getAgents().add(faculty_4);
-
-        for (int i = 0; i < 4; i++){
-            Agent student_4 = Agent.AgentFactory.create(Type.STUDENT, true, 4, 0, 7560);
-            this.getAgents().add(student_4);
-        }
-
-        for (int i = 0; i < 4; i++){
-            Agent other_students = Agent.AgentFactory.create(Type.STUDENT, true, 0, 0, 7560);
-            this.getAgents().add(other_students);
-        }
-
-        for (int i = 0; i < 2; i++){
-            Agent other_faculty = Agent.AgentFactory.create(Type.FACULTY, true, 0, 0, 7560);
-            this.getAgents().add(other_faculty);
-        }
+//        Agent director = Agent.AgentFactory.create(Type.DIRECTOR, true, 0, 0, 7560);
+//        this.getAgents().add(director);
+//
+//        Agent faculty_1 = Agent.AgentFactory.create(Type.FACULTY, true, 1, 0, 7560);
+//        this.getAgents().add(faculty_1);
+//
+//        for (int i = 0; i < 4; i++){
+//            Agent student_1 = Agent.AgentFactory.create(Type.STUDENT, true, 1, 0, 7560);
+//            this.getAgents().add(student_1);
+//        }
 
     }
 

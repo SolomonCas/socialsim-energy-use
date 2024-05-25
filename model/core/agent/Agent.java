@@ -4,6 +4,7 @@ import com.socialsim.controller.graphics.agent.AgentGraphic;
 import com.socialsim.model.core.environment.patchobject.PatchObject;
 import com.socialsim.model.simulator.Simulator;
 
+import java.time.LocalTime;
 import java.util.Objects;
 
 public class Agent extends PatchObject {
@@ -21,8 +22,8 @@ public class Agent extends PatchObject {
     private Agent.Gender gender;
     private int team;
 
-    private long timeIn;
-    private long timeOut;
+    private LocalTime timeIn;
+    private LocalTime timeOut;
 
     private Agent.AgeGroup ageGroup = null;
     private Agent.Persona persona = null;
@@ -55,7 +56,7 @@ public class Agent extends PatchObject {
 
 
     // CONSTRUCTOR
-    private Agent(Agent.Type type, boolean inOnStart, int team, long timeIn, long timeOut) {
+    private Agent(Agent.Type type, boolean inOnStart, int team, LocalTime timeIn, LocalTime timeOut) {
         this.id = idCtr++;
         this.type = type;
         this.team = team;
@@ -188,11 +189,11 @@ public class Agent extends PatchObject {
         return agentMovement;
     }
 
-    public long getTimeIn() {
+    public LocalTime getTimeIn() {
         return timeIn;
     }
 
-    public long getTimeOut() {
+    public LocalTime getTimeOut() {
         return timeOut;
     }
 
@@ -201,11 +202,11 @@ public class Agent extends PatchObject {
         this.agentMovement = agentMovement;
     }
 
-    public void setTimeIn(long timeIn) {
+    public void setTimeIn(LocalTime timeIn) {
         this.timeIn = timeIn;
     }
 
-    public void setTimeOut(long timeOut) {
+    public void setTimeOut(LocalTime timeOut) {
         this.timeOut = timeOut;
     }
 
@@ -292,7 +293,7 @@ public class Agent extends PatchObject {
 
     // INNER STATIC CLASS
     public static class AgentFactory extends ObjectFactory {
-        public static Agent create(Agent.Type type, boolean inOnStart, int team, long timeIn, long timeOut) {
+        public static Agent create(Agent.Type type, boolean inOnStart, int team, LocalTime timeIn, LocalTime timeOut) {
             return new Agent(type, inOnStart, team, timeIn, timeOut);
         }
     }
