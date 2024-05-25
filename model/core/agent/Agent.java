@@ -26,8 +26,11 @@ public class Agent extends PatchObject {
 
     private Agent.AgeGroup ageGroup = null;
     private Agent.Persona persona = null;
+
     private PersonaActionGroup personaActionGroup = null;
     private boolean inOnStart;
+
+    private Agent.EnergyProfile energyProfile = null;
 
     private final AgentGraphic agentGraphic;
     private AgentMovement agentMovement;
@@ -52,8 +55,6 @@ public class Agent extends PatchObject {
 
 
 
-
-
     // CONSTRUCTOR
     private Agent(Agent.Type type, boolean inOnStart, int team, long timeIn, long timeOut) {
         this.id = idCtr++;
@@ -65,12 +66,14 @@ public class Agent extends PatchObject {
         this.timeOut = timeOut;
 
 
+
         // Director
         if(this.type == Type.DIRECTOR) {
             this.ageGroup = AgeGroup.FROM_25_TO_54;
             this.gender = Gender.MALE;
             this.persona = Persona.DIRECTOR;
             this.personaActionGroup = PersonaActionGroup.DIRECTOR;
+            energyProfilePicker();
         }
 
 
@@ -88,6 +91,7 @@ public class Agent extends PatchObject {
                 this.persona = Persona.APP_FACULTY;
                 this.personaActionGroup = PersonaActionGroup.APP_FACULTY;
             }
+            energyProfilePicker();
         }
 
 
@@ -105,6 +109,7 @@ public class Agent extends PatchObject {
                 this.persona = Persona.EXT_STUDENT;
                 this.personaActionGroup = PersonaActionGroup.EXT_STUDENT;
             }
+            energyProfilePicker();
         }
 
 
@@ -115,6 +120,7 @@ public class Agent extends PatchObject {
             this.gender = Gender.MALE;
             this.persona = Persona.MAINTENANCE;
             this.personaActionGroup = PersonaActionGroup.MAINTENANCE;
+            this.energyProfile = EnergyProfile.GREEN;
         }
 
 
@@ -124,6 +130,7 @@ public class Agent extends PatchObject {
             this.ageGroup = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? Agent.AgeGroup.FROM_25_TO_54 : Agent.AgeGroup.FROM_55_TO_64;
             this.persona = Agent.Persona.GUARD;
             this.personaActionGroup = PersonaActionGroup.GUARD;
+            this.energyProfile = EnergyProfile.GREEN;
         }
 
 
@@ -132,6 +139,21 @@ public class Agent extends PatchObject {
     }
 
 
+
+    private void energyProfilePicker(){
+        int energyProfileChance = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(3);
+        switch (energyProfileChance) {
+            case 0:
+                this.energyProfile = EnergyProfile.GREEN;
+                break;
+            case 1:
+                this.energyProfile = EnergyProfile.NONGREEN;
+                break;
+            case 2:
+                this.energyProfile = EnergyProfile.NEUTRAL;
+                break;
+        }
+    }
 
 
     // METHODS
@@ -207,6 +229,10 @@ public class Agent extends PatchObject {
 
     public void setTimeOut(long timeOut) {
         this.timeOut = timeOut;
+    }
+
+    public Agent.EnergyProfile getEnergyProfile() {
+        return energyProfile;
     }
 
     // OVERRIDE
@@ -286,7 +312,21 @@ public class Agent extends PatchObject {
         }
     }
 
+    public enum EnergyProfile {
+        GREEN(0),
+        NONGREEN(1),
+        NEUTRAL(2);
 
+        private final int ID;
+
+        EnergyProfile(int ID){
+            this.ID = ID;
+        }
+
+        public int getID() {
+            return ID;
+        }
+    }
 
 
 

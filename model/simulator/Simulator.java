@@ -278,7 +278,8 @@ public class Simulator {
             case 1 -> gate = gate2;
             case 2 -> gate = gate3;
         }
-        
+
+
 //        Agent agent = null;
 
         for (int i = 0; i < gate.getSpawners().size(); i++) {
@@ -300,6 +301,7 @@ public class Simulator {
                             Agent.guardCount++;
                             Agent.agentCount++;
                             currentGuardCount++;
+                            System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
                         }
                         else if (currentTick >= agent.getTimeIn() && agent.getType() == Agent.Type.MAINTENANCE && Agent.maintenanceCount != 2) { // Agent.maintenanceCount != 2 isn't dynamic yet
                             agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27,
@@ -310,6 +312,7 @@ public class Simulator {
                             Agent.maintenanceCount++;
                             Agent.agentCount++;
                             currentMaintenanceCount++;
+                            System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
                         }
                         else if (currentTick >= agent.getTimeIn()&& agent.getType() == Agent.Type.DIRECTOR && Agent.directorCount != MAX_DIRECTORS) {
                             agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27,
@@ -319,8 +322,8 @@ public class Simulator {
                             Agent.directorCount++;
                             Agent.agentCount++;
                             currentDirectorCount++;
+                            System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
                         }
-
                     }
 
 
@@ -577,7 +580,7 @@ public class Simulator {
     private static void doCommonAction(AgentMovement agentMovement, State state, Action action, Agent agent, Agent.Type type,
                           Agent.Persona persona, Environment environmentInstance, long currentTick) {
         boolean isFull = false;
-        if (action.getName() == Action.Name.GO_TO_STATION || action.getName() == Action.Name.GO_TO_DIRECTOR_ROOM) {
+        if (action.getName() == Action.Name.GO_TO_STATION || action.getName() == Action.Name.GO_TO_DIRECTOR_ROOM || action.getName() == Action.Name.EXIT_LUNCH) {
             agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
                 agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
@@ -590,6 +593,10 @@ public class Simulator {
                 if (agentMovement.hasReachedNextPatchInPath()) {
                     agentMovement.reachPatchInPath();
                     if(agentMovement.hasAgentReachedFinalPatchInPath()){
+                        if(action.getName() == Action.Name.EXIT_LUNCH){
+                            agentMovement.getCurrentPatch().getAgents().remove(agent);
+                        }
+
                         agentMovement.getRoutePlan().setAtDesk(true);
                         agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
                         agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
@@ -597,6 +604,7 @@ public class Simulator {
                 }
             }
             else if (agentMovement.getDuration() != -1){ // if duration has been set
+                System.out.println("duration: "+ agentMovement.getDuration());
                 agentMovement.setDuration(agentMovement.getDuration() - 1);
                 if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
                     agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
@@ -607,6 +615,9 @@ public class Simulator {
                     agentMovement.resetGoal();
                 }
                 if (agentMovement.getCurrentState().getActions().isEmpty()){
+                    if(action.getName() == Action.Name.EXIT_LUNCH){
+                        agentMovement.getCurrentPatch().getAgents().add(agent);
+                    }
                     if (state.getName() != State.Name.GOING_HOME) { // This is important for GOING_HOME state
                         agentMovement.getRoutePlan().setAtDesk(false);
                     }
@@ -639,7 +650,7 @@ public class Simulator {
                 }
                 if (agentMovement.getRoutePlan().getCanUrgent() < 2) {
                     double CHANCE = Simulator.roll();
-                    System.out.println("CHANCE: " + CHANCE + " Type: " + type + " State: " + state.getName() + " Action: " + action.getName());
+                    //System.out.println("CHANCE: " + CHANCE + " Type: " + type + " State: " + state.getName() + " Action: " + action.getName());
                     if (CHANCE < RoutePlan.BATH_CHANCE) {
                         if (currentTick < 2160 && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                             agentMovement.getRoutePlan().setFromBathAM(true); // IG meaning that the agent will take a bathroom break in the morning (7:30 - 11:59)
@@ -885,15 +896,18 @@ public class Simulator {
         else if (action.getName() == Action.Name.GETTING_WATER) {
             agentMovement.setSimultaneousInteractionAllowed(false);
             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+            System.out.println("duration:"+ agentMovement.getDuration());
             agentMovement.setDuration(agentMovement.getDuration() - 1);
             if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
-                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+
+                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the dispenser
                 agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
                 agentMovement.setActionIndex(0); // JIC needed
                 if(!agentMovement.getCurrentState().getActions().isEmpty()) {
                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                 }
                 agentMovement.resetGoal();
+                currentWaterDispenserInteractionCount++;
             }
             if (agentMovement.getCurrentState().getActions().isEmpty()){
                 agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
@@ -955,6 +969,8 @@ public class Simulator {
             }
         }
         else if (action.getName() == Action.Name.GETTING_FOOD) {
+            System.out.println("duration:"+ agentMovement.getDuration());
+
             agentMovement.setSimultaneousInteractionAllowed(false);
             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
             agentMovement.setDuration(agentMovement.getDuration() - 1);
@@ -966,6 +982,8 @@ public class Simulator {
                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                 }
                 agentMovement.resetGoal();
+
+                currentFridgeInteractionCount++;
             }
             if (agentMovement.getCurrentState().getActions().isEmpty()){
                 agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
@@ -1022,7 +1040,7 @@ public class Simulator {
                             agentMovement.getRoutePlan().setAtDesk(false); // The agent is leaving to his or her current location
                         }
                     }
-                    else if (CHANCE < RoutePlan.EAT_OUTSIDE && type == Agent.Type.STUDENT) {
+                    else if (CHANCE < RoutePlan.EAT_OUTSIDE && type == Agent.Type.STUDENT ) {
                         // eat outside
                         System.out.println("Eat on outside");
                         if(agent.getTeam() != 0) {
@@ -1177,29 +1195,6 @@ public class Simulator {
             }
 
         }
-        else if (action.getName() == Action.Name.EXIT_LUNCH) {
-            if (agentMovement.getGoalAmenity() == null) {
-                if(!agentMovement.getRoutePlan().isAtDesk() && type != Agent.Type.MAINTENANCE && type != Agent.Type.GUARD){
-                    agentMovement.setActionIndex(agentMovement.getActionIndex() + 1);
-                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                    agentMovement.resetGoal();
-                }
-                else{ // Use destination in route plan
-                    agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
-                    agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
-                }
-            }
-            else if (agentMovement.chooseNextPatchInPath()) {
-                agentMovement.faceNextPosition();
-                agentMovement.moveSocialForce();
-                if (agentMovement.hasReachedNextPatchInPath()) {
-                    agentMovement.reachPatchInPath();
-                    if (agentMovement.hasAgentReachedFinalPatchInPath()) {
-                        agentMovement.despawn(currentTick + agentMovement.getDuration());
-                    }
-                }
-            }
-        }
 
         else if (action.getName() == Action.Name.GO_TO_WAIT_AREA) {
             agentMovement.setSimultaneousInteractionAllowed(false);
@@ -1302,7 +1297,7 @@ public class Simulator {
                             }
                             if (agentMovement.getRoutePlan().getCanUrgent() < 2) {
                                 double CHANCE = Simulator.roll();
-                                System.out.println("CHANCE: " + CHANCE + " Type: " + type + " State: " + state.getName() + " Action: " + action.getName());
+                                //System.out.println("CHANCE: " + CHANCE + " Type: " + type + " State: " + state.getName() + " Action: " + action.getName());
                                 if (CHANCE < RoutePlan.BATH_CHANCE) {
                                     if (currentTick < 2160 && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                         agentMovement.getRoutePlan().setFromBathAM(true); // IG meaning that the agent will take a bathroom break in the morning (7:30 - 11:59)
@@ -1616,7 +1611,7 @@ public class Simulator {
                             }
                             if (agentMovement.getRoutePlan().getCanUrgent() < 2) {
                                 double CHANCE = Simulator.roll();
-                                System.out.println("CHANCE: " + CHANCE + " Type: " + type + " State: " + state.getName() + " Action: " + action.getName());
+                                //System.out.println("CHANCE: " + CHANCE + " Type: " + type + " State: " + state.getName() + " Action: " + action.getName());
                                 if (CHANCE < RoutePlan.BATH_CHANCE) {
                                     if (currentTick < 2160 && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                         agentMovement.getRoutePlan().setFromBathAM(true); // IG meaning that the agent will take a bathroom break in the morning (7:30 - 11:59)

@@ -195,6 +195,7 @@ public class RoutePlan {
             // This is for when the guard isn't in his station or is a behavior of getting he/she's belongings before going home
             actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
+
         }
         else if (agent.getPersona() == Agent.Persona.MAINTENANCE) {
             setFromBathAM(false);
@@ -457,13 +458,16 @@ public class RoutePlan {
             case "DISPENSER" -> {
                 actions = new ArrayList<>();
                 actions.add(new Action(Action.Name.GOING_DISPENSER));
-                actions.add(new Action(Action.Name.GETTING_WATER, 2, 8));
+                actions.add(new Action(Action.Name.GETTING_WATER, 5, 10));
                 officeState = new State(State.Name.DISPENSER, this, agent, actions);
             }
             case "REFRIGERATOR" -> {
                 actions = new ArrayList<>();
                 actions.add(new Action(Action.Name.GOING_FRIDGE));
-                actions.add(new Action(Action.Name.GETTING_FOOD, 2, 10));
+                if(agent.getEnergyProfile() == Agent.EnergyProfile.GREEN){ actions.add(new Action(Action.Name.GETTING_FOOD, 2, 5)); }
+                else if(agent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN){ actions.add(new Action(Action.Name.GETTING_FOOD, 6, 10)); }
+                else if(agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL){ actions.add(new Action(Action.Name.GETTING_FOOD, 2, 10)); }
+
                 officeState = new State(State.Name.REFRIGERATOR, this, agent, actions);
             }
             case "BREAK" -> {

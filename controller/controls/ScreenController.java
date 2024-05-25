@@ -1533,6 +1533,12 @@ public class ScreenController extends Controller {
 
         // Current Guard to Guard Interaction Count
         currentGuardGuardCount.setText(String.valueOf(Simulator.currentGuardGuardCount));
+
+        // Current Appliance Interaction Count
+        currentAirconInteractionCount.setText(String.valueOf(Simulator.currentAirconInteractionCount));
+        currentLightInteractionCount.setText(String.valueOf(Simulator.currentLightInteractionCount));
+        currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
+        currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
     }
 
 
