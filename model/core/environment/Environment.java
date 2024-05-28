@@ -29,26 +29,28 @@ public class Environment extends BaseObject implements Serializable {
 
 
     // Environment
+
+    private final List<Floor> floors;
     private final List<Wall> walls;
-    private final List<MeetingRoom> meetingRooms;
-    private final List<HumanExpRoom> humanExpRooms;
-    private final List<DataCollectionRoom> dataCollectionRooms;
-    private final List<ResearchCenter> researchCenters;
-    private final List<FacultyRoom> facultyRooms;
-    private final List<StorageRoom> storageRooms;
-    private final List<Pantry> pantries;
-    private final List<LearningSpace> learningSpaces;
-    private final List<ControlCenter> controlCenters;
-    private final List<DataCenter> dataCenters;
-    private final List<SoloRoom> soloRooms;
-    private final List<StaffArea> staffAreas;
     private final List<Bathroom> bathrooms;
     private final List<Reception> receptions;
     private final List<ReceptionQueue> receptionQueues;
+    private final List<StaffArea> staffAreas;
+    private final List<SoloRoom> soloRooms;
+    private final List<DataCenter> dataCenters;
+    private final List<ControlCenter> controlCenters;
+    private final List<LearningSpace> learningSpaces;
+    private final List<BreakerRoom> breakerRooms;
+    private final List<MeetingRoom> meetingRooms;
+    private final List<ConferenceRoom> conferenceRooms;
+    private final List<StorageRoom> storageRooms;
+    private final List<FacultyRoom> facultyRooms;
+    private final List<ResearchCenter> researchCenters;
+    private final List<DataCollectionRoom> dataCollectionRooms;
+    private final List<HumanExpRoom> humanExpRooms;
+    private final List<Clinic> clinics;
     private final List<DirectorRoom> directorRooms;
-    private final List<BreakerRoom> breakerRoom;
-    private final List<Floor> floors;
-
+    private final List<Pantry> pantries;
 
 
 
@@ -133,25 +135,29 @@ public class Environment extends BaseObject implements Serializable {
         initializePatches();
 
         // Environment
+        this.floors = Collections.synchronizedList(new ArrayList<>());
         this.walls = Collections.synchronizedList(new ArrayList<>());
-        this.meetingRooms = Collections.synchronizedList(new ArrayList<>());
-        this.humanExpRooms = Collections.synchronizedList(new ArrayList<>());
-        this.dataCollectionRooms = Collections.synchronizedList(new ArrayList<>());
-        this.researchCenters = Collections.synchronizedList(new ArrayList<>());
-        this.facultyRooms = Collections.synchronizedList(new ArrayList<>());
-        this.storageRooms = Collections.synchronizedList(new ArrayList<>());
-        this.pantries = Collections.synchronizedList(new ArrayList<>());
-        this.learningSpaces = Collections.synchronizedList(new ArrayList<>());
-        this.controlCenters = Collections.synchronizedList(new ArrayList<>());
-        this.dataCenters = Collections.synchronizedList(new ArrayList<>());
-        this.soloRooms = Collections.synchronizedList(new ArrayList<>());
-        this.staffAreas = Collections.synchronizedList(new ArrayList<>());
         this.bathrooms = Collections.synchronizedList(new ArrayList<>());
         this.receptions = Collections.synchronizedList(new ArrayList<>());
         this.receptionQueues = Collections.synchronizedList(new ArrayList<>());
+        this.staffAreas = Collections.synchronizedList(new ArrayList<>());
+        this.soloRooms = Collections.synchronizedList(new ArrayList<>());
+        this.dataCenters = Collections.synchronizedList(new ArrayList<>());
+        this.controlCenters = Collections.synchronizedList(new ArrayList<>());
+        this.learningSpaces = Collections.synchronizedList(new ArrayList<>());
+        this.breakerRooms = Collections.synchronizedList(new ArrayList<>());
+        this.meetingRooms = Collections.synchronizedList(new ArrayList<>());
+        this.conferenceRooms = Collections.synchronizedList(new ArrayList<>());
+        this.facultyRooms = Collections.synchronizedList(new ArrayList<>());
+        this.storageRooms = Collections.synchronizedList(new ArrayList<>());
+        this.researchCenters = Collections.synchronizedList(new ArrayList<>());
+        this.dataCollectionRooms = Collections.synchronizedList(new ArrayList<>());
+        this.humanExpRooms = Collections.synchronizedList(new ArrayList<>());
+        this.clinics = Collections.synchronizedList(new ArrayList<>());
         this.directorRooms = Collections.synchronizedList(new ArrayList<>());
-        this.breakerRoom = Collections.synchronizedList(new ArrayList<>());
-        this.floors = Collections.synchronizedList(new ArrayList<>());
+        this.pantries = Collections.synchronizedList(new ArrayList<>());
+
+
 
         // Amenities
         this.amenityPatchSet = Collections.synchronizedSortedSet(new TreeSet<>());
@@ -921,68 +927,35 @@ public class Environment extends BaseObject implements Serializable {
     }
 
 
+
     // GETTERS: GENERAL
     public int getRows() {
         return rows;
     }
-
     public int getColumns() {
         return columns;
     }
-
     public Patch getPatch(Coordinates coordinates) {
         return getPatch((int) (coordinates.getY() / Patch.PATCH_SIZE_IN_SQUARE_METERS), (int) (coordinates.getX() / Patch.PATCH_SIZE_IN_SQUARE_METERS));
     }
-
     public Patch getPatch(MatrixPosition matrixPosition) {
         return getPatch(matrixPosition.getRow(), matrixPosition.getColumn());
     }
-
     public Patch getPatch(int row, int column) {
         return patches[row][column];
     }
-
     public Patch[][] getPatches() {
         return this.patches;
     }
 
 
+
     // GETTERS: ENVIRONMENT
-    public List<MeetingRoom> getMeetingRooms() {
-        return meetingRooms;
+    public List<Floor> getFloors() {
+        return floors;
     }
-    public List<HumanExpRoom> getHumanExpRooms() {
-        return humanExpRooms;
-    }
-    public List<DataCollectionRoom> getDataCollectionRooms() {
-        return dataCollectionRooms;
-    }
-    public List<ResearchCenter> getResearchCenters() {
-        return researchCenters;
-    }
-    public List<FacultyRoom> getFacultyRooms() {
-        return facultyRooms;
-    }
-    public List<StorageRoom> getStorageRooms(){
-        return storageRooms;
-    }
-    public List<Pantry> getPantries() {
-        return pantries;
-    }
-    public List<LearningSpace> getLearningSpaces() {
-        return learningSpaces;
-    }
-    public List<ControlCenter> getControlCenters() {
-        return controlCenters;
-    }
-    public List<DataCenter> getDataCenters() {
-        return dataCenters;
-    }
-    public List<SoloRoom> getSoloRooms() {
-        return soloRooms;
-    }
-    public List<StaffArea> getStaffRooms() {
-        return staffAreas;
+    public List<Wall> getWalls() {
+        return walls;
     }
     public List<Bathroom> getBathrooms() {
         return bathrooms;
@@ -993,17 +966,53 @@ public class Environment extends BaseObject implements Serializable {
     public List<ReceptionQueue> getReceptionQueues() {
         return receptionQueues;
     }
+    public List<StaffArea> getStaffRooms() {
+        return staffAreas;
+    }
+    public List<SoloRoom> getSoloRooms() {
+        return soloRooms;
+    }
+    public List<DataCenter> getDataCenters() {
+        return dataCenters;
+    }
+    public List<ControlCenter> getControlCenters() {
+        return controlCenters;
+    }
+    public List<LearningSpace> getLearningSpaces() {
+        return learningSpaces;
+    }
+    public List<BreakerRoom> getBreakerRooms() {
+        return breakerRooms;
+    }
+    public List<MeetingRoom> getMeetingRooms() {
+        return meetingRooms;
+    }
+    public List<ConferenceRoom> getConferenceRooms() {
+        return conferenceRooms;
+    }
+    public List<StorageRoom> getStorageRooms(){
+        return storageRooms;
+    }
+    public List<FacultyRoom> getFacultyRooms() {
+        return facultyRooms;
+    }
+    public List<ResearchCenter> getResearchCenters() {
+        return researchCenters;
+    }
+    public List<DataCollectionRoom> getDataCollectionRooms() {
+        return dataCollectionRooms;
+    }
+    public List<HumanExpRoom> getHumanExpRooms() {
+        return humanExpRooms;
+    }
+    public List<Clinic> getClinics() {
+        return clinics;
+    }
     public List<DirectorRoom> getDirectorRooms() {
         return directorRooms;
     }
-    public List<BreakerRoom> getBreakerRoom() {
-        return breakerRoom;
-    }
-    public List<Floor> getFloors() {
-        return floors;
-    }
-    public List<Wall> getWalls() {
-        return walls;
+    public List<Pantry> getPantries() {
+        return pantries;
     }
 
 

@@ -268,8 +268,8 @@ public class RoutePlan {
                 maintenanceInspect(environment.getDirectorRooms().get(i), environment, actions);
             }
             // Inspect Break Room/s
-            for(int i = 0; i < environment.getBreakerRoom().size(); i++) {
-                maintenanceInspect(environment.getBreakerRoom().get(i), environment, actions);
+            for(int i = 0; i < environment.getBreakerRooms().size(); i++) {
+                maintenanceInspect(environment.getBreakerRooms().get(i), environment, actions);
             }
             routePlan.add(new State(State.Name.INSPECT_ROOMS, this, agent, actions));
 
