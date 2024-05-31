@@ -223,6 +223,17 @@ public class Environment extends BaseObject implements Serializable {
         return ctr;
     }
 
+    public void resetQueues() {
+        for(QueueingPatchField queueingPatchField: getReceptionQueues()) {
+            System.out.println("Number of queueAgents: " + queueingPatchField.getQueueingAgents().size() +
+                    " Number of associatedPatches: " + queueingPatchField.getAssociatedPatches().size());
+            if (queueingPatchField.isEmpty()) {
+                queueingPatchField.reset();
+            }
+        }
+    }
+
+
 
     // METHODS: AMENITIES
 
@@ -244,7 +255,7 @@ public class Environment extends BaseObject implements Serializable {
 
     public CopyOnWriteArrayList<Agent> getUnspawnedWorkingAgents() {
         CopyOnWriteArrayList<Agent> unspawned = new CopyOnWriteArrayList<>();
-        ArrayList<Type> working = new ArrayList<>(Arrays.asList(Type.GUARD/*, Type.MAINTENANCE, Type.DIRECTOR, Type.FACULTY, Type.STUDENT*/));
+        ArrayList<Type> working = new ArrayList<>(Arrays.asList(Type.GUARD, Type.MAINTENANCE/*, Type.DIRECTOR, Type.FACULTY, Type.STUDENT*/));
         for (Agent agent: getAgents()){
             if (agent.getAgentMovement() == null && working.contains(agent.getType()))
                 unspawned.add(agent);
@@ -253,7 +264,7 @@ public class Environment extends BaseObject implements Serializable {
     }
 
     // Get all team members that are present in the office
-    public ArrayList<Agent> getTeamMembers(int team){
+    public ArrayList<Agent> getPresentTeamMembers(int team){
         ArrayList<Agent> agents = new ArrayList<>();
         for (Agent agent: getAgents()){
             if (agent.getAgentMovement() != null && agent.getTeam() == team){
@@ -264,18 +275,33 @@ public class Environment extends BaseObject implements Serializable {
         return agents;
     }
 
+    public ArrayList<Agent> getTeamMembers(int team){
+        ArrayList<Agent> agents = new ArrayList<>();
+        for (Agent agent: getAgents()){
+            if (agent.getTeam() == team){
+                agents.add(agent);
+            }
+        }
+        return agents;
+    }
+
     // Developer Note: The timeIn and timeOut of janitors and guard are set this way for this is based on our interview
     // where they specifically indicate what time they enter and exit the office
     public void createInitialAgentDemographics(){
         int offset = 30; // equivalent to 30 mins
-        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
-        this.getAgents().add(janitor);
+//        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(9,0 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
+//        this.getAgents().add(janitor);
+//
+//        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(9,0 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
+//        this.getAgents().add(janitor2);
 
-        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
-        this.getAgents().add(janitor2);
+        for (int i = 0; i < 10; i++) {
+            Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(9,0, i), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
+            this.getAgents().add(janitor);
+        }
 
-        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(10,0 + Simulator.rollIntIN(offset)));
-        this.getAgents().add(guard);
+//        Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(10,0 + Simulator.rollIntIN(offset)));
+//        this.getAgents().add(guard);
 
 //        Agent director = Agent.AgentFactory.create(Type.DIRECTOR, true, 0, 0, 7560);
 //        this.getAgents().add(director);
@@ -283,10 +309,10 @@ public class Environment extends BaseObject implements Serializable {
 //        Agent faculty_1 = Agent.AgentFactory.create(Type.FACULTY, true, 1, 0, 7560);
 //        this.getAgents().add(faculty_1);
 //
-//        for (int i = 0; i < 4; i++){
-//            Agent student_1 = Agent.AgentFactory.create(Type.STUDENT, true, 1, 0, 7560);
-//            this.getAgents().add(student_1);
-//        }
+        for (int i = 0; i < 4; i++){
+            Agent student_1 = Agent.AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(12,0 + Simulator.rollIntIN(offset)));
+            this.getAgents().add(student_1);
+        }
 
     }
 

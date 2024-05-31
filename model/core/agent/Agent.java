@@ -25,6 +25,7 @@ public class Agent extends PatchObject {
     private LocalTime timeIn;
     private LocalTime timeOut;
 
+
     private Agent.AgeGroup ageGroup = null;
     private Agent.Persona persona = null;
 
@@ -65,7 +66,6 @@ public class Agent extends PatchObject {
         this.gender = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? Agent.Gender.FEMALE : Agent.Gender.MALE;
         this.timeIn = timeIn;
         this.timeOut = timeOut;
-
 
 
         // Director
@@ -235,6 +235,7 @@ public class Agent extends PatchObject {
     public Agent.EnergyProfile getEnergyProfile() {
         return energyProfile;
     }
+
 
     // OVERRIDE
     @Override

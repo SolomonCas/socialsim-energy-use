@@ -13,9 +13,9 @@ public class QueueingPatchField extends BaseObject {
 
     // VARIABLES
     private final List<Patch> associatedPatches;
+    private final int originalSize;
     private final Amenity target;
     private List<Agent> queueingAgents;
-    private Agent currentAgent;
 
 
 
@@ -26,13 +26,31 @@ public class QueueingPatchField extends BaseObject {
 
         this.associatedPatches = new ArrayList<>();
         associatedPatches.addAll(patches);
+        this.originalSize = associatedPatches.size();
         this.target = target;
         this.queueingAgents = new ArrayList<>();
-        this.currentAgent = null;
     }
 
 
+    // METHODS
+    public boolean isEmpty() {
+        return queueingAgents.isEmpty();
+    }
 
+    // This is used to revert to the original size of the queue/line;
+    public void reset() {
+        while(originalSize != associatedPatches.size()) {
+            associatedPatches.removeLast();
+        }
+    }
+
+    public Patch getLastQueuePatch() {
+        return this.associatedPatches.get(associatedPatches.size() - 1);
+    }
+
+    public boolean isQueueFull() {
+        return getAssociatedPatches().size() == getQueueingAgents().size();
+    }
 
 
     // GETTERS
@@ -47,25 +65,6 @@ public class QueueingPatchField extends BaseObject {
     public List<Agent> getQueueingAgents() {
         return queueingAgents;
     }
-
-    public Patch getLastQueuePatch() {
-        return this.associatedPatches.get(associatedPatches.size() - 1);
-    }
-
-    public Agent getCurrentAgent() {
-        return currentAgent;
-    }
-
-
-
-
-
-    // SETTERS
-    public void setCurrentAgent(Agent currentAgent) {
-        this.currentAgent = currentAgent;
-    }
-
-
 
 
 

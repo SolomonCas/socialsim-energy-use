@@ -39,7 +39,7 @@ public class ReceptionTableMapper extends AmenityMapper {
             amenityBlocks.add(amenityBlock4);
             patch4.setAmenityBlock(amenityBlock4);
 
-            ReceptionTable receptionTableToAdd = ReceptionTable.ReceptionTableFactory.create(amenityBlocks, true, 5);
+            ReceptionTable receptionTableToAdd = ReceptionTable.ReceptionTableFactory.create(amenityBlocks, true, 10);
             Main.simulator.getEnvironment().getReceptionTables().add(receptionTableToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
 
@@ -50,9 +50,9 @@ public class ReceptionTableMapper extends AmenityMapper {
 
 
             // This lines of code is responsible for adding a queue/line for agents to wait their turn.
+            // Developer Note: My plan is to make a queue like above the reception table.
             List<Patch> receptionQueuePatches = new ArrayList<>();
-            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol));
-            for (int j = origPatchCol; j < origPatchCol + 4; j++) {
+            for (int j = origPatchCol + 1; j < origPatchCol + 4; j++) {
                 Patch currentPatch = Main.simulator.getEnvironment().getPatch(origPatchRow - 1, j);
                 if (currentPatch.getQueueingPatchField() == null && currentPatch.getAmenityBlock() == null) {
 //                    System.out.println(currentPatch);

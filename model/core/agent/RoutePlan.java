@@ -206,6 +206,10 @@ public class RoutePlan {
             setBreakCooldown(1440); // 2 hour cooldown
             setAgentSeat(assignedSeat);
 
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             // Maintenance put their stuff in the Clinic Room/ Storage Room
@@ -334,17 +338,17 @@ public class RoutePlan {
             setBathroomBreakCooldown(1440);  // 2 hour cooldown
             setBreakCooldown(1440); // 2 hour cooldown
             setAgentSeat(assignedSeat);
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.FILL_UP_NAME, 3));
+            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().get(0).getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_STATION));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().get(0).getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_LUNCH));
             actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
             routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
             this.LUNCH_INSTANCE = routePlan.get(routePlan.size()-1);
@@ -369,11 +373,11 @@ public class RoutePlan {
 //            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().get(0).getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_STATION));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().get(0).getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_LUNCH));
             actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
             routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
             this.LUNCH_INSTANCE = routePlan.get(routePlan.size()-1);
@@ -529,12 +533,18 @@ public class RoutePlan {
 
         return chance;
     }
-    public State addWaitingRoute(Agent agent){
+    public State addWaitingRoute(String s, Agent agent, Environment environment){
         ArrayList<Action> actions;
-        actions = new ArrayList<>();
-        actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
-        actions.add(new Action(Action.Name.WAIT_FOR_VACANT,5,20));
-        return new State(State.Name.WAIT_INFRONT_OF_BATHROOM,this, agent, actions);
+        State officeState = null;
+        switch (s) {
+            case "WAIT_INFRONT_OF_BATHROOM" -> {
+                actions = new ArrayList<>();
+                actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
+                actions.add(new Action(Action.Name.WAIT_FOR_VACANT,5,20));
+                officeState = new State(State.Name.WAIT_INFRONT_OF_BATHROOM,this, agent, actions);
+            }
+        }
+        return officeState;
     }
     public void decrementBathroomBreakCoolDown() {
         bathroomBreakCooldown--;

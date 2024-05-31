@@ -113,7 +113,7 @@ public class Action {
         GO_TO_COLLAB(), WAIT_FOR_COLLAB(), COLLABORATE(),
         GO_MEETING(), WAIT_MEETING(), MEETING(), GOING_DISPENSER(),
         GETTING_WATER(), GOING_FRIDGE(), GETTING_FOOD(), TAKING_BREAK(),
-        GO_TO_WAIT_AREA(),WAIT_FOR_VACANT();
+        GO_TO_WAIT_AREA(), WAIT_FOR_VACANT();
 
         final int ID;
 
