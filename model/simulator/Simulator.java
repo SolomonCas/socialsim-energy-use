@@ -78,6 +78,11 @@ public class Simulator {
     public static int currentFridgeInteractionCount = 0;
     public static int currentWaterDispenserInteractionCount = 0;
 
+    // Current Wattage Count
+    public static float currentWattageCount = 0;
+
+    // Total Wattage Count
+    public static float totalWattageCount = 0;
 
 
     // Average Interaction Duration
@@ -141,6 +146,11 @@ public class Simulator {
     public static int[] compiledCurrentLightInteractionCount;
     public static int[] compiledCurrentFridgeInteractionCount;
     public static int[] compiledCurrentWaterDispenserInteractionCount;
+
+    // WATTAGE COUNT
+
+    public static float[] compiledCurrentWattageCount;
+    public static float[] compiledTotalWattageCount;
 
     // Average Interaction Duration
     public static float[] compiledAverageNonverbalDuration;
@@ -280,6 +290,16 @@ public class Simulator {
 
 
 //        Agent agent = null;
+
+        //CHANGE TO RANDOM BETWEEN LOW TO HIGH
+        //multiplied to 5 since 5 seconds per tick?
+        //WATER DISPENSER
+        totalWattageCount+= 4.0;
+        //MONITOR
+        totalWattageCount+= 80.0;
+
+        //REFRIGERATOR
+        totalWattageCount+= 170.0;
 
         for (int i = 0; i < gate.getSpawners().size(); i++) {
             Gate.GateBlock spawner = gate.getSpawners().get(i);
@@ -449,10 +469,14 @@ public class Simulator {
         compiledCurrentExchangeCount[(int) currentTick] = currentExchangeCount;
 
         // Current Power Consumption Interaction Count
-        compiledCurrentAirconInteractionCount[(int) currentTick] = currentNonverbalCount;
-        compiledCurrentLightInteractionCount[(int) currentTick] = currentCooperativeCount;
-        compiledCurrentFridgeInteractionCount[(int) currentTick] = currentExchangeCount;
-        compiledCurrentWaterDispenserInteractionCount[(int) currentTick] = currentExchangeCount;
+        compiledCurrentAirconInteractionCount[(int) currentTick] = currentAirconInteractionCount;
+        compiledCurrentLightInteractionCount[(int) currentTick] = currentLightInteractionCount;
+        compiledCurrentFridgeInteractionCount[(int) currentTick] = currentFridgeInteractionCount;
+        compiledCurrentWaterDispenserInteractionCount[(int) currentTick] = currentWaterDispenserInteractionCount;
+
+        //Wattage Count
+        compiledCurrentWattageCount[(int) currentTick] = currentWattageCount;
+        compiledTotalWattageCount[(int) currentTick] = totalWattageCount;
 
         // Average Interaction Duration
         compiledAverageNonverbalDuration[(int) currentTick] = averageNonverbalDuration;
@@ -868,6 +892,8 @@ public class Simulator {
                 }
                 else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
                     currentFridgeInteractionCount++;
+                    //1.3 per second so 1.3x5?
+                    totalWattageCount += 6.5;
                 }
 
             }

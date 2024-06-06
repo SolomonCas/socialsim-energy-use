@@ -61,11 +61,33 @@ public class ScreenController extends Controller {
     @FXML private Label currentMaintenanceCount;
     @FXML private Label currentGuardCount;
 
-    // Current Interaction With Appliance Count
+    // Label: Current Interaction With Appliance Count
     @FXML private Label currentAirconInteractionCount;
     @FXML private Label currentLightInteractionCount;
     @FXML private Label currentFridgeInteractionCount;
     @FXML private Label currentWaterDispenserInteractionCount;
+
+    //TextField: Aircon
+//    @FXML private TextField averageAirconWattage;
+//    @FXML private TextField lowAirconWattage;
+//    @FXML private TextField HighAirconWattage;
+
+    //TextField: Light
+//    @FXML private TextField averageLightWattage;
+//    @FXML private TextField lowLightWattage;
+//    @FXML private TextField HighLightWattage;
+
+    //TextField: FRIDGE
+//    @FXML private TextField openedFridgeWattage;
+//    @FXML private TextField standbyFridgeWattage;
+//    @FXML private TextField activeCycleFridgeWattage;
+
+    //TextField: Water Dispenser
+//    @FXML private TextField averageWaterDispenserWattage;
+//    @FXML private TextField lowWaterDispenserWattage;
+//    @FXML private TextField HighWaterDispenserWattage;
+    @FXML private Text currentWattageCountText;
+    @FXML private Text totalWattageCountText;
 
     // Label: Current Interaction Count
     @FXML private Label currentNonverbalCount;
@@ -156,6 +178,15 @@ public class ScreenController extends Controller {
         environment.setExchangeStdDev(Integer.parseInt(exchangeStdDev.getText()));
         environment.setFieldOfView(Integer.parseInt(fieldOfView.getText()));
 
+        // Energy Consumption Interactions
+//        openedFridgeWattage = ;
+//        standbyFridgeWattage;
+//        activeCycleFridgeWattage;
+//
+//        averageWaterDispenserWattage;
+//        lowWaterDispenserWattage;
+//        HighWaterDispenserWattage;
+
         // Current Agent Count Per Type
         currentDirectorCount.setText(String.valueOf(Simulator.currentDirectorCount));
         currentFacultyCount.setText(String.valueOf(Simulator.currentFacultyCount));
@@ -175,6 +206,8 @@ public class ScreenController extends Controller {
         currentLightInteractionCount.setText(String.valueOf(Simulator.currentLightInteractionCount));
         currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
+
+        totalWattageCountText.setText("Total Watts: " + String.format("%.02f",Simulator.totalWattageCount) + " W");
 
         currentTeam1Count.setText(String.valueOf(Simulator.currentTeam1Count));
         currentTeam2Count.setText(String.valueOf(Simulator.currentTeam2Count));
@@ -1477,6 +1510,7 @@ public class ScreenController extends Controller {
         timeString = String.format("%02d", currentTime.getHour()) + ":" + String.format("%02d", currentTime.getMinute()) + ":" + String.format("%02d", currentTime.getSecond());
         elapsedTimeText.setText("Current time: " + timeString + " (" + elapsedTime + " ticks)");
 
+
     }
 
 
@@ -1539,6 +1573,8 @@ public class ScreenController extends Controller {
         currentLightInteractionCount.setText(String.valueOf(Simulator.currentLightInteractionCount));
         currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
+
+        totalWattageCountText.setText("Total Watts: " + String.format("%.02f", Simulator.totalWattageCount) + " W");
     }
 
 
