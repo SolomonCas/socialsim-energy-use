@@ -43,22 +43,24 @@ public class ReceptionTableMapper extends AmenityMapper {
             Main.simulator.getEnvironment().getReceptionTables().add(receptionTableToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
 
+            // Setting the chairs
             int index = Main.simulator.getEnvironment().getReceptionTables().indexOf(receptionTableToAdd);
             List<Patch> receptionChairPatches = new ArrayList<>();
-            receptionChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 3));
+            receptionChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 3));
             ReceptionChairMapper.draw(receptionChairPatches, index);
 
 
             // This lines of code is responsible for adding a queue/line for agents to wait their turn.
             // Developer Note: My plan is to make a queue like above the reception table.
             List<Patch> receptionQueuePatches = new ArrayList<>();
-            for (int j = origPatchCol + 1; j < origPatchCol + 4; j++) {
-                Patch currentPatch = Main.simulator.getEnvironment().getPatch(origPatchRow - 1, j);
-                if (currentPatch.getQueueingPatchField() == null && currentPatch.getAmenityBlock() == null) {
-//                    System.out.println(currentPatch);
-                    receptionQueuePatches.add(currentPatch);
-                }
-            }
+//            for (int j = origPatchCol + 1; j < origPatchCol + 4; j++) {
+//                Patch currentPatch = Main.simulator.getEnvironment().getPatch(origPatchRow - 1, j);
+//                if (currentPatch.getQueueingPatchField() == null && currentPatch.getAmenityBlock() == null) {
+////                    System.out.println(currentPatch);
+//                    receptionQueuePatches.add(currentPatch);
+//                }
+//            }
+            receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 4));
             Main.simulator.getEnvironment().getReceptionQueues().add(ReceptionQueue.receptionQueueFactory.create(receptionQueuePatches, receptionTableToAdd, 1));
         }
     }

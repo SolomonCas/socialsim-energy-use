@@ -17,7 +17,7 @@ public class RoutePlan {
     private ArrayList<State> routePlan;
     private boolean bathPM, bathAM, isAtDesk, hadBreak;
     private int lastDuration = -1;
-    private int canUrgent = 2;
+    private int canUrgent = 0;
     private long collaborationEnd = 0, meetingStart = -1, meetingEnd, meetingRoom;
 
     private int BATH_AM = 2, BATH_PM = 2, BATH_LUNCH = 1;
@@ -184,17 +184,17 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GUARD_STAY_PUT, assignedSeat.getAttractors().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GUARD, this, agent, actions));
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().getFirst().getPatch()));
-            actions.add(new Action(Action.Name.EAT_LUNCH, 360));
-            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().getFirst().getPatch()));
+//            actions.add(new Action(Action.Name.EAT_LUNCH, 360));
+//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
 
-            // This is for when the guard isn't in his station or is a behavior of getting he/she's belongings before going home
-            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch()));
+            // This is for when the agent isn't in his station or is a behavior of getting he/she's belongings before going home
+            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
 
         }
@@ -208,6 +208,7 @@ public class RoutePlan {
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
             actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
             routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
@@ -301,6 +302,8 @@ public class RoutePlan {
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+
+            actions.add(new Action(Action.Name.GO_TO_STATION, environment.getStorageCabinets().getFirst().getAttractors().getFirst().getPatch(), 2));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.DIRECTOR) {
@@ -311,23 +314,25 @@ public class RoutePlan {
             setBreakCooldown(1440); // 2 hour cooldown
             setAgentSeat(assignedSeat);
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_DIRECTOR_ROOM, assignedSeat.getAttractors().getFirst().getPatch()));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().getFirst().getPatch()));
-            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
-            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().getFirst().getPatch()));
+//            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
+//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_STATION, 2));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.STRICT_FACULTY || agent.getPersona() == Agent.Persona.APP_FACULTY) {
@@ -340,6 +345,7 @@ public class RoutePlan {
             setAgentSeat(assignedSeat);
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
             actions.add(new Action(Action.Name.FILL_UP_NAME, 3));
             routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
@@ -347,15 +353,16 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GO_TO_STATION));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_LUNCH));
-            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
-            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
-            this.LUNCH_INSTANCE = routePlan.get(routePlan.size()-1);
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GO_TO_LUNCH));
+//            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
+//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+//            this.LUNCH_INSTANCE = routePlan.get(routePlan.size()-1);
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_STATION, 2));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.INT_STUDENT || agent.getPersona() == Agent.Persona.EXT_STUDENT) {
@@ -369,22 +376,26 @@ public class RoutePlan {
 
 //            actions = new ArrayList<>();
 //            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+//            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
 //            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
 //            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+            routePlan.add(addUrgentRoute("BATHROOM", agent));
+
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_LUNCH));
-            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
-            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
-            this.LUNCH_INSTANCE = routePlan.get(routePlan.size()-1);
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GO_TO_LUNCH));
+//            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
+//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+//            this.LUNCH_INSTANCE = routePlan.get(routePlan.size()-1);
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_STATION, 2));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
 
@@ -438,6 +449,8 @@ public class RoutePlan {
         switch (s) {
             case "BATHROOM" -> {
                 actions = new ArrayList<>();
+                actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
+                actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
                 actions.add(new Action(Action.Name.GO_TO_BATHROOM));
                 actions.add(new Action(Action.Name.RELIEVE_IN_CUBICLE, 12, 60));
                 actions.add(new Action(Action.Name.FIND_SINK));
@@ -532,19 +545,6 @@ public class RoutePlan {
         }
 
         return chance;
-    }
-    public State addWaitingRoute(String s, Agent agent, Environment environment){
-        ArrayList<Action> actions;
-        State officeState = null;
-        switch (s) {
-            case "WAIT_INFRONT_OF_BATHROOM" -> {
-                actions = new ArrayList<>();
-                actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
-                actions.add(new Action(Action.Name.WAIT_FOR_VACANT,5,20));
-                officeState = new State(State.Name.WAIT_INFRONT_OF_BATHROOM,this, agent, actions);
-            }
-        }
-        return officeState;
     }
     public void decrementBathroomBreakCoolDown() {
         bathroomBreakCooldown--;

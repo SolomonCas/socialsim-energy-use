@@ -45,6 +45,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<Bathroom> bathrooms;
     private final List<Reception> receptions;
     private final List<ReceptionQueue> receptionQueues;
+    private final List<BathroomQueue> bathroomQueues;
     private final List<DirectorRoom> directorRooms;
     private final List<BreakArea> breakAreas;
     private final List<Floor> floors;
@@ -152,6 +153,7 @@ public class Environment extends BaseObject implements Serializable {
         this.directorRooms = Collections.synchronizedList(new ArrayList<>());
         this.breakAreas = Collections.synchronizedList(new ArrayList<>());
         this.floors = Collections.synchronizedList(new ArrayList<>());
+        this.bathroomQueues = Collections.synchronizedList(new ArrayList<>());
 
         // Amenities
         this.amenityPatchSet = Collections.synchronizedSortedSet(new TreeSet<>());
@@ -223,17 +225,6 @@ public class Environment extends BaseObject implements Serializable {
         return ctr;
     }
 
-    public void resetQueues() {
-        for(QueueingPatchField queueingPatchField: getReceptionQueues()) {
-            System.out.println("Number of queueAgents: " + queueingPatchField.getQueueingAgents().size() +
-                    " Number of associatedPatches: " + queueingPatchField.getAssociatedPatches().size());
-            if (queueingPatchField.isEmpty()) {
-                queueingPatchField.reset();
-            }
-        }
-    }
-
-
 
     // METHODS: AMENITIES
 
@@ -255,7 +246,7 @@ public class Environment extends BaseObject implements Serializable {
 
     public CopyOnWriteArrayList<Agent> getUnspawnedWorkingAgents() {
         CopyOnWriteArrayList<Agent> unspawned = new CopyOnWriteArrayList<>();
-        ArrayList<Type> working = new ArrayList<>(Arrays.asList(Type.GUARD, Type.MAINTENANCE/*, Type.DIRECTOR, Type.FACULTY, Type.STUDENT*/));
+        ArrayList<Type> working = new ArrayList<>(Arrays.asList(Type.GUARD, Type.MAINTENANCE, Type.DIRECTOR, Type.FACULTY, Type.STUDENT));
         for (Agent agent: getAgents()){
             if (agent.getAgentMovement() == null && working.contains(agent.getType()))
                 unspawned.add(agent);
@@ -296,7 +287,7 @@ public class Environment extends BaseObject implements Serializable {
 //        this.getAgents().add(janitor2);
 
         for (int i = 0; i < 10; i++) {
-            Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(9,0, i), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
+            Agent janitor = Agent.AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
             this.getAgents().add(janitor);
         }
 
@@ -309,10 +300,10 @@ public class Environment extends BaseObject implements Serializable {
 //        Agent faculty_1 = Agent.AgentFactory.create(Type.FACULTY, true, 1, 0, 7560);
 //        this.getAgents().add(faculty_1);
 //
-        for (int i = 0; i < 4; i++){
-            Agent student_1 = Agent.AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(12,0 + Simulator.rollIntIN(offset)));
-            this.getAgents().add(student_1);
-        }
+//        for (int i = 0; i < 4; i++){
+//            Agent student_1 = Agent.AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(12,0 + Simulator.rollIntIN(offset)));
+//            this.getAgents().add(student_1);
+//        }
 
     }
 
@@ -1031,6 +1022,9 @@ public class Environment extends BaseObject implements Serializable {
     public List<Wall> getWalls() {
         return walls;
     }
+    public List<BathroomQueue> getBathroomQueues() {
+        return bathroomQueues;
+    }
 
 
 
@@ -1297,10 +1291,6 @@ public class Environment extends BaseObject implements Serializable {
     public void setIOSScales(CopyOnWriteArrayList<CopyOnWriteArrayList<CopyOnWriteArrayList<Integer>>> IOSScales){
         this.IOSScales = IOSScales;
     }
-
-
-
-
 
 
 
