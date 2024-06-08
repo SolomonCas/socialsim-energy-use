@@ -681,7 +681,7 @@ public class Simulator {
                     }
 
                 }
-                else if (agentMovement.getDuration() <= -1){ // if duration has been set
+                else if (agentMovement.getDuration() > -1){ // if duration has been set
                     agentMovement.setDuration(agentMovement.getDuration() - 1);
                     if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
                         agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
@@ -689,7 +689,6 @@ public class Simulator {
                         if(!agentMovement.getCurrentState().getActions().isEmpty()) {
                             agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                         }
-                        agentMovement.resetGoal();
                     }
                     if (agentMovement.getCurrentState().getActions().isEmpty()){
                         if(action.getName() == Action.Name.EXIT_LUNCH){
