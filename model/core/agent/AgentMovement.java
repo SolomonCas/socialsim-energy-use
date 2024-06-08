@@ -177,6 +177,8 @@ public class AgentMovement {
         return agentsOnPatchWithoutThisAgent.isEmpty();
     }
 
+
+
     private void updateRecentPatches(Patch currentPatch, final int timeElapsedExpiration) {
         List<Patch> patchesToForget = new ArrayList<>();
 
@@ -391,12 +393,15 @@ public class AgentMovement {
     // you are required to change this whatever you want
     public void chooseBathroomQueue(){
         ArrayList<Patch> patchesToConsider = new ArrayList<>();
+        if (this.parent.getType() == Agent.Type.DIRECTOR && chooseBathroomGoal(OfficeToilet.class)) {
+            return;
+        }
         if (this.getParent().getGender() == Agent.Gender.MALE){
-                patchesToConsider.add(environment.getPatch(11, 135));
+            patchesToConsider.add(environment.getPatch(11, 135));
 
         }
         else{
-                patchesToConsider.add(environment.getPatch(32, 135));
+            patchesToConsider.add(environment.getPatch(32, 135));
         }
 
         this.goalQueueingPatchField = BathroomQueue.bathroomQueueFactory.create(patchesToConsider, goalAmenity, 1);
@@ -408,6 +413,23 @@ public class AgentMovement {
         goalQueueingPatchField = environment.getReceptionQueues().get(random);
         this.goalNearestQueueingPatch = goalQueueingPatchField.getAssociatedPatches().getLast();
         this.goalAmenity = environment.getReceptionTables().get(random);
+        this.goalAttractor = getGoalAmenity().getAttractors().getFirst();
+        this.goalPatch = this.goalAttractor.getPatch();
+    }
+
+    public void chooseWaterDispenserQueue(){
+        int random = Simulator.rollIntIN(environment.getWaterDispenserQueues().size());
+        goalQueueingPatchField = environment.getWaterDispenserQueues().get(random);
+        this.goalNearestQueueingPatch = goalQueueingPatchField.getAssociatedPatches().getLast();
+        this.goalAmenity = environment.getWaterDispensers().get(random);
+        this.goalAttractor = getGoalAmenity().getAttractors().getFirst();
+        this.goalPatch = this.goalAttractor.getPatch();
+    }
+    public void chooseFridgeQueue(){
+        int random = Simulator.rollIntIN(environment.getFridgeQueues().size());
+        goalQueueingPatchField = environment.getFridgeQueues().get(random);
+        this.goalNearestQueueingPatch = goalQueueingPatchField.getAssociatedPatches().getLast();
+        this.goalAmenity = environment.getFridges().get(random);
         this.goalAttractor = getGoalAmenity().getAttractors().getFirst();
         this.goalPatch = this.goalAttractor.getPatch();
     }
@@ -484,11 +506,19 @@ public class AgentMovement {
             if (parent.getType() == Agent.Type.DIRECTOR) {
                 temp.addAll(environment.getAmenityList(nextAmenityClass));
             }
-            else if (parent.getType() == Agent.Type.MAINTENANCE &&
-                    this.currentAction.getName() == Action.Name.MAINTENANCE_CLEAN_TOILET) {
-                for(int i = 0; i < this.environment.getOfficeToilets().size(); i++) {
-                    if (!this.environment.getOfficeToilets().get(i).isClean()) {
-                        temp.add(this.environment.getOfficeToilets().get(i));
+            else if (parent.getType() == Agent.Type.MAINTENANCE && this.currentState.getName() == State.Name.MAINTENANCE_BATHROOM) {
+                if (this.currentAction.getName() == Action.Name.MAINTENANCE_CLEAN_TOILET) {
+                    for(int i = 0; i < this.environment.getOfficeToilets().size(); i++) {
+                        if (!this.environment.getOfficeToilets().get(i).isClean()) {
+                            temp.add(this.environment.getOfficeToilets().get(i));
+                        }
+                    }
+                }
+                else if (this.currentAction.getName() == Action.Name.MAINTENANCE_CLEAN_SINK) {
+                    for(int i = 0; i < this.environment.getOfficeSinks().size(); i++) {
+                        if (!this.environment.getOfficeSinks().get(i).isClean()) {
+                            temp.add(this.environment.getOfficeSinks().get(i));
+                        }
                     }
                 }
             }
@@ -499,30 +529,12 @@ public class AgentMovement {
 
                     if (parent.getGender() == Agent.Gender.MALE) {
                         if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == 2) {
-                            // This part checks for amenities with more than 1 attractors
-
-                            for(Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                                if (attractor.getIsReserved()) {
-                                    attractorCount++;
-                                }
-                            }
-                            if(attractorCount == 0) {
-                                temp.add(amenity);
-                            }
+                            temp.add(amenity);
                         }
                     }
                     else if (parent.getGender() == Agent.Gender.FEMALE) {
                         if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == 1) {
-                            // This part checks for amenities with more than 1 attractors
-
-                            for(Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                                if (attractor.getIsReserved()) {
-                                    attractorCount++;
-                                }
-                            }
-                            if(attractorCount == 0) {
-                                temp.add(amenity);
-                            }
+                            temp.add(amenity);
                         }
                     }
                 }
@@ -1029,6 +1041,10 @@ public class AgentMovement {
         }
     }
 
+    public void moveAStar() {
+        move(this.currentPath.getPath().peek().getPatchCenterCoordinates());
+    }
+
     public void moveSocialForce() {
         final int noNewPatchesSeenTicksThreshold = 5;
         final int noMovementTicksThreshold = 5;
@@ -1084,9 +1100,6 @@ public class AgentMovement {
         int agentsProcessed = 0;
         final int agentsProcessedLimit = 5;
 
-        /*
-        TODO: Whatever this shit is
-         */
         for (Patch patch : patchesToExplore) {
             if (hasObstacle(patch)) {
                 numberOfObstacles++;
@@ -1229,7 +1242,9 @@ public class AgentMovement {
                     }
 
                     this.timeSinceLeftPreviousGoal++;
-
+                    System.out.println("noMovementCounter: " + noMovementCounter + " movementCounter: " + movementCounter +
+                            " noNewPatchesSeenCounter: " + noNewPatchesSeenCounter + " newPatchesSeenCounter: " + newPatchesSeenCounter +
+                            " stuckCounter: " + stuckCounter + " isStuck: " + isStuck);
                     return;
                 } catch (ArrayIndexOutOfBoundsException ignored) {
                 }
@@ -1241,6 +1256,8 @@ public class AgentMovement {
         this.noMovementCounter++;
         this.movementCounter = 0;
         this.timeSinceLeftPreviousGoal++;
+
+
     }
 
     private double computeMaximumRepulsionDistance(int objectCount, final int maximumObjectCountTolerated, final int minimumObjectCount, final double maximumDistance, final int maximumObjectCount, final double minimumDistance) {
@@ -1351,6 +1368,10 @@ public class AgentMovement {
 
         if (this.currentPath == null || this.isStuck && this.noNewPatchesSeenCounter > recomputeThreshold) {
             AgentPath agentPath = null;
+
+            if (this.isStuck && this.noNewPatchesSeenCounter > recomputeThreshold) {
+                free();
+            }
 
             if (this.getGoalQueueingPatchField() != null) {
                 // Head towards the queue of the goal
@@ -1555,7 +1576,7 @@ public class AgentMovement {
         return this.currentPath.getPath().isEmpty();
     }
     public boolean isCloseToFinalPatchInPath() {
-        return isOnOrCloseToPatch(this.currentPath.getPath().get(1));
+        return this.currentPath.getPath().size() == 1;
     }
     public boolean isCloseOrOnQueue() {
         if (this.goalQueueingPatchField != null) {

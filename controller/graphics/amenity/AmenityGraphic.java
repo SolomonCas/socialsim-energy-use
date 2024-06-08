@@ -49,7 +49,7 @@ public class AmenityGraphic extends Graphic {
 
         final List<AmenityGraphicLocation> directorChairGraphic = new ArrayList<>();
         directorChairGraphic.add(new AmenityGraphicLocation(0, 0));
-        AMENITY_GRAPHICS.put(Chair.class, directorChairGraphic);
+        AMENITY_GRAPHICS.put(DirectorChair.class, directorChairGraphic);
 
         final List<AmenityGraphicLocation> cabinetGraphic = new ArrayList<>();
         cabinetGraphic.add(new AmenityGraphicLocation(10, 0));

@@ -49,7 +49,7 @@ public class DirectorTableMapper extends AmenityMapper {
             DirectorTable directorTableToAdd = DirectorTable.DirectorTableFactory.create(amenityBlocks, true, facing);
             Main.simulator.getEnvironment().getDirectorTables().add(directorTableToAdd);
             int index = Main.simulator.getEnvironment().getDirectorTables().indexOf(directorTableToAdd);
-            MeetingChairMapper.draw(directorChairPatches, index);
+            DirectorChairMapper.draw(directorChairPatches, index);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }
     }

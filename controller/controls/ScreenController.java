@@ -1342,7 +1342,7 @@ public class ScreenController extends Controller {
 
         List<Patch> receptionTablePatches = new ArrayList<>();
         // Reception Table
-        receptionTablePatches.add(environment.getPatch(39,122));
+        receptionTablePatches.add(environment.getPatch(39,121));
         ReceptionTableMapper.draw(receptionTablePatches);
 
 

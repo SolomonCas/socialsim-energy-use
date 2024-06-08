@@ -3,6 +3,7 @@ package com.socialsim.controller.graphics.amenity.mapper;
 import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.amenity.AmenityMapper;
 import com.socialsim.model.core.environment.Patch;
+import com.socialsim.model.core.environment.patchfield.FridgeQueue;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.Fridge;
 
@@ -30,6 +31,10 @@ public class FridgeMapper extends AmenityMapper {
             Fridge fridgeToAdd = Fridge.FridgeFactory.create(amenityBlocks, true);
             Main.simulator.getEnvironment().getFridges().add(fridgeToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
+
+            List<Patch> fridgeQueuePatches = new ArrayList<>();
+            fridgeQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
+            Main.simulator.getEnvironment().getFridgeQueues().add(FridgeQueue.fridgeQueueFactory.create(fridgeQueuePatches, fridgeToAdd, 1));
         }
     }
 
