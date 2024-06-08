@@ -290,8 +290,8 @@ public class Environment extends BaseObject implements Serializable {
 //        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(9,0 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
 //        this.getAgents().add(janitor2);
 
-        for (int i = 0; i < 1; i++) {
-            Agent janitor = Agent.AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
+        for (int i = 0; i < 4; i++) {
+            Agent janitor = Agent.AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
             this.getAgents().add(janitor);
         }
 

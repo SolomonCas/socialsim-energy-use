@@ -380,7 +380,7 @@ public class RoutePlan {
 //            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
 //            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
 //            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
-            routePlan.add(addUrgentRoute("BATHROOM", agent));
+            routePlan.add(addUrgentRoute("REFRIGERATOR", agent));
 
 
             actions = new ArrayList<>();
@@ -487,7 +487,7 @@ public class RoutePlan {
                 actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
                 actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
                 actions.add(new Action(Action.Name.GOING_DISPENSER));
-                actions.add(new Action(Action.Name.GETTING_WATER, 5, 10));
+                actions.add(new Action(Action.Name.GETTING_WATER, 1, 4));
                 officeState = new State(State.Name.DISPENSER, this, agent, actions);
             }
             case "REFRIGERATOR" -> {
@@ -495,9 +495,9 @@ public class RoutePlan {
                 actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
                 actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
                 actions.add(new Action(Action.Name.GOING_FRIDGE));
-                if(agent.getEnergyProfile() == Agent.EnergyProfile.GREEN){ actions.add(new Action(Action.Name.GETTING_FOOD, 2, 5)); }
-                else if(agent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN){ actions.add(new Action(Action.Name.GETTING_FOOD, 6, 10)); }
-                else if(agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL){ actions.add(new Action(Action.Name.GETTING_FOOD, 2, 10)); }
+                if(agent.getEnergyProfile() == Agent.EnergyProfile.GREEN){ actions.add(new Action(Action.Name.GETTING_FOOD, 1, 2)); }
+                else if(agent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN){ actions.add(new Action(Action.Name.GETTING_FOOD,  3, 5)); }
+                else if(agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL){ actions.add(new Action(Action.Name.GETTING_FOOD, 1, 5)); }
 
                 officeState = new State(State.Name.REFRIGERATOR, this, agent, actions);
             }

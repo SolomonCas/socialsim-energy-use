@@ -1,7 +1,6 @@
 package com.socialsim.model.simulator;
 
 import java.io.PrintWriter;
-import java.sql.SQLOutput;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -883,6 +882,19 @@ public class Simulator {
                 agentMovement.setSimultaneousInteractionAllowed(false);
             }
 
+            // This is to confirm if the agent is interacting with the electric appliance
+            if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
+                System.out.println("getting water initial wattage: "+ totalWattageCount);
+                totalWattageCount+= (waterDispenserWattageInUse * 5);
+                System.out.println("getting water wattage: "+ totalWattageCount);
+            }
+            else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
+                //1.3 per second so 1.3x5?
+                System.out.println("getting fridge initial wattage: "+ totalWattageCount);
+                totalWattageCount += (fridgeWattageInUse * 5);
+                System.out.println("getting fridge wattage: "+ totalWattageCount);
+            }
+
             if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
                 agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
                 agentMovement.getCurrentState().getActions().removeFirst(); // removing finished action
@@ -895,12 +907,9 @@ public class Simulator {
                 // This is to confirm if the agent is interacting with the electric appliance
                 if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
                     currentWaterDispenserInteractionCount++;
-                    totalWattageCount+= (waterDispenserWattageInUse * 5);
                 }
                 else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
                     currentFridgeInteractionCount++;
-                    //1.3 per second so 1.3x5?
-                    totalWattageCount += (fridgeWattageInUse * 5);
                 }
 
             }

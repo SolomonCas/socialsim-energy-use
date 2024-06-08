@@ -1242,9 +1242,6 @@ public class AgentMovement {
                     }
 
                     this.timeSinceLeftPreviousGoal++;
-                    System.out.println("noMovementCounter: " + noMovementCounter + " movementCounter: " + movementCounter +
-                            " noNewPatchesSeenCounter: " + noNewPatchesSeenCounter + " newPatchesSeenCounter: " + newPatchesSeenCounter +
-                            " stuckCounter: " + stuckCounter + " isStuck: " + isStuck);
                     return;
                 } catch (ArrayIndexOutOfBoundsException ignored) {
                 }
