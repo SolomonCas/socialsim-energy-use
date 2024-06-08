@@ -1552,6 +1552,7 @@ public class AgentMovement {
                 patch.getAmenityBlock().getParent().getClass() != ReceptionChair.class &&
                 patch.getAmenityBlock().getParent().getClass() != Chair.class &&
                 patch.getAmenityBlock().getParent().getClass() != Toilet.class &&
+                patch.getAmenityBlock().getParent().getClass() != Couch.class &&
                 patch.getAmenityBlock().getParent().getClass() != MeetingChair.class &&
                 patch.getAmenityBlock().getParent().getClass() != CollabChair.class &&
                 patch.getAmenityBlock().getParent().getClass() != DirectorChair.class &&

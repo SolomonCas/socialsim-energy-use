@@ -17,12 +17,14 @@ public class Cubicle extends Goal {
         cubicleFactory = new Cubicle.CubicleFactory();
     }
     private final boolean withAppliance;
+    private boolean isOn;
 
     /***** CONSTRUCTOR *****/
     protected Cubicle(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, boolean withAppliance) {
         super(amenityBlocks, enabled);
         this.withAppliance = withAppliance;
         this.cubicleGraphic = new CubicleGraphic(this, facing, withAppliance);
+        this.isOn = false;
     }
 
     /***** GETTERS *****/
@@ -30,6 +32,14 @@ public class Cubicle extends Goal {
         return withAppliance;
     }
 
+    public boolean isOn() {
+        return isOn;
+    }
+
+    /***** SETTER *****/
+    public void setOn(boolean on) {
+        isOn = on;
+    }
 
     /***** OVERRIDE *****/
     @Override

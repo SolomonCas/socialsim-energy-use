@@ -380,7 +380,7 @@ public class RoutePlan {
 //            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
 //            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
 //            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
-            routePlan.add(addUrgentRoute("REFRIGERATOR", agent));
+//            routePlan.add(addUrgentRoute("REFRIGERATOR", agent));
 
 
             actions = new ArrayList<>();
