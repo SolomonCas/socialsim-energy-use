@@ -321,8 +321,9 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_DIRECTOR_ROOM, assignedSeat.getAttractors().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch()));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
+//            routePlan.add(addUrgentRoute("BATHROOM", agent));
 
 //            actions = new ArrayList<>();
 //            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().getFirst().getPatch()));
@@ -483,12 +484,16 @@ public class RoutePlan {
             }
             case "DISPENSER" -> {
                 actions = new ArrayList<>();
+                actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
+                actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
                 actions.add(new Action(Action.Name.GOING_DISPENSER));
                 actions.add(new Action(Action.Name.GETTING_WATER, 5, 10));
                 officeState = new State(State.Name.DISPENSER, this, agent, actions);
             }
             case "REFRIGERATOR" -> {
                 actions = new ArrayList<>();
+                actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
+                actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
                 actions.add(new Action(Action.Name.GOING_FRIDGE));
                 if(agent.getEnergyProfile() == Agent.EnergyProfile.GREEN){ actions.add(new Action(Action.Name.GETTING_FOOD, 2, 5)); }
                 else if(agent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN){ actions.add(new Action(Action.Name.GETTING_FOOD, 6, 10)); }

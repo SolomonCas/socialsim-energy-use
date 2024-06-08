@@ -88,6 +88,7 @@ public class Action {
         GUARD_STAY_PUT(),
         GREET_PERSON(),
         MAINTENANCE_CLEAN_TOILET(),
+        MAINTENANCE_CLEAN_SINK(),
         MAINTENANCE_WATER_PLANT(),
         TURN_ON_AC(),
         TURN_ON_LIGHT(),

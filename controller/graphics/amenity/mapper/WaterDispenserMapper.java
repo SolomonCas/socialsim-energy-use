@@ -3,6 +3,7 @@ package com.socialsim.controller.graphics.amenity.mapper;
 import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.amenity.AmenityMapper;
 import com.socialsim.model.core.environment.Patch;
+import com.socialsim.model.core.environment.patchfield.WaterDispenserQueue;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.WaterDispenser;
 
@@ -30,6 +31,10 @@ public class WaterDispenserMapper extends AmenityMapper {
             WaterDispenser waterDispenserToAdd = WaterDispenser.WaterDispenserFactory.create(amenityBlocks, true);
             Main.simulator.getEnvironment().getWaterDispensers().add(waterDispenserToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
+
+            List<Patch> waterDispenserQueuePatches = new ArrayList<>();
+            waterDispenserQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
+            Main.simulator.getEnvironment().getWaterDispenserQueues().add(WaterDispenserQueue.waterDispenserQueueFactory.create(waterDispenserQueuePatches, waterDispenserToAdd, 1));
         }
     }
 

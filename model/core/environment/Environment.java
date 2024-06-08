@@ -45,6 +45,8 @@ public class Environment extends BaseObject implements Serializable {
     private final List<Bathroom> bathrooms;
     private final List<Reception> receptions;
     private final List<ReceptionQueue> receptionQueues;
+    private final List<WaterDispenserQueue> waterDispenserQueues;
+    private final List<FridgeQueue> fridgeQueues;
     private final List<BathroomQueue> bathroomQueues;
     private final List<DirectorRoom> directorRooms;
     private final List<BreakArea> breakAreas;
@@ -154,6 +156,8 @@ public class Environment extends BaseObject implements Serializable {
         this.breakAreas = Collections.synchronizedList(new ArrayList<>());
         this.floors = Collections.synchronizedList(new ArrayList<>());
         this.bathroomQueues = Collections.synchronizedList(new ArrayList<>());
+        this.waterDispenserQueues = Collections.synchronizedList(new ArrayList<>());
+        this.fridgeQueues = Collections.synchronizedList(new ArrayList<>());
 
         // Amenities
         this.amenityPatchSet = Collections.synchronizedSortedSet(new TreeSet<>());
@@ -286,8 +290,8 @@ public class Environment extends BaseObject implements Serializable {
 //        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(9,0 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
 //        this.getAgents().add(janitor2);
 
-        for (int i = 0; i < 10; i++) {
-            Agent janitor = Agent.AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
+        for (int i = 0; i < 1; i++) {
+            Agent janitor = Agent.AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
             this.getAgents().add(janitor);
         }
 
@@ -549,6 +553,7 @@ public class Environment extends BaseObject implements Serializable {
                             case GUARD_STAY_PUT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GREET_PERSON -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_CLEAN_TOILET -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case MAINTENANCE_CLEAN_SINK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_WATER_PLANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -602,6 +607,7 @@ public class Environment extends BaseObject implements Serializable {
                             case GUARD_STAY_PUT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GREET_PERSON -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_CLEAN_TOILET -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case MAINTENANCE_CLEAN_SINK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_WATER_PLANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -655,6 +661,7 @@ public class Environment extends BaseObject implements Serializable {
                             case GUARD_STAY_PUT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GREET_PERSON -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_CLEAN_TOILET -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case MAINTENANCE_CLEAN_SINK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_WATER_PLANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -708,6 +715,7 @@ public class Environment extends BaseObject implements Serializable {
                             case GUARD_STAY_PUT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GREET_PERSON -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_CLEAN_TOILET -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case MAINTENANCE_CLEAN_SINK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_WATER_PLANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -761,6 +769,7 @@ public class Environment extends BaseObject implements Serializable {
                             case GUARD_STAY_PUT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GREET_PERSON -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_CLEAN_TOILET -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case MAINTENANCE_CLEAN_SINK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_WATER_PLANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -814,6 +823,7 @@ public class Environment extends BaseObject implements Serializable {
                             case GUARD_STAY_PUT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GREET_PERSON -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_CLEAN_TOILET -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 90, 0)));
+                            case MAINTENANCE_CLEAN_SINK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 90, 0)));
                             case MAINTENANCE_WATER_PLANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 90, 0)));
                             case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -867,6 +877,7 @@ public class Environment extends BaseObject implements Serializable {
                             case GUARD_STAY_PUT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 100, 0)));
                             case GREET_PERSON -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 0, 90)));
                             case MAINTENANCE_CLEAN_TOILET -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case MAINTENANCE_CLEAN_SINK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_WATER_PLANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -1010,6 +1021,12 @@ public class Environment extends BaseObject implements Serializable {
     public List<ReceptionQueue> getReceptionQueues() {
         return receptionQueues;
     }
+    public List<WaterDispenserQueue> getWaterDispenserQueues() {
+        return waterDispenserQueues;
+    }
+    public List<FridgeQueue> getFridgeQueues() {
+        return fridgeQueues;
+    }
     public List<DirectorRoom> getDirectorRooms() {
         return directorRooms;
     }
@@ -1021,9 +1038,6 @@ public class Environment extends BaseObject implements Serializable {
     }
     public List<Wall> getWalls() {
         return walls;
-    }
-    public List<BathroomQueue> getBathroomQueues() {
-        return bathroomQueues;
     }
 
 

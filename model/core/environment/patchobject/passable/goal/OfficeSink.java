@@ -13,6 +13,7 @@ public class OfficeSink extends Goal {
     /***** VARIABLES *****/
     public static final OfficeSink.OfficeSinkFactory officeSinkFactory;
     private final OfficeSinkGraphic officeSinkGraphic;
+    private boolean isClean = false;
 
     static {
         officeSinkFactory = new OfficeSink.OfficeSinkFactory();
@@ -23,6 +24,16 @@ public class OfficeSink extends Goal {
         super(amenityBlocks, enabled);
 
         this.officeSinkGraphic = new OfficeSinkGraphic(this);
+    }
+
+    /***** GETTER *****/
+    public boolean isClean() {
+        return isClean;
+    }
+
+    /***** SETTER *****/
+    public void setClean(boolean clean) {
+        isClean = clean;
     }
 
     /***** OVERRIDE *****/
