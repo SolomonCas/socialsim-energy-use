@@ -1574,7 +1574,7 @@ public class ScreenController extends Controller {
         currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
 
-        totalWattageCountText.setText("Total Watts: " + String.format("%.02f", Simulator.totalWattageCount) + " W");
+        totalWattageCountText.setText("Total Watts: " + String.format("%.03f", Simulator.totalWattageCount) + " W");
     }
 
 

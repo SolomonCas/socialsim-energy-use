@@ -153,6 +153,7 @@ public class AgentMovement {
         this.noNewPatchesSeenCounter = 0;
         this.newPatchesSeenCounter = 0;
         this.timeSinceLeftPreviousGoal = 0;
+        this.duration = -1;
         this.recentPatches.clear();
         this.free();
     }

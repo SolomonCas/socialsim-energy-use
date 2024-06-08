@@ -666,7 +666,7 @@ public class Simulator {
                         }
                         agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
                         if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Cubicle) {
-                            System.out.println("IT IS A CUBICLE");
+                            //System.out.println("IT IS A CUBICLE");
                             int index = environmentInstance.getCubicles().indexOf(((Cubicle) agentMovement.getCurrentAmenity()));
                             if (environmentInstance.getCubicles().get(index).withAppliance()
                                     && !environmentInstance.getCubicles().get(index).isOn()) {
@@ -685,7 +685,7 @@ public class Simulator {
                                 agentMovement.getCurrentPatch().getAgents().remove(agent);
                             }
                             if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Cubicle) {
-                                System.out.println("IT IS A CUBICLE");
+                                //System.out.println("IT IS A CUBICLE");
                                 int index = environmentInstance.getCubicles().indexOf(((Cubicle) agentMovement.getCurrentAmenity()));
                                 if (environmentInstance.getCubicles().get(index).withAppliance()
                                         && !environmentInstance.getCubicles().get(index).isOn()) {
@@ -714,8 +714,19 @@ public class Simulator {
                         }
 
                         // if the student is going home, remove its reservation for it is not his or her assigned seat
-                        if (state.getName() == State.Name.GOING_HOME && type == Agent.Type.STUDENT) {
-                            agentMovement.getGoalAttractor().setIsReserved(false);
+                        if (state.getName() == State.Name.GOING_HOME) {
+                            if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Cubicle) {
+                                //System.out.println("IT IS A CUBICLE");
+                                int index = environmentInstance.getCubicles().indexOf(((Cubicle) agentMovement.getCurrentAmenity()));
+                                if (environmentInstance.getCubicles().get(index).withAppliance()
+                                        && environmentInstance.getCubicles().get(index).isOn()) {
+                                    System.out.println("MONITOR IS OFF");
+                                    environmentInstance.getCubicles().get(index).setOn(false);
+                                }
+                            }
+                            if (type == Agent.Type.STUDENT) {
+                                agentMovement.getGoalAttractor().setIsReserved(false);
+                            }
                         }
                         else {
                             agentMovement.getRoutePlan().setAtDesk(false);
@@ -908,13 +919,13 @@ public class Simulator {
             // This is to confirm if the agent is interacting with the electric appliance
             if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
                 System.out.println("getting water initial wattage: "+ totalWattageCount);
-                totalWattageCount+= (waterDispenserWattageInUse * 5);
+                totalWattageCount+= ((waterDispenserWattageInUse * 5) / 3600);
                 System.out.println("getting water wattage: "+ totalWattageCount);
             }
             else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
                 //1.3 per second so 1.3x5?
                 System.out.println("getting fridge initial wattage: "+ totalWattageCount);
-                totalWattageCount += (fridgeWattageInUse * 5);
+                totalWattageCount += ((fridgeWattageInUse * 5) / 3600);
                 System.out.println("getting fridge wattage: "+ totalWattageCount);
             }
 
@@ -1084,9 +1095,9 @@ public class Simulator {
                             (type == Agent.Type.DIRECTOR && CHANCE < RoutePlan.DIRECTOR_LUNCH) ||
                             ((persona == Agent.Persona.APP_FACULTY || persona == Agent.Persona.EXT_STUDENT) && CHANCE < RoutePlan.EXT_LUNCH) ||
                             ((persona == Agent.Persona.STRICT_FACULTY || persona == Agent.Persona.INT_STUDENT) && CHANCE < RoutePlan.INT_LUNCH)) {
-                        System.out.println("Eat in chosen break seat");
+                        //System.out.println("Eat in chosen break seat");
                         if (!agentMovement.chooseBreakSeat()) {
-                            System.out.println("Eat on assigned seat");
+                            //System.out.println("Eat on assigned seat");
                             // The destination will be based on the assigned seat
                             agentMovement.setGoalAmenity(agentMovement.getAssignedSeat());
                             agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
@@ -1097,7 +1108,7 @@ public class Simulator {
                     }
                     else if (CHANCE < RoutePlan.EAT_OUTSIDE && type == Agent.Type.STUDENT ) {
                         // eat outside
-                        System.out.println("Eat on outside");
+                        //System.out.println("Eat on outside");
                         if(agent.getTeam() != 0) {
                             // Eat with team members excluding the faculty.
                             // The faculty is used as the Thesis adviser or Faculty Coordinator(?) ex. Doc Briane.
@@ -1383,7 +1394,7 @@ public class Simulator {
         Action action = agentMovement.getCurrentAction();
         Environment environmentInstance = agentMovement.getEnvironment();
 
-        System.out.println("Type: " + type + " Persona: " + persona + " State: " + state.getName() + " Action: " + action.getName());
+        //System.out.println("Type: " + type + " Persona: " + persona + " State: " + state.getName() + " Action: " + action.getName());
 //        System.out.println("isStuck: " + agentMovement.isStuck());
         boolean isFull = false;
 
@@ -1675,7 +1686,7 @@ public class Simulator {
                                 }
                                 if (agentMovement.getRoutePlan().getCanUrgent() < 2) {
                                     double CHANCE = Simulator.roll();
-                                    System.out.println("CHANCE: " + CHANCE + " Type: " + type + " State: " + state.getName() + " Action: " + action.getName());
+                                    //System.out.println("CHANCE: " + CHANCE + " Type: " + type + " State: " + state.getName() + " Action: " + action.getName());
                                     if (CHANCE < RoutePlan.BATH_CHANCE) {
                                         if (currentTick < 2160 && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                             agentMovement.getRoutePlan().setBathAM(true); // IG meaning that the agent will take a bathroom break in the morning (7:30 - 11:59)
@@ -2055,7 +2066,7 @@ public class Simulator {
     }
 
     public void runWattageCount(long currentTick){
-        System.out.println("CURRENT TICK: "+currentTick);
+        //System.out.println("CURRENT TICK: "+currentTick);
         //PUT RANDOM TIMES OF FLUCTUATION
         //multiplied to 5 since 5 seconds per tick?
         //APPLIANCES
@@ -2068,28 +2079,28 @@ public class Simulator {
                 activeMonitorCount++;
             }
         }
-//        totalWattageCount+= (fridgeWattage * fridgeCount * 5) + (waterDispenserWattage * waterDispenserCount * 5);
-//
-//        if(currentTick % 60 == 0){
-//            int CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
-//            if(CHANCE < 10){
-//                System.out.println("initial wattage: "+ totalWattageCount);
-//
-//                totalWattageCount+= (fridgeWattageActive * fridgeCount * 5);
-//                System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
-//            }
-//
-//            CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
-//            if(CHANCE < 10){
-//                System.out.println("initial wattage: "+ totalWattageCount);
-//                totalWattageCount+= (waterDispenserWattageActive * waterDispenserCount * 5);
-//                System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: "+ totalWattageCount);
-//            }
-//        }
+        totalWattageCount+= ((fridgeWattage * fridgeCount * 5) / 3600) + ((waterDispenserWattage * waterDispenserCount * 5) / 3600);
 
-        //totalWattageCount+= (lightWattage * activeLightCount * 5);
+        if(currentTick % 60 == 0){
+            int CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
+            if(CHANCE < 10){
+                System.out.println("initial wattage: "+ totalWattageCount);
 
-        totalWattageCount+= (monitorWattage * activeMonitorCount * 5);
+                totalWattageCount+= ((fridgeWattageActive * fridgeCount * 5) / 3600);
+                System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
+            }
+
+            CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
+            if(CHANCE < 10){
+                System.out.println("initial wattage: "+ totalWattageCount);
+                totalWattageCount+= ((waterDispenserWattageActive * waterDispenserCount * 5) / 3600);
+                System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: "+ totalWattageCount);
+            }
+        }
+
+        totalWattageCount+= ((lightWattage * activeLightCount * 5) / 3600);
+
+        totalWattageCount+= ((monitorWattage * activeMonitorCount * 5) / 3600);
     }
     public void replenishStaticVars() {
         // SEATING ARRANGEMENT
