@@ -1,6 +1,7 @@
 package com.socialsim.model.simulator;
 
 import java.io.PrintWriter;
+import java.sql.SQLOutput;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -83,6 +84,22 @@ public class Simulator {
 
     // Total Wattage Count
     public static float totalWattageCount = 0;
+
+    //Aircon
+    public static float airconWattage = 0;
+    //Light
+    public static float lightWattage = 0;
+    //Fridge
+    public static float fridgeWattage = 0.6F;
+    public static float fridgeWattageInUse = 1.3F;
+    public static float fridgeWattageActive = 34.0F;
+    //Water Dispenser
+    public static float waterDispenserWattage = 0.7F;
+    public static float waterDispenserWattageInUse = 6.8F;
+    public static float waterDispenserWattageActive= 76.0F;
+
+    //Monitor
+    public static float monitorWattage = 16.0F;
 
 
     // Average Interaction Duration
@@ -232,6 +249,7 @@ public class Simulator {
                         long currentTick = this.time.getStartTime().until(this.time.getTime(), ChronoUnit.SECONDS) / 5;
                         try {
                             updateAgentsInEnvironment(environment, currentTick, this.time);
+                            runWattageCount(currentTick);
                             spawnAgent(environment, this.time);
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -291,15 +309,6 @@ public class Simulator {
 
 //        Agent agent = null;
 
-        //CHANGE TO RANDOM BETWEEN LOW TO HIGH
-        //multiplied to 5 since 5 seconds per tick?
-        //WATER DISPENSER
-        totalWattageCount+= 4.0;
-        //MONITOR
-        totalWattageCount+= 80.0;
-
-        //REFRIGERATOR
-        totalWattageCount+= 170.0;
 
         for (int i = 0; i < gate.getSpawners().size(); i++) {
             Gate.GateBlock spawner = gate.getSpawners().get(i);
@@ -872,11 +881,12 @@ public class Simulator {
                 // This is to confirm if the agent is interacting with the electric appliance
                 if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
                     currentWaterDispenserInteractionCount++;
+                    totalWattageCount+= (waterDispenserWattageInUse * 5);
                 }
                 else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
                     currentFridgeInteractionCount++;
                     //1.3 per second so 1.3x5?
-                    totalWattageCount += 6.5;
+                    totalWattageCount += (fridgeWattageInUse * 5);
                 }
 
             }
@@ -1990,6 +2000,38 @@ public class Simulator {
         agent.getAgentGraphic().change();
     }
 
+    public void runWattageCount(long currentTick){
+        System.out.println("CURRENT TICK: "+currentTick);
+        //PUT RANDOM TIMES OF FLUCTUATION
+        //multiplied to 5 since 5 seconds per tick?
+        //APPLIANCES
+        int waterDispenserCount = environment.getWaterDispensers().size();
+        int fridgeCount = environment.getFridges().size();
+        int activeLightCount = 0; //environment.getLights().size();
+        int activemonitorCount = 0; //check how many monitors are on;
+        totalWattageCount+= (fridgeWattage * fridgeCount * 5) + (waterDispenserWattage * waterDispenserCount * 5);
+
+        if(currentTick % 60 == 0){
+            int CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
+            if(CHANCE < 10){
+                System.out.println("initial wattage: "+ totalWattageCount);
+
+                totalWattageCount+= (fridgeWattageActive * fridgeCount * 5);
+                System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
+            }
+
+            CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
+            if(CHANCE < 10){
+                System.out.println("initial wattage: "+ totalWattageCount);
+                totalWattageCount+= (waterDispenserWattageActive * waterDispenserCount * 5);
+                System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: "+ totalWattageCount);
+            }
+        }
+
+        //totalWattageCount+= (lightWattage * activeLightCount * 5);
+
+        //totalWattageCount+= (monitorWattage * activeMonitorCount * 5);
+    }
     public void replenishStaticVars() {
         // SEATING ARRANGEMENT
         FACULTY_1 = new LinkedList<Integer>(List.of(0, 1, 2, 3, 4));
