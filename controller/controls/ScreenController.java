@@ -1277,7 +1277,7 @@ public class ScreenController extends Controller {
 
         // Executive Director's Office Desk
         List<Patch> horizontalOfficeDeskPatches = new ArrayList<>();
-        horizontalOfficeDeskPatches.add(environment.getPatch(72,136));
+        horizontalOfficeDeskPatches.add(environment.getPatch(72,137));
         DirectorTableMapper.draw(horizontalOfficeDeskPatches, "HORIZONTAL");
 
         List<Patch> horizontalCollabDeskPatches = new ArrayList<>();
@@ -1574,7 +1574,7 @@ public class ScreenController extends Controller {
         currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
 
-        totalWattageCountText.setText("Total Watts: " + String.format("%.02f", Simulator.totalWattageCount) + " W");
+        totalWattageCountText.setText("Total Watts: " + String.format("%.03f", Simulator.totalWattageCount) + " W");
     }
 
 

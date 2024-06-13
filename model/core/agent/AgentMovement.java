@@ -124,11 +124,10 @@ public class AgentMovement {
             this.currentAmenity = environment.getGates().getFirst(); // Getting Entrance Gate
         }
         if (this.currentAction.getDestination() != null) {
-            this.goalAttractor = this.currentAction.getDestination().getAmenityBlock();
+            this.goalAmenity = this.currentAction.getDestination().getAmenityBlock().getParent();
+            this.setGoalAttractor(this.goalAmenity.getAttractors().getFirst());
         }
-        if (this.currentAction.getDuration() != 0) {
-            this.duration = this.currentAction.getDuration();
-        }
+        this.duration = this.currentAction.getDuration();
 
         this.isInteracting = false;
 
@@ -356,6 +355,10 @@ public class AgentMovement {
                     path.push(currentPatch);
                 }
 
+                if (!includeStartingPatch) {
+                    path.remove(startingPatch);
+                }
+
                 return new AgentPath(length, path);
             }
             openSet.remove(patchToExplore);
@@ -413,8 +416,8 @@ public class AgentMovement {
         goalQueueingPatchField = environment.getReceptionQueues().get(random);
         this.goalNearestQueueingPatch = goalQueueingPatchField.getAssociatedPatches().getLast();
         this.goalAmenity = environment.getReceptionTables().get(random);
-        this.goalAttractor = getGoalAmenity().getAttractors().getFirst();
-        this.goalPatch = this.goalAttractor.getPatch();
+        this.goalAttractor = getGoalAmenity().getAttractors().getFirst(); // Needed in chooseNextInPath
+        this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed //JIC if needed
     }
 
     public void chooseWaterDispenserQueue(){
@@ -422,16 +425,16 @@ public class AgentMovement {
         goalQueueingPatchField = environment.getWaterDispenserQueues().get(random);
         this.goalNearestQueueingPatch = goalQueueingPatchField.getAssociatedPatches().getLast();
         this.goalAmenity = environment.getWaterDispensers().get(random);
-        this.goalAttractor = getGoalAmenity().getAttractors().getFirst();
-        this.goalPatch = this.goalAttractor.getPatch();
+        this.goalAttractor = getGoalAmenity().getAttractors().getFirst(); // Needed in chooseNextInPath
+        this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed //JIC if needed
     }
     public void chooseFridgeQueue(){
         int random = Simulator.rollIntIN(environment.getFridgeQueues().size());
         goalQueueingPatchField = environment.getFridgeQueues().get(random);
         this.goalNearestQueueingPatch = goalQueueingPatchField.getAssociatedPatches().getLast();
         this.goalAmenity = environment.getFridges().get(random);
-        this.goalAttractor = getGoalAmenity().getAttractors().getFirst();
-        this.goalPatch = this.goalAttractor.getPatch();
+        this.goalAttractor = getGoalAmenity().getAttractors().getFirst(); // Needed in chooseNextInPath
+        this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed //JIC if needed
     }
     public void joinQueue() {
         this.goalQueueingPatchField.getQueueingAgents().add(this.parent);
@@ -485,8 +488,8 @@ public class AgentMovement {
                 temp++;
                 if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
-                    this.goalAttractor = candidateAttractor;
-                    this.goalPatch = this.goalAttractor.getPatch();
+                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
                     getGoalAttractor().setIsReserved(true);
                     return true;
                 }else if(temp == sortedDistances.size()){
@@ -540,8 +543,6 @@ public class AgentMovement {
                 }
             }
 
-            System.out.println("size: " + temp.size());
-
             for (Amenity amenity : temp) {
                 for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
                     double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
@@ -569,13 +570,13 @@ public class AgentMovement {
                 if (this.currentAction.getName() == Action.Name.GO_TO_WAIT_AREA) {
                     // These are essential for the moveSocialForce function
                     this.goalAmenity =  candidateAttractor.getParent();
-                    this.goalAttractor = candidateAttractor;
-                    this.goalPatch = this.goalAttractor.getPatch();
+                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
                     return true;
                 }
                 else if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
-                    this.goalAttractor = candidateAttractor;
+                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
 
                     getGoalAttractor().setIsReserved(true);
                     return true;
@@ -626,8 +627,8 @@ public class AgentMovement {
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
                 if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
-                    this.goalAttractor = candidateAttractor;
-                    this.goalPatch = this.goalAttractor.getPatch();
+                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
                     getGoalAttractor().setIsReserved(true);
                     return true;
                 }
@@ -670,12 +671,11 @@ public class AgentMovement {
                 Collections.shuffle(list);
             }
             else {
-                ArrayList<Agent> agents = environment.getPresentTeamMembers(this.team);
                 double minDistance = Double.MAX_VALUE;
                 Agent closestAgent = null;
 
                 if (this.parent.getType() == Agent.Type.FACULTY) {
-                    for(Agent agent : agents) {
+                    for(Agent agent : environment.getPresentTeamMembers(this.team)) {
                         if (agent != this.parent && agent.getType() == Agent.Type.STUDENT) {
                             for (Amenity amenity : temp) {
                                 for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
@@ -728,8 +728,8 @@ public class AgentMovement {
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
                 if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
-                    this.goalAttractor = candidateAttractor;
-                    this.goalPatch = this.goalAttractor.getPatch();
+                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
                     getGoalAttractor().setIsReserved(true);
                     return true;
                 }
@@ -777,12 +777,11 @@ public class AgentMovement {
                 Collections.shuffle(list);
             }
             else {
-                ArrayList<Agent> agents = environment.getPresentTeamMembers(this.team);
                 double minDistance = Double.MAX_VALUE;
                 Agent closestAgent = null;
 
                 if (this.parent.getType() == Agent.Type.FACULTY) {
-                    for(Agent agent : agents) {
+                    for(Agent agent : environment.getPresentTeamMembers(this.team)) {
                         if (agent != this.parent && agent.getType() == Agent.Type.STUDENT && agent.getAgentMovement().getAssignedSeat() != null) {
                             for (Amenity amenity : temp) {
                                 for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
@@ -834,8 +833,8 @@ public class AgentMovement {
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
                 if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
-                    this.goalAttractor = candidateAttractor;
-                    this.goalPatch = this.goalAttractor.getPatch();
+                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
                     this.setAssignedSeat(this.goalAmenity);
                     this.getRoutePlan().setAgentSeat(this.assignedSeat);
                     getGoalAttractor().setIsReserved(true);
@@ -920,8 +919,8 @@ public class AgentMovement {
 
                     if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                         this.goalAmenity = candidateAttractor.getParent();
-                        this.goalAttractor = candidateAttractor;
-                        this.goalPatch = this.goalAttractor.getPatch();
+                        this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+                        this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
                         getGoalAttractor().setIsReserved(true);
                         return true;
                     }
@@ -971,8 +970,8 @@ public class AgentMovement {
 
                 if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
-                    this.goalAttractor = candidateAttractor;
-                    this.goalPatch = this.goalAttractor.getPatch();
+                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
                     getGoalAttractor().setIsReserved(true);
                     break;
                 }
@@ -1321,19 +1320,10 @@ public class AgentMovement {
                 && this.isOnOrCloseToPatch(nextPatch) && this.hasClearLineOfSight(this.position, nextPatch.getPatchCenterCoordinates(), true));
     }
 
-    public void despawn(LocalTime returnOfficeTime) {
+    public void despawn() {
         if (this.currentPatch != null) {
             this.currentPatch.getAgents().remove(this.parent);
             this.getEnvironment().getAgents().remove(this.parent);
-
-            // If agent will eat outside the office
-            // Since the agent will be removed in the list
-            // Add the agent again but changing it's timeIn value based on the randomized returnOfficeTime
-            // While retaining everything
-            if (Action.Name.EXIT_LUNCH == this.getCurrentAction().getName()) {
-                this.parent.setTimeIn(returnOfficeTime);
-                this.getEnvironment().getAgents().add(this.parent);
-            }
 
             SortedSet<Patch> currentPatchSet = this.getEnvironment().getAgentPatchSet();
             if (currentPatchSet.contains(this.currentPatch) && hasNoAgent(this.currentPatch)) {
@@ -1440,9 +1430,14 @@ public class AgentMovement {
         }
 
 
-        if (this.currentPath == null || this.currentPath.getPath().isEmpty()) {
+        if (this.currentPath == null || this.currentPath.getPath().isEmpty() || this.currentAmenity != null) {
             return false;
         }
+
+//        System.out.println("Path");
+//        for(Patch patch : this.currentPath.getPath()) {
+//            System.out.println("PATCH: " + patch);
+//        }
 
         if (wasPathJustGenerated) {
             Patch nextPatchInPath;
@@ -1545,7 +1540,8 @@ public class AgentMovement {
     }
     private boolean hasObstacle(Patch patch) {
         // check if the patch is not the whitelist of amenity or a wall
-        if ((patch.getAmenityBlock() != null && (patch.getAmenityBlock().getParent().getClass() != Door.class &&
+        if ((patch.getAmenityBlock() != null && (!patch.getAmenityBlock().getParent().equals(this.goalAmenity) &&
+                patch.getAmenityBlock().getParent().getClass() != Door.class &&
                 patch.getAmenityBlock().getParent().getClass() != MainEntranceDoor.class &&
                 patch.getAmenityBlock().getParent().getClass() != FemaleBathroomDoor.class &&
                 patch.getAmenityBlock().getParent().getClass() != MaleBathroomDoor.class &&
@@ -1608,6 +1604,7 @@ public class AgentMovement {
 
         // Set the current amenity
         this.currentAmenity = this.goalAmenity;
+        this.currentPath = null;
     }
 
 
@@ -1842,7 +1839,7 @@ public class AgentMovement {
     }
     public void setGoalAttractor(Amenity.AmenityBlock goalAttractor) {
         this.goalAttractor = goalAttractor;
-        this.goalPatch = this.goalAttractor.getPatch();
+        this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
     }
     public void setGoalAmenity(Amenity goalAmenity) {
         this.goalAmenity = goalAmenity;

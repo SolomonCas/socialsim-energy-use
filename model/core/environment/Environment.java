@@ -248,8 +248,8 @@ public class Environment extends BaseObject implements Serializable {
     }
 
     // Get all team members that are present in the office
-    public ArrayList<Agent> getPresentTeamMembers(int team){
-        ArrayList<Agent> agents = new ArrayList<>();
+    public CopyOnWriteArrayList<Agent> getPresentTeamMembers(int team){
+        CopyOnWriteArrayList<Agent> agents = new CopyOnWriteArrayList<>();
         for (Agent agent: getAgents()){
             if (agent.getAgentMovement() != null && agent.getTeam() == team){
                 agents.add(agent);
@@ -279,8 +279,13 @@ public class Environment extends BaseObject implements Serializable {
 //        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(9,0 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
 //        this.getAgents().add(janitor2);
 
+//        for (int i = 0; i < 4; i++) {
+//            Agent janitor = Agent.AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(9,0, i), LocalTime.of(17,0));
+//            this.getAgents().add(janitor);
+//        }
+
         for (int i = 0; i < 4; i++) {
-            Agent janitor = Agent.AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
+            Agent janitor = Agent.AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(9,0, i), LocalTime.of(17,0));
             this.getAgents().add(janitor);
         }
 
@@ -581,6 +586,7 @@ public class Environment extends BaseObject implements Serializable {
                             case TAKING_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GO_TO_WAIT_AREA -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case WAIT_FOR_VACANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case WAIT_FOR_COLLEAGUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                         }
                     }
@@ -635,6 +641,7 @@ public class Environment extends BaseObject implements Serializable {
                             case TAKING_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GO_TO_WAIT_AREA -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case WAIT_FOR_VACANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
+                            case WAIT_FOR_COLLEAGUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                         }
                     }
@@ -689,6 +696,7 @@ public class Environment extends BaseObject implements Serializable {
                             case TAKING_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GO_TO_WAIT_AREA -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case WAIT_FOR_VACANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case WAIT_FOR_COLLEAGUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                         }
                     }
@@ -743,6 +751,7 @@ public class Environment extends BaseObject implements Serializable {
                             case TAKING_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GO_TO_WAIT_AREA -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(40, 30, 30)));
                             case WAIT_FOR_VACANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(40, 30, 30)));
+                            case WAIT_FOR_COLLEAGUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(40, 30, 30)));
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                         }
                     }
@@ -797,6 +806,7 @@ public class Environment extends BaseObject implements Serializable {
                             case TAKING_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GO_TO_WAIT_AREA -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 40, 40)));
                             case WAIT_FOR_VACANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 40, 40)));
+                            case WAIT_FOR_COLLEAGUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 40, 40)));
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                         }
                     }
@@ -851,6 +861,7 @@ public class Environment extends BaseObject implements Serializable {
                             case TAKING_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_WAIT_AREA -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case WAIT_FOR_VACANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case WAIT_FOR_COLLEAGUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                         }
                     }
@@ -905,6 +916,7 @@ public class Environment extends BaseObject implements Serializable {
                             case TAKING_BREAK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_WAIT_AREA -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case WAIT_FOR_VACANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case WAIT_FOR_COLLEAGUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                         }
                     }
