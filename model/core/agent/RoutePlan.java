@@ -17,11 +17,11 @@ public class RoutePlan {
     private ArrayList<State> routePlan;
     private boolean bathPM, bathAM, isAtDesk;
     private int lastDuration = -1;
-    private int canUrgent = 0;
+    private boolean canUrgent = true;
     private long collaborationEnd = 0, meetingStart = -1, meetingEnd, meetingRoom;
 
-    private int BATH_AM = 2, BATH_PM = 2, BATH_LUNCH = 1;
-    private int COLLABORATE_COUNT = 0, BREAK_COUNT = 2;
+    private int BATH_AM = 0, BATH_PM = 0, BATH_LUNCH = 0;
+    private int COLLABORATE_COUNT = 0, BREAK_COUNT = 0;
     private int DISPENSER_LUNCH = 1, DISPENSER_PM = 1;
     private int REFRIGERATOR_LUNCH = 1, REFRIGERATOR_PM = 1;
 
@@ -45,8 +45,6 @@ public class RoutePlan {
     public static final double  BATH_CHANCE = 0.15,
                                 DISPENSER_CHANCE = 0.1,
                                 REFRIGERATOR_CHANCE = 0.3,
-                                MAINTENANCE_BREAK_CHANCE = 0.1,
-                                GUARD_BREAK_CHANCE = 0.5,
                                 BREAK_CHANCE = 0.1;
     public static ArrayList<ArrayList<Long>> meetingTimes = new ArrayList<>();
 
@@ -275,6 +273,12 @@ public class RoutePlan {
 //            routePlan.add(new State(State.Name.MAINTENANCE_BATHROOM, this, agent, actions));
 
 //            actions = new ArrayList<>();
+//            for (int i = 0; i < environment.getOfficeSinks().size(); i++) {
+//                actions.add(new Action(Action.Name.MAINTENANCE_CLEAN_SINK, 10)); // Cleans only OfficeToilet
+//            }
+//            routePlan.add(new State(State.Name.MAINTENANCE_BATHROOM, this, agent, actions));
+
+//            actions = new ArrayList<>();
 //            for(int i = 0; i < environment.getPlants().size(); i++) {
 //                actions.add(new Action(Action.Name.MAINTENANCE_WATER_PLANT, 10));
 //            }
@@ -325,11 +329,11 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.STRICT_FACULTY || agent.getPersona() == Agent.Persona.APP_FACULTY) {
-//            setCOLLABORATE_COUNT(2);
             setBathAM(false);
             setBathPM(false);
             setAtDesk(false);
             setAgentSeat(assignedSeat);
+
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
             actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
@@ -370,10 +374,16 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GO_TO_STATION, 2));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
+            routePlan.add(addUrgentRoute("EWAN", agent));
+
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_LUNCH));
-            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
-            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+            actions.add(new Action(Action.Name.GO_TO_STATION));
+            routePlan.add(new State(State.Name.WORKING, this, agent, actions));
+
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GO_TO_LUNCH));
+//            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
+//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
@@ -440,30 +450,6 @@ public class RoutePlan {
                 actions.add(new Action(Action.Name.WASH_IN_SINK, 12));
                 officeState = new State(State.Name.NEEDS_BATHROOM, this, agent, actions);
             }
-            case "COLLABORATION" -> {
-                actions = new ArrayList<>();
-                actions.add(new Action(Action.Name.GO_TO_COLLAB, 60));
-                actions.add(new Action(Action.Name.COLLABORATE, 60, 300));
-                officeState = new State(State.Name.NEEDS_COLLAB, this, agent, actions);
-            }
-            case "INQUIRE_DIRECTOR" -> {
-                actions = new ArrayList<>();
-                actions.add(new Action(Action.Name.GO_TO_DIRECTOR));
-                actions.add(new Action(Action.Name.ASK_DIRECTOR));
-                officeState = new State(State.Name.INQUIRE_DIRECTOR, this, agent, actions);
-            }
-            case "INQUIRE_FACULTY" -> {
-                actions = new ArrayList<>();
-                actions.add(new Action(Action.Name.GO_TO_FACULTY));
-                actions.add(new Action(Action.Name.ASK_FACULTY));
-                officeState = new State(State.Name.INQUIRE_FACULTY, this, agent, actions);
-            }
-            case "INQUIRE_STUDENT" -> {
-                actions = new ArrayList<>();
-                actions.add(new Action(Action.Name.GO_TO_STUDENT));
-                actions.add(new Action(Action.Name.ASK_STUDENT));
-                officeState = new State(State.Name.INQUIRE_STUDENT, this, agent, actions);
-            }
             case "DISPENSER" -> {
                 actions = new ArrayList<>();
                 actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
@@ -491,10 +477,8 @@ public class RoutePlan {
             }
             default -> {
                 actions = new ArrayList<>();
-                actions.add(new Action(Action.Name.GO_MEETING));
-                actions.add(new Action(Action.Name.WAIT_MEETING, 60));
-                actions.add(new Action(Action.Name.MEETING));
-                officeState = new State(State.Name.MEETING, this, agent, actions);
+                actions.add(new Action(Action.Name.SET_AC_TO_COOL));
+                officeState = new State(State.Name.FIXING_THERMAL_COMFORT, this, agent, actions);
             }
         }
 
@@ -514,6 +498,30 @@ public class RoutePlan {
                 actions.add(new Action(Action.Name.WAIT_FOR_COLLEAGUE));
                 actions.add(new Action(Action.Name.EXIT_LUNCH, randomExit, 180, 360));
                 officeState = new State(State.Name.GOING_TO_EAT_OUTSIDE, this, agent, actions);
+            }
+            case "INQUIRE_FACULTY" -> {
+                actions = new ArrayList<>();
+                if (agent.getType() == Agent.Type.DIRECTOR) {
+                    for (Agent agent1 : environment.getMovableAgents()) {
+                        if (agent1 != agent && agent1.getType() == Agent.Type.FACULTY) { // for director inquire to all directors
+                            agent1.getAgentMovement().getRoutePlan().setCanUrgent(false); // turn off urgent so faculties will wait for the director
+                            actions.add(new Action(Action.Name.GO_TO_FACULTY, agent1.getAgentMovement().getAssignedSeat().getAttractors().getFirst().getPatch()));
+                            actions.add(new Action(Action.Name.ASK_FACULTY, 5));
+                        }
+                    }
+                }
+                else { // otherwise go to chooseAgentAsGoal for which faculty to inquire
+                    actions.add(new Action(Action.Name.GO_TO_FACULTY));
+                    actions.add(new Action(Action.Name.ASK_FACULTY, 12, 32));
+                }
+                officeState = new State(State.Name.INQUIRE_FACULTY, this, agent, actions);
+            }
+            case "INQUIRE_STUDENT" -> {
+                actions = new ArrayList<>();
+                // go to chooseAgentAsGoal for which student to inquire
+                actions.add(new Action(Action.Name.GO_TO_STUDENT));
+                actions.add(new Action(Action.Name.ASK_STUDENT, 12, 32));
+                officeState = new State(State.Name.INQUIRE_STUDENT, this, agent, actions);
             }
         }
         return officeState;
@@ -565,7 +573,7 @@ public class RoutePlan {
         return bathAM;
     }
     public int getREFRIGERATOR_LUNCH(){return this.REFRIGERATOR_LUNCH;}
-    public int getCanUrgent() {
+    public boolean getCanUrgent() {
         return canUrgent;
     }
     public int getREFRIGERATOR_PM(){return this.REFRIGERATOR_PM;}
@@ -649,8 +657,8 @@ public class RoutePlan {
     public void setLastDuration(int lastDuration) {
         this.lastDuration = lastDuration;
     }
-    public void setCanUrgent(int canUrgent) {
-        this.canUrgent += canUrgent;
+    public void setCanUrgent(boolean canUrgent) {
+        this.canUrgent = canUrgent;
     }
     public void setCOLLABORATE_COUNT(int count) {
         this.COLLABORATE_COUNT += count;

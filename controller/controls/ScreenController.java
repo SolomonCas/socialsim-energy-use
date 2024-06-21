@@ -882,7 +882,12 @@ public class ScreenController extends Controller {
         chairPatches.add(environment.getPatch(53,3));
         chairPatches.add(environment.getPatch(53,5));
 
+        // Test Switches
+        chairPatches.add(environment.getPatch(65,71));
+
         ChairMapper.draw(chairPatches);
+
+
 
         List<Patch> learningAreaCollabDeskPatches = new ArrayList<>();
 
@@ -903,78 +908,78 @@ public class ScreenController extends Controller {
 
 
         // Initialize cubicleUpPatches
-        List<Patch> cubicleUpPatches = new ArrayList<>();
-
-
-        // Faculty Cubicle
-        cubicleUpPatches.add(environment.getPatch(60,89));
-        cubicleUpPatches.add(environment.getPatch(60,85));
-        cubicleUpPatches.add(environment.getPatch(60,83));
-        cubicleUpPatches.add(environment.getPatch(60,79));
-        cubicleUpPatches.add(environment.getPatch(60,77));
-
-        CubicleMapper.draw(cubicleUpPatches, "UP", true);
-
-
-
-        List<Patch> cubicleDownPatches = new ArrayList<>();
-
-        // Faculty Cubicle
-        cubicleDownPatches.add(environment.getPatch(58,89));
-        cubicleDownPatches.add(environment.getPatch(58,85));
-        cubicleDownPatches.add(environment.getPatch(58,83));
-        cubicleDownPatches.add(environment.getPatch(58,79));
-        cubicleDownPatches.add(environment.getPatch(58,77));
-
-
-        // Control Center Cubicle
-        cubicleDownPatches.add(environment.getPatch(21,86));
-
-
-        CubicleMapper.draw(cubicleDownPatches, "DOWN", true);
+//        List<Patch> cubicleUpPatches = new ArrayList<>();
+//
+//
+//        // Faculty Cubicle
+//        cubicleUpPatches.add(environment.getPatch(60,89));
+//        cubicleUpPatches.add(environment.getPatch(60,85));
+//        cubicleUpPatches.add(environment.getPatch(60,83));
+//        cubicleUpPatches.add(environment.getPatch(60,79));
+//        cubicleUpPatches.add(environment.getPatch(60,77));
+//
+//        CubicleMapper.draw(cubicleUpPatches, "UP", true);
 
 
 
-        // Initialize cubicleLeftPatches
-        List<Patch> cubicleLeftPatches = new ArrayList<>();
+//        List<Patch> cubicleDownPatches = new ArrayList<>();
+//
+//        // Faculty Cubicle
+//        cubicleDownPatches.add(environment.getPatch(58,89));
+//        cubicleDownPatches.add(environment.getPatch(58,85));
+//        cubicleDownPatches.add(environment.getPatch(58,83));
+//        cubicleDownPatches.add(environment.getPatch(58,79));
+//        cubicleDownPatches.add(environment.getPatch(58,77));
+//
+//
+//        // Control Center Cubicle
+//        cubicleDownPatches.add(environment.getPatch(21,86));
+//
+//
+//        CubicleMapper.draw(cubicleDownPatches, "DOWN", true);
 
 
-        // Research Center
-        cubicleLeftPatches.add(environment.getPatch(61,54));
-        cubicleLeftPatches.add(environment.getPatch(59,61));
 
-
-        CubicleMapper.draw(cubicleLeftPatches, "LEFT", true);
+//        // Initialize cubicleLeftPatches
+//        List<Patch> cubicleLeftPatches = new ArrayList<>();
+//
+//
+//        // Research Center
+//        cubicleLeftPatches.add(environment.getPatch(61,54));
+//        cubicleLeftPatches.add(environment.getPatch(59,61));
+//
+//
+//        CubicleMapper.draw(cubicleLeftPatches, "LEFT", true);
 
 
 
         //Initializa cubicleDownWithoutAppliance
-        List<Patch> cubicleDownWithoutAppliancePatches = new ArrayList<>();
-
-
-        // Control Center Cubicle
-        cubicleDownWithoutAppliancePatches.add(environment.getPatch(23,86));
-
-
-        // Open Area 2 & 4 Cubicle
-        cubicleDownWithoutAppliancePatches.add(environment.getPatch(39,34));
-        cubicleDownWithoutAppliancePatches.add(environment.getPatch(39,68));
-
-
-        CubicleMapper.draw(cubicleDownWithoutAppliancePatches, "DOWN", false);
+//        List<Patch> cubicleDownWithoutAppliancePatches = new ArrayList<>();
+//
+//
+//        // Control Center Cubicle
+//        cubicleDownWithoutAppliancePatches.add(environment.getPatch(23,86));
+//
+//
+//        // Open Area 2 & 4 Cubicle
+//        cubicleDownWithoutAppliancePatches.add(environment.getPatch(39,34));
+//        cubicleDownWithoutAppliancePatches.add(environment.getPatch(39,68));
+//
+//
+//        CubicleMapper.draw(cubicleDownWithoutAppliancePatches, "DOWN", false);
 
 
 
         // Initialize cubicleUpWithoutAppliance
-        List<Patch> cubicleUpWithoutAppliancePatches = new ArrayList<>();
-
-
-        // Open Area 1 & 3 Cubicle
-        cubicleUpWithoutAppliancePatches.add(environment.getPatch(42,27));
-        cubicleUpWithoutAppliancePatches.add(environment.getPatch(42,75));
-
-
-        CubicleMapper.draw(cubicleUpWithoutAppliancePatches, "UP", false);
+//        List<Patch> cubicleUpWithoutAppliancePatches = new ArrayList<>();
+//
+//
+//        // Open Area 1 & 3 Cubicle
+//        cubicleUpWithoutAppliancePatches.add(environment.getPatch(42,27));
+//        cubicleUpWithoutAppliancePatches.add(environment.getPatch(42,75));
+//
+//
+//        CubicleMapper.draw(cubicleUpWithoutAppliancePatches, "UP", false);
 
 
 
@@ -983,10 +988,10 @@ public class ScreenController extends Controller {
 
 
         // Control Center Cubicle
-        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(19,93));
-        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(21,93));
-        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(23,93));
-        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(25,93));
+//        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(19,93));
+//        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(21,93));
+//        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(23,93));
+//        cubicleLeftWithoutAppliancePatches.add(environment.getPatch(25,93));
 
 
         // Research Area Cubicle
@@ -1015,36 +1020,36 @@ public class ScreenController extends Controller {
 
         CubicleMapper.draw(cubicleLeftWithoutAppliancePatches, "LEFT", false);
 
-        List<Patch> cubicleRightPatches = new ArrayList<>();
-        cubicleRightPatches.add(environment.getPatch(57,30));
-        cubicleRightPatches.add(environment.getPatch(59,30));
-        cubicleRightPatches.add(environment.getPatch(61,30));
+        List<Patch> airconPatches = new ArrayList<>();
+        airconPatches.add(environment.getPatch(55, 31));
+        AirConditionerMapper.draw(airconPatches);
 
-        cubicleRightPatches.add(environment.getPatch(57,37));
-        cubicleRightPatches.add(environment.getPatch(59,37));
-        cubicleRightPatches.add(environment.getPatch(61,37));
-
-        cubicleRightPatches.add(environment.getPatch(57,49));
-        cubicleRightPatches.add(environment.getPatch(59,49));
-        cubicleRightPatches.add(environment.getPatch(61,49));
-
-        cubicleRightPatches.add(environment.getPatch(57,56));
-        cubicleRightPatches.add(environment.getPatch(59,56));
-        cubicleRightPatches.add(environment.getPatch(61,56));
-
-        cubicleRightPatches.add(environment.getPatch(57,63));
-        cubicleRightPatches.add(environment.getPatch(59,63));
-        cubicleRightPatches.add(environment.getPatch(61,63));
-
-        cubicleRightPatches.add(environment.getPatch(57,71));
-        cubicleRightPatches.add(environment.getPatch(59,71));
-        cubicleRightPatches.add(environment.getPatch(61,71));
-
-        CubicleMapper.draw(cubicleRightPatches, "RIGHT", false);
-
-
-
-
+//        List<Patch> cubicleRightPatches = new ArrayList<>();
+//        cubicleRightPatches.add(environment.getPatch(57,30));
+//        cubicleRightPatches.add(environment.getPatch(59,30));
+//        cubicleRightPatches.add(environment.getPatch(61,30));
+//
+//        cubicleRightPatches.add(environment.getPatch(57,37));
+//        cubicleRightPatches.add(environment.getPatch(59,37));
+//        cubicleRightPatches.add(environment.getPatch(61,37));
+//
+//        cubicleRightPatches.add(environment.getPatch(57,49));
+//        cubicleRightPatches.add(environment.getPatch(59,49));
+//        cubicleRightPatches.add(environment.getPatch(61,49));
+//
+//        cubicleRightPatches.add(environment.getPatch(57,56));
+//        cubicleRightPatches.add(environment.getPatch(59,56));
+//        cubicleRightPatches.add(environment.getPatch(61,56));
+//
+//        cubicleRightPatches.add(environment.getPatch(57,63));
+//        cubicleRightPatches.add(environment.getPatch(59,63));
+//        cubicleRightPatches.add(environment.getPatch(61,63));
+//
+//        cubicleRightPatches.add(environment.getPatch(57,71));
+//        cubicleRightPatches.add(environment.getPatch(59,71));
+//        cubicleRightPatches.add(environment.getPatch(61,71));
+//
+//        CubicleMapper.draw(cubicleRightPatches, "RIGHT", false);
 
 
         // Initialize rightWhiteboardPatches

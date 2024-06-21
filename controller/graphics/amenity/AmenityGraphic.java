@@ -31,6 +31,8 @@ public class AmenityGraphic extends Graphic {
         chairGraphic.add(new AmenityGraphicLocation(0, 0));
         AMENITY_GRAPHICS.put(Chair.class, chairGraphic);
 
+        AMENITY_GRAPHICS.put(AirConditioner.class, chairGraphic);
+
         final List<AmenityGraphicLocation> collabChairGraphic = new ArrayList<>();
         collabChairGraphic.add(new AmenityGraphicLocation(0, 0));
         AMENITY_GRAPHICS.put(CollabChair.class, collabChairGraphic);

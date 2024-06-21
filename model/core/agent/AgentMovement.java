@@ -11,7 +11,6 @@ import com.socialsim.model.core.environment.position.Coordinates;
 import com.socialsim.model.core.environment.position.Vector;
 import com.socialsim.model.simulator.Simulator;
 
-import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,16 +33,13 @@ public class AgentMovement {
     private double currentWalkingDistance;
     private double proposedHeading;
     private double heading;
-    private int team;
+    private final int team;
     private Amenity assignedSeat;
     private Patch currentPatch;
     private Amenity currentAmenity;
-    private PatchField currentPatchField;
     private Patch goalPatch;
-    private Patch waitPatch;
     private Amenity.AmenityBlock goalAttractor;
     private Amenity goalAmenity;
-    private PatchField goalPatchField;
     private QueueingPatchField goalQueueingPatchField;
     private Patch goalNearestQueueingPatch;
     private RoutePlan routePlan;
@@ -74,6 +70,7 @@ public class AgentMovement {
     private AgentMovement.InteractionType interactionType;
     private Patch collabTablePatch;
     private double previousHeading;
+    private Agent agentToInquire = null;
 
     public enum InteractionType {
         NON_VERBAL, COOPERATIVE, EXCHANGE
@@ -108,7 +105,6 @@ public class AgentMovement {
             this.fieldOfViewAngle = this.environment.getFieldOfView();
         }
 
-        this.currentPatchField = null;
 
         this.recentPatches = new ConcurrentHashMap<>();
         repulsiveForceFromAgents = new ArrayList<>();
@@ -138,10 +134,8 @@ public class AgentMovement {
     /***** METHODS *****/
     public void resetGoal() { // Reset the agent's goal
         this.goalPatch = null;
-        this.waitPatch = null;
         this.goalAmenity = null;
         this.goalAttractor = null;
-        this.goalPatchField = null;
         this.currentPath = null;
         this.currentAmenity = null;
         this.goalQueueingPatchField = null;
@@ -152,7 +146,6 @@ public class AgentMovement {
         this.noNewPatchesSeenCounter = 0;
         this.newPatchesSeenCounter = 0;
         this.timeSinceLeftPreviousGoal = 0;
-        this.duration = -1;
         this.recentPatches.clear();
         this.free();
     }
@@ -421,6 +414,7 @@ public class AgentMovement {
         this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed //JIC if needed
     }
 
+
     public void chooseWaterDispenserQueue(){
         int random = Simulator.rollIntIN(environment.getWaterDispenserQueues().size());
         goalQueueingPatchField = environment.getWaterDispenserQueues().get(random);
@@ -445,7 +439,6 @@ public class AgentMovement {
         this.goalQueueingPatchField = null;
         this.currentPath = null; // Reset
     }
-
     public boolean isFirstInLine() {
         int index = this.goalQueueingPatchField.getQueueingAgents().indexOf(this.parent);
         return index == 0;
@@ -497,6 +490,82 @@ public class AgentMovement {
                     return false;
                 }
             }
+        }
+
+        return false;
+    }
+    public boolean chooseAirConGoal () {
+        if (goalAmenity == null) {
+            List<Amenity> temp = new ArrayList<>();
+            HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
+
+
+            // Only add amenities that aren't reserved
+            for(Amenity amenity: environment.getAirConditioners()) {
+                int attractorCount = 0;
+                // This part checks for amenities with more than 1 attractors
+                for(int i = 0; i < amenity.getAttractors().size(); i++) {
+                    if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                        attractorCount++;
+                    }
+                }
+                if(attractorCount == 0) {
+                    temp.add(amenity);
+                }
+            }
+
+            for (Amenity amenity : temp) {
+                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+                    double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
+                    distancesToAttractors.put(attractor, distanceToAttractor);
+                }
+            }
+
+            List<Map.Entry<Amenity.AmenityBlock, Double> > list =
+                    new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+
+            PatchField patchField = list.getFirst().getKey().getPatch().getPatchField().getKey();
+            temp.clear(); // clear the list for checking the nearest switch in the same PatchField as the AC
+            distancesToAttractors.clear();
+            list.clear();
+            for (Amenity amenity: environment.getChairs()) {
+                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                        double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
+                        distancesToAttractors.put(attractor, distanceToAttractor);
+                    }
+
+                }
+            }
+
+            list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+
+            Collections.sort(list, new Comparator<Map.Entry<Amenity.AmenityBlock, Double> >() {
+                public int compare(Map.Entry<Amenity.AmenityBlock, Double> o1, Map.Entry<Amenity.AmenityBlock, Double> o2) {
+                    return (o1.getValue()).compareTo(o2.getValue());
+                }
+            });
+
+            HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+            for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
+                sortedDistances.put(aa.getKey(), aa.getValue());
+            }
+
+            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
+                Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
+                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                    this.goalAmenity =  candidateAttractor.getParent();
+                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
+                    getGoalAttractor().setIsReserved(true);
+                    return true;
+                }
+            }
+
+
+            return false;
+
+
         }
 
         return false;
@@ -640,7 +709,6 @@ public class AgentMovement {
 
         return false;
     }
-
     public boolean chooseBreakSeat() {
         if (this.goalAmenity == null) {
             List<Amenity> temp = new ArrayList<>();
@@ -655,8 +723,7 @@ public class AgentMovement {
             temp.addAll(this.environment.getChairs());
 
             // Agents are not allowed to work and eat their lunch on the couch
-            if(this.getCurrentState().getName() != State.Name.GOING_TO_LUNCH
-                    || this.getCurrentState().getName() != State.Name.GOING_TO_WORK) {
+            if(this.getCurrentState().getName() != State.Name.GOING_TO_LUNCH) {
                 temp.addAll(this.environment.getCouches());
             }
 
@@ -741,7 +808,6 @@ public class AgentMovement {
 
         return false;
     }
-
     public boolean chooseWorkingSeat() {
         if (this.assignedSeat == null) {
             List<Amenity> temp = new ArrayList<>();
@@ -781,17 +847,15 @@ public class AgentMovement {
                 double minDistance = Double.MAX_VALUE;
                 Agent closestAgent = null;
 
-                if (this.parent.getType() == Agent.Type.FACULTY) {
-                    for(Agent agent : environment.getPresentTeamMembers(this.team)) {
-                        if (agent != this.parent && agent.getType() == Agent.Type.STUDENT && agent.getAgentMovement().getAssignedSeat() != null) {
-                            for (Amenity amenity : temp) {
-                                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                                    double distanceToAttractor = Coordinates.distance(agent.getAgentMovement().getAssignedSeat().getAttractors().getFirst().getPatch(), attractor.getPatch());
+                for(Agent agent : environment.getPresentTeamMembers(this.team)) {
+                    if (agent != this.parent && agent.getType() == Agent.Type.STUDENT && agent.getAgentMovement().getAssignedSeat() != null) {
+                        for (Amenity amenity : temp) {
+                            for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+                                double distanceToAttractor = Coordinates.distance(agent.getAgentMovement().getAssignedSeat().getAttractors().getFirst().getPatch(), attractor.getPatch());
 
-                                    if(distanceToAttractor < minDistance) {
-                                        minDistance = distanceToAttractor;
-                                        closestAgent = agent;
-                                    }
+                                if(distanceToAttractor < minDistance) {
+                                    minDistance = distanceToAttractor;
+                                    closestAgent = agent;
                                 }
                             }
                         }
@@ -826,6 +890,7 @@ public class AgentMovement {
                 }
             }
 
+            // Developer Note: THIS DOES NOT STORE THE SORTED HASHMAP THIS IS ONLY FOR CONVENIENCE
             for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
                 sortedDistances.put(aa.getKey(), aa.getValue());
             }
@@ -843,12 +908,14 @@ public class AgentMovement {
 
                 }
             }
-            return false;
+            // no more working seats check the collaboration chairs
+            return chooseCollaborationChair();
         }
 
         return false;
     }
     public boolean chooseCollaborationChair(){
+        System.out.println("choose collab chair");
         if(this.goalAmenity == null){
             List<Amenity> temp = new ArrayList<>();
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
@@ -934,50 +1001,61 @@ public class AgentMovement {
         return false;
     }
 
+    // For students and faculties with INQUIRE_FACULTY/INQUIRE_STUDENT states
+    public boolean chooseAgentAsGoal() {
+        if (goalAmenity == null) {
+            List<Agent> candidateAgents = new ArrayList<>();
 
-
-    public void chooseMeetingGoal(int room){
-        if(this.goalAmenity == null){
-            HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
-
-            List<Amenity> temp = new ArrayList<>();
-            temp.addAll(Main.simulator.getEnvironment().getMeetingDesks().get(room - 1).getMeetingChairs());
-
-            for (Amenity amenity : temp) {
-                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                    double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                    distancesToAttractors.put(attractor, distanceToAttractor);
+            // If the agent does not a team and the agent wants to inquire with a student or a faculty, talk to random student
+            // or faculty
+            // If the agent is a faculty and wants to inquire with a faculty, talk to random faculty
+            if (this.team == 0 || (this.currentState.getName() == State.Name.INQUIRE_FACULTY && this.parent.getType() == Agent.Type.FACULTY)) {
+                for(Agent agent : environment.getMovableAgents()) {
+                    // check if the agent is not the same agent, if the agent has an assigned seat, if the agent is right
+                    // type of agent needed for the given state
+                    if (agent != this.parent && agent.getAgentMovement().getAssignedSeat() != null && (
+                            (this.currentState.getName() == State.Name.INQUIRE_STUDENT && agent.getType() == Agent.Type.STUDENT) ||
+                            (this.currentState.getName() == State.Name.INQUIRE_FACULTY && agent.getType() == Agent.Type.FACULTY)
+                    )) {
+                        candidateAgents.add(agent);
+                    }
+                }
+                Collections.shuffle(candidateAgents);
+            }
+            else {
+                // if student wants to inquire with a faculty, go to his or her assigned faculty based on his/her team number
+                if (this.parent.getType() == Agent.Type.STUDENT && this.currentState.getName() == State.Name.INQUIRE_FACULTY) {
+                    for(Agent agent : environment.getPresentTeamMembers(this.team)) {
+                        if (agent != this.parent && agent.getAgentMovement().getAssignedSeat() != null && agent.getType() == Agent.Type.FACULTY) {
+                            candidateAgents.add(agent);
+                        }
+                    }
+                    Collections.shuffle(candidateAgents);
+                }
+                // if student wants to inquire with a student, go to a student not his/her groupmates
+                else if (this.parent.getType() == Agent.Type.STUDENT && this.currentState.getName() == State.Name.INQUIRE_STUDENT) {
+                    for(Agent agent : environment.getMovableAgents()) {
+                        if (agent != this.parent && agent.getAgentMovement().getAssignedSeat() != null && agent.getType() == Agent.Type.STUDENT && agent.getTeam() != this.parent.getTeam()) {
+                            candidateAgents.add(agent);
+                        }
+                    }
+                    Collections.shuffle(candidateAgents);
                 }
             }
 
-            List<Map.Entry<Amenity.AmenityBlock, Double> > list =
-                    new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
-
-            Collections.sort(list, new Comparator<Map.Entry<Amenity.AmenityBlock, Double> >() {
-                public int compare(Map.Entry<Amenity.AmenityBlock, Double> o1,
-                                   Map.Entry<Amenity.AmenityBlock, Double> o2)
-                {
-                    return (o1.getValue()).compareTo(o2.getValue());
-                }
-            });
-
-            HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
-            for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
-                sortedDistances.put(aa.getKey(), aa.getValue());
-            }
-
-            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
-                Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
-
-                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
-                    this.goalAmenity =  candidateAttractor.getParent();
-                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+            for (Agent agent1 : candidateAgents) {
+                // only get agents who is not busy (i.e. can do urgent task)
+                if (agent1.getAgentMovement().getRoutePlan().getCanUrgent()) {
+                    this.agentToInquire = agent1;
+                    this.goalAmenity =  agent1.getAgentMovement().getAssignedSeat();
+                    this.goalAttractor = this.goalAmenity.getAttractors().getFirst();
                     this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
-                    getGoalAttractor().setIsReserved(true);
-                    break;
+                    return true;
                 }
             }
+
         }
+        return false;
     }
 
     private Coordinates getFuturePosition(double walkingDistance) {
@@ -993,17 +1071,11 @@ public class AgentMovement {
         double distance;
 
         Amenity.AmenityBlock nearestAttractor = null;
-        if(getWaitPatch() != null){
-            distance = Coordinates.distance(this.position,getWaitPatch().getPatchCenterCoordinates());
-            minimumDistance = distance;
-        }
-        else{
-            for (Amenity.AmenityBlock attractor : goal.getAttractors()) {
-                distance = Coordinates.distance(this.position, attractor.getPatch().getPatchCenterCoordinates());
-                if (distance < minimumDistance) {
-                    minimumDistance = distance;
-                    nearestAttractor = attractor;
-                }
+        for (Amenity.AmenityBlock attractor : goal.getAttractors()) {
+            distance = Coordinates.distance(this.position, attractor.getPatch().getPatchCenterCoordinates());
+            if (distance < minimumDistance) {
+                minimumDistance = distance;
+                nearestAttractor = attractor;
             }
         }
 
@@ -1011,12 +1083,7 @@ public class AgentMovement {
         assert nearestAttractor != null;
 
         if (minimumDistance < walkingDistance) {
-            if(getWaitPatch() != null){
-                return new Coordinates(getWaitPatch().getPatchCenterCoordinates().getX(), getWaitPatch().getPatchCenterCoordinates().getY());
-            }
-            else{
-                return new Coordinates(nearestAttractor.getPatch().getPatchCenterCoordinates().getX(), nearestAttractor.getPatch().getPatchCenterCoordinates().getY());
-            }
+            return new Coordinates(nearestAttractor.getPatch().getPatchCenterCoordinates().getX(), nearestAttractor.getPatch().getPatchCenterCoordinates().getY());
         }
         else {
             Coordinates futurePosition = this.getFuturePosition(this.position, heading, walkingDistance);
@@ -1041,10 +1108,6 @@ public class AgentMovement {
         }
     }
 
-    public void moveAStar() {
-        move(this.currentPath.getPath().peek().getPatchCenterCoordinates());
-    }
-
     public void moveSocialForce() {
         final int noNewPatchesSeenTicksThreshold = 5;
         final int noMovementTicksThreshold = 5;
@@ -1058,11 +1121,6 @@ public class AgentMovement {
         // If the agent has been moving a sufficient distance for at least this number of ticks, this passenger will
         // be out of the stuck state, if it was
         final int unstuckTicksThreshold = 60;
-
-        // Get the passengers within the current field of view in these patches
-        // If there are any other passengers within this field of view, this passenger is at least guaranteed to
-        // slow down
-        TreeMap<Double, Agent> passengersWithinFieldOfView = new TreeMap<>();
 
         List<Patch> patchesToExplore = this.get7x7Field(this.proposedHeading, true, Math.toRadians(360.0));
 
@@ -1354,6 +1412,8 @@ public class AgentMovement {
         boolean wasPathJustGenerated = false;
         final int recomputeThreshold = 10;
 
+
+
         if (this.currentPath == null || this.isStuck && this.noNewPatchesSeenCounter > recomputeThreshold) {
             AgentPath agentPath = null;
 
@@ -1543,11 +1603,13 @@ public class AgentMovement {
         // check if the patch is not the whitelist of amenity or a wall
         if ((patch.getAmenityBlock() != null && (!patch.getAmenityBlock().getParent().equals(this.goalAmenity) &&
                 patch.getAmenityBlock().getParent().getClass() != Door.class &&
+                patch.getAmenityBlock().getParent().getClass() != Cubicle.class &&
                 patch.getAmenityBlock().getParent().getClass() != MainEntranceDoor.class &&
                 patch.getAmenityBlock().getParent().getClass() != FemaleBathroomDoor.class &&
                 patch.getAmenityBlock().getParent().getClass() != MaleBathroomDoor.class &&
                 patch.getAmenityBlock().getParent().getClass() != ReceptionChair.class &&
                 patch.getAmenityBlock().getParent().getClass() != Chair.class &&
+                patch.getAmenityBlock().getParent().getClass() != AirConditioner.class &&
                 patch.getAmenityBlock().getParent().getClass() != Toilet.class &&
                 patch.getAmenityBlock().getParent().getClass() != Couch.class &&
                 patch.getAmenityBlock().getParent().getClass() != MeetingChair.class &&
@@ -1614,10 +1676,6 @@ public class AgentMovement {
         return Coordinates.distance(this.position, patch.getPatchCenterCoordinates()) <= this.preferredWalkingDistance;
     }
 
-    public Patch getWaitPatch() {
-        return waitPatch;
-    }
-
     public Agent getParent() {
         return parent;
     }
@@ -1671,9 +1729,6 @@ public class AgentMovement {
     public Amenity getCurrentAmenity() {
         return currentAmenity;
     }
-    public PatchField getCurrentPatchField() {
-        return currentPatchField;
-    }
     public Patch getGoalPatch() {
         return goalPatch;
     }
@@ -1683,9 +1738,6 @@ public class AgentMovement {
     }
     public Amenity getGoalAmenity() {
         return goalAmenity;
-    }
-    public PatchField getGoalPatchField() {
-        return goalPatchField;
     }
     public QueueingPatchField getGoalQueueingPatchField() {
         return goalQueueingPatchField;
@@ -1779,7 +1831,13 @@ public class AgentMovement {
     public InteractionType getInteractionType() {
         return interactionType;
     }
+    public Agent getAgentToInquire() {
+        return agentToInquire;
+    }
 
+    public double getPreviousHeading() {
+        return previousHeading;
+    }
 
     /***** SETTERS *****/
     public void setPosition(Coordinates coordinates) {
@@ -1835,9 +1893,6 @@ public class AgentMovement {
     public void setCurrentAmenity(Amenity currentAmenity) {
         this.currentAmenity = currentAmenity;
     }
-    public void setCurrentPatchField(PatchField currentPatchField) {
-        this.currentPatchField = currentPatchField;
-    }
     public void setGoalAttractor(Amenity.AmenityBlock goalAttractor) {
         this.goalAttractor = goalAttractor;
         this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
@@ -1866,8 +1921,17 @@ public class AgentMovement {
     public void setInteractionType(InteractionType interactionType) {
         this.interactionType = interactionType;
     }
-
     public void setAssignedSeat(Amenity assignedSeat) {
         this.assignedSeat = assignedSeat;
+    }
+    public void setAgentToInquire(Agent agentToInquire) {
+        this.agentToInquire = agentToInquire;
+    }
+    public void setHeading(double heading) {
+        this.heading = heading;
+    }
+
+    public void setPreviousHeading(double previousHeading) {
+        this.previousHeading = previousHeading;
     }
 }
