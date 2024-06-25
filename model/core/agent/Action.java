@@ -103,8 +103,10 @@ public class Action {
         ASK_DIRECTOR(),
         GO_TO_FACULTY(),
         GO_TO_STUDENT(),
+        GO_TO_GUARD(),
         ASK_FACULTY(),
         ASK_STUDENT(),
+        ASK_GUARD(),
         ANSWER_DIRECTOR(),
         ANSWER_FACULTY(),
         ANSWER_STUDENT(),
@@ -114,7 +116,7 @@ public class Action {
         GO_TO_COLLAB(), WAIT_FOR_COLLAB(), COLLABORATE(),
         GO_MEETING(), WAIT_MEETING(), MEETING(), GOING_DISPENSER(),
         GETTING_WATER(), GOING_FRIDGE(), GETTING_FOOD(), TAKING_BREAK(),
-        GO_TO_WAIT_AREA(), WAIT_FOR_VACANT(), WAIT_FOR_COLLEAGUE;
+        GO_TO_WAIT_AREA(), WAIT_FOR_VACANT(), WAIT_FOR_COLLEAGUE();
 
         final int ID;
 

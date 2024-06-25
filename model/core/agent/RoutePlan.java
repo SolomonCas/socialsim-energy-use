@@ -33,8 +33,6 @@ public class RoutePlan {
     State LUNCH_INSTANCE = null;
 
     public static final double DIRECTOR_LUNCH = 0.7;
-    public static final double GUARD_LUNCH = 0.7;
-    public static final double MAINTENANCE_LUNCH = 0.7;
     public static final double EAT_OUTSIDE = 0.9;
     public static final double INT_LUNCH = 0.3;
     public static final double EXT_LUNCH = 1.0;
@@ -43,9 +41,13 @@ public class RoutePlan {
     public static final double INT_STUDENT_COOPERATE = 0.6;
     public static final double EXT_STUDENT_COOPERATE = 0.9;
     public static final double  BATH_CHANCE = 0.15,
-                                DISPENSER_CHANCE = 0.1,
+                                DISPENSER_CHANCE = 0.25,
                                 REFRIGERATOR_CHANCE = 0.3,
-                                BREAK_CHANCE = 0.1;
+                                BREAK_CHANCE = 0.5,
+                                INQUIRE_FACULTY_CHANCE = 0.3,
+                                INQUIRE_STUDENT_CHANCE = 0.3,
+                                INQUIRE_MAINTENANCE_CHANCE = 0.3,
+                                INQUIRE_GUARD_CHANCE = 0.3;
     public static ArrayList<ArrayList<Long>> meetingTimes = new ArrayList<>();
 
     /***** CONSTRUCTOR *****/
@@ -348,7 +350,6 @@ public class RoutePlan {
 //            actions.add(new Action(Action.Name.GO_TO_LUNCH));
 //            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
 //            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
-//            this.LUNCH_INSTANCE = routePlan.get(routePlan.size()-1);
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
@@ -374,7 +375,7 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GO_TO_STATION, 2));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-            routePlan.add(addUrgentRoute("EWAN", agent));
+            routePlan.add(addUrgentRoute("EWAN", agent, environment));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION));
@@ -435,9 +436,9 @@ public class RoutePlan {
         return -1;
     }
 
-    public State addUrgentRoute(String s, Agent agent){
+    public State addUrgentRoute(String s, Agent agent, Environment environment) {
         ArrayList<Action> actions;
-        State officeState;
+        State officeState = null;
 
         switch (s) {
             case "BATHROOM" -> {
@@ -475,21 +476,11 @@ public class RoutePlan {
                 actions.add(new Action(Action.Name.TAKING_BREAK, 120, 240));
                 officeState = new State(State.Name.BREAK_TIME, this, agent, actions);
             }
-            default -> {
+            case "FIX_THERMAL_COMFORT" -> {
                 actions = new ArrayList<>();
                 actions.add(new Action(Action.Name.SET_AC_TO_COOL));
                 officeState = new State(State.Name.FIXING_THERMAL_COMFORT, this, agent, actions);
             }
-        }
-
-        return officeState;
-    }
-
-    public State addUrgentRoute(String s, Agent agent, Environment environment) {
-        ArrayList<Action> actions;
-        State officeState = null;
-
-        switch (s) {
             case "EAT_OUTSIDE" -> {
                 actions = new ArrayList<>();
                 Patch randomExit = environment.getGates().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size()))
@@ -522,6 +513,13 @@ public class RoutePlan {
                 actions.add(new Action(Action.Name.GO_TO_STUDENT));
                 actions.add(new Action(Action.Name.ASK_STUDENT, 12, 32));
                 officeState = new State(State.Name.INQUIRE_STUDENT, this, agent, actions);
+            }
+            case "INQUIRE_GUARD" -> {
+                actions = new ArrayList<>();
+                // go to chooseAgentAsGoal for which guard to inquire
+                actions.add(new Action(Action.Name.GO_TO_GUARD));
+                actions.add(new Action(Action.Name.ASK_GUARD, 12, 32));
+                officeState = new State(State.Name.INQUIRE_GUARD, this, agent, actions);
             }
         }
         return officeState;

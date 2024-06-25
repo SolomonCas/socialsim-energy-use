@@ -28,11 +28,13 @@ public class AgentMovement {
     public final int MAX_BREAK_COOL_DOWN_DURATION = 1440;
     public final int MAX_REFRIGERATOR_COOL_DOWN_DURATION = 1440;
     public final int MAX_DISPENSER_COOL_DOWN_DURATION = 1440;
+    public final int MAX_INQUIRE_COOL_DOWN_DURATION = 1440;
 
     public int bathroomCoolDown = 0;
     public int breakCoolDown = 0;
     public int refrigeratorCoolDown = 0;
     public int dispenserCoolDown = 0;
+    public int inquireCoolDown = 0;
 
     private final Agent parent;
     private final Coordinates position;
@@ -998,6 +1000,8 @@ public class AgentMovement {
                         this.goalAmenity = candidateAttractor.getParent();
                         this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
                         this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
+                        this.setAssignedSeat(this.goalAmenity);
+                        this.getRoutePlan().setAgentSeat(this.assignedSeat);
                         getGoalAttractor().setIsReserved(true);
                         return true;
                     }
@@ -1010,15 +1014,25 @@ public class AgentMovement {
         return false;
     }
 
-    // For students and faculties with INQUIRE_FACULTY/INQUIRE_STUDENT states
+    // TODO: Make the logic for INQUIRE_MAINTENANCE
     public boolean chooseAgentAsGoal() {
         if (goalAmenity == null) {
             List<Agent> candidateAgents = new ArrayList<>();
 
+            if (this.currentState.getName() == State.Name.INQUIRE_GUARD) {
+                for(Agent agent : environment.getMovableAgents()) {
+                    // check if the agent is not the same agent, if the agent has an assigned seat, if the agent is right
+                    // type of agent needed for the given state
+                    if (agent != this.parent && agent.getAgentMovement().getAssignedSeat() != null && agent.getType() == Agent.Type.GUARD) {
+                        candidateAgents.add(agent);
+                    }
+                }
+                Collections.shuffle(candidateAgents);
+            }
             // If the agent does not a team and the agent wants to inquire with a student or a faculty, talk to random student
             // or faculty
             // If the agent is a faculty and wants to inquire with a faculty, talk to random faculty
-            if (this.team == 0 || (this.currentState.getName() == State.Name.INQUIRE_FACULTY && this.parent.getType() == Agent.Type.FACULTY)) {
+            else if (this.team == 0 || (this.currentState.getName() == State.Name.INQUIRE_FACULTY && this.parent.getType() == Agent.Type.FACULTY)) {
                 for(Agent agent : environment.getMovableAgents()) {
                     // check if the agent is not the same agent, if the agent has an assigned seat, if the agent is right
                     // type of agent needed for the given state
@@ -1708,10 +1722,19 @@ public class AgentMovement {
 
     public boolean dispenserCoolDown() {
         if (this.dispenserCoolDown <= 0) {
-            this.dispenserCoolDown = MAX_BATHROOM_COOL_DOWN_DURATION; // set cool down duration
+            this.dispenserCoolDown = MAX_DISPENSER_COOL_DOWN_DURATION; // set cool down duration
             return true;
         }
         this.dispenserCoolDown--;
+        return false;
+    }
+
+    public boolean inquireCoolDown() {
+        if (this.inquireCoolDown <= 0) {
+            this.inquireCoolDown = MAX_INQUIRE_COOL_DOWN_DURATION; // set cool down duration
+            return true;
+        }
+        this.inquireCoolDown--;
         return false;
     }
 
