@@ -24,6 +24,15 @@ public class AgentMovement {
     public static int defaultExchangeMean = 24;
     public static int defaultExchangeStdDev = 6;
     public static int defaultFieldOfView = 30;
+    public final int MAX_BATHROOM_COOL_DOWN_DURATION = 1440;
+    public final int MAX_BREAK_COOL_DOWN_DURATION = 1440;
+    public final int MAX_REFRIGERATOR_COOL_DOWN_DURATION = 1440;
+    public final int MAX_DISPENSER_COOL_DOWN_DURATION = 1440;
+
+    public int bathroomCoolDown = 0;
+    public int breakCoolDown = 0;
+    public int refrigeratorCoolDown = 0;
+    public int dispenserCoolDown = 0;
 
     private final Agent parent;
     private final Coordinates position;
@@ -1668,6 +1677,42 @@ public class AgentMovement {
         // Set the current amenity
         this.currentAmenity = this.goalAmenity;
         this.currentPath = null;
+    }
+
+    public boolean bathRoomCoolDown() {
+        if (this.bathroomCoolDown <= 0) {
+            this.bathroomCoolDown = MAX_BATHROOM_COOL_DOWN_DURATION; // set cool down duration
+            return true;
+        }
+        this.bathroomCoolDown--;
+        return false;
+    }
+
+    public boolean breakCoolDown() {
+        if (this.breakCoolDown <= 0) {
+            this.breakCoolDown = MAX_BREAK_COOL_DOWN_DURATION; // set cool down duration
+            return true;
+        }
+        this.breakCoolDown--;
+        return false;
+    }
+
+    public boolean refrigeratorCoolDown() {
+        if (this.refrigeratorCoolDown <= 0) {
+            this.refrigeratorCoolDown = MAX_REFRIGERATOR_COOL_DOWN_DURATION; // set cool down duration
+            return true;
+        }
+        this.refrigeratorCoolDown--;
+        return false;
+    }
+
+    public boolean dispenserCoolDown() {
+        if (this.dispenserCoolDown <= 0) {
+            this.dispenserCoolDown = MAX_BATHROOM_COOL_DOWN_DURATION; // set cool down duration
+            return true;
+        }
+        this.dispenserCoolDown--;
+        return false;
     }
 
 

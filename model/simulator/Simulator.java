@@ -617,7 +617,7 @@ public class Simulator {
                         System.out.println("getBATH_AM: " + agentMovement.getRoutePlan().getBATH_AM() +
                                 " getBATH_PM: " + agentMovement.getRoutePlan().getBATH_PM() +
                                 " getBREAK_COUNT: " + agentMovement.getRoutePlan().getBREAK_COUNT());
-                        if (CHANCE < RoutePlan.BATH_CHANCE) {
+                        if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
                             if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
                                 agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -640,7 +640,7 @@ public class Simulator {
                             }
 
                         }
-                        else if (CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0) {
+                        else if (CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.breakCoolDown()) {
                             agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent)); // add the break state
                             agentMovement.setCurrentState(agentMovement.getStateIndex()); // set the new current state into the go to the break state
                             agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
@@ -1349,7 +1349,7 @@ public class Simulator {
                         " getDISPENSER_PM: " + agentMovement.getRoutePlan().getDISPENSER_PM() +
                         " getREFRIGERATOR_LUNCH: " + agentMovement.getRoutePlan().getREFRIGERATOR_LUNCH() +
                         " getREFRIGERATOR_PM: " + agentMovement.getRoutePlan().getREFRIGERATOR_PM());
-                if (CHANCE < RoutePlan.BATH_CHANCE) {
+                if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
                     if (action.getName() == Action.Name.EAT_LUNCH && agentMovement.getRoutePlan().getBATH_LUNCH() > 0) {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
                         agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -1362,7 +1362,7 @@ public class Simulator {
                     }
 
                 }
-                else if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.DISPENSER_CHANCE){
+                else if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.DISPENSER_CHANCE && agentMovement.dispenserCoolDown()){
                     if (action.getName() == Action.Name.EAT_LUNCH && agentMovement.getRoutePlan().getDISPENSER_LUNCH() > 0) {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("DISPENSER", agent));
                         agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -1384,7 +1384,7 @@ public class Simulator {
                         agentMovement.getRoutePlan().setDISPENSER_PM(1);
                     }
                 }
-                else if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.DISPENSER_CHANCE + RoutePlan.REFRIGERATOR_CHANCE){
+                else if(CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.DISPENSER_CHANCE + RoutePlan.REFRIGERATOR_CHANCE && agentMovement.refrigeratorCoolDown()){
                     if (action.getName() == Action.Name.EAT_LUNCH && agentMovement.getRoutePlan().getREFRIGERATOR_LUNCH() > 0) {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("REFRIGERATOR", agent));
                         agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -1460,7 +1460,7 @@ public class Simulator {
                                     System.out.println("getBATH_AM: " + agentMovement.getRoutePlan().getBATH_AM() +
                                             " getBATH_PM: " + agentMovement.getRoutePlan().getBATH_PM() +
                                             " getBREAK_COUNT: " + agentMovement.getRoutePlan().getBREAK_COUNT());
-                                    if (CHANCE < RoutePlan.BATH_CHANCE) {
+                                    if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
                                         if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                             agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
                                             agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -1483,7 +1483,7 @@ public class Simulator {
                                         }
 
                                     }
-                                    else if (CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0) {
+                                    else if (CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.breakCoolDown()) {
                                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent)); // add the break state
                                         agentMovement.setCurrentState(agentMovement.getStateIndex()); // set the new current state into the go to the break state
                                         agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
@@ -1794,7 +1794,7 @@ public class Simulator {
                                         System.out.println("getBATH_AM: " + agentMovement.getRoutePlan().getBATH_AM() +
                                                 " getBATH_PM: " + agentMovement.getRoutePlan().getBATH_PM() +
                                                 " getBREAK_COUNT: " + agentMovement.getRoutePlan().getBREAK_COUNT());
-                                        if (CHANCE < RoutePlan.BATH_CHANCE) {
+                                        if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
                                             if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent));
                                                 agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -1817,7 +1817,7 @@ public class Simulator {
                                             }
 
                                         }
-                                        else if (CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0) {
+                                        else if (CHANCE < RoutePlan.BATH_CHANCE + RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.breakCoolDown()) {
                                             agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent)); // add the break state
                                             agentMovement.setCurrentState(agentMovement.getStateIndex()); // set the new current state into the go to the break state
                                             agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
@@ -2194,27 +2194,6 @@ public class Simulator {
                 if (agentMovement.isInteracting())
                     break;
             }
-//            patches = agentMovement.get3x3Field(agentMovement.getHeading(), true, Math.toRadians(270));
-//            for (Patch patch: patches) {
-//                for (Agent otherAgent: patch.getAgents()) {
-//                    Agent agent = (Agent) otherAgent;
-//                    if (!agent.getAgentMovement().isInteracting() && !agentMovement.isInteracting())
-//                        if (Coordinates.isWithinFieldOfView(agentMovement.getPosition(), agent.getAgentMovement().getPosition(), agentMovement.getProposedHeading(), Math.toRadians(270)))
-//                            if (Coordinates.isWithinFieldOfView(agent.getAgentMovement().getPosition(), agentMovement.getPosition(), agent.getAgentMovement().getProposedHeading(), Math.toRadians(270))){
-//                                agentMovement.rollAgentInteraction(agent);
-//                                if (agentMovement.isInteracting()) {
-//                                    agent2 = agent;
-//                                    currentPatchCount[agentMovement.getCurrentPatch().getMatrixPosition().getRow()][agentMovement.getCurrentPatch().getMatrixPosition().getColumn()]++;
-//                                    currentPatchCount[agent.getAgentMovement().getCurrentPatch().getMatrixPosition().getRow()][agent.getAgentMovement().getCurrentPatch().getMatrixPosition().getColumn()]++;
-//                                }
-//                            }
-//                    if (agentMovement.isInteracting())
-//                        break;
-//                }
-//
-//                if (agentMovement.isInteracting())
-//                    break;
-//            }
             if (agentMovement.isInteracting() && agentMovement.getInteractionDuration() == 0) {
                 agentMovement.setInteracting(false);
                 agentMovement.setInteractionType(null);
