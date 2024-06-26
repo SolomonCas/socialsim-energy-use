@@ -4,17 +4,16 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.CouchGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class Couch extends Goal {
     /***** VARIABLES *****/
-    public static final Couch.CouchFactory couchFactory;
+    public static final CouchFactory couchFactory;
     private final CouchGraphic couchGraphic;
 
     static {
-        couchFactory = new Couch.CouchFactory();
+        couchFactory = new CouchFactory();
     }
 
 
@@ -43,21 +42,21 @@ public class Couch extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class CouchBlock extends Amenity.AmenityBlock {
-        public static Couch.CouchBlock.CouchBlockFactory couchBlockFactory;
+    public static class CouchBlock extends AmenityBlock {
+        public static CouchBlockFactory couchBlockFactory;
 
         static {
-            couchBlockFactory = new Couch.CouchBlock.CouchBlockFactory();
+            couchBlockFactory = new CouchBlockFactory();
         }
 
         private CouchBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class CouchBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class CouchBlockFactory extends AmenityBlockFactory {
             @Override
-            public Couch.CouchBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new Couch.CouchBlock(patch, attractor, hasGraphic);
+            public CouchBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new CouchBlock(patch, attractor, hasGraphic);
             }
         }
     }

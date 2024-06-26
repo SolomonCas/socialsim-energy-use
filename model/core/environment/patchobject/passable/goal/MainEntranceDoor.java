@@ -4,18 +4,17 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.MainEntranceDoorGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class MainEntranceDoor extends Goal {
 
     /***** VARIABLES *****/
-    public static final MainEntranceDoor.MainEntranceDoorFactory mainEntranceDoorFactory;
+    public static final MainEntranceDoorFactory mainEntranceDoorFactory;
     private final MainEntranceDoorGraphic mainEntranceDoorGraphic;
 
     static {
-        mainEntranceDoorFactory = new MainEntranceDoor.MainEntranceDoorFactory();
+        mainEntranceDoorFactory = new MainEntranceDoorFactory();
     }
 
     /***** CONSTRUCTOR *****/
@@ -43,21 +42,21 @@ public class MainEntranceDoor extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class MainEntranceDoorBlock extends Amenity.AmenityBlock {
-        public static MainEntranceDoor.MainEntranceDoorBlock.MainEntranceDoorBlockFactory mainEntranceDoorBlockFactory;
+    public static class MainEntranceDoorBlock extends AmenityBlock {
+        public static MainEntranceDoorBlockFactory mainEntranceDoorBlockFactory;
 
         static {
-            mainEntranceDoorBlockFactory = new MainEntranceDoor.MainEntranceDoorBlock.MainEntranceDoorBlockFactory();
+            mainEntranceDoorBlockFactory = new MainEntranceDoorBlockFactory();
         }
 
         private MainEntranceDoorBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class MainEntranceDoorBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class MainEntranceDoorBlockFactory extends AmenityBlockFactory {
             @Override
-            public MainEntranceDoor.MainEntranceDoorBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new MainEntranceDoor.MainEntranceDoorBlock(patch, attractor, hasGraphic);
+            public MainEntranceDoorBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new MainEntranceDoorBlock(patch, attractor, hasGraphic);
             }
         }
     }

@@ -2,7 +2,7 @@ package com.socialsim.model.core.environment.patchobject.passable.goal;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
-import com.socialsim.controller.graphics.amenity.graphic.MeetingChairGraphic;
+import com.socialsim.controller.graphics.amenity.graphic.ChairGraphic;
 import com.socialsim.model.core.environment.Patch;
 
 import java.util.List;
@@ -10,17 +10,17 @@ import java.util.List;
 public class MeetingChair extends Goal {
     /***** VARIABLES *****/
     public static final MeetingChairFactory meetingChairFactory;
-    private final MeetingChairGraphic meetingChairGraphic;
+    private final ChairGraphic officeChairGraphic;
 
     static {
         meetingChairFactory = new MeetingChairFactory();
     }
 
     /***** CONSTRUCTOR *****/
-    protected MeetingChair(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected MeetingChair(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String type) {
         super(amenityBlocks, enabled);
 
-        this.meetingChairGraphic = new MeetingChairGraphic(this);
+        this.officeChairGraphic = new ChairGraphic(this, facing, type);
     }
 
     /***** OVERRIDE *****/
@@ -31,12 +31,12 @@ public class MeetingChair extends Goal {
 
     @Override
     public AmenityGraphic getGraphicObject() {
-        return this.meetingChairGraphic;
+        return this.officeChairGraphic;
     }
 
     @Override
     public AmenityGraphicLocation getGraphicLocation() {
-        return this.meetingChairGraphic.getGraphicLocation();
+        return this.officeChairGraphic.getGraphicLocation();
     }
 
 
@@ -61,8 +61,8 @@ public class MeetingChair extends Goal {
     }
 
     public static class MeetingChairFactory extends GoalFactory {
-        public static MeetingChair create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new MeetingChair(amenityBlocks, enabled);
+        public static MeetingChair create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String type) {
+            return new MeetingChair(amenityBlocks, enabled, facing, type);
         }
     }
 }

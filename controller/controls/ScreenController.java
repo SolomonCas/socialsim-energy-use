@@ -2,6 +2,7 @@ package com.socialsim.controller.controls;
 
 import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.GraphicsController;
+import com.socialsim.controller.graphics.amenity.mapper.*;
 import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.simulator.Simulator;
@@ -12,6 +13,8 @@ import com.socialsim.model.simulator.SimulationTime;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -20,6 +23,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
+import javafx.scene.layout.Pane;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -114,7 +123,7 @@ public class ScreenController extends Controller {
     // Buttons: Parameters
     @FXML private Button configureIOSButton;    // Configure IOS Levels (Under Parameters)
     @FXML private Button editInteractionButton; // Edit Interaction Type Chances (Under Parameters)
-    @FXML private Button resetToDefaultButton;
+//    @FXML private Button resetToDefaultButton;
 
 
     // Buttons: Simulate
@@ -124,8 +133,14 @@ public class ScreenController extends Controller {
     @FXML private Button exportToCSVButton;
     @FXML private Button exportHeatMapButton;
 
+    private double zoomFactor = 1.0;
+    private double zoomDelta = 0.1;
 
+    private double mouseAnchorX;
+    private double mouseAnchorY;
 
+    private double translateAnchorX;
+    private double translateAnchorY;
 
 
 
@@ -238,7 +253,7 @@ public class ScreenController extends Controller {
         exchangeMean.setDisable(true);
         exchangeStdDev.setDisable(true);
         fieldOfView.setDisable(true);
-        resetToDefaultButton.setDisable(true);
+//        resetToDefaultButton.setDisable(true);
         configureIOSButton.setDisable(true);
         editInteractionButton.setDisable(true);
     }
@@ -2174,6 +2189,358 @@ public class ScreenController extends Controller {
 
             Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsPantry, "wallIn"));
 
+
+
+
+
+        /*** AMENITIES ***/
+
+
+            /*** MESA Table and Chair Set ***/
+
+            // Table on North and West
+            List<Patch> NWMESATableChairSetPatches = new ArrayList<>();
+            NWMESATableChairSetPatches.add(environment.getPatch(67,153));
+            CubicleMapper.draw(NWMESATableChairSetPatches, "MESA", "", "NORTH_AND_WEST", true);
+
+            // Table on North and East
+            List<Patch> NEMESATableChairSetPatches = new ArrayList<>();
+            NEMESATableChairSetPatches.add(environment.getPatch(67,148));
+            CubicleMapper.draw(NEMESATableChairSetPatches, "MESA", "", "NORTH_AND_EAST", false);
+
+            // Table on South and West
+            List<Patch> SWMESATableChairSetPatches = new ArrayList<>();
+            SWMESATableChairSetPatches.add(environment.getPatch(76,153));
+            CubicleMapper.draw(SWMESATableChairSetPatches, "MESA", "", "SOUTH_AND_WEST", false);
+
+            // Table on South and East
+            List<Patch> SEMESATableChairSetPatches = new ArrayList<>();
+            SEMESATableChairSetPatches.add(environment.getPatch(76,148));
+            CubicleMapper.draw(SEMESATableChairSetPatches, "MESA", "", "SOUTH_AND_EAST", false);
+
+            /*** Cubicle Type A ***/
+
+            // Two Cubicles Back-to-Back (Vertical) with appliance
+            List<Patch> CubicleTypeA = new ArrayList<>();
+            CubicleTypeA.add(environment.getPatch(43,111));
+            CubicleMapper.draw(CubicleTypeA, "TYPE_A", "", "", true);
+
+
+            /*** Cubicle Type B ***/
+
+            // FACING WEST
+            List<Patch> WCubicleTypeB = new ArrayList<>();
+            WCubicleTypeB.add(environment.getPatch(95,105));
+            WCubicleTypeB.add(environment.getPatch(95,115));
+            WCubicleTypeB.add(environment.getPatch(95,125));
+            WCubicleTypeB.add(environment.getPatch(99,105));
+            WCubicleTypeB.add(environment.getPatch(99,115));
+            WCubicleTypeB.add(environment.getPatch(99,125));
+            CubicleMapper.draw(WCubicleTypeB, "TYPE_B", "WEST", "", true);
+
+            // FACING WEST
+            List<Patch> ECubicleTypeB = new ArrayList<>();
+            ECubicleTypeB.add(environment.getPatch(95,108));
+            ECubicleTypeB.add(environment.getPatch(95,118));
+            ECubicleTypeB.add(environment.getPatch(99,108));
+            ECubicleTypeB.add(environment.getPatch(99,118));
+            CubicleMapper.draw(ECubicleTypeB, "TYPE_B", "EAST", "", true);
+
+
+            /*** Cubicle Type C ***/
+
+            // FACING WEST
+            List<Patch> WCubicleTypeC = new ArrayList<>();
+            WCubicleTypeC.add(environment.getPatch(41,120));
+            WCubicleTypeC.add(environment.getPatch(44,120));
+            WCubicleTypeC.add(environment.getPatch(47,120));
+            WCubicleTypeC.add(environment.getPatch(50,120));
+            CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "WEST", "", false);
+
+
+            /*** Reception Table ***/
+            List<Patch> ReceptionTable1x8 = new ArrayList<>();
+            ReceptionTable1x8.add(environment.getPatch(69,170)); // Reception Bar
+            ReceptionTableMapper.draw(ReceptionTable1x8, "1x8");
+
+            /*** Research Table ***/
+
+            // Facing West with appliance
+            List<Patch> FWResearchTableWithApp = new ArrayList<>();
+            FWResearchTableWithApp.add(environment.getPatch(99,46));
+            FWResearchTableWithApp.add(environment.getPatch(99,68));
+            FWResearchTableWithApp.add(environment.getPatch(99,76));
+            ResearchTableMapper.draw(FWResearchTableWithApp, "WEST", true);
+
+            // Facing East with appliance
+            List<Patch> FEResearchTableWithApp = new ArrayList<>();
+            FEResearchTableWithApp.add(environment.getPatch(99,91));
+            ResearchTableMapper.draw(FEResearchTableWithApp, "EAST", true);
+
+            // Facing West no appliance
+            List<Patch> FWResearchTableNoApp = new ArrayList<>();
+            FWResearchTableNoApp.add(environment.getPatch(99,38));
+            FWResearchTableNoApp.add(environment.getPatch(99,60));
+            FWResearchTableNoApp.add(environment.getPatch(99,90));
+            ResearchTableMapper.draw(FWResearchTableNoApp, "WEST", false);
+
+            // Facing East no appliance
+            List<Patch> FEResearchTableNoApp = new ArrayList<>();
+            FEResearchTableNoApp.add(environment.getPatch(99,39));
+            FEResearchTableNoApp.add(environment.getPatch(99,47));
+            FEResearchTableNoApp.add(environment.getPatch(99,61));
+            FEResearchTableNoApp.add(environment.getPatch(99,69));
+            FEResearchTableNoApp.add(environment.getPatch(99,77));
+            ResearchTableMapper.draw(FEResearchTableNoApp, "EAST", false);
+
+            /*** Meeting Table ***/
+
+            // VERTICAL LARGE
+            List<Patch> VerticalLargeTable = new ArrayList<>();
+            VerticalLargeTable.add(environment.getPatch(35,7));
+            MeetingTableMapper.draw(VerticalLargeTable, "VERTICAL", "LARGE", "");
+
+            // VERTICAL SMALL
+            List<Patch> VerticalSmallTable = new ArrayList<>();
+            VerticalSmallTable.add(environment.getPatch(97,198));
+            MeetingTableMapper.draw(VerticalSmallTable, "VERTICAL", "SMALL", "");
+
+            // HORIZONTAL LARGE
+            List<Patch> LeftHorizontalLargeTable = new ArrayList<>();
+            LeftHorizontalLargeTable.add(environment.getPatch(98,147));
+            MeetingTableMapper.draw(LeftHorizontalLargeTable, "HORIZONTAL", "LARGE", "LEFT");
+            List<Patch> RightHorizontalLargeTable = new ArrayList<>();
+            RightHorizontalLargeTable.add(environment.getPatch(98,156));
+            MeetingTableMapper.draw(RightHorizontalLargeTable, "HORIZONTAL", "LARGE", "RIGHT");
+
+
+
+            /*** Learning Table ***/
+            // HORIZONTAL
+            List<Patch> HorizontalLearningTable = new ArrayList<>();
+            HorizontalLearningTable.add(environment.getPatch(33,26));
+            HorizontalLearningTable.add(environment.getPatch(33,35));
+            HorizontalLearningTable.add(environment.getPatch(33,47));
+            HorizontalLearningTable.add(environment.getPatch(33,56));
+            HorizontalLearningTable.add(environment.getPatch(33,68));
+            HorizontalLearningTable.add(environment.getPatch(33,77));
+            HorizontalLearningTable.add(environment.getPatch(33,89));
+            HorizontalLearningTable.add(environment.getPatch(33,98));
+            HorizontalLearningTable.add(environment.getPatch(47,26));
+            HorizontalLearningTable.add(environment.getPatch(47,35));
+            HorizontalLearningTable.add(environment.getPatch(47,47));
+            HorizontalLearningTable.add(environment.getPatch(47,56));
+            HorizontalLearningTable.add(environment.getPatch(47,68));
+            HorizontalLearningTable.add(environment.getPatch(47,77));
+            HorizontalLearningTable.add(environment.getPatch(47,89));
+            HorizontalLearningTable.add(environment.getPatch(47,98));
+            LearningTableMapper.draw(HorizontalLearningTable, "HORIZONTAL");
+
+            /*** Pantry Table ***/
+
+            // TYPE A
+            List<Patch> pantryTableTypeA = new ArrayList<>();
+            pantryTableTypeA.add(environment.getPatch(117,180));
+            pantryTableTypeA.add(environment.getPatch(120,175));
+            PantryTableMapper.draw(pantryTableTypeA, "TYPE_A");
+
+            // TYPE B
+            List<Patch> pantryTableTypeB = new ArrayList<>();
+            pantryTableTypeB.add(environment.getPatch(117,169));
+            pantryTableTypeB.add(environment.getPatch(121,139));
+            pantryTableTypeB.add(environment.getPatch(121,148));
+            pantryTableTypeB.add(environment.getPatch(121,154));
+            pantryTableTypeB.add(environment.getPatch(121,160));
+            PantryTableMapper.draw(pantryTableTypeB, "TYPE_B");
+            
+            // TYPE A CHAIRS
+            List<Patch> southPantryChairTypeA = new ArrayList<>();
+            southPantryChairTypeA.add(environment.getPatch(111,150));
+            southPantryChairTypeA.add(environment.getPatch(111,151));
+            southPantryChairTypeA.add(environment.getPatch(111,152));
+            southPantryChairTypeA.add(environment.getPatch(111,153));
+            southPantryChairTypeA.add(environment.getPatch(111,154));
+            PantryChairMapper.draw(southPantryChairTypeA, PantryTableMapper.getIndex(), "SOUTH", "PANTRY_TYPE_A");
+
+            // TYPE B CHAIRS
+            List<Patch> southPantryChairTypeB = new ArrayList<>();
+            southPantryChairTypeB.add(environment.getPatch(111,145));
+            southPantryChairTypeB.add(environment.getPatch(111,146));
+            southPantryChairTypeB.add(environment.getPatch(111,147));
+            southPantryChairTypeB.add(environment.getPatch(111,148));
+            southPantryChairTypeB.add(environment.getPatch(111,149));
+            PantryChairMapper.draw(southPantryChairTypeB, PantryTableMapper.getIndex(), "SOUTH", "PANTRY_TYPE_B");
+
+
+            /*** Director Table ***/
+
+            List<Patch> directorTable = new ArrayList<>();
+            directorTable.add(environment.getPatch(108,190));
+            DirectorTableMapper.draw(directorTable, "HORIZONTAL", true);
+
+            /*** Solo Table ***/
+
+            // TOP
+            List<Patch> topSoloTables = new ArrayList<>();
+            topSoloTables.add(environment.getPatch(71,48));
+            topSoloTables.add(environment.getPatch(71,85));
+            SoloTableMapper.draw(topSoloTables, "1x8", "TOP");
+
+            // BOTTOM
+            List<Patch> bottomSoloTables = new ArrayList<>();
+            bottomSoloTables.add(environment.getPatch(75,39));
+            bottomSoloTables.add(environment.getPatch(75,94));
+            SoloTableMapper.draw(bottomSoloTables, "1x8", "BOTTOM");
+
+            /*** Human Experience Table ***/
+            List<Patch> humanExpTable = new ArrayList<>();
+            humanExpTable.add(environment.getPatch(77,5));
+            HumanExpTableMapper.draw(humanExpTable, "5x1");
+
+            /*** Data Collection Table ***/
+            List<Patch> dataCollTable = new ArrayList<>();
+            dataCollTable.add(environment.getPatch(91,2));
+            DataCollTableMapper.draw(dataCollTable, "1x6");
+
+
+            /*** White Board ***/
+
+            // NORTH
+            List<Patch> NorthWhiteBoard = new ArrayList<>();
+            NorthWhiteBoard.add(environment.getPatch(95,31));
+            NorthWhiteBoard.add(environment.getPatch(95,53));
+            WhiteboardMapper.draw(NorthWhiteBoard, "NORTH", "2");
+
+            // SOUTH
+            List<Patch> SouthWhiteBoard = new ArrayList<>();
+            SouthWhiteBoard.add(environment.getPatch(23,25));
+            SouthWhiteBoard.add(environment.getPatch(23,35));
+            SouthWhiteBoard.add(environment.getPatch(23,47));
+            SouthWhiteBoard.add(environment.getPatch(23,56));
+            SouthWhiteBoard.add(environment.getPatch(23,68));
+            SouthWhiteBoard.add(environment.getPatch(23,77));
+            SouthWhiteBoard.add(environment.getPatch(23,89));
+            SouthWhiteBoard.add(environment.getPatch(23,98));
+            WhiteboardMapper.draw(SouthWhiteBoard, "SOUTH", "5");
+
+            // WEST
+            List<Patch> WestWhiteBoard = new ArrayList<>();
+            WestWhiteBoard.add(environment.getPatch(96,30));
+            WestWhiteBoard.add(environment.getPatch(96,52));
+            WhiteboardMapper.draw(WestWhiteBoard, "WEST", "4");
+
+            // EAST 4
+            List<Patch> East4WhiteBoard = new ArrayList<>();
+            East4WhiteBoard.add(environment.getPatch(96,33));
+            East4WhiteBoard.add(environment.getPatch(96,55));
+            WhiteboardMapper.draw(East4WhiteBoard, "EAST", "4");
+
+            // EAST 11
+            List<Patch> East11WhiteBoard = new ArrayList<>();
+            East11WhiteBoard.add(environment.getPatch(35,1));
+            WhiteboardMapper.draw(East11WhiteBoard, "EAST", "11");
+
+            /*** Elevator ***/
+            List<Patch> elevator = new ArrayList<>();
+            elevator.add(environment.getPatch(26,193));
+            elevator.add(environment.getPatch(37,193));
+            elevator.add(environment.getPatch(48,193));
+            ElevatorMapper.draw(elevator, "VERTICAL");
+
+            /*** Couch ***/
+            List<Patch> couch = new ArrayList<>();
+            couch.add(environment.getPatch(69,141));
+            CouchMapper.draw(couch, "WEST");
+
+            /*** Refrigerator ***/
+            List<Patch> refrigerator = new ArrayList<>();
+            refrigerator.add(environment.getPatch(110,141));
+            RefrigeratorMapper.draw(refrigerator);
+
+            /*** Water Dispenser ***/
+            List<Patch> waterDispenser = new ArrayList<>();
+            waterDispenser.add(environment.getPatch(110,140));
+            WaterDispenserMapper.draw(waterDispenser);
+
+            /*** Plant ***/
+            List<Patch> plants = new ArrayList<>();
+            plants.add(environment.getPatch(62,1));
+            plants.add(environment.getPatch(74,179));
+            plants.add(environment.getPatch(74,181));
+            plants.add(environment.getPatch(75,180));
+            plants.add(environment.getPatch(82,202));
+            plants.add(environment.getPatch(84,202));
+            plants.add(environment.getPatch(86,202));
+            PlantMapper.draw(plants);
+
+            /*** Trash Can ***/
+            List<Patch> trashCans = new ArrayList<>();
+            trashCans.add(environment.getPatch(80,199));
+            trashCans.add(environment.getPatch(113,135));
+            trashCans.add(environment.getPatch(107,201));
+            TrashCanMapper.draw(trashCans);
+
+            /*** Pantry Cabinet ***/
+            List<Patch> pantryCabinets = new ArrayList<>();
+            pantryCabinets.add(environment.getPatch(109,135));
+            pantryCabinets.add(environment.getPatch(109,136));
+            pantryCabinets.add(environment.getPatch(109,137));
+            pantryCabinets.add(environment.getPatch(109,138));
+            PantryCabinetMapper.draw(pantryCabinets);
+
+            /*** Sink ***/
+
+            // South
+            List<Patch> southSinks = new ArrayList<>();
+            southSinks.add(environment.getPatch(60,194));
+            southSinks.add(environment.getPatch(60,197));
+            southSinks.add(environment.getPatch(60,200));
+            southSinks.add(environment.getPatch(80,197));
+            southSinks.add(environment.getPatch(111,136));
+            SinkMapper.draw(southSinks, "SOUTH");
+
+            // North
+            List<Patch> northSinks = new ArrayList<>();
+            northSinks.add(environment.getPatch(18,194));
+            northSinks.add(environment.getPatch(18,197));
+            northSinks.add(environment.getPatch(18,200));
+            SinkMapper.draw(northSinks, "NORTH");
+
+            /*** Sink ***/
+
+            // South
+            List<Patch> southToilets = new ArrayList<>();
+            southToilets.add(environment.getPatch(3,188));
+            southToilets.add(environment.getPatch(3,191));
+            southToilets.add(environment.getPatch(3,194));
+            southToilets.add(environment.getPatch(3,197));
+            southToilets.add(environment.getPatch(3,200));
+            southToilets.add(environment.getPatch(79,200));
+            ToiletMapper.draw(southToilets, "SOUTH");
+
+            // North
+            List<Patch> northToilets = new ArrayList<>();
+            northToilets.add(environment.getPatch(73,188));
+            northToilets.add(environment.getPatch(73,191));
+            northToilets.add(environment.getPatch(73,194));
+            northToilets.add(environment.getPatch(73,197));
+            northToilets.add(environment.getPatch(73,200));
+            ToiletMapper.draw(northToilets, "NORTH");
+
+            /*** Coffee Maker Bar ***/
+            List<Patch> coffeeMakerBar = new ArrayList<>();
+            coffeeMakerBar.add(environment.getPatch(110,137));
+            CoffeeMakerBarMapper.draw(coffeeMakerBar);
+
+            /*** Kettle Bar ***/
+            List<Patch> kettleBar = new ArrayList<>();
+            kettleBar.add(environment.getPatch(110,138));
+            KettleBarMapper.draw(kettleBar);
+
+            /*** Microwave Bar ***/
+            List<Patch> microwaveBar = new ArrayList<>();
+            microwaveBar.add(environment.getPatch(111,135));
+            MicrowaveBarMapper.draw(microwaveBar);
     }
 
     private void drawInterface() {
@@ -2333,6 +2700,9 @@ public class ScreenController extends Controller {
         // Copy
         environment.copyDefaultToIOS();
         environment.copyDefaultToInteractionTypeChances();
+
+        // Set up zooming and panning
+        setupZoomAndPan();
     }
 
     @FXML
@@ -2377,6 +2747,63 @@ public class ScreenController extends Controller {
     }
 
 
+    // ZOOMING AND PANNING - PANNING DOES NOT WORK YET
 
+    private void setupZoomAndPan() {
+        stackPane.setOnScroll(this::handleZoom);
+        stackPane.setOnMousePressed(this::handleMousePressed);
+        stackPane.setOnMouseDragged(this::handleMouseDragged);
+        stackPane.setOnMouseReleased(this::handleMouseReleased);
+    }
 
+    private void handleZoom(ScrollEvent event) {
+        if (event.getDeltaY() == 0) {
+            return;
+        }
+
+        double zoomFactorDelta = zoomDelta * Math.abs(event.getDeltaY()) / 40.0;
+
+        if (event.getDeltaY() < 0) {
+            zoomFactor -= zoomFactorDelta;
+        } else {
+            zoomFactor += zoomFactorDelta;
+        }
+
+        if (zoomFactor < 0.1) {
+            zoomFactor = 0.1;
+        }
+
+        double currentScale = stackPane.getScaleX();
+        double scaleChange = zoomFactor / currentScale;
+
+        double f = (scaleChange - 1);
+
+        double dx = (event.getX() - (stackPane.getBoundsInParent().getWidth() / 2 + stackPane.getBoundsInParent().getMinX()));
+        double dy = (event.getY() - (stackPane.getBoundsInParent().getHeight() / 2 + stackPane.getBoundsInParent().getMinY()));
+
+        stackPane.setScaleX(zoomFactor);
+        stackPane.setScaleY(zoomFactor);
+
+        stackPane.setTranslateX(stackPane.getTranslateX() - f * dx);
+        stackPane.setTranslateY(stackPane.getTranslateY() - f * dy);
+    }
+
+    private void handleMousePressed(MouseEvent event) {
+        mouseAnchorX = event.getX();
+        mouseAnchorY = event.getY();
+
+        translateAnchorX = stackPane.getTranslateX();
+        translateAnchorY = stackPane.getTranslateY();
+
+        stackPane.setCursor(Cursor.CLOSED_HAND);
+    }
+
+    private void handleMouseDragged(MouseEvent event) {
+        stackPane.setTranslateX(translateAnchorX + event.getSceneX() - mouseAnchorX);
+        stackPane.setTranslateY(translateAnchorY + event.getSceneY() - mouseAnchorY);
+    }
+
+    private void handleMouseReleased(MouseEvent event) {
+        stackPane.setCursor(Cursor.DEFAULT);
+    }
 }

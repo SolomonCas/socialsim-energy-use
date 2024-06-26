@@ -302,8 +302,11 @@ public class Simulator {
                             System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
                         }
                         else if (time.getTime().isAfter(agent.getTimeIn()) && agent.getType() == Agent.Type.MAINTENANCE && Agent.maintenanceCount != 2) { // Agent.maintenanceCount != 2 isn't dynamic yet
-                            agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27,
-                                    spawner.getPatch().getPatchCenterCoordinates(), agent.getTeam(), environment.getCubicles().get(FREE_SPACE.getFirst()))); // Need to improve this
+                            // commenting this out because there are new changes
+//                            agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27,
+//                                     spawner.getPatch().getPatchCenterCoordinates(), agent.getTeam(), environment.getCubicles().get(FREE_SPACE.getFirst()) // Need to improve this
+//                                )
+//                            );
                             FREE_SPACE.removeFirst();
                             environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
                             Agent.maintenanceCount++;
@@ -934,7 +937,7 @@ public class Simulator {
         else if(action.getName() == Action.Name.GOING_FRIDGE){
             agentMovement.setSimultaneousInteractionAllowed(false);
             if(agentMovement.getGoalAmenity() == null){
-                if(!agentMovement.chooseGoal(Fridge.class)){
+                if(!agentMovement.chooseGoal(Refrigerator.class)){
                     isFull = true;
                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan

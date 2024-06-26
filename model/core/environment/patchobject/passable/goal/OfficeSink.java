@@ -4,18 +4,18 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.OfficeSinkGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class OfficeSink extends Goal {
 
     /***** VARIABLES *****/
-    public static final OfficeSink.OfficeSinkFactory officeSinkFactory;
+    public static final OfficeSinkFactory officeSinkFactory;
     private final OfficeSinkGraphic officeSinkGraphic;
+    private boolean isClean = false;
 
     static {
-        officeSinkFactory = new OfficeSink.OfficeSinkFactory();
+        officeSinkFactory = new OfficeSinkFactory();
     }
 
     /***** CONSTRUCTOR *****/
@@ -23,6 +23,16 @@ public class OfficeSink extends Goal {
         super(amenityBlocks, enabled);
 
         this.officeSinkGraphic = new OfficeSinkGraphic(this);
+    }
+
+    /***** GETTER *****/
+    public boolean isClean() {
+        return isClean;
+    }
+
+    /***** SETTER *****/
+    public void setClean(boolean clean) {
+        isClean = clean;
     }
 
     /***** OVERRIDE *****/
@@ -43,21 +53,21 @@ public class OfficeSink extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class OfficeSinkBlock extends Amenity.AmenityBlock {
-        public static OfficeSink.OfficeSinkBlock.OfficeSinkBlockFactory officeSinkBlockFactory;
+    public static class OfficeSinkBlock extends AmenityBlock {
+        public static OfficeSinkBlockFactory officeSinkBlockFactory;
 
         static {
-            officeSinkBlockFactory = new OfficeSink.OfficeSinkBlock.OfficeSinkBlockFactory();
+            officeSinkBlockFactory = new OfficeSinkBlockFactory();
         }
 
         private OfficeSinkBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class OfficeSinkBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class OfficeSinkBlockFactory extends AmenityBlockFactory {
             @Override
-            public OfficeSink.OfficeSinkBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new OfficeSink.OfficeSinkBlock(patch, attractor, hasGraphic);
+            public OfficeSinkBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new OfficeSinkBlock(patch, attractor, hasGraphic);
             }
         }
     }

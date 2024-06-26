@@ -2,7 +2,7 @@ package com.socialsim.model.core.environment.patchobject.passable.goal;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
-import com.socialsim.controller.graphics.amenity.graphic.ReceptionChairGraphic;
+import com.socialsim.controller.graphics.amenity.graphic.ChairGraphic;
 import com.socialsim.model.core.environment.Patch;
 
 import java.util.List;
@@ -10,17 +10,17 @@ import java.util.List;
 public class ReceptionChair extends Goal {
     /***** VARIABLES *****/
     public static final ReceptionChairFactory receptionChairFactory;
-    private final ReceptionChairGraphic receptionChairGraphic;
+    private final ChairGraphic officeChairGraphic;
 
     static {
         receptionChairFactory = new ReceptionChairFactory();
     }
 
     /***** CONSTRUCTOR *****/
-    protected ReceptionChair(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected ReceptionChair(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String type) {
         super(amenityBlocks, enabled);
 
-        this.receptionChairGraphic = new ReceptionChairGraphic(this);
+        this.officeChairGraphic = new ChairGraphic(this, facing, type);
     }
 
     /***** OVERRIDE *****/
@@ -31,12 +31,12 @@ public class ReceptionChair extends Goal {
 
     @Override
     public AmenityGraphic getGraphicObject() {
-        return this.receptionChairGraphic;
+        return this.officeChairGraphic;
     }
 
     @Override
     public AmenityGraphicLocation getGraphicLocation() {
-        return this.receptionChairGraphic.getGraphicLocation();
+        return this.officeChairGraphic.getGraphicLocation();
     }
 
 
@@ -61,8 +61,8 @@ public class ReceptionChair extends Goal {
     }
 
     public static class ReceptionChairFactory extends GoalFactory {
-        public static ReceptionChair create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new ReceptionChair(amenityBlocks, enabled);
+        public static ReceptionChair create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String type) {
+            return new ReceptionChair(amenityBlocks, enabled, facing, type);
         }
     }
 }

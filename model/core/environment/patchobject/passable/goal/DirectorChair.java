@@ -2,7 +2,7 @@ package com.socialsim.model.core.environment.patchobject.passable.goal;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
-import com.socialsim.controller.graphics.amenity.graphic.DirectorChairGraphic;
+import com.socialsim.controller.graphics.amenity.graphic.ChairGraphic;
 import com.socialsim.model.core.environment.Patch;
 
 import java.util.List;
@@ -10,17 +10,17 @@ import java.util.List;
 public class DirectorChair extends Goal {
     /***** VARIABLES *****/
     public static final DirectorChairFactory directorChairFactory;
-    private final DirectorChairGraphic directorChairGraphic;
+    private final ChairGraphic officeChairGraphic;
 
     static {
         directorChairFactory = new DirectorChairFactory();
     }
 
     /***** CONSTRUCTOR *****/
-    protected DirectorChair(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected DirectorChair(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String type) {
         super(amenityBlocks, enabled);
 
-        this.directorChairGraphic = new DirectorChairGraphic(this);
+        this.officeChairGraphic = new ChairGraphic(this, facing, type);
     }
 
     /***** OVERRIDE *****/
@@ -31,12 +31,12 @@ public class DirectorChair extends Goal {
 
     @Override
     public AmenityGraphic getGraphicObject() {
-        return this.directorChairGraphic;
+        return this.officeChairGraphic;
     }
 
     @Override
     public AmenityGraphicLocation getGraphicLocation() {
-        return this.directorChairGraphic.getGraphicLocation();
+        return this.officeChairGraphic.getGraphicLocation();
     }
 
 
@@ -61,8 +61,8 @@ public class DirectorChair extends Goal {
     }
 
     public static class DirectorChairFactory extends GoalFactory {
-        public static DirectorChair create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new DirectorChair(amenityBlocks, enabled);
+        public static DirectorChair create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String type) {
+            return new DirectorChair(amenityBlocks, enabled, facing, type);
         }
     }
 }

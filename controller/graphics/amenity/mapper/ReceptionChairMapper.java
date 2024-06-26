@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ReceptionChairMapper extends AmenityMapper {
 
-    public static void draw(List<Patch> patches, int index) {
+    public static void draw(List<Patch> patches, int index, String facing, String type) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = ReceptionChair.ReceptionChairBlock.receptionChairBlockFactory;
@@ -19,7 +19,7 @@ public class ReceptionChairMapper extends AmenityMapper {
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 
-            ReceptionChair chairToAdd = ReceptionChair.ReceptionChairFactory.create(amenityBlocks, true);
+            ReceptionChair chairToAdd = ReceptionChair.ReceptionChairFactory.create(amenityBlocks, true, facing, type);
             Main.simulator.getEnvironment().getReceptionTables().get(index).getReceptionChairs().add(chairToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }

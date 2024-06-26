@@ -7,7 +7,7 @@ public class ToiletGraphic extends AmenityGraphic {
 
     /***** VARIABLES *****/
 
-    private static final int ROW_SPAN = 1;
+    private static final int ROW_SPAN = 2;
     private static final int COLUMN_SPAN = 1;
 
     private static final int NORMAL_ROW_OFFSET = 0;
@@ -17,8 +17,13 @@ public class ToiletGraphic extends AmenityGraphic {
 
     /***** CONSTRUCTOR *****/
 
-    public ToiletGraphic(Toilet toilet) {
+    public ToiletGraphic(Toilet toilet, String facing) {
         super(toilet, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
+
+        switch (facing) {
+            case "SOUTH" -> this.graphicIndex = 0;
+            case "NORTH" -> this.graphicIndex = 1;
+        }
     }
 
 }

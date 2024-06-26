@@ -15,8 +15,6 @@ import com.socialsim.model.simulator.Simulator;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AgentMovement {
 
@@ -236,7 +234,7 @@ public class AgentMovement {
 
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
-                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                if (candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
                     this.goalAttractor = candidateAttractor;
 
@@ -261,10 +259,10 @@ public class AgentMovement {
             }
             else if (parent.getType() == Agent.Type.MAINTENANCE &&
                     this.currentAction.getName() == Action.Name.MAINTENANCE_CLEAN_TOILET) {
-                for(int i = 0; i < this.environment.getOfficeToilets().size(); i++) {
-                    if (!this.environment.getOfficeToilets().get(i).isClean()) {
-                        temp.add(this.environment.getOfficeToilets().get(i));
-                    }
+                for(int i = 0; i < this.environment.getToilets().size(); i++) {
+//                    if (!this.environment.getToilets().get(i).isClean()) {
+//                        temp.add(this.environment.getToilets().get(i));
+//                    }
                 }
             }
             else {
@@ -307,7 +305,7 @@ public class AgentMovement {
 
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
-                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                if (candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
                     this.goalAttractor = candidateAttractor;
 
@@ -470,21 +468,27 @@ public class AgentMovement {
                 if(getWaitPatch() != null){
                     path.push(goalPatch);
                 }
-                else if(goalAmenity.getClass() == Chair.class
-                        || goalAmenity.getClass() == Door.class
-                        || goalAmenity.getClass() == MainEntranceDoor.class
-                        || goalAmenity.getClass() == FemaleBathroomDoor.class
-                        || goalAmenity.getClass() == MaleBathroomDoor.class
-                        || goalAmenity.getClass() == Toilet.class
-                        || goalAmenity.getClass() == Couch.class
-                        || goalAmenity.getClass() == Gate.class
-                        || goalAmenity.getClass() == Table.class
-                        || goalAmenity.getClass() == MeetingDesk.class
-                        || goalAmenity.getClass() == Cubicle.class
-                        || goalAmenity.getClass() == OfficeDesk.class
-                        || goalAmenity.getClass() == ReceptionChair.class
-                        || goalAmenity.getClass() == CollabChair.class
-                        || goalAmenity.getClass() == CollabDesk.class) {
+                else if(    goalAmenity.getClass() == DirectorChair.class
+                        ||  goalAmenity.getClass() == LearningChair.class
+                        ||  goalAmenity.getClass() == MeetingChair.class
+                        ||  goalAmenity.getClass() == PantryChair.class
+                        ||  goalAmenity.getClass() == ReceptionChair.class
+                        ||  goalAmenity.getClass() == ResearchChair.class
+                        ||  goalAmenity.getClass() == Door.class
+                        ||  goalAmenity.getClass() == MainEntranceDoor.class
+                        ||  goalAmenity.getClass() == FemaleBathroomDoor.class
+                        ||  goalAmenity.getClass() == MaleBathroomDoor.class
+                        ||  goalAmenity.getClass() == Toilet.class
+                        ||  goalAmenity.getClass() == Couch.class
+                        ||  goalAmenity.getClass() == Gate.class
+                        ||  goalAmenity.getClass() == Cubicle.class
+                        ||  goalAmenity.getClass() == DirectorTable.class
+                        ||  goalAmenity.getClass() == LearningTable.class
+                        ||  goalAmenity.getClass() == MeetingTable.class
+                        ||  goalAmenity.getClass() == PantryTable.class
+                        ||  goalAmenity.getClass() == ReceptionTable.class
+                        ||  goalAmenity.getClass() == ResearchTable.class
+                ) {
                     path.push(goalPatch);
                 }
                 double length = 0.0;
@@ -548,7 +552,7 @@ public class AgentMovement {
         }
 //        this.waitPatch = patchesToConsider.get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(patchesToConsider.size()));
         for(Patch patch : patchesToConsider) {
-            if(!patch.getAmenityBlock().getIsReserved()) {
+            if(patch.getAmenityBlock().getIsReserved()) {
                 this.waitPatch = patch;
                 getWaitPatch().getAmenityBlock().setIsReserved(true);
                 return true;
@@ -590,7 +594,7 @@ public class AgentMovement {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) { // Look for a vacant amenity
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
                 temp++;
-                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                if (candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
                     this.goalAttractor = candidateAttractor;
 
@@ -610,10 +614,13 @@ public class AgentMovement {
             List<Amenity> temp = new ArrayList<>();
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
 
+            // Pantry Chair Type A
             for(int i = 0; i < this.environment.getPantryTables().size(); i++) {
                 temp.addAll(this.environment.getPantryTables().get(i).getPantryChairs());
             }
-            temp.addAll(this.environment.getChairs());
+
+            // chelsea: commented this out; not sure if I should replace this with all kinds of chairs
+            // temp.addAll(this.environment.getChairs());
 
             // Agents are not allowed to eat their lunch on the couch
             if(this.getCurrentAction().getName() != Action.Name.GO_TO_LUNCH) {
@@ -646,7 +653,7 @@ public class AgentMovement {
 
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
-                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                if (candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
                     this.goalAttractor = candidateAttractor;
 
@@ -668,7 +675,7 @@ public class AgentMovement {
             int count = 1;
             int table = -1;
 
-            List<? extends Amenity> amenityListInFloor = this.environment.getAmenityList(CollabDesk.class);
+            List<? extends Amenity> amenityListInFloor = this.environment.getAmenityList(LearningTable.class);
             for (Amenity amenity : amenityListInFloor) {
                 if(amenity.getAttractors().get(0).getPatch().getTeam() == this.team){
                     table = count;
@@ -676,7 +683,7 @@ public class AgentMovement {
                     break;
                 }
                 count++;
-                if(count>Main.simulator.getEnvironment().getCollabDesks().size()){
+                if(count>Main.simulator.getEnvironment().getLearningTables().size()){
                     count = 0;
                     break;
                 }
@@ -691,7 +698,7 @@ public class AgentMovement {
                         amenity.getAttractors().get(0).getPatch().setTeam(this.team);
                         break;
                     }
-                    if(count == Main.simulator.getEnvironment().getCollabDesks().size()){
+                    if(count == Main.simulator.getEnvironment().getLearningTables().size()){
                         break;
                     }
                 }
@@ -699,7 +706,7 @@ public class AgentMovement {
 
             if (table != -1) {
 
-                temp.addAll(Main.simulator.getEnvironment().getCollabDesks().get(table - 1).getCollabChairs());
+                temp.addAll(Main.simulator.getEnvironment().getLearningTables().get(table - 1).getLearningChairs());
 
                 for (Amenity amenity : temp) {
                     for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
@@ -726,7 +733,7 @@ public class AgentMovement {
                 for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
                     Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
 
-                    if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                    if (candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                         this.goalAmenity = candidateAttractor.getParent();
                         this.goalAttractor = candidateAttractor;
 
@@ -749,7 +756,7 @@ public class AgentMovement {
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
 
             List<Amenity> temp = new ArrayList<>();
-            temp.addAll(Main.simulator.getEnvironment().getMeetingDesks().get(room - 1).getMeetingChairs());
+            temp.addAll(Main.simulator.getEnvironment().getMeetingTables().get(room - 1).getMeetingChairs());
 
             for (Amenity amenity : temp) {
                 for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
@@ -777,7 +784,7 @@ public class AgentMovement {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
 
-                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                if (candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
                     this.goalAttractor = candidateAttractor;
 
@@ -1302,12 +1309,14 @@ public class AgentMovement {
                     patch.getAmenityBlock().getParent().getClass() == MainEntranceDoor.class ||
                     patch.getAmenityBlock().getParent().getClass() == FemaleBathroomDoor.class ||
                     patch.getAmenityBlock().getParent().getClass() == MaleBathroomDoor.class ||
-                    patch.getAmenityBlock().getParent().getClass() == ReceptionChair.class ||
-                    patch.getAmenityBlock().getParent().getClass() == Chair.class ||
-                    patch.getAmenityBlock().getParent().getClass() == Toilet.class ||
+                    patch.getAmenityBlock().getParent().getClass() == DirectorChair.class ||
+                    patch.getAmenityBlock().getParent().getClass() == LearningChair.class ||
                     patch.getAmenityBlock().getParent().getClass() == MeetingChair.class ||
-                    patch.getAmenityBlock().getParent().getClass() == CollabChair.class ||
-                    patch.getAmenityBlock().getParent().getClass() == Trash.class ||
+                    // chelsea: wanted to add pantry chair type a and b but not sure if it should be here
+                    patch.getAmenityBlock().getParent().getClass() == ReceptionChair.class ||
+                    patch.getAmenityBlock().getParent().getClass() == ResearchChair.class ||
+                    patch.getAmenityBlock().getParent().getClass() == Toilet.class ||
+                    patch.getAmenityBlock().getParent().getClass() == TrashCan.class ||
                     patch.getAmenityBlock().getParent().getClass() == Whiteboard.class
             ) {
                 return false;

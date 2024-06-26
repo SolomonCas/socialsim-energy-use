@@ -13,11 +13,11 @@ public class WaterDispenserGraphic extends AmenityGraphic {
     private static final int NORMAL_COLUMN_OFFSET = 0;
 
 
-
     /***** CONSTRUCTOR *****/
-
     public WaterDispenserGraphic(WaterDispenser waterDispenser) {
         super(waterDispenser, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
+
+        this.graphicIndex = 0;
     }
 
 }

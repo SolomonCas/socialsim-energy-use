@@ -4,17 +4,16 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.StorageCabinetGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class StorageCabinet extends Goal {
     /***** VARIABLES *****/
-    public static final StorageCabinet.StorageCabinetFactory storageCabinetFactory;
+    public static final StorageCabinetFactory storageCabinetFactory;
     private final StorageCabinetGraphic storageCabinetGraphic;
 
     static {
-        storageCabinetFactory = new StorageCabinet.StorageCabinetFactory();
+        storageCabinetFactory = new StorageCabinetFactory();
     }
 
     /***** CONSTRUCTOR *****/
@@ -42,21 +41,21 @@ public class StorageCabinet extends Goal {
 
 
     /***** INNER STATIC CLASSES *****/
-    public static class StorageCabinetBlock extends Amenity.AmenityBlock {
-        public static StorageCabinet.StorageCabinetBlock.StorageCabinetBlockFactory storageCabinetBlockFactory;
+    public static class StorageCabinetBlock extends AmenityBlock {
+        public static StorageCabinetBlockFactory storageCabinetBlockFactory;
 
         static {
-            storageCabinetBlockFactory = new StorageCabinet.StorageCabinetBlock.StorageCabinetBlockFactory();
+            storageCabinetBlockFactory = new StorageCabinetBlockFactory();
         }
 
         private StorageCabinetBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class StorageCabinetBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class StorageCabinetBlockFactory extends AmenityBlockFactory {
             @Override
-            public StorageCabinet.StorageCabinetBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new StorageCabinet.StorageCabinetBlock(patch, attractor, hasGraphic);
+            public StorageCabinetBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new StorageCabinetBlock(patch, attractor, hasGraphic);
             }
         }
     }

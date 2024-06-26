@@ -3,7 +3,6 @@ package com.socialsim.model.core.environment.patchobject.passable.goal;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.Drawable;
 import com.socialsim.model.core.environment.patchobject.passable.NonObstacle;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Goal;
 import com.socialsim.model.simulator.Simulator;
 
 import java.util.List;

@@ -30,13 +30,8 @@ public class GraphicsController extends Controller {
 
 
     // VARIABLES
-    private static final Image AMENITY_SPRITES = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL);
-    private static final Image AMENITY_SPRITES2 = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL2);
-    private static final Image AMENITY_SPRITES3 = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL3);
-    private static final Image AGENT_SPRITES1 = new Image(AgentGraphic.AGENTS_URL_1);
-    private static final Image AGENT_SPRITES2 = new Image(AgentGraphic.AGENTS_URL_2);
-    private static final Image AGENT_SPRITES3 = new Image(AgentGraphic.AGENTS_URL_3);
-    private static final Image AGENT_SPRITES4 = new Image(AgentGraphic.AGENTS_URL_4);
+    private static final Image AMENITY_SPRITES = new Image(AmenityGraphic.AMENITIES_SPRITE_SHEET_URL);
+    private static final Image AGENT_SPRITES = new Image(AgentGraphic.AGENTS_SPRITE_SHEET_URL);
 
     public static List<Amenity.AmenityBlock> firstPortalAmenityBlocks;
     public static double tileSize;
@@ -156,42 +151,18 @@ public class GraphicsController extends Controller {
                         foregroundGraphicsContext.setGlobalAlpha(0.2);
                     }
 
+//                    System.out.println("PRINT drawablePatchAmenity: " + drawablePatchAmenity);
                     AmenityGraphicLocation amenityGraphicLocation = drawablePatchAmenity.getGraphicLocation();
 
-                    // IF STATEMENTS
-                    if (patchAmenity.getClass() == Gate.class) {
-                        foregroundGraphicsContext.drawImage(
-                                AMENITY_SPRITES3,
-                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
-                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
-                                column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
-                                row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
-                    }
-                    else if (   patchAmenity.getClass() == Toilet.class || patchAmenity.getClass() == Sink.class ||
-                            patchAmenity.getClass() == Trash.class || patchAmenity.getClass() == OfficeToilet.class ||
-                            patchAmenity.getClass() == OfficeSink.class) {
-                        foregroundGraphicsContext.drawImage(
-                                AMENITY_SPRITES2,
-                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
-                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
-                                column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
-                                row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
-                    }
-                    else {
-                        foregroundGraphicsContext.drawImage(
-                                AMENITY_SPRITES,
-                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
-                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
-                                column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
-                                row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
-                    }
-
+                    foregroundGraphicsContext.drawImage(
+                            AMENITY_SPRITES,
+                            amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
+                            amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
+                            column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
+                            row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
+                            tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
+                            tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan()
+                    );
 
 
 
@@ -290,7 +261,7 @@ public class GraphicsController extends Controller {
                         patchColor = Color.rgb(233, 127, 146);
 
 
-                    // Director's Bathroom
+                    // Director Bathroom
                     } else {
                         patchColor = Color.rgb(136, 158, 152);
                     }
@@ -520,16 +491,7 @@ public class GraphicsController extends Controller {
                             Agent officeAgent = agent;
                             AgentGraphicLocation agentGraphicLocation = officeAgent.getAgentGraphic().getGraphicLocation();
 
-                            Image CURRENT_URL = null;
-                            if (agent.getType() == Agent.Type.GUARD || agent.getType() == Agent.Type.MAINTENANCE) {
-                                CURRENT_URL = AGENT_SPRITES1;
-                            }
-                            else if (agent.getType() == Agent.Type.DIRECTOR || agent.getType() == Agent.Type.STUDENT) {
-                                CURRENT_URL = AGENT_SPRITES2;
-                            }
-                            else if (agent.getType() == Agent.Type.FACULTY) {
-                                CURRENT_URL = AGENT_SPRITES3;
-                            }
+                            Image CURRENT_URL = AGENT_SPRITES;
 
                             foregroundGraphicsContext.drawImage(
                                     CURRENT_URL,

@@ -274,7 +274,7 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.INSPECT_ROOMS, this, agent, actions));
 
             actions = new ArrayList<>();
-            for (int i = 0; i < environment.getOfficeToilets().size(); i++) {
+            for (int i = 0; i < environment.getToilets().size(); i++) {
                 actions.add(new Action(Action.Name.MAINTENANCE_CLEAN_TOILET, 10)); // Cleans only OfficeToilet
             }
             routePlan.add(new State(State.Name.MAINTENANCE_BATHROOM, this, agent, actions));
@@ -392,20 +392,29 @@ public class RoutePlan {
     public void maintenanceInspect(PatchField room, Environment environment, ArrayList<Action> actions) {
 
         // Get all the list of tables, cubicles, and desk in the model
-        List<? extends Amenity> collabDesk = environment.getAmenityList(CollabDesk.class);
+
+        /* chelsea: hi, here's what I did
+                added: directorTable, researchTable
+                deleted:  officeDesk    */
+
         List<? extends Amenity> cubicle = environment.getAmenityList(Cubicle.class);
-        List<? extends Amenity> meetingDesk = environment.getAmenityList(MeetingDesk.class);
-        List<? extends Amenity> pantry = environment.getAmenityList(PantryTable.class);
-        List<? extends Amenity> table = environment.getAmenityList(Table.class);
-        List<? extends Amenity> officeDesk = environment.getAmenityList(OfficeDesk.class);
+
+        List<? extends Amenity> pantryTable = environment.getAmenityList(PantryTable.class);
+
+        List<? extends Amenity> directorTable = environment.getAmenityList(DirectorTable.class);
+        List<? extends Amenity> learningTable = environment.getAmenityList(LearningTable.class);
+        List<? extends Amenity> meetingTable = environment.getAmenityList(MeetingTable.class);
+        List<? extends Amenity> receptionTable = environment.getAmenityList(ReceptionTable.class);
+        List<? extends Amenity> researchTable = environment.getAmenityList(ResearchTable.class);
+
 
         List<Amenity> allAmenities = new ArrayList<>();
-//        allAmenities.addAll(collabDesk);
+
 //        allAmenities.addAll(cubicle);
-        allAmenities.addAll(meetingDesk);
-        allAmenities.addAll(pantry);
-//        allAmenities.addAll(table);
-        allAmenities.addAll(officeDesk);
+        allAmenities.addAll(pantryTable);
+//        allAmenities.addAll(learningTable);
+        allAmenities.addAll(meetingTable);
+//        allAmenities.addAll(receptionTable);
 
         for (Amenity amenity : allAmenities) {
             // Check if the amenity is in the selected room

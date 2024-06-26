@@ -9,104 +9,137 @@ import com.socialsim.model.core.environment.patchobject.passable.goal.Cubicle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class CubicleMapper extends AmenityMapper {
 
     /***** METHOD *****/
-    public static void draw(List<Patch> patches, String facing, boolean withAppliance) {
+
+    public static void draw(List<Patch> patches, String type, String facing, String tableOn, boolean withAppliance) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
             int origPatchCol = patch.getMatrixPosition().getColumn();
 
-            if (Objects.equals(facing, "UP")) {
-                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cubicle.CubicleBlock.cubicleBlockFactory;
-                Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
-                amenityBlocks.add(amenityBlock);
-                patch.setAmenityBlock(amenityBlock);
+            // CUBICLE'S FIRST PATCH (UPPER LEFT CORNER)
+            Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cubicle.CubicleBlock.cubicleBlockFactory;
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
+            amenityBlocks.add(amenityBlock);
+            patch.setAmenityBlock(amenityBlock);
 
-                Patch patch2 = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(patch2, false, false);
-                amenityBlocks.add(amenityBlock2);
-                patch2.setAmenityBlock(amenityBlock2);
+            Amenity.AmenityBlock nextAmenityBlock;
 
-                Patch patch3 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
-                Amenity.AmenityBlock amenityBlock3 = amenityBlockFactory.create(patch3, true, false);
-                amenityBlocks.add(amenityBlock3);
-                patch3.setAmenityBlock(amenityBlock3);
+            switch (type) {
+                case ("MESA") -> {
+                    for (int i = 0; i <= 4; i++) {
+                        for (int j = 0; j <= 3; j++) {
+                            if (i == 0) {
+                                j++;
+                            }
 
-                Patch patch4 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock4 = amenityBlockFactory.create(patch4, true, false);
-                amenityBlocks.add(amenityBlock4);
-                patch4.setAmenityBlock(amenityBlock4);
+                            Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
 
+                            if (((tableOn.equals("NORTH_AND_WEST") || tableOn.equals("SOUTH_AND_EAST")) && ((i == 1 && j == 2) || (i == 3 && j == 1))) ||
+                                    ((tableOn.equals("NORTH_AND_EAST") || tableOn.equals("SOUTH_AND_WEST")) && ((i == 1 && j == 1) || (i == 3 && j == 2)))) {
+                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
+                            } else {
+                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            }
+
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
+                    }
+                }
+                case "TYPE_A" -> {
+                    for (int i = 0; i <= 7; i++) {
+                        for (int j = 0; j <= 4; j++) {
+                            if (i == 0) {
+                                j++;
+                            }
+
+                            Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
+
+                            if ((i == 1 && (j == 1 || j == 3)) || (i == 6 && (j == 1 || j == 3))) {
+                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
+                            } else {
+                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            }
+
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
+                    }
+                }
+                case "TYPE_B" -> {
+                    for (int i = 0; i <= 3; i++) {
+                        for (int j = 0; j <= 2; j++) {
+                            if (i == 0) {
+                                j++;
+                            }
+
+                            Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
+
+                            if ((i == 2 && j == 1) ||
+                                    (facing.equals("WEST") && (i == 1 && j == 0)) ||
+                                    (facing.equals("EAST") && (i == 1 && j == 2))) {
+                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
+                            } else {
+                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            }
+
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
+                    }
+                }
+                case "TYPE_C" -> {
+                    if (facing.equals("NORTH") || facing.equals("SOUTH")) {
+                        for (int i = 0; i <= 1; i++) {
+                            for (int j = 0; j <= 2; j++) {
+                                if (i == 0) {
+                                    j++;
+                                }
+
+                                Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
+
+                                if ((facing.equals("NORTH") && (i == 0 && j == 1)) ||
+                                        (facing.equals("SOUTH") && (i == 1 && j == 1))) {
+                                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
+                                } else {
+                                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                                }
+
+
+                                amenityBlocks.add(nextAmenityBlock);
+                                nextPatch.setAmenityBlock(nextAmenityBlock);
+                            }
+                        }
+                    } else if (facing.equals("WEST") || facing.equals("EAST")) {
+                        for (int i = 0; i <= 2; i++) {
+                            for (int j = 0; j <= 1; j++) {
+                                if (i == 0) {
+                                    j++;
+                                }
+
+                                Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
+
+                                if ((facing.equals("WEST") && (i == 1 && j == 1)) ||
+                                        (facing.equals("EAST") && (i == 1 && j == 0))) {
+                                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
+                                } else {
+                                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                                }
+
+
+                                amenityBlocks.add(nextAmenityBlock);
+                                nextPatch.setAmenityBlock(nextAmenityBlock);
+                            }
+                        }
+                    }
+                }
             }
-            else if (Objects.equals(facing, "LEFT")) {
-                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cubicle.CubicleBlock.cubicleBlockFactory;
-                Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
-                amenityBlocks.add(amenityBlock);
-                patch.setAmenityBlock(amenityBlock);
 
-                Patch patch2 = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(patch2, false, false);
-                amenityBlocks.add(amenityBlock2);
-                patch2.setAmenityBlock(amenityBlock2);
-
-                Patch patch3 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
-                Amenity.AmenityBlock amenityBlock3 = amenityBlockFactory.create(patch3, true, false);
-                amenityBlocks.add(amenityBlock3);
-                patch3.setAmenityBlock(amenityBlock3);
-
-                Patch patch4 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock4 = amenityBlockFactory.create(patch4, false, false);
-                amenityBlocks.add(amenityBlock4);
-                patch4.setAmenityBlock(amenityBlock4);
-            }
-            else if (Objects.equals(facing, "RIGHT")) {
-                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cubicle.CubicleBlock.cubicleBlockFactory;
-                Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
-                amenityBlocks.add(amenityBlock);
-                patch.setAmenityBlock(amenityBlock);
-
-                Patch patch2 = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(patch2, true, false);
-                amenityBlocks.add(amenityBlock2);
-                patch2.setAmenityBlock(amenityBlock2);
-
-                Patch patch3 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
-                Amenity.AmenityBlock amenityBlock3 = amenityBlockFactory.create(patch3, false, false);
-                amenityBlocks.add(amenityBlock3);
-                patch3.setAmenityBlock(amenityBlock3);
-
-                Patch patch4 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock4 = amenityBlockFactory.create(patch4, true, false);
-                amenityBlocks.add(amenityBlock4);
-                patch4.setAmenityBlock(amenityBlock4);
-            }
-            else {
-                Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cubicle.CubicleBlock.cubicleBlockFactory;
-                Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
-                amenityBlocks.add(amenityBlock);
-                patch.setAmenityBlock(amenityBlock);
-
-                Patch patch2 = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock2 = amenityBlockFactory.create(patch2, true, false);
-                amenityBlocks.add(amenityBlock2);
-                patch2.setAmenityBlock(amenityBlock2);
-
-                Patch patch3 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
-                Amenity.AmenityBlock amenityBlock3 = amenityBlockFactory.create(patch3, false, false);
-                amenityBlocks.add(amenityBlock3);
-                patch3.setAmenityBlock(amenityBlock3);
-
-                Patch patch4 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock4 = amenityBlockFactory.create(patch4, false, false);
-                amenityBlocks.add(amenityBlock4);
-                patch4.setAmenityBlock(amenityBlock4);
-            }
-
-            Cubicle cubicleToAdd = Cubicle.CubicleFactory.create(amenityBlocks, true, facing, withAppliance);
+            Cubicle cubicleToAdd = Cubicle.CubicleFactory.create(amenityBlocks, true, type, facing, tableOn, withAppliance);
             Main.simulator.getEnvironment().getCubicles().add(cubicleToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }

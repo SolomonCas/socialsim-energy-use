@@ -2,8 +2,8 @@ package com.socialsim.controller.graphics.amenity.mapper;
 
 import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.amenity.AmenityMapper;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.Patch;
+import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.MaleBathroomDoor;
 
 import java.util.ArrayList;

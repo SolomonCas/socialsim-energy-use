@@ -34,7 +34,6 @@ public class Environment extends BaseObject implements Serializable {
     private final List<Wall> walls;
     private final List<Bathroom> bathrooms;
     private final List<Reception> receptions;
-    private final List<ReceptionQueue> receptionQueues;
     private final List<StaffArea> staffAreas;
     private final List<SoloRoom> soloRooms;
     private final List<DataCenter> dataCenters;
@@ -52,39 +51,53 @@ public class Environment extends BaseObject implements Serializable {
     private final List<DirectorRoom> directorRooms;
     private final List<Pantry> pantries;
 
+    private final List<ReceptionQueue> receptionQueues;
+    private final List<WaterDispenserQueue> waterDispenserQueues;
+    private final List<RefrigeratorQueue> refrigeratorQueues;
+    private final List<BathroomQueue> bathroomQueues;
+
 
 
 
     // Amenities
     private final SortedSet<Patch> amenityPatchSet;
 
+    private final List<Cubicle> cubicles;
+    private final List<ResearchTable> researchTables;
+    private final List<MeetingTable> meetingTables;
+    private final List<LearningTable> learningTables;
+    private final List<PantryTable> pantryTables;
+    private final List<DirectorTable> directorTables;
+    private final List<ReceptionTable> receptionTables;
+    private final List<SoloTable> soloTables;
+
+    private final List<HumanExpTable> humanExpTables;
+    private final List<DataCollTable> dataCollTables;
+    private final List<Elevator> elevators;
+    private final List<Whiteboard> whiteboards;
+    private final List<Refrigerator> refrigerators;
+    private final List<PantryCabinet> pantryCabinets;
+    private final List<CoffeeMakerBar> coffeeMakerBars;
+    private final List<KettleBar> kettleBars;
+    private final List<MicrowaveBar> microwaveBars;
+
+
+
+
     private final List<Gate> gates;
     private final List<Cabinet> cabinets;
-    private final List<Chair> chairs;
-    private final List<CollabDesk> collabDesks;
     private final List<Couch> couches;
-    private final List<Cubicle> cubicles;
     private final List<Door> doors;
-    private final List<MeetingDesk> meetingDesks;
-    private final List<OfficeDesk> officeDesks;
     private final List<Plant> plants;
-    private final List<ReceptionTable> receptionTables;
-    private final List<PantryTable> pantryTables;
-    private final List<Table> tables;
     private final List<Sink> sinks;
     private final List<Server> servers;
     private final List<Toilet> toilets;
-    private final List<Trash> trashes;
-    private final List<Fridge> fridges;
+    private final List<TrashCan> trashCans;
     private final List<WaterDispenser> waterDispensers;
-    private final List<Whiteboard> whiteboards;
     private final List<MaleBathroomDoor> maleBathroomDoors;
     private final List<FemaleBathroomDoor> femaleBathroomDoors;
     private final List<MainEntranceDoor> mainEntranceDoors;
     private final List<StorageCabinet> storageCabinets;
-    private final List<OfficeSink> officeSinks;
-    private final List<OfficeToilet> officeToilets;
-    private final List<DirectorTable> directorTables;
 
 
 
@@ -139,7 +152,6 @@ public class Environment extends BaseObject implements Serializable {
         this.walls = Collections.synchronizedList(new ArrayList<>());
         this.bathrooms = Collections.synchronizedList(new ArrayList<>());
         this.receptions = Collections.synchronizedList(new ArrayList<>());
-        this.receptionQueues = Collections.synchronizedList(new ArrayList<>());
         this.staffAreas = Collections.synchronizedList(new ArrayList<>());
         this.soloRooms = Collections.synchronizedList(new ArrayList<>());
         this.dataCenters = Collections.synchronizedList(new ArrayList<>());
@@ -157,38 +169,54 @@ public class Environment extends BaseObject implements Serializable {
         this.directorRooms = Collections.synchronizedList(new ArrayList<>());
         this.pantries = Collections.synchronizedList(new ArrayList<>());
 
+        this.receptionQueues = Collections.synchronizedList(new ArrayList<>());
+        this.waterDispenserQueues = Collections.synchronizedList(new ArrayList<>());
+        this.refrigeratorQueues = Collections.synchronizedList(new ArrayList<>());
+        this.bathroomQueues = Collections.synchronizedList(new ArrayList<>());
+
 
 
         // Amenities
         this.amenityPatchSet = Collections.synchronizedSortedSet(new TreeSet<>());
 
+        this.cubicles = Collections.synchronizedList(new ArrayList<>());
+        this.researchTables = Collections.synchronizedList(new ArrayList<>());
+        this.meetingTables = Collections.synchronizedList(new ArrayList<>());
+        this.learningTables = Collections.synchronizedList(new ArrayList<>());
+        this.pantryTables = Collections.synchronizedList(new ArrayList<>());
+        this.directorTables = Collections.synchronizedList(new ArrayList<>());
+        this.receptionTables = Collections.synchronizedList(new ArrayList<>());
+        this.soloTables = Collections.synchronizedList(new ArrayList<>());
+        this.humanExpTables = Collections.synchronizedList(new ArrayList<>());
+        this.dataCollTables = Collections.synchronizedList(new ArrayList<>());
+        this.whiteboards = Collections.synchronizedList(new ArrayList<>());
+        this.elevators = Collections.synchronizedList(new ArrayList<>());
+        this.refrigerators = Collections.synchronizedList(new ArrayList<>());
+        this.trashCans = Collections.synchronizedList(new ArrayList<>());
+        this.couches = Collections.synchronizedList(new ArrayList<>());
+        this.waterDispensers = Collections.synchronizedList(new ArrayList<>());
+        this.plants = Collections.synchronizedList(new ArrayList<>());
+        this.pantryCabinets = Collections.synchronizedList(new ArrayList<>());
+        this.coffeeMakerBars = Collections.synchronizedList(new ArrayList<>());
+        this.kettleBars = Collections.synchronizedList(new ArrayList<>());
+        this.microwaveBars = Collections.synchronizedList(new ArrayList<>());
+
+
+
+
+
+
+
         this.gates = Collections.synchronizedList(new ArrayList<>());
         this.cabinets = Collections.synchronizedList(new ArrayList<>());
-        this.chairs = Collections.synchronizedList(new ArrayList<>());
-        this.collabDesks = Collections.synchronizedList(new ArrayList<>());
-        this.couches = Collections.synchronizedList(new ArrayList<>());
-        this.cubicles = Collections.synchronizedList(new ArrayList<>());
         this.doors = Collections.synchronizedList(new ArrayList<>());
-        this.meetingDesks = Collections.synchronizedList(new ArrayList<>());
-        this.officeDesks = Collections.synchronizedList(new ArrayList<>());
-        this.plants = Collections.synchronizedList(new ArrayList<>());
-        this.receptionTables = Collections.synchronizedList(new ArrayList<>());
-        this.tables = Collections.synchronizedList(new ArrayList<>());
-        this.pantryTables = Collections.synchronizedList(new ArrayList<>());
         this.sinks = Collections.synchronizedList(new ArrayList<>());
         this.servers = Collections.synchronizedList(new ArrayList<>());
         this.toilets = Collections.synchronizedList(new ArrayList<>());
-        this.trashes = Collections.synchronizedList(new ArrayList<>());
-        this.fridges = Collections.synchronizedList(new ArrayList<>());
-        this.waterDispensers = Collections.synchronizedList(new ArrayList<>());
-        this.whiteboards = Collections.synchronizedList(new ArrayList<>());
         this.maleBathroomDoors = Collections.synchronizedList(new ArrayList<>());
         this.femaleBathroomDoors = Collections.synchronizedList(new ArrayList<>());
         this.mainEntranceDoors = Collections.synchronizedList(new ArrayList<>());
         this.storageCabinets = Collections.synchronizedList(new ArrayList<>());
-        this.officeSinks = Collections.synchronizedList(new ArrayList<>());
-        this.officeToilets = Collections.synchronizedList(new ArrayList<>());
-        this.directorTables = Collections.synchronizedList(new ArrayList<>());
 
         // Agents
         this.agents = new CopyOnWriteArrayList<>();
@@ -222,7 +250,7 @@ public class Environment extends BaseObject implements Serializable {
         List<? extends Amenity> amenityListInFloor = this.getAmenityList(Toilet.class);
         int ctr = 0;
         for (Amenity amenity : amenityListInFloor)
-            if (!amenity.getAmenityBlocks().get(0).getIsReserved()) {
+            if (amenity.getAmenityBlocks().get(0).getIsReserved()) {
                 ctr++;
                 break;
             }
@@ -963,9 +991,6 @@ public class Environment extends BaseObject implements Serializable {
     public List<Reception> getReceptions() {
         return receptions;
     }
-    public List<ReceptionQueue> getReceptionQueues() {
-        return receptionQueues;
-    }
     public List<StaffArea> getStaffRooms() {
         return staffAreas;
     }
@@ -1016,50 +1041,96 @@ public class Environment extends BaseObject implements Serializable {
     }
 
 
+    public List<ReceptionQueue> getReceptionQueues() {
+        return receptionQueues;
+    }
+    public List<WaterDispenserQueue> getWaterDispenserQueues() {
+        return waterDispenserQueues;
+    }
+    public List<RefrigeratorQueue> getRefrigeratorQueues() {
+        return refrigeratorQueues;
+    }
+    public List<BathroomQueue> getBathroomQueues() {
+        return bathroomQueues;
+    }
+
+
 
     // GETTERS: AMENITIES
     public SortedSet<Patch> getAmenityPatchSet() {
         return amenityPatchSet;
     }
+
+    public List<Cubicle> getCubicles() {
+        return cubicles;
+    }
+    public List<ResearchTable> getResearchTables() {
+        return researchTables;
+    }
+    public List<MeetingTable> getMeetingTables() {
+        return meetingTables;
+    }
+    public List<LearningTable> getLearningTables() {
+        return learningTables;
+    }
+    public List<PantryTable> getPantryTables() {
+        return pantryTables;
+    }
+    public List<DirectorTable> getDirectorTables() {
+        return directorTables;
+    }
+    public List<Whiteboard> getWhiteboards() {
+        return whiteboards;
+    }
+    public List<Elevator> getElevators() {
+        return elevators;
+    }
+
     public List<Gate> getGates() {
         return gates;
     }
     public List<Cabinet> getCabinets() {
         return cabinets;
     }
-    public List<Chair> getChairs() {
-        return chairs;
-    }
-    public List<CollabDesk> getCollabDesks() {
-        return collabDesks;
-    }
     public List<Couch> getCouches() {
         return couches;
-    }
-    public List<Cubicle> getCubicles() {
-        return cubicles;
     }
     public List<Door> getDoors() {
         return doors;
     }
-    public List<MeetingDesk> getMeetingDesks() {
-        return meetingDesks;
-    }
-    public List<OfficeDesk> getOfficeDesks() {
-        return officeDesks;
-    }
     public List<Plant> getPlants() {
         return plants;
     }
+    public List<PantryCabinet> getPantryCabinets() {
+        return pantryCabinets;
+    }
+    public List<CoffeeMakerBar> getCoffeeMakerBars() {
+        return coffeeMakerBars;
+    }
+    public List<KettleBar> getKettleBars() {
+        return kettleBars;
+    }
+    public List<MicrowaveBar> getMicrowaveBars() {
+        return microwaveBars;
+    }
+
     public List<ReceptionTable> getReceptionTables() {
         return receptionTables;
     }
-    public List<Table> getTables() {
-        return tables;
+    public List<SoloTable> getSoloTables() {
+        return soloTables;
     }
-    public List<PantryTable> getPantryTables() {
-        return pantryTables;
+    public List<HumanExpTable> getHumanExpTables() {
+        return humanExpTables;
     }
+    public List<DataCollTable> getDataCollTables() {
+        return dataCollTables;
+    }
+    public List<Refrigerator> getRefrigerators() {
+        return refrigerators;
+    }
+
+
     public List<Sink> getSinks() {
         return sinks;
     }
@@ -1069,17 +1140,11 @@ public class Environment extends BaseObject implements Serializable {
     public List<Toilet> getToilets() {
         return toilets;
     }
-    public List<Trash> getTrashes() {
-        return trashes;
-    }
-    public List<Fridge> getFridges() {
-        return fridges;
+    public List<TrashCan> getTrashCans() {
+        return trashCans;
     }
     public List<WaterDispenser> getWaterDispensers() {
         return waterDispensers;
-    }
-    public List<Whiteboard> getWhiteboards() {
-        return whiteboards;
     }
     public List<MaleBathroomDoor> getMaleBathroomDoors() {
         return maleBathroomDoors;
@@ -1093,40 +1158,34 @@ public class Environment extends BaseObject implements Serializable {
     public List<StorageCabinet> getStorageCabinets() {
         return storageCabinets;
     }
-    public List<OfficeSink> getOfficeSinks() {
-        return officeSinks;
-    }
-    public List<OfficeToilet> getOfficeToilets() {
-        return officeToilets;
-    }
-    public List<DirectorTable> getDirectorTables() {
-        return directorTables;
-    }
 
     public List<? extends Amenity> getAmenityList(Class<? extends Amenity> amenityClass) {
         if (amenityClass == Gate.class) {
             return this.getGates();
         }
+        else if (amenityClass == Cubicle.class) {
+            return this.getCubicles();
+        }
+        else if (amenityClass == PantryTable.class) {
+            return this.getPantryTables();
+        }
+        else if (amenityClass == DirectorTable.class) {
+            return this.getDirectorTables();
+        }
+        else if (amenityClass == ReceptionTable.class) {
+            return this.getReceptionTables();
+        }
+
+
         else if (amenityClass == Server.class) {
             return this.getServers();
         }
         else if (amenityClass == Cabinet.class) {
             return this.getCabinets();
         }
-        else if (amenityClass == Chair.class) {
-            return this.getChairs();
-        }
-        else if (amenityClass == PantryTable.class) {
-            return this.getPantryTables();
-        }
-        else if (amenityClass == CollabDesk.class) {
-            return this.getCollabDesks();
-        }
+
         else if (amenityClass == Couch.class) {
             return this.getCouches();
-        }
-        else if (amenityClass == Cubicle.class) {
-            return this.getCubicles();
         }
         else if (amenityClass == Door.class) {
             return this.getDoors();
@@ -1140,23 +1199,11 @@ public class Environment extends BaseObject implements Serializable {
         else if (amenityClass == FemaleBathroomDoor.class) {
             return this.getFemaleBathroomDoors();
         }
-        else if(amenityClass == Fridge.class){
-            return this.getFridges();
-        }
-        else if (amenityClass == MeetingDesk.class) {
-            return this.getMeetingDesks();
-        }
-        else if (amenityClass == OfficeDesk.class) {
-            return this.getOfficeDesks();
+        else if(amenityClass == Refrigerator.class){
+            return this.getRefrigerators();
         }
         else if (amenityClass == Plant.class) {
             return this.getPlants();
-        }
-        else if (amenityClass == ReceptionTable.class) {
-            return this.getReceptionTables();
-        }
-        else if (amenityClass == Table.class) {
-            return this.getTables();
         }
         else if (amenityClass == Sink.class) {
             return this.getSinks();
@@ -1167,17 +1214,11 @@ public class Environment extends BaseObject implements Serializable {
         else if(amenityClass == WaterDispenser.class){
             return this.getWaterDispensers();
         }
-        else if(amenityClass == Trash.class) {
-            return this.getTrashes();
+        else if(amenityClass == TrashCan.class) {
+            return this.getTrashCans();
         }
         else if(amenityClass == Whiteboard.class) {
             return this.getWhiteboards();
-        }
-        else if(amenityClass == OfficeSink.class) {
-            return this.getOfficeSinks();
-        }
-        else if(amenityClass == OfficeToilet.class) {
-            return this.getOfficeToilets();
         }
         else {
             return null;

@@ -15,8 +15,13 @@ public class SinkGraphic extends AmenityGraphic {
 
 
     /***** CONSTRUCTOR *****/
-    public SinkGraphic(Sink sink) {
+    public SinkGraphic(Sink sink, String facing) {
         super(sink, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
+
+        switch (facing) {
+            case "SOUTH" -> this.graphicIndex = 0;
+            case "NORTH" -> this.graphicIndex = 1;
+        }
     }
 
 }

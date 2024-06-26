@@ -19,10 +19,10 @@ public class ReceptionQueue extends QueueingPatchField {
 
 
     // CONSTRUCTOR
-    protected ReceptionQueue(List<Patch> patches, ReceptionTable target, String str) {
+    protected ReceptionQueue(List<Patch> patches, ReceptionTable target, String string) {
         super(patches, target);
 
-        Pair<QueueingPatchField, String> pair = new Pair<>(this, str);
+        Pair<QueueingPatchField, String> pair = new Pair<>(this, string);
         for(Patch patch : patches) {
             patch.setQueueingPatchField(pair);
         }
@@ -31,8 +31,8 @@ public class ReceptionQueue extends QueueingPatchField {
 
     // INNER CLASS
     public static class ReceptionQueueFactory extends PatchField.PatchFieldFactory {
-        public ReceptionQueue create(List<Patch> patches, ReceptionTable target, String str) {
-            return new ReceptionQueue(patches, target, str);
+        public ReceptionQueue create(List<Patch> patches, ReceptionTable target, String string) {
+            return new ReceptionQueue(patches, target, string);
         }
     }
 

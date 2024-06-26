@@ -4,25 +4,24 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.ToiletGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class Toilet extends Goal {
 
     /***** VARIABLES *****/
-    public static final Toilet.ToiletFactory toiletFactory;
+    public static final ToiletFactory toiletFactory;
     private final ToiletGraphic toiletGraphic;
 
     static {
-        toiletFactory = new Toilet.ToiletFactory();
+        toiletFactory = new ToiletFactory();
     }
 
     /***** CONSTRUCTOR *****/
-    protected Toilet(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected Toilet(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
 
-        this.toiletGraphic = new ToiletGraphic(this);
+        this.toiletGraphic = new ToiletGraphic(this, facing);
     }
 
     /***** OVERRIDE *****/
@@ -43,28 +42,28 @@ public class Toilet extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class ToiletBlock extends Amenity.AmenityBlock {
-        public static Toilet.ToiletBlock.ToiletBlockFactory toiletBlockFactory;
+    public static class ToiletBlock extends AmenityBlock {
+        public static ToiletBlockFactory toiletBlockFactory;
 
         static {
-            toiletBlockFactory = new Toilet.ToiletBlock.ToiletBlockFactory();
+            toiletBlockFactory = new ToiletBlockFactory();
         }
 
         private ToiletBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class ToiletBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class ToiletBlockFactory extends AmenityBlockFactory {
             @Override
-            public Toilet.ToiletBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new Toilet.ToiletBlock(patch, attractor, hasGraphic);
+            public ToiletBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new ToiletBlock(patch, attractor, hasGraphic);
             }
         }
     }
 
     public static class ToiletFactory extends GoalFactory {
-        public static Toilet create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new Toilet(amenityBlocks, enabled);
+        public static Toilet create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+            return new Toilet(amenityBlocks, enabled, facing);
         }
     }
 }
