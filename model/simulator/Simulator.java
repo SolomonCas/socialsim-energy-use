@@ -15,7 +15,7 @@ import com.socialsim.controller.controls.ScreenController;
 import com.socialsim.model.core.agent.*;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
+import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
 import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.core.environment.position.Coordinates;
 
@@ -265,24 +265,24 @@ public class Simulator {
     // Sets where agents spawn and can set what will be their assigned seat
     private void spawnAgent(Environment environment, SimulationTime time) {
 //        Gate gate = environment.getGates().get(2);
-        Gate gate = null;
-        Gate gate1 = environment.getGates().get(0);
-        Gate gate2 = environment.getGates().get(1);
-        Gate gate3 = environment.getGates().get(2);
+        Elevator elevator = null;
+        Elevator elevator1 = environment.getElevators().get(0);
+        Elevator elevator2 = environment.getElevators().get(1);
+        Elevator elevator3 = environment.getElevators().get(2);
 
         int gateNum = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(3);
         switch (gateNum) {
-            case 0 -> gate = gate1;
-            case 1 -> gate = gate2;
-            case 2 -> gate = gate3;
+            case 0 -> elevator = elevator1;
+            case 1 -> elevator = elevator2;
+            case 2 -> elevator = elevator3;
         }
 
 
 //        Agent agent = null;
 
-        for (int i = 0; i < gate.getSpawners().size(); i++) {
-            Gate.GateBlock spawner = gate.getSpawners().get(i);
-            int spawnChance = (int) gate.getChancePerTick();
+        for (int i = 0; i < elevator.getSpawners().size(); i++) {
+            Elevator.ElevatorBlock spawner = elevator.getSpawners().get(i);
+            int spawnChance = (int) elevator.getChancePerTick();
             int CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
 
 

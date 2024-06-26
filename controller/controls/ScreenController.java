@@ -5,6 +5,7 @@ import com.socialsim.controller.graphics.GraphicsController;
 import com.socialsim.controller.graphics.amenity.mapper.*;
 import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
+import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
 import com.socialsim.model.simulator.Simulator;
 
 import com.socialsim.model.core.environment.Patch;
@@ -2445,7 +2446,7 @@ public class ScreenController extends Controller {
             elevator.add(environment.getPatch(26,193));
             elevator.add(environment.getPatch(37,193));
             elevator.add(environment.getPatch(48,193));
-            ElevatorMapper.draw(elevator, "VERTICAL");
+            ElevatorMapper.draw(elevator, Elevator.ElevatorMode.ENTRANCE_AND_EXIT,  "VERTICAL");
 
             /*** Couch ***/
             List<Patch> couch = new ArrayList<>();

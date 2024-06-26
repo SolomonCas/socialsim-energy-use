@@ -190,8 +190,8 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
 
             // This is for when the guard isn't in his station or is a behavior of getting he/she's belongings before going home
             actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch()));
@@ -295,8 +295,8 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.WAIT_FOR_ACTIVITY, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.DIRECTOR) {
@@ -322,8 +322,8 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.STRICT_FACULTY || agent.getPersona() == Agent.Persona.APP_FACULTY) {
@@ -350,8 +350,8 @@ public class RoutePlan {
             this.LUNCH_INSTANCE = routePlan.get(routePlan.size()-1);
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.INT_STUDENT || agent.getPersona() == Agent.Persona.EXT_STUDENT) {
@@ -379,8 +379,8 @@ public class RoutePlan {
             this.LUNCH_INSTANCE = routePlan.get(routePlan.size()-1);
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
 
@@ -513,7 +513,7 @@ public class RoutePlan {
         switch (s) {
             case "EAT_OUTSIDE" -> {
                 actions = new ArrayList<>();
-                Patch randomExit = environment.getGates().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size()))
+                Patch randomExit = environment.getElevators().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size()))
                         .getAmenityBlocks().getFirst().getPatch();
                 actions.add(new Action(Action.Name.GO_TO_STATION, this.agentSeat.getAttractors().getFirst().getPatch(), 3));
                 actions.add(new Action(Action.Name.EXIT_LUNCH, randomExit, 180, 360));

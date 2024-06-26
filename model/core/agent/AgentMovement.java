@@ -6,7 +6,7 @@ import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchfield.*;
 import com.socialsim.model.core.environment.patchobject.Amenity;
-import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
+import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
 import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.core.environment.position.Coordinates;
 import com.socialsim.model.core.environment.position.Vector;
@@ -122,7 +122,7 @@ public class AgentMovement {
         this.currentState = this.routePlan.getCurrentState();
         this.currentAction = this.routePlan.getCurrentState().getActions().get(actionIndex);
         if (!parent.getInOnStart()) {
-            this.currentAmenity = environment.getGates().getFirst(); // Getting Entrance Gate
+            this.currentAmenity = environment.getElevators().getFirst(); // Getting Entrance Elevator
         }
         if (this.currentAction.getDestination() != null) {
             this.goalAttractor = this.currentAction.getDestination().getAmenityBlock();
@@ -480,7 +480,7 @@ public class AgentMovement {
                         ||  goalAmenity.getClass() == MaleBathroomDoor.class
                         ||  goalAmenity.getClass() == Toilet.class
                         ||  goalAmenity.getClass() == Couch.class
-                        ||  goalAmenity.getClass() == Gate.class
+                        ||  goalAmenity.getClass() == Elevator.class
                         ||  goalAmenity.getClass() == Cubicle.class
                         ||  goalAmenity.getClass() == DirectorTable.class
                         ||  goalAmenity.getClass() == LearningTable.class

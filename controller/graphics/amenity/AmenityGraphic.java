@@ -2,7 +2,7 @@ package com.socialsim.controller.graphics.amenity;
 
 import com.socialsim.controller.graphics.Graphic;
 import com.socialsim.model.core.environment.patchobject.Amenity;
-import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
+import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
 import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 
 import java.util.ArrayList;

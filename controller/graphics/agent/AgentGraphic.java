@@ -123,50 +123,48 @@ public class AgentGraphic extends Graphic {
 
         List<AgentGraphicLocation> agentGraphics = null;
 
-
-        /*** Student ***/
-        if (agent.getGender() == Agent.Gender.FEMALE) {
-            agentGraphics = femaleStudentGraphics;
+        switch (agent.getType()) {
+            case Agent.Type.STUDENT:
+                if (agent.getGender() == Agent.Gender.FEMALE) {
+                    agentGraphics = femaleStudentGraphics;
+                }
+                else if (agent.getGender() == Agent.Gender.MALE) {
+                    agentGraphics = maleStudentGraphics;
+                }
+                break;
+            case Agent.Type.DIRECTOR:
+                if (agent.getGender() == Agent.Gender.MALE) {
+                    agentGraphics = maleDirectorGraphics;
+                }
+                break;
+            case Agent.Type.FACULTY:
+                if (agent.getGender() == Agent.Gender.FEMALE) {
+                    agentGraphics = femaleFacultyGraphics;
+                }
+                else if (agent.getGender() == Agent.Gender.MALE) {
+                    agentGraphics = maleFacultyGraphics;
+                }
+                break;
+            case Agent.Type.GUARD:
+                if (agent.getGender() == Agent.Gender.FEMALE) {
+                    agentGraphics = femaleGuardGraphics;
+                }
+                else if (agent.getGender() == Agent.Gender.MALE) {
+                    agentGraphics = maleGuardGraphics;
+                }
+                break;
+            case Agent.Type.MAINTENANCE:
+                if (agent.getGender() == Agent.Gender.FEMALE) {
+                    agentGraphics = femaleMaintenanceGraphics;
+                }
+                else if (agent.getGender() == Agent.Gender.MALE) {
+                    agentGraphics = maleMaintenanceGraphics;
+                }
+                break;
         }
-        else if (agent.getGender() == Agent.Gender.MALE) {
-            agentGraphics = maleStudentGraphics;
-        }
-
-        // Director
-        else if (agent.getType() == Agent.Type.DIRECTOR && agent.getGender() == Agent.Gender.MALE) {
-            agentGraphics = maleDirectorGraphics;
-        }
 
 
-        /*** Faculty ***/
-        else if (agent.getGender() == Agent.Gender.FEMALE) {
-            agentGraphics = femaleFacultyGraphics;
-        }
-        else if (agent.getGender() == Agent.Gender.MALE) {
-            agentGraphics = maleFacultyGraphics;
-        }
-
-
-        /*** Guard ***/
-        else if (agent.getType() == Agent.Type.GUARD && agent.getGender() == Agent.Gender.FEMALE) {
-            agentGraphics = femaleGuardGraphics;
-        }
-        else if (agent.getType() == Agent.Type.GUARD && agent.getGender() == Agent.Gender.MALE) {
-            agentGraphics = maleGuardGraphics;
-        }
-
-
-        /*** Maintenance ***/
-        else if (agent.getType() == Agent.Type.MAINTENANCE && agent.getGender() == Agent.Gender.FEMALE) {
-            agentGraphics = femaleMaintenanceGraphics;
-        }
-        else if (agent.getType() == Agent.Type.MAINTENANCE && agent.getGender() == Agent.Gender.MALE) {
-            agentGraphics = maleMaintenanceGraphics;
-        }
-
-
-
-
+        assert agentGraphics != null;
         for (AgentGraphicLocation agentGraphicLocations : agentGraphics) {
             AgentGraphicLocation newAgentGraphicLocation = new AgentGraphicLocation(agentGraphicLocations.getGraphicRow(), agentGraphicLocations.getGraphicColumn());
 

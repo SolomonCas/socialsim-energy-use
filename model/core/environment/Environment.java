@@ -4,7 +4,7 @@ import com.socialsim.model.core.agent.Action;
 import com.socialsim.model.core.agent.Agent;
 import com.socialsim.model.core.environment.patchfield.*;
 import com.socialsim.model.core.environment.patchobject.Amenity;
-import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
+import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
 import com.socialsim.model.core.environment.position.Coordinates;
 import com.socialsim.model.core.environment.position.MatrixPosition;
 import com.socialsim.model.simulator.Simulator;
@@ -73,7 +73,6 @@ public class Environment extends BaseObject implements Serializable {
 
     private final List<HumanExpTable> humanExpTables;
     private final List<DataCollTable> dataCollTables;
-    private final List<Elevator> elevators;
     private final List<Whiteboard> whiteboards;
     private final List<Refrigerator> refrigerators;
     private final List<PantryCabinet> pantryCabinets;
@@ -84,7 +83,7 @@ public class Environment extends BaseObject implements Serializable {
 
 
 
-    private final List<Gate> gates;
+    private final List<Elevator> elevators;
     private final List<Cabinet> cabinets;
     private final List<Couch> couches;
     private final List<Door> doors;
@@ -179,6 +178,8 @@ public class Environment extends BaseObject implements Serializable {
         // Amenities
         this.amenityPatchSet = Collections.synchronizedSortedSet(new TreeSet<>());
 
+        this.elevators = Collections.synchronizedList(new ArrayList<>());
+
         this.cubicles = Collections.synchronizedList(new ArrayList<>());
         this.researchTables = Collections.synchronizedList(new ArrayList<>());
         this.meetingTables = Collections.synchronizedList(new ArrayList<>());
@@ -190,7 +191,6 @@ public class Environment extends BaseObject implements Serializable {
         this.humanExpTables = Collections.synchronizedList(new ArrayList<>());
         this.dataCollTables = Collections.synchronizedList(new ArrayList<>());
         this.whiteboards = Collections.synchronizedList(new ArrayList<>());
-        this.elevators = Collections.synchronizedList(new ArrayList<>());
         this.refrigerators = Collections.synchronizedList(new ArrayList<>());
         this.trashCans = Collections.synchronizedList(new ArrayList<>());
         this.couches = Collections.synchronizedList(new ArrayList<>());
@@ -207,7 +207,7 @@ public class Environment extends BaseObject implements Serializable {
 
 
 
-        this.gates = Collections.synchronizedList(new ArrayList<>());
+
         this.cabinets = Collections.synchronizedList(new ArrayList<>());
         this.doors = Collections.synchronizedList(new ArrayList<>());
         this.sinks = Collections.synchronizedList(new ArrayList<>());
@@ -302,11 +302,11 @@ public class Environment extends BaseObject implements Serializable {
     // where they specifically indicate what time they enter and exit the office
     public void createInitialAgentDemographics(){
         int offset = 30; // equivalent to 30 mins
-        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
-        this.getAgents().add(janitor);
-
-        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
-        this.getAgents().add(janitor2);
+//        Agent janitor = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
+//        this.getAgents().add(janitor);
+//
+//        Agent janitor2 = Agent.AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(18,0 + Simulator.rollIntIN(offset)));
+//        this.getAgents().add(janitor2);
 
         Agent guard = Agent.AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,30 + Simulator.rollIntIN(offset)), LocalTime.of(10,0 + Simulator.rollIntIN(offset)));
         this.getAgents().add(guard);
@@ -1082,12 +1082,9 @@ public class Environment extends BaseObject implements Serializable {
     public List<Whiteboard> getWhiteboards() {
         return whiteboards;
     }
+
     public List<Elevator> getElevators() {
         return elevators;
-    }
-
-    public List<Gate> getGates() {
-        return gates;
     }
     public List<Cabinet> getCabinets() {
         return cabinets;
@@ -1160,8 +1157,8 @@ public class Environment extends BaseObject implements Serializable {
     }
 
     public List<? extends Amenity> getAmenityList(Class<? extends Amenity> amenityClass) {
-        if (amenityClass == Gate.class) {
-            return this.getGates();
+        if (amenityClass == Elevator.class) {
+            return this.getElevators();
         }
         else if (amenityClass == Cubicle.class) {
             return this.getCubicles();

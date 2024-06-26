@@ -12,8 +12,6 @@ import com.socialsim.model.core.environment.patchfield.*;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.Drawable;
 import com.socialsim.model.core.environment.patchobject.passable.NonObstacle;
-import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
-import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.core.environment.position.Coordinates;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
@@ -121,7 +119,7 @@ public class GraphicsController extends Controller {
             drawGraphicTransparently = false;
 
             Amenity.AmenityBlock patchAmenityBlock = currentPatch.getAmenityBlock();
-            Pair<PatchField, String> patchNumPair = currentPatch.getPatchField();
+            Pair<PatchField, String> patchStrPair = currentPatch.getPatchField();
             Color patchColor;
 
 
@@ -177,8 +175,8 @@ public class GraphicsController extends Controller {
 
 
             // PATCH COLORS
-            if (patchNumPair != null) {
-                PatchField patchPatchField = patchNumPair.getKey();
+            if (patchStrPair != null) {
+                PatchField patchPatchField = patchStrPair.getKey();
 
                 /*** FLOOR ***/
                 if (patchPatchField.getClass() == Floor.class) {
@@ -198,40 +196,40 @@ public class GraphicsController extends Controller {
                     // OFFICE OUTLINE
 
                         // Top of Wall
-                        if (patchNumPair.getValue().toString().equals("outlineWallTop")) {
+                        if (patchStrPair.getValue().equals("outlineWallTop")) {
                             patchColor = Color.rgb(0, 0, 0);
 
                         // Wall
-                        } else if (patchNumPair.getValue().toString().equals("outlineWall")) {
+                        } else if (patchStrPair.getValue().equals("outlineWall")) {
                             patchColor = Color.rgb(32, 32, 32);
 
                     // INSIDE OFFICE
 
                         // Top of Wall
-                        } else if (patchNumPair.getValue().toString().equals("wallTopIn")) {
+                        } else if (patchStrPair.getValue().equals("wallTopIn")) {
                             patchColor = Color.rgb(11, 13, 62);
 
                         // Wall
-                        } else if (patchNumPair.getValue().toString().equals("wallIn")) {
+                        } else if (patchStrPair.getValue().equals("wallIn")) {
                             patchColor = Color.rgb(50, 50, 67);
 
                         // Wall (signifies entry/exit points)
-                        } else if (patchNumPair.getValue().toString().equals("doorWallIn")) {
+                        } else if (patchStrPair.getValue().equals("doorWallIn")) {
                             patchColor = Color.rgb(119, 129, 144);
 
 
                     // OUTSIDE OFFICE
 
                         // Top of Wall
-                        } else if (patchNumPair.getValue().toString().equals("wallTopOut")) {
+                        } else if (patchStrPair.getValue().equals("wallTopOut")) {
                             patchColor = Color.rgb(16, 19, 81);
 
                         // Wall
-                        } else if (patchNumPair.getValue().toString().equals("wallOut")) {
+                        } else if (patchStrPair.getValue().equals("wallOut")) {
                             patchColor = Color.rgb(35, 66, 125);
 
                         // Wall (signifies entry point)
-                        } else if (patchNumPair.getValue().toString().equals("doorWallOut")) {
+                        } else if (patchStrPair.getValue().equals("doorWallOut")) {
                             patchColor = Color.rgb(89, 134, 187);
 
 
@@ -253,11 +251,11 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == Bathroom.class) {
 
                     // Male Bathroom
-                    if (patchNumPair.getValue().toString().equals("male")) {
+                    if (patchStrPair.getValue().equals("male")) {
                         patchColor = Color.rgb(189, 234, 254);
 
                     // Female Bathroom
-                    } else if (patchNumPair.getValue().toString().equals("female")) {
+                    } else if (patchStrPair.getValue().equals("female")) {
                         patchColor = Color.rgb(233, 127, 146);
 
 
@@ -300,15 +298,15 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == SoloRoom.class) {
 
                     // Solo Room 1
-                    if (patchNumPair.getValue().toString().equals("SR1")) {
+                    if (patchStrPair.getValue().equals("SR1")) {
                         patchColor = Color.rgb(231, 175, 209);
 
                         // Solo Room 2
-                    } else if (patchNumPair.getValue().toString().equals("SR2")) {
+                    } else if (patchStrPair.getValue().equals("SR2")) {
                         patchColor = Color.rgb(219, 192, 246);
 
                         // Solo Room 3
-                    } else if (patchNumPair.getValue().toString().equals("SR3")) {
+                    } else if (patchStrPair.getValue().equals("SR3")) {
                         patchColor = Color.rgb(163, 173, 208);
 
                         // Solo Room 4
@@ -348,15 +346,15 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == LearningSpace.class) {
 
                     // Learning Space 1
-                    if (patchNumPair.getValue().toString().equals("LS1")) {
+                    if (patchStrPair.getValue().equals("LS1")) {
                         patchColor = Color.rgb(206, 223, 214);
 
                     // Learning Space 2
-                    } else if (patchNumPair.getValue().toString().equals("LS2")) {
+                    } else if (patchStrPair.getValue().equals("LS2")) {
                         patchColor = Color.rgb(221, 210, 224);
 
                     // Learning Space 3
-                    } else if (patchNumPair.getValue().toString().equals("LS3")) {
+                    } else if (patchStrPair.getValue().equals("LS3")) {
                         patchColor = Color.rgb(237, 213, 213);
 
                     // Learning Space 4
@@ -499,7 +497,8 @@ public class GraphicsController extends Controller {
                                     agentGraphicLocation.getSourceWidth(), agentGraphicLocation.getSourceHeight(),
                                     getScaledAgentCoordinates(officeAgent).getX() * tileSize,
                                     getScaledAgentCoordinates(officeAgent).getY() * tileSize,
-                                    tileSize * 0.7, tileSize * 0.7);
+//                                    tileSize * 0.7, tileSize * 0.7);
+                                    tileSize * 1, tileSize * 1);
                         }
                     }
                 }
