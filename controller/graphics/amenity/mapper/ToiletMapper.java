@@ -25,7 +25,7 @@ public class ToiletMapper extends AmenityMapper {
 
             // SECOND PATCH
             Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
-            Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+            Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
             amenityBlocks.add(nextAmenityBlock);
             nextPatch.setAmenityBlock(nextAmenityBlock);
 

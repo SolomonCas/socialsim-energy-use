@@ -78,7 +78,7 @@ public class AgentMovement {
     private boolean isInteracting;
     private boolean isSimultaneousInteractionAllowed;
     private int interactionDuration;
-    private AgentMovement.InteractionType interactionType;
+    private InteractionType interactionType;
     private Patch collabTablePatch;
     private double previousHeading;
     private Agent agentToInquire = null;
@@ -128,7 +128,7 @@ public class AgentMovement {
         this.currentState = this.routePlan.getCurrentState();
         this.currentAction = this.routePlan.getCurrentState().getActions().get(actionIndex);
         if (!parent.getInOnStart()) {
-            this.currentAmenity = environment.getGates().getFirst(); // Getting Entrance Gate
+            this.currentAmenity = environment.getElevators().getFirst(); // Getting Entrance Gate
         }
         if (this.currentAction.getDestination() != null) {
             this.goalAmenity = this.currentAction.getDestination().getAmenityBlock().getParent();
@@ -220,15 +220,15 @@ public class AgentMovement {
                     CHANCE_EXCHANGE2 = ((double) environment.getInteractionTypeChances().get(agent.getPersonaActionGroup().getID()).get(agent.getAgentMovement().getCurrentAction().getName().getID()).get(2)) / 100;
             if (CHANCE < (CHANCE_NONVERBAL1 + CHANCE_NONVERBAL2) / 2){
                 Simulator.currentNonverbalCount++;
-                this.getParent().getAgentMovement().setInteractionType(AgentMovement.InteractionType.NON_VERBAL);
-                agent.getAgentMovement().setInteractionType(AgentMovement.InteractionType.NON_VERBAL);
+                this.getParent().getAgentMovement().setInteractionType(InteractionType.NON_VERBAL);
+                agent.getAgentMovement().setInteractionType(InteractionType.NON_VERBAL);
                 interactionMean = getEnvironment().getNonverbalMean();
                 interactionStdDeviation = getEnvironment().getNonverbalStdDev();
             }
             else if (CHANCE < (CHANCE_NONVERBAL1 + CHANCE_NONVERBAL2 + CHANCE_COOPERATIVE1 + CHANCE_COOPERATIVE2) / 2){
                 Simulator.currentCooperativeCount++;
-                this.getParent().getAgentMovement().setInteractionType(AgentMovement.InteractionType.COOPERATIVE);
-                agent.getAgentMovement().setInteractionType(AgentMovement.InteractionType.COOPERATIVE);
+                this.getParent().getAgentMovement().setInteractionType(InteractionType.COOPERATIVE);
+                agent.getAgentMovement().setInteractionType(InteractionType.COOPERATIVE);
                 CHANCE1 = Simulator.roll() * IOS1;
                 CHANCE2 = Simulator.roll() * IOS2;
                 interactionMean = getEnvironment().getCooperativeMean();
@@ -236,8 +236,8 @@ public class AgentMovement {
             }
             else if (CHANCE < (CHANCE_NONVERBAL1 + CHANCE_NONVERBAL2 + CHANCE_COOPERATIVE1 + CHANCE_COOPERATIVE2 + CHANCE_EXCHANGE1 + CHANCE_EXCHANGE2) / 2){
                 Simulator.currentExchangeCount++;
-                this.getParent().getAgentMovement().setInteractionType(AgentMovement.InteractionType.EXCHANGE);
-                agent.getAgentMovement().setInteractionType(AgentMovement.InteractionType.EXCHANGE);
+                this.getParent().getAgentMovement().setInteractionType(InteractionType.EXCHANGE);
+                agent.getAgentMovement().setInteractionType(InteractionType.EXCHANGE);
                 CHANCE1 = Simulator.roll() * IOS1;
                 CHANCE2 = Simulator.roll() * IOS2;
                 interactionMean = getEnvironment().getExchangeMean();
@@ -297,11 +297,11 @@ public class AgentMovement {
             if (this.interactionDuration < 0)
                 this.interactionDuration = 0;
             agent.getAgentMovement().setInteractionDuration(this.interactionDuration);
-            if (agent.getAgentMovement().getInteractionType() == AgentMovement.InteractionType.NON_VERBAL)
+            if (agent.getAgentMovement().getInteractionType() == InteractionType.NON_VERBAL)
                 Simulator.averageNonverbalDuration = (Simulator.averageNonverbalDuration * (Simulator.currentNonverbalCount - 1) + this.interactionDuration) / Simulator.currentNonverbalCount;
-            else if (agent.getAgentMovement().getInteractionType() == AgentMovement.InteractionType.COOPERATIVE)
+            else if (agent.getAgentMovement().getInteractionType() == InteractionType.COOPERATIVE)
                 Simulator.averageCooperativeDuration = (Simulator.averageCooperativeDuration * (Simulator.currentCooperativeCount - 1) + this.interactionDuration) / Simulator.currentCooperativeCount;
-            else if (agent.getAgentMovement().getInteractionType() == AgentMovement.InteractionType.EXCHANGE)
+            else if (agent.getAgentMovement().getInteractionType() == InteractionType.EXCHANGE)
                 Simulator.averageExchangeDuration = (Simulator.averageExchangeDuration * (Simulator.currentExchangeCount - 1) + this.interactionDuration) / Simulator.currentExchangeCount;
         }
     }
@@ -371,10 +371,6 @@ public class AgentMovement {
             List<Patch> patchToExploreNeighbors = patchToExplore.getNeighbors();
             for (Patch patchToExploreNeighbor : patchToExploreNeighbors) {
                 if ((patchToExploreNeighbor.getAmenityBlock() == null && patchToExploreNeighbor.getPatchField() == null)
-                        || (patchToExploreNeighbor.getAmenityBlock() != null && (patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == Door.class
-                            || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == MainEntranceDoor.class
-                            || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == MaleBathroomDoor.class
-                            || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() == FemaleBathroomDoor.class))
                         || (patchToExploreNeighbor.getPatchField() != null && patchToExploreNeighbor.getPatchField().getKey().getClass() != Wall.class)
                         || ((includeStartingPatch && patchToExplore.equals(startingPatch)) || (includeGoalPatch && patchToExploreNeighbor.equals(goalPatch)))) {
                     double obstacleClosenessPenalty = (patchToExploreNeighbor.getAmenityBlocksAround() + patchToExploreNeighbor.getWallsAround()) * 2.0;
@@ -412,7 +408,7 @@ public class AgentMovement {
             patchesToConsider.add(environment.getPatch(32, 135));
         }
 
-        this.goalQueueingPatchField = BathroomQueue.bathroomQueueFactory.create(patchesToConsider, goalAmenity, 1);
+        this.goalQueueingPatchField = BathroomQueue.bathroomQueueFactory.create(patchesToConsider, goalAmenity, "bathroomQueue");
         this.goalNearestQueueingPatch = goalQueueingPatchField.getAssociatedPatches().getFirst();
         chooseBathroomGoal(Toilet.class);
     }
@@ -435,10 +431,10 @@ public class AgentMovement {
         this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed //JIC if needed
     }
     public void chooseFridgeQueue(){
-        int random = Simulator.rollIntIN(environment.getFridgeQueues().size());
-        goalQueueingPatchField = environment.getFridgeQueues().get(random);
+        int random = Simulator.rollIntIN(environment.getRefrigeratorQueues().size());
+        goalQueueingPatchField = environment.getRefrigeratorQueues().get(random);
         this.goalNearestQueueingPatch = goalQueueingPatchField.getAssociatedPatches().getLast();
-        this.goalAmenity = environment.getFridges().get(random);
+        this.goalAmenity = environment.getRefrigerators().get(random);
         this.goalAttractor = getGoalAmenity().getAttractors().getFirst(); // Needed in chooseNextInPath
         this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed //JIC if needed
     }
@@ -505,82 +501,83 @@ public class AgentMovement {
 
         return false;
     }
-    public boolean chooseAirConGoal () {
-        if (goalAmenity == null) {
-            List<Amenity> temp = new ArrayList<>();
-            HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
-
-
-            // Only add amenities that aren't reserved
-            for(Amenity amenity: environment.getAirConditioners()) {
-                int attractorCount = 0;
-                // This part checks for amenities with more than 1 attractors
-                for(int i = 0; i < amenity.getAttractors().size(); i++) {
-                    if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
-                        attractorCount++;
-                    }
-                }
-                if(attractorCount == 0) {
-                    temp.add(amenity);
-                }
-            }
-
-            for (Amenity amenity : temp) {
-                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                    double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                    distancesToAttractors.put(attractor, distanceToAttractor);
-                }
-            }
-
-            List<Map.Entry<Amenity.AmenityBlock, Double> > list =
-                    new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
-
-            PatchField patchField = list.getFirst().getKey().getPatch().getPatchField().getKey();
-            temp.clear(); // clear the list for checking the nearest switch in the same PatchField as the AC
-            distancesToAttractors.clear();
-            list.clear();
-            for (Amenity amenity: environment.getChairs()) {
-                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
-                        double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                        distancesToAttractors.put(attractor, distanceToAttractor);
-                    }
-
-                }
-            }
-
-            list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
-
-            Collections.sort(list, new Comparator<Map.Entry<Amenity.AmenityBlock, Double> >() {
-                public int compare(Map.Entry<Amenity.AmenityBlock, Double> o1, Map.Entry<Amenity.AmenityBlock, Double> o2) {
-                    return (o1.getValue()).compareTo(o2.getValue());
-                }
-            });
-
-            HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
-            for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
-                sortedDistances.put(aa.getKey(), aa.getValue());
-            }
-
-            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
-                Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
-                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
-                    this.goalAmenity =  candidateAttractor.getParent();
-                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
-                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
-                    getGoalAttractor().setIsReserved(true);
-                    return true;
-                }
-            }
-
-
-            return false;
-
-
-        }
-
-        return false;
-    }
+    // TODO: Modify this if there exist Aircon switch in amenity
+//    public boolean chooseAirConGoal () {
+//        if (goalAmenity == null) {
+//            List<Amenity> temp = new ArrayList<>();
+//            HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
+//
+//
+//            // Only add amenities that aren't reserved
+//            for(Amenity amenity: environment.getAirConditioners()) {
+//                int attractorCount = 0;
+//                // This part checks for amenities with more than 1 attractors
+//                for(int i = 0; i < amenity.getAttractors().size(); i++) {
+//                    if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+//                        attractorCount++;
+//                    }
+//                }
+//                if(attractorCount == 0) {
+//                    temp.add(amenity);
+//                }
+//            }
+//
+//            for (Amenity amenity : temp) {
+//                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+//                    double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
+//                    distancesToAttractors.put(attractor, distanceToAttractor);
+//                }
+//            }
+//
+//            List<Map.Entry<Amenity.AmenityBlock, Double> > list =
+//                    new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+//
+//            PatchField patchField = list.getFirst().getKey().getPatch().getPatchField().getKey();
+//            temp.clear(); // clear the list for checking the nearest switch in the same PatchField as the AC
+//            distancesToAttractors.clear();
+//            list.clear();
+//            for (Amenity amenity: environment.getChairs()) {
+//                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+//                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+//                        double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
+//                        distancesToAttractors.put(attractor, distanceToAttractor);
+//                    }
+//
+//                }
+//            }
+//
+//            list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+//
+//            Collections.sort(list, new Comparator<Map.Entry<Amenity.AmenityBlock, Double> >() {
+//                public int compare(Map.Entry<Amenity.AmenityBlock, Double> o1, Map.Entry<Amenity.AmenityBlock, Double> o2) {
+//                    return (o1.getValue()).compareTo(o2.getValue());
+//                }
+//            });
+//
+//            HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+//            for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
+//                sortedDistances.put(aa.getKey(), aa.getValue());
+//            }
+//
+//            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
+//                Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
+//                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+//                    this.goalAmenity =  candidateAttractor.getParent();
+//                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+//                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
+//                    getGoalAttractor().setIsReserved(true);
+//                    return true;
+//                }
+//            }
+//
+//
+//            return false;
+//
+//
+//        }
+//
+//        return false;
+//    }
     public boolean chooseBathroomGoal(Class<? extends Amenity> nextAmenityClass){
         if(this.goalAmenity == null){
             List<Amenity> temp = new ArrayList<>();
@@ -612,12 +609,12 @@ public class AgentMovement {
                     int attractorCount = 0;
 
                     if (parent.getGender() == Agent.Gender.MALE) {
-                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == 2) {
+                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue().equals("male")) {
                             temp.add(amenity);
                         }
                     }
                     else if (parent.getGender() == Agent.Gender.FEMALE) {
-                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue() == 1) {
+                        if (amenity.getAmenityBlocks().getFirst().getPatch().getPatchField().getValue().equals("female")) {
                             temp.add(amenity);
                         }
                     }
@@ -828,20 +825,68 @@ public class AgentMovement {
             HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
 
             // Only add amenities that aren't reserved
-            for(Amenity amenity: environment.getCubicles()) {
-                int attractorCount = 0;
-                // This part checks for amenities with more than 1 attractors
-                for(int i = 0; i < amenity.getAttractors().size(); i++) {
-                    if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
-                        attractorCount++;
+            if (Agent.Type.FACULTY == this.parent.getType()) {
+                for(Amenity amenity: environment.getCubicles()) {
+                    int attractorCount = 0;
+                    // This part checks for amenities with more than 1 attractors
+                    for(int i = 0; i < amenity.getAttractors().size(); i++) {
+                        if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                            attractorCount++;
+                        }
+                    }
+                    if(attractorCount == 0) {
+                        temp.add(amenity);
                     }
                 }
-                if(attractorCount == 0) {
-                    temp.add(amenity);
+
+                for (SoloTable amenity : environment.getSoloTables()) {
+                    for (SoloChair soloChair : amenity.getSoloChairs()) {
+                        int attractorCount = 0;
+                        // This part checks for amenities with more than 1 attractors
+                        for(int i = 0; i < soloChair.getAttractors().size(); i++) {
+                            if (soloChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                                attractorCount++;
+                            }
+                        }
+                        if(attractorCount == 0) {
+                            temp.add(soloChair);
+                        }
+                    }
                 }
             }
+            else if (Agent.Type.STUDENT == this.parent.getType()) {
+                for(ResearchTable researchTable: environment.getResearchTables()) {
+                    for (ResearchChair researchChair : researchTable.getResearchChairs()) {
+                        int attractorCount = 0;
+                        // This part checks for amenities with more than 1 attractors
+                        for(int i = 0; i < researchChair.getAttractors().size(); i++) {
+                            if (researchChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                                attractorCount++;
+                            }
+                        }
+                        if(attractorCount == 0) {
+                            temp.add(researchChair);
+                        }
+                    }
+                }
 
-
+                if (this.parent.getTeam() == 0) {
+                    for (SoloTable amenity : environment.getSoloTables()) {
+                        for (SoloChair soloChair : amenity.getSoloChairs()) {
+                            int attractorCount = 0;
+                            // This part checks for amenities with more than 1 attractors
+                            for(int i = 0; i < soloChair.getAttractors().size(); i++) {
+                                if (soloChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                                    attractorCount++;
+                                }
+                            }
+                            if(attractorCount == 0) {
+                                temp.add(soloChair);
+                            }
+                        }
+                    }
+                }
+            }
 
             if (this.team == 0) {
                 for (Amenity amenity : temp) {
@@ -932,7 +977,7 @@ public class AgentMovement {
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
             int count = 1;
             int table = -1;
-            List<? extends Amenity> amenityListInFloor = this.environment.getCollabDesks();
+            List<? extends Amenity> amenityListInFloor = this.environment.getLearningTables();
 
             if (this.team == 0) {
                 table = Simulator.rollIntIN(amenityListInFloor.size()) + 1;
@@ -945,7 +990,7 @@ public class AgentMovement {
                         break;
                     }
                     count++;
-                    if(count>Main.simulator.getEnvironment().getCollabDesks().size()){
+                    if(count>Main.simulator.getEnvironment().getLearningTables().size()){
                         count = 0;
                         break;
                     }
@@ -960,7 +1005,7 @@ public class AgentMovement {
                             amenity.getAttractors().get(0).getPatch().setTeam(this.team);
                             break;
                         }
-                        if(count == Main.simulator.getEnvironment().getCollabDesks().size()){
+                        if(count == Main.simulator.getEnvironment().getLearningTables().size()){
                             break;
                         }
                     }
@@ -969,7 +1014,7 @@ public class AgentMovement {
 
             if (table != -1) {
 
-                temp.addAll(Main.simulator.getEnvironment().getCollabDesks().get(table - 1).getCollabChairs());
+                temp.addAll(Main.simulator.getEnvironment().getLearningTables().get(table - 1).getLearningChairs());
 
                 for (Amenity amenity : temp) {
                     for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
@@ -1193,9 +1238,7 @@ public class AgentMovement {
 
             if(this.currentAction.getName() != Action.Name.WAIT_FOR_VACANT
                     && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != Bathroom.class)
-                    && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != FacultyRoom.class)
-                    && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != BreakArea.class)
-                    && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != MeetingRoom.class)) {
+                    && (this.currentPatch.getPatchField() != null && this.currentPatch.getPatchField().getKey().getClass() != Reception.class)) {
                 for (Agent otherAgent : patch.getAgents()) {
                     if (agentsProcessed == agentsProcessedLimit) {
                         break;
@@ -1625,20 +1668,18 @@ public class AgentMovement {
     private boolean hasObstacle(Patch patch) {
         // check if the patch is not the whitelist of amenity or a wall
         if ((patch.getAmenityBlock() != null && (!patch.getAmenityBlock().getParent().equals(this.goalAmenity) &&
-                patch.getAmenityBlock().getParent().getClass() != Door.class &&
-                patch.getAmenityBlock().getParent().getClass() != Cubicle.class &&
-                patch.getAmenityBlock().getParent().getClass() != MainEntranceDoor.class &&
-                patch.getAmenityBlock().getParent().getClass() != FemaleBathroomDoor.class &&
-                patch.getAmenityBlock().getParent().getClass() != MaleBathroomDoor.class &&
                 patch.getAmenityBlock().getParent().getClass() != ReceptionChair.class &&
                 patch.getAmenityBlock().getParent().getClass() != Chair.class &&
                 patch.getAmenityBlock().getParent().getClass() != AirConditioner.class &&
                 patch.getAmenityBlock().getParent().getClass() != Toilet.class &&
                 patch.getAmenityBlock().getParent().getClass() != Couch.class &&
                 patch.getAmenityBlock().getParent().getClass() != MeetingChair.class &&
-                patch.getAmenityBlock().getParent().getClass() != CollabChair.class &&
+                patch.getAmenityBlock().getParent().getClass() != LearningChair.class &&
                 patch.getAmenityBlock().getParent().getClass() != DirectorChair.class &&
-                patch.getAmenityBlock().getParent().getClass() != Trash.class &&
+                patch.getAmenityBlock().getParent().getClass() != PantryChair.class &&
+                patch.getAmenityBlock().getParent().getClass() != HumanExpChair.class &&
+                patch.getAmenityBlock().getParent().getClass() != DataCollChair.class &&
+                patch.getAmenityBlock().getParent().getClass() != TrashCan.class &&
                 patch.getAmenityBlock().getParent().getClass() != Whiteboard.class
         )) || (patch.getPatchField() != null && patch.getPatchField().getKey().getClass() == Wall.class)) {
             return true;
@@ -1680,13 +1721,13 @@ public class AgentMovement {
         // there
         // Make sure to offset the passenger from the center a little so a force will be applied to this passenger
         Coordinates patchCenter = this.goalAttractor.getPatch().getPatchCenterCoordinates();
-        Coordinates offsetPatchCenter = this.getFuturePosition(
-                patchCenter,
-                this.previousHeading,
-                Patch.PATCH_SIZE_IN_SQUARE_METERS * 0.1
-        );
+//        Coordinates offsetPatchCenter = this.getFuturePosition(
+//                patchCenter,
+//                this.previousHeading,
+//                Patch.PATCH_SIZE_IN_SQUARE_METERS * 0.1
+//        );
 
-        this.setPosition(offsetPatchCenter);
+        this.setPosition(patchCenter);
 
         // Set the current amenity
         this.currentAmenity = this.goalAmenity;

@@ -19,7 +19,7 @@ public class ElevatorMapper extends AmenityMapper {
 
             // TABLE'S FIRST PATCH (UPPER LEFT CORNER)
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Elevator.ElevatorBlock.elevatorBlockFactory;
-            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 
@@ -30,7 +30,7 @@ public class ElevatorMapper extends AmenityMapper {
                 // THE REST OF THE TABLE'S PATCHES
                 for (int i = 1; i <= 4; i++) {
                     Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol);
-                    Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                    Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
                     amenityBlocks.add(nextAmenityBlock);
                     nextPatch.setAmenityBlock(nextAmenityBlock);
                 }

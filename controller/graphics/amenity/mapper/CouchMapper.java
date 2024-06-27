@@ -20,7 +20,7 @@ public class CouchMapper extends AmenityMapper {
 
             // TABLE'S FIRST PATCH (UPPER LEFT CORNER)
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Couch.CouchBlock.couchBlockFactory;
-            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 
@@ -35,9 +35,17 @@ public class CouchMapper extends AmenityMapper {
                             j++;
                         }
                         Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
-                        Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-                        amenityBlocks.add(nextAmenityBlock);
-                        nextPatch.setAmenityBlock(nextAmenityBlock);
+                        if (j == 0) {
+                            Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
+                        else {
+                            Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
+
                     }
                 }
             }

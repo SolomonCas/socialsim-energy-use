@@ -2,7 +2,7 @@ package com.socialsim.model.core.environment.patchobject.passable.goal;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
-import com.socialsim.controller.graphics.amenity.graphic.OfficeSinkGraphic;
+import com.socialsim.controller.graphics.amenity.graphic.SinkGraphic;
 import com.socialsim.model.core.environment.Patch;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class OfficeSink extends Goal {
 
     /***** VARIABLES *****/
     public static final OfficeSinkFactory officeSinkFactory;
-    private final OfficeSinkGraphic officeSinkGraphic;
+    private final SinkGraphic officeSinkGraphic;
     private boolean isClean = false;
 
     static {
@@ -19,10 +19,10 @@ public class OfficeSink extends Goal {
     }
 
     /***** CONSTRUCTOR *****/
-    protected OfficeSink(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected OfficeSink(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
 
-        this.officeSinkGraphic = new OfficeSinkGraphic(this);
+        this.officeSinkGraphic = new SinkGraphic(this, facing);
     }
 
     /***** GETTER *****/
@@ -73,8 +73,8 @@ public class OfficeSink extends Goal {
     }
 
     public static class OfficeSinkFactory extends GoalFactory {
-        public static OfficeSink create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new OfficeSink(amenityBlocks, enabled);
+        public static OfficeSink create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+            return new OfficeSink(amenityBlocks, enabled, facing);
         }
     }
 }

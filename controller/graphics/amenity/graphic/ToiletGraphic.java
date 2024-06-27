@@ -1,6 +1,7 @@
 package com.socialsim.controller.graphics.amenity.graphic;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
+import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.Toilet;
 
 public class ToiletGraphic extends AmenityGraphic {
@@ -17,7 +18,7 @@ public class ToiletGraphic extends AmenityGraphic {
 
     /***** CONSTRUCTOR *****/
 
-    public ToiletGraphic(Toilet toilet, String facing) {
+    public ToiletGraphic(Amenity toilet, String facing) {
         super(toilet, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
 
         switch (facing) {

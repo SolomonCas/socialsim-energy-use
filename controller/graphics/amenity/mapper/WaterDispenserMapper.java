@@ -26,7 +26,7 @@ public class WaterDispenserMapper extends AmenityMapper {
 
             // SECOND PATCH
             Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
-            Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+            Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
             amenityBlocks.add(nextAmenityBlock);
             nextPatch.setAmenityBlock(nextAmenityBlock);
 
@@ -41,10 +41,6 @@ public class WaterDispenserMapper extends AmenityMapper {
             Main.simulator.getEnvironment().getWaterDispenserQueues().add(WaterDispenserQueue.waterDispenserQueueFactory.create(waterDispenserQueuePatches, waterDispenserToAdd, "waterDispenserQueue"));
             
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
-
-            List<Patch> waterDispenserQueuePatches = new ArrayList<>();
-            waterDispenserQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
-            Main.simulator.getEnvironment().getWaterDispenserQueues().add(WaterDispenserQueue.waterDispenserQueueFactory.create(waterDispenserQueuePatches, waterDispenserToAdd, 1));
         }
     }
 

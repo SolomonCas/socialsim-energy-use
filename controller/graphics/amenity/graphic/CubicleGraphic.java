@@ -1,6 +1,7 @@
 package com.socialsim.controller.graphics.amenity.graphic;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
+import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.Cubicle;
 
 public class CubicleGraphic extends AmenityGraphic {
@@ -23,7 +24,7 @@ public class CubicleGraphic extends AmenityGraphic {
     private static final int NORMAL_COLUMN_OFFSET = 0;
 
     /***** CONSTRUCTOR *****/
-    public CubicleGraphic(Cubicle cubicle, String type, String facing, String tableOn, boolean withAppliance) {
+    public CubicleGraphic(Amenity cubicle, String type, String facing, String tableOn, boolean withAppliance) {
         super(
             cubicle,
             getRowSpan(type, facing),

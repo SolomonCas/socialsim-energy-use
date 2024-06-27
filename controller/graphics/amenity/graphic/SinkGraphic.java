@@ -1,7 +1,7 @@
 package com.socialsim.controller.graphics.amenity.graphic;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Sink;
+import com.socialsim.model.core.environment.patchobject.Amenity;
 
 public class SinkGraphic extends AmenityGraphic {
 
@@ -15,7 +15,7 @@ public class SinkGraphic extends AmenityGraphic {
 
 
     /***** CONSTRUCTOR *****/
-    public SinkGraphic(Sink sink, String facing) {
+    public SinkGraphic(Amenity sink, String facing) {
         super(sink, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
 
         switch (facing) {

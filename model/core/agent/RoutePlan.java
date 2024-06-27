@@ -109,9 +109,9 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
-            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
+//            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
 
 //            actions = new ArrayList<>();
 //            // Inspect Meeting Room/s
@@ -183,8 +183,8 @@ public class RoutePlan {
 
             actions = new ArrayList<>();
             // Developer Note: The thesis does not need to implement elevator behavior, where agents will wait for an elevator to leave
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
             // This is for when the agent isn't in his station or is a behavior of getting he/she's belongings before going home
             actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
@@ -296,8 +296,8 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.WAIT_FOR_ACTIVITY, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
 
             actions.add(new Action(Action.Name.GO_TO_STATION, environment.getStorageCabinets().getFirst().getAttractors().getFirst().getPatch(), 2));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
@@ -325,8 +325,8 @@ public class RoutePlan {
 //            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
             actions.add(new Action(Action.Name.GO_TO_STATION, 2));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
@@ -352,8 +352,8 @@ public class RoutePlan {
 //            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
             actions.add(new Action(Action.Name.GO_TO_STATION, 2));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
@@ -387,8 +387,8 @@ public class RoutePlan {
 //            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getGates().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
             actions.add(new Action(Action.Name.GO_TO_STATION, 2));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
@@ -401,12 +401,11 @@ public class RoutePlan {
     public void maintenanceInspect(PatchField room, Environment environment, ArrayList<Action> actions) {
 
         // Get all the list of tables, cubicles, and desk in the model
-        List<? extends Amenity> collabDesk = environment.getAmenityList(CollabDesk.class);
+        List<? extends Amenity> collabDesk = environment.getAmenityList(LearningTable.class);
         List<? extends Amenity> cubicle = environment.getAmenityList(Cubicle.class);
-        List<? extends Amenity> meetingDesk = environment.getAmenityList(MeetingDesk.class);
+        List<? extends Amenity> meetingDesk = environment.getAmenityList(MeetingTable.class);
         List<? extends Amenity> pantry = environment.getAmenityList(PantryTable.class);
-        List<? extends Amenity> table = environment.getAmenityList(Table.class);
-        List<? extends Amenity> officeDesk = environment.getAmenityList(OfficeDesk.class);
+        List<? extends Amenity> officeDesk = environment.getAmenityList(DirectorTable.class);
 
         List<Amenity> allAmenities = new ArrayList<>();
 //        allAmenities.addAll(collabDesk);
@@ -483,7 +482,7 @@ public class RoutePlan {
             }
             case "EAT_OUTSIDE" -> {
                 actions = new ArrayList<>();
-                Patch randomExit = environment.getGates().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getGates().size()))
+                Patch randomExit = environment.getElevators().get(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size()))
                         .getAmenityBlocks().getFirst().getPatch();
                 actions.add(new Action(Action.Name.GO_TO_STATION, 3));
                 actions.add(new Action(Action.Name.WAIT_FOR_COLLEAGUE));

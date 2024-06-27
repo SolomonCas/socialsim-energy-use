@@ -2,7 +2,7 @@ package com.socialsim.model.core.environment.patchobject.passable.goal;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
-import com.socialsim.controller.graphics.amenity.graphic.OfficeToiletGraphic;
+import com.socialsim.controller.graphics.amenity.graphic.ToiletGraphic;
 import com.socialsim.model.core.environment.Patch;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class OfficeToilet extends Goal {
 
     /***** VARIABLES *****/
     public static final OfficeToiletFactory officeToiletFactory;
-    private final OfficeToiletGraphic officeToiletGraphic;
+    private final ToiletGraphic officeToiletGraphic;
 
     private boolean isClean = false;
 
@@ -20,10 +20,10 @@ public class OfficeToilet extends Goal {
     }
 
     /***** CONSTRUCTOR *****/
-    protected OfficeToilet(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected OfficeToilet(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
 
-        this.officeToiletGraphic = new OfficeToiletGraphic(this);
+        this.officeToiletGraphic = new ToiletGraphic(this, facing);
     }
 
     /***** GETTER *****/
@@ -74,8 +74,8 @@ public class OfficeToilet extends Goal {
     }
 
     public static class OfficeToiletFactory extends GoalFactory {
-        public static OfficeToilet create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new OfficeToilet(amenityBlocks, enabled);
+        public static OfficeToilet create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+            return new OfficeToilet(amenityBlocks, enabled, facing);
         }
     }
 }

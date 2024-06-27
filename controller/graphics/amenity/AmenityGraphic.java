@@ -20,8 +20,8 @@ public class AmenityGraphic extends Graphic {
     protected final Amenity amenity;
     protected final List<AmenityGraphicLocation> graphics;
     protected int graphicIndex;
-    private final AmenityGraphic.AmenityGraphicScale amenityGraphicScale;
-    private final AmenityGraphic.AmenityGraphicOffset amenityGraphicOffset;
+    private final AmenityGraphicScale amenityGraphicScale;
+    private final AmenityGraphicOffset amenityGraphicOffset;
 
     static {
 
@@ -154,6 +154,7 @@ public class AmenityGraphic extends Graphic {
         AMENITY_GRAPHICS.put(HumanExpChair.class, chairGraphic);
         AMENITY_GRAPHICS.put(DataCollChair.class, chairGraphic);
         AMENITY_GRAPHICS.put(PantryChair.class, chairGraphic);
+        AMENITY_GRAPHICS.put(Chair.class, chairGraphic);
 
 
         /*** Elevator ***/
@@ -196,12 +197,14 @@ public class AmenityGraphic extends Graphic {
         SinkGraphic.add(new AmenityGraphicLocation(31, 10)); // SOUTH
         SinkGraphic.add(new AmenityGraphicLocation(31, 11)); // NORTH
         AMENITY_GRAPHICS.put(Sink.class, SinkGraphic);
+        AMENITY_GRAPHICS.put(OfficeSink.class, SinkGraphic);
 
         /*** Toilet ***/
         final List<AmenityGraphicLocation> ToiletGraphic = new ArrayList<>();
         ToiletGraphic.add(new AmenityGraphicLocation(31, 7)); // SOUTH
         ToiletGraphic.add(new AmenityGraphicLocation(31, 8)); // NORTH
         AMENITY_GRAPHICS.put(Toilet.class, ToiletGraphic);
+        AMENITY_GRAPHICS.put(OfficeToilet.class, ToiletGraphic);
 
         /*** Coffee Maker Bar ***/
         final List<AmenityGraphicLocation> CoffeeMakerBarGraphic = new ArrayList<>();
@@ -271,8 +274,8 @@ public class AmenityGraphic extends Graphic {
     public AmenityGraphic(Amenity amenity, int rowSpan, int columnSpan, int rowOffset, int columnOffset) {
         this.amenity = amenity;
 
-        this.amenityGraphicScale = new AmenityGraphic.AmenityGraphicScale(rowSpan, columnSpan);
-        this.amenityGraphicOffset = new AmenityGraphic.AmenityGraphicOffset(rowOffset, columnOffset);
+        this.amenityGraphicScale = new AmenityGraphicScale(rowSpan, columnSpan);
+        this.amenityGraphicOffset = new AmenityGraphicOffset(rowOffset, columnOffset);
 
         this.graphics = new ArrayList<>();
 
@@ -291,11 +294,11 @@ public class AmenityGraphic extends Graphic {
 
 
     /***** GETTERS *****/
-    public AmenityGraphic.AmenityGraphicScale getAmenityGraphicScale() {
+    public AmenityGraphicScale getAmenityGraphicScale() {
         return amenityGraphicScale;
     }
 
-    public AmenityGraphic.AmenityGraphicOffset getAmenityGraphicOffset() {
+    public AmenityGraphicOffset getAmenityGraphicOffset() {
         return amenityGraphicOffset;
     }
 
