@@ -4,17 +4,16 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.CabinetGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class Cabinet extends Goal {
     /***** VARIABLES *****/
-    public static final Cabinet.CabinetFactory cabinetFactory;
+    public static final CabinetFactory cabinetFactory;
     private final CabinetGraphic cabinetGraphic;
 
     static {
-        cabinetFactory = new Cabinet.CabinetFactory();
+        cabinetFactory = new CabinetFactory();
     }
 
     /***** CONSTRUCTOR *****/
@@ -42,21 +41,21 @@ public class Cabinet extends Goal {
 
 
     /***** INNER STATIC CLASSES *****/
-    public static class CabinetBlock extends Amenity.AmenityBlock {
-        public static Cabinet.CabinetBlock.CabinetBlockFactory cabinetBlockFactory;
+    public static class CabinetBlock extends AmenityBlock {
+        public static CabinetBlockFactory cabinetBlockFactory;
 
         static {
-            cabinetBlockFactory = new Cabinet.CabinetBlock.CabinetBlockFactory();
+            cabinetBlockFactory = new CabinetBlockFactory();
         }
 
         private CabinetBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class CabinetBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class CabinetBlockFactory extends AmenityBlockFactory {
             @Override
-            public Cabinet.CabinetBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new Cabinet.CabinetBlock(patch, attractor, hasGraphic);
+            public CabinetBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new CabinetBlock(patch, attractor, hasGraphic);
             }
         }
     }

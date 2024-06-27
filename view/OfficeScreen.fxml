@@ -78,11 +78,6 @@
                                                 </children>
                                             </AnchorPane>
 
-
-
-
-
-
                                             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                 <children>
                                                     <Label prefHeight="26.0" prefWidth="150.0" text="Agent Field of View" />

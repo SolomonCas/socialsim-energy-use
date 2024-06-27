@@ -10,11 +10,11 @@ import java.util.List;
 public class FemaleBathroomDoor extends Goal {
 
     /***** VARIABLES *****/
-    public static final FemaleBathroomDoor.FemaleBathroomDoorFactory femaleBathroomDoorFactory;
+    public static final FemaleBathroomDoorFactory femaleBathroomDoorFactory;
     private final FemaleBathroomDoorGraphic femaleBathroomDoorGraphic;
 
     static {
-        femaleBathroomDoorFactory = new FemaleBathroomDoor.FemaleBathroomDoorFactory();
+        femaleBathroomDoorFactory = new FemaleBathroomDoorFactory();
     }
 
     /***** CONSTRUCTOR *****/
@@ -43,10 +43,10 @@ public class FemaleBathroomDoor extends Goal {
 
     /***** INNER STATIC CLASS *****/
     public static class FemaleBathroomDoorBlock extends AmenityBlock {
-        public static FemaleBathroomDoor.FemaleBathroomDoorBlock.FemaleBathroomDoorBlockFactory femaleBathroomDoorBlockFactory;
+        public static FemaleBathroomDoorBlockFactory femaleBathroomDoorBlockFactory;
 
         static {
-            femaleBathroomDoorBlockFactory = new FemaleBathroomDoor.FemaleBathroomDoorBlock.FemaleBathroomDoorBlockFactory();
+            femaleBathroomDoorBlockFactory = new FemaleBathroomDoorBlockFactory();
         }
 
         private FemaleBathroomDoorBlock(Patch patch, boolean attractor, boolean hasGraphic) {
@@ -55,8 +55,8 @@ public class FemaleBathroomDoor extends Goal {
 
         public static class FemaleBathroomDoorBlockFactory extends AmenityBlockFactory {
             @Override
-            public FemaleBathroomDoor.FemaleBathroomDoorBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new FemaleBathroomDoor.FemaleBathroomDoorBlock(patch, attractor, hasGraphic);
+            public FemaleBathroomDoorBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new FemaleBathroomDoorBlock(patch, attractor, hasGraphic);
             }
         }
     }

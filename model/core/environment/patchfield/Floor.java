@@ -18,10 +18,10 @@ public class Floor extends PatchField {
 
 
     // CONSTRUCTOR
-    protected Floor(List<Patch> patches, int num) {
+    protected Floor(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -31,8 +31,9 @@ public class Floor extends PatchField {
 
     // INNER CLASS
     public static class FloorFactory extends PatchFieldFactory {
-        public Floor create(List<Patch> patches, int num) {
-            return new Floor(patches, num);
+
+        public Floor create(List<Patch> patches, String str) {
+            return new Floor(patches, str);
         }
     }
 

@@ -8,19 +8,26 @@ import com.socialsim.model.core.environment.patchobject.passable.goal.Sink;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SinkMapper extends AmenityMapper {
 
-    public static void draw(List<Patch> patches) {
+    public static void draw(List<Patch> patches, String facing) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
+            int origPatchRow = patch.getMatrixPosition().getRow();
+            int origPatchCol = patch.getMatrixPosition().getColumn();
+
+            // FIRST PATCH
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Sink.SinkBlock.sinkBlockFactory;
-            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 
-            Sink sinkToAdd = Sink.SinkFactory.create(amenityBlocks, true);
-            Main.simulator.getEnvironment().getSinks().add(sinkToAdd);
+            List<Sink> Sinks = Main.simulator.getEnvironment().getSinks();
+            Sink sinkToAdd = Sink.SinkFactory.create(amenityBlocks, true, facing);
+            Sinks.add(sinkToAdd);
+
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }
     }

@@ -19,10 +19,10 @@ public class DataCenter extends PatchField {
 
 
     // CONSTRUCTOR
-    protected DataCenter(List<Patch> patches, int num) {
+    protected DataCenter(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -36,8 +36,8 @@ public class DataCenter extends PatchField {
 
     // INNER CLASS
     public static class DataCenterFactory extends PatchFieldFactory {
-        public DataCenter create(List<Patch> patches, int num) {
-            return new DataCenter(patches, num);
+        public DataCenter create(List<Patch> patches, String str) {
+            return new DataCenter(patches, str);
         }
     }
 

@@ -4,8 +4,6 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.PantryTableGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Goal;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,22 +12,20 @@ import java.util.List;
 public class PantryTable extends Goal {
 
     /***** VARIABLES *****/
-    public static final PantryTable.PantryTableFactory pantryTableFactory;
+    public static final PantryTableFactory pantryTableFactory;
     private final PantryTableGraphic pantryTableGraphic;
 
     private final List<PantryChair> pantryChairs;
 
     static {
-        pantryTableFactory = new PantryTable.PantryTableFactory();
+        pantryTableFactory = new PantryTableFactory();
     }
 
     /***** CONSTRUCTOR *****/
-    protected PantryTable(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+    protected PantryTable(List<AmenityBlock> amenityBlocks, boolean enabled, String type) {
         super(amenityBlocks, enabled);
-
+        this.pantryTableGraphic = new PantryTableGraphic(this, type);
         this.pantryChairs = Collections.synchronizedList(new ArrayList<>());
-
-        this.pantryTableGraphic = new PantryTableGraphic(this, facing);
     }
 
 
@@ -56,28 +52,28 @@ public class PantryTable extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class PantryTableBlock extends Amenity.AmenityBlock {
-        public static PantryTable.PantryTableBlock.PantryTableBlockFactory pantryTableBlockFactory;
+    public static class PantryTableBlock extends AmenityBlock {
+        public static PantryTableBlockFactory pantryTableBlockFactory;
 
         static {
-            pantryTableBlockFactory = new PantryTable.PantryTableBlock.PantryTableBlockFactory();
+            pantryTableBlockFactory = new PantryTableBlockFactory();
         }
 
         private PantryTableBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class PantryTableBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class PantryTableBlockFactory extends AmenityBlockFactory {
             @Override
-            public PantryTable.PantryTableBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new PantryTable.PantryTableBlock(patch, attractor, hasGraphic);
+            public PantryTableBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new PantryTableBlock(patch, attractor, hasGraphic);
             }
         }
     }
 
     public static class PantryTableFactory extends GoalFactory {
-        public static PantryTable create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
-            return new PantryTable(amenityBlocks, enabled, facing);
+        public static PantryTable create(List<AmenityBlock> amenityBlocks, boolean enabled, String type) {
+            return new PantryTable(amenityBlocks, enabled, type);
         }
     }
 }

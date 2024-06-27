@@ -12,8 +12,6 @@ import com.socialsim.model.core.environment.patchfield.*;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.Drawable;
 import com.socialsim.model.core.environment.patchobject.passable.NonObstacle;
-import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
-import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.core.environment.position.Coordinates;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
@@ -30,13 +28,8 @@ public class GraphicsController extends Controller {
 
 
     // VARIABLES
-    private static final Image AMENITY_SPRITES = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL);
-    private static final Image AMENITY_SPRITES2 = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL2);
-    private static final Image AMENITY_SPRITES3 = new Image(AmenityGraphic.AMENITY_SPRITE_SHEET_URL3);
-    private static final Image AGENT_SPRITES1 = new Image(AgentGraphic.AGENTS_URL_1);
-    private static final Image AGENT_SPRITES2 = new Image(AgentGraphic.AGENTS_URL_2);
-    private static final Image AGENT_SPRITES3 = new Image(AgentGraphic.AGENTS_URL_3);
-    private static final Image AGENT_SPRITES4 = new Image(AgentGraphic.AGENTS_URL_4);
+    private static final Image AMENITY_SPRITES = new Image(AmenityGraphic.AMENITIES_SPRITE_SHEET_URL);
+    private static final Image AGENT_SPRITES = new Image(AgentGraphic.AGENTS_SPRITE_SHEET_URL);
 
     public static List<Amenity.AmenityBlock> firstPortalAmenityBlocks;
     public static double tileSize;
@@ -126,7 +119,7 @@ public class GraphicsController extends Controller {
             drawGraphicTransparently = false;
 
             Amenity.AmenityBlock patchAmenityBlock = currentPatch.getAmenityBlock();
-            Pair<PatchField, Integer> patchNumPair = currentPatch.getPatchField();
+            Pair<PatchField, String> patchStrPair = currentPatch.getPatchField();
             Color patchColor;
 
 
@@ -156,42 +149,18 @@ public class GraphicsController extends Controller {
                         foregroundGraphicsContext.setGlobalAlpha(0.2);
                     }
 
+//                    System.out.println("PRINT drawablePatchAmenity: " + drawablePatchAmenity);
                     AmenityGraphicLocation amenityGraphicLocation = drawablePatchAmenity.getGraphicLocation();
 
-                    // IF STATEMENTS
-                    if (patchAmenity.getClass() == Gate.class) {
-                        foregroundGraphicsContext.drawImage(
-                                AMENITY_SPRITES3,
-                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
-                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
-                                column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
-                                row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
-                    }
-                    else if (   patchAmenity.getClass() == Toilet.class || patchAmenity.getClass() == Sink.class ||
-                            patchAmenity.getClass() == Trash.class || patchAmenity.getClass() == OfficeToilet.class ||
-                            patchAmenity.getClass() == OfficeSink.class) {
-                        foregroundGraphicsContext.drawImage(
-                                AMENITY_SPRITES2,
-                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
-                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
-                                column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
-                                row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
-                    }
-                    else {
-                        foregroundGraphicsContext.drawImage(
-                                AMENITY_SPRITES,
-                                amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
-                                amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
-                                column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
-                                row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
-                                tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan());
-                    }
-
+                    foregroundGraphicsContext.drawImage(
+                            AMENITY_SPRITES,
+                            amenityGraphicLocation.getSourceX(), amenityGraphicLocation.getSourceY(),
+                            amenityGraphicLocation.getSourceWidth(), amenityGraphicLocation.getSourceHeight(),
+                            column * tileSize + ((AmenityGraphic) drawablePatchAmenity. getGraphicObject()).getAmenityGraphicOffset().getColumnOffset() * tileSize,
+                            row * tileSize + ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicOffset().getRowOffset() * tileSize,
+                            tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getColumnSpan(),
+                            tileSize * ((AmenityGraphic) drawablePatchAmenity.getGraphicObject()).getAmenityGraphicScale().getRowSpan()
+                    );
 
 
 
@@ -205,128 +174,312 @@ public class GraphicsController extends Controller {
 
 
 
-            // PATCH NUM PAIR
-            if (patchNumPair != null) {
-                PatchField patchPatchField = patchNumPair.getKey();
+            // PATCH COLORS
+            if (patchStrPair != null) {
+                PatchField patchPatchField = patchStrPair.getKey();
 
-
-                // WALLS
-                if (patchPatchField.getClass() == Wall.class) {
-
-
-                    patchColor = Color.rgb(104, 101, 101);
+                /*** FLOOR ***/
+                if (patchPatchField.getClass() == Floor.class) {
+                    patchColor = Color.rgb(132, 132, 132);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-
-
-                // BATHROOM
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }
+
+
+                /*** WALLS ***/
+                else if (patchPatchField.getClass() == Wall.class) {
+
+
+                    // OFFICE OUTLINE
+
+                        // Top of Wall
+                        if (patchStrPair.getValue().equals("outlineWallTop")) {
+                            patchColor = Color.rgb(0, 0, 0);
+
+                        // Wall
+                        } else if (patchStrPair.getValue().equals("outlineWall")) {
+                            patchColor = Color.rgb(32, 32, 32);
+
+                    // INSIDE OFFICE
+
+                        // Top of Wall
+                        } else if (patchStrPair.getValue().equals("wallTopIn")) {
+                            patchColor = Color.rgb(11, 13, 62);
+
+                        // Wall
+                        } else if (patchStrPair.getValue().equals("wallIn")) {
+                            patchColor = Color.rgb(50, 50, 67);
+
+                        // Wall (signifies entry/exit points)
+                        } else if (patchStrPair.getValue().equals("doorWallIn")) {
+                            patchColor = Color.rgb(119, 129, 144);
+
+
+                    // OUTSIDE OFFICE
+
+                        // Top of Wall
+                        } else if (patchStrPair.getValue().equals("wallTopOut")) {
+                            patchColor = Color.rgb(16, 19, 81);
+
+                        // Wall
+                        } else if (patchStrPair.getValue().equals("wallOut")) {
+                            patchColor = Color.rgb(35, 66, 125);
+
+                        // Wall (signifies entry point)
+                        } else if (patchStrPair.getValue().equals("doorWallOut")) {
+                            patchColor = Color.rgb(89, 134, 187);
+
+
+                        // Outside of Building (NOT ACTUALLY A WALL)
+                        } else {
+                            patchColor = Color.rgb(83, 99, 130);
+                        }
+
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.setStroke(null);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+
+                /*** BATHROOM ***/
                 else if (patchPatchField.getClass() == Bathroom.class) {
 
-                    // FEMALE
-                    if (patchNumPair.getValue() == 1) {
+                    // Male Bathroom
+                    if (patchStrPair.getValue().equals("male")) {
+                        patchColor = Color.rgb(189, 234, 254);
+
+                    // Female Bathroom
+                    } else if (patchStrPair.getValue().equals("female")) {
                         patchColor = Color.rgb(233, 127, 146);
 
 
-                    // MALE
-                    } else if (patchNumPair.getValue() == 2) {
-                        patchColor = Color.rgb(140, 211, 242);
-
-                    // UNISEX
+                    // Director Bathroom
                     } else {
-                        patchColor = Color.rgb(169, 204, 164);
+                        patchColor = Color.rgb(136, 158, 152);
                     }
 
 
-
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
 
 
-
-                } // Floor
-                else if (patchPatchField.getClass() == Floor.class) {
-                    patchColor = Color.rgb(244, 244, 244);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-
-                } // RECEPTION
+                /*** RECEPTION ***/
                 else if (patchPatchField.getClass() == Reception.class) {
-                    patchColor = Color.rgb(255, 238, 204);
+                    patchColor = Color.rgb(253, 238, 208);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
 
-                } // MEETING ROOM
-                else if (patchPatchField.getClass() == MeetingRoom.class) {
-                    patchColor = Color.rgb(222, 211, 252);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
 
-                } // FACULTY ROOM
-                else if (patchPatchField.getClass() == FacultyRoom.class) {
-                    patchColor = Color.rgb(222, 211, 252);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // CONTROL CENTER
-                else if (patchPatchField.getClass() == ControlCenter.class) {
-                    patchColor = Color.rgb(240, 189, 207);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // DATA CENTER
-                else if (patchPatchField.getClass() == DataCenter.class) {
-                    patchColor = Color.rgb(250, 189, 193);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // DIRECTOR ROOM
-                else if (patchPatchField.getClass() == DirectorRoom.class) {
-                    patchColor = Color.rgb(129, 204, 235);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // DATA COLLECTION
-                else if (patchPatchField.getClass() == DataCollectionRoom.class) {
-                    patchColor = Color.rgb(155, 235, 197);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // HUMAN EXPERIENCE
-                else if (patchPatchField.getClass() == HumanExpRoom.class) {
-                    patchColor = Color.rgb(185, 219, 207);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // RESEARCH CENTER
-                else if (patchPatchField.getClass() == ResearchCenter.class) {
-                    patchColor = Color.rgb(169, 204, 164);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // LEARNING SPACE
-                else if (patchPatchField.getClass() == LearningSpace.class) {
-                    patchColor = Color.rgb(169, 204, 164);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // STAFF AREA
+                /*** STAFF AREA ***/
                 else if (patchPatchField.getClass() == StaffArea.class) {
-                    patchColor = Color.rgb(254, 195, 162);
+                    patchColor = Color.rgb(255, 231, 203);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // PANTRY
-                else if (patchPatchField.getClass() == Pantry.class) {
-                    patchColor = Color.rgb(239, 213, 189);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** SOLO ROOMS ***/
+                else if (patchPatchField.getClass() == SoloRoom.class) {
+
+                    // Solo Room 1
+                    if (patchStrPair.getValue().equals("SR1")) {
+                        patchColor = Color.rgb(231, 175, 209);
+
+                        // Solo Room 2
+                    } else if (patchStrPair.getValue().equals("SR2")) {
+                        patchColor = Color.rgb(219, 192, 246);
+
+                        // Solo Room 3
+                    } else if (patchStrPair.getValue().equals("SR3")) {
+                        patchColor = Color.rgb(163, 173, 208);
+
+                        // Solo Room 4
+                    } else {
+                        patchColor = Color.rgb(182, 172, 243);
+                    }
+
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // STORAGE ROOM
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+
+                /*** DATA CENTER ***/
+                else if (patchPatchField.getClass() == DataCenter.class) {
+                    patchColor = Color.rgb(235, 223, 214);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** CONTROL CENTER ***/
+                else if (patchPatchField.getClass() == ControlCenter.class) {
+                    patchColor = Color.rgb(215, 195, 181);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** LEARNING SPACES ***/
+                else if (patchPatchField.getClass() == LearningSpace.class) {
+
+                    // Learning Space 1
+                    if (patchStrPair.getValue().equals("LS1")) {
+                        patchColor = Color.rgb(206, 223, 214);
+
+                    // Learning Space 2
+                    } else if (patchStrPair.getValue().equals("LS2")) {
+                        patchColor = Color.rgb(221, 210, 224);
+
+                    // Learning Space 3
+                    } else if (patchStrPair.getValue().equals("LS3")) {
+                        patchColor = Color.rgb(237, 213, 213);
+
+                    // Learning Space 4
+                    } else {
+                        patchColor = Color.rgb(194, 208, 221);
+                    }
+
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+
+                /*** BREAKER ROOM ***/
+                else if (patchPatchField.getClass() == BreakerRoom.class) {
+                    patchColor = Color.rgb(111, 156, 166);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** MEETING ROOM ***/
+                else if (patchPatchField.getClass() == MeetingRoom.class) {
+                    patchColor = Color.rgb(233, 212, 220);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** CONFERENCE ROOM ***/
+                else if (patchPatchField.getClass() == ConferenceRoom.class) {
+                    patchColor = Color.rgb(235, 230, 251);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** STORAGE ROOM ***/
                 else if (patchPatchField.getClass() == StorageRoom.class) {
                     patchColor = Color.rgb(178, 159, 141);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
-                } // SOLO ROOM
-                else if (patchPatchField.getClass() == SoloRoom.class) {
-                    patchColor = Color.rgb(169, 204, 164);
-                    backgroundGraphicsContext.setFill(patchColor);
-                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }
-                else if (patchPatchField.getClass() == BreakArea.class) {
-                    patchColor = Color.rgb(255, 232, 173);
+
+
+                /*** FACULTY ROOM ***/
+                else if (patchPatchField.getClass() == FacultyRoom.class) {
+                    patchColor = Color.rgb(218, 224, 238);
                     backgroundGraphicsContext.setFill(patchColor);
                     backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** RESEARCH CENTER ***/
+                else if (patchPatchField.getClass() == ResearchCenter.class) {
+                    patchColor = Color.rgb(182, 206, 199);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** DATA COLLECTION ***/
+                else if (patchPatchField.getClass() == DataCollectionRoom.class) {
+                    patchColor = Color.rgb(220, 203, 218);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** HUMAN EXPERIENCE ***/
+                else if (patchPatchField.getClass() == HumanExpRoom.class) {
+                    patchColor = Color.rgb(216, 222, 255);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** CLINIC ***/
+                else if (patchPatchField.getClass() == Clinic.class) {
+                    patchColor = Color.rgb(166, 198, 229);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+
+                /*** DIRECTOR'S ROOM ***/
+                else if (patchPatchField.getClass() == DirectorRoom.class) {
+                    patchColor = Color.rgb(136, 168, 172);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                }
+
+                /*** PANTRY ***/
+                else if (patchPatchField.getClass() == Pantry.class) {
+                    patchColor = Color.rgb(240, 234, 223);
+                    backgroundGraphicsContext.setFill(patchColor);
+                    backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                    backgroundGraphicsContext.setStroke(patchColor);
+                    backgroundGraphicsContext.setLineWidth(1);
+                    backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 }
 
                 // INSERT AGENT CODE
@@ -336,16 +489,7 @@ public class GraphicsController extends Controller {
                             Agent officeAgent = agent;
                             AgentGraphicLocation agentGraphicLocation = officeAgent.getAgentGraphic().getGraphicLocation();
 
-                            Image CURRENT_URL = null;
-                            if (agent.getType() == Agent.Type.GUARD || agent.getType() == Agent.Type.MAINTENANCE) {
-                                CURRENT_URL = AGENT_SPRITES1;
-                            }
-                            else if (agent.getType() == Agent.Type.DIRECTOR || agent.getType() == Agent.Type.STUDENT) {
-                                CURRENT_URL = AGENT_SPRITES2;
-                            }
-                            else if (agent.getType() == Agent.Type.FACULTY) {
-                                CURRENT_URL = AGENT_SPRITES3;
-                            }
+                            Image CURRENT_URL = AGENT_SPRITES;
 
                             foregroundGraphicsContext.drawImage(
                                     CURRENT_URL,
@@ -353,7 +497,8 @@ public class GraphicsController extends Controller {
                                     agentGraphicLocation.getSourceWidth(), agentGraphicLocation.getSourceHeight(),
                                     getScaledAgentCoordinates(officeAgent).getX() * tileSize,
                                     getScaledAgentCoordinates(officeAgent).getY() * tileSize,
-                                    tileSize * 0.7, tileSize * 0.7);
+//                                    tileSize * 0.7, tileSize * 0.7);
+                                    tileSize * 1, tileSize * 1);
                         }
                     }
                 }

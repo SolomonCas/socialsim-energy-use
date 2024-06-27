@@ -17,10 +17,10 @@ public class HumanExpRoom extends PatchField {
 
     // CONSTRUCTOR
 
-    protected HumanExpRoom(List<Patch> patches, int num) {
+    protected HumanExpRoom(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -34,8 +34,8 @@ public class HumanExpRoom extends PatchField {
 
     // INNER CLASS
     public static class HumanExpRoomFactory extends PatchFieldFactory {
-        public HumanExpRoom create(List<Patch> patches, int num) {
-            return new HumanExpRoom(patches, num);
+        public HumanExpRoom create(List<Patch> patches, String str) {
+            return new HumanExpRoom(patches, str);
         }
     }
 

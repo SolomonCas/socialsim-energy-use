@@ -4,25 +4,24 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.SinkGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class Sink extends Goal {
 
     /***** VARIABLES *****/
-    public static final Sink.SinkFactory sinkFactory;
+    public static final SinkFactory sinkFactory;
     private final SinkGraphic sinkGraphic;
 
     static {
-        sinkFactory = new Sink.SinkFactory();
+        sinkFactory = new SinkFactory();
     }
 
     /***** CONSTRUCTOR *****/
-    protected Sink(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected Sink(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
 
-        this.sinkGraphic = new SinkGraphic(this);
+        this.sinkGraphic = new SinkGraphic(this, facing);
     }
 
     /***** OVERRIDE *****/
@@ -43,28 +42,28 @@ public class Sink extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class SinkBlock extends Amenity.AmenityBlock {
-        public static Sink.SinkBlock.SinkBlockFactory sinkBlockFactory;
+    public static class SinkBlock extends AmenityBlock {
+        public static SinkBlockFactory sinkBlockFactory;
 
         static {
-            sinkBlockFactory = new Sink.SinkBlock.SinkBlockFactory();
+            sinkBlockFactory = new SinkBlockFactory();
         }
 
         private SinkBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class SinkBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class SinkBlockFactory extends AmenityBlockFactory {
             @Override
-            public Sink.SinkBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new Sink.SinkBlock(patch, attractor, hasGraphic);
+            public SinkBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new SinkBlock(patch, attractor, hasGraphic);
             }
         }
     }
 
     public static class SinkFactory extends GoalFactory {
-        public static Sink create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new Sink(amenityBlocks, enabled);
+        public static Sink create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+            return new Sink(amenityBlocks, enabled, facing);
         }
     }
 }

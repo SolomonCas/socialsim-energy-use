@@ -17,10 +17,10 @@ public class Wall extends PatchField {
 
 
     // CONSTRUCTOR
-    protected Wall(List<Patch> patches, int num) {
+    protected Wall(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
             patch.signalAddWall();
@@ -31,8 +31,8 @@ public class Wall extends PatchField {
 
     // INNER ABSTRACT CLASS
     public static class WallFactory extends PatchFieldFactory {
-        public Wall create(List<Patch> patches, int num) {
-            return new Wall(patches, num);
+        public Wall create(List<Patch> patches, String str) {
+            return new Wall(patches, str);
         }
     }
 

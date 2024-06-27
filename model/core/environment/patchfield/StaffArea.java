@@ -17,10 +17,10 @@ public class StaffArea extends PatchField {
 
 
     // CONSTRUCTOR
-    protected StaffArea(List<Patch> patches, int num) {
+    protected StaffArea(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -34,8 +34,8 @@ public class StaffArea extends PatchField {
 
     // INNER CLASS
     public static class StaffAreaFactory extends PatchFieldFactory {
-        public StaffArea create(List<Patch> patches, int num) {
-            return new StaffArea(patches, num);
+        public StaffArea create(List<Patch> patches, String str) {
+            return new StaffArea(patches, str);
         }
     }
 

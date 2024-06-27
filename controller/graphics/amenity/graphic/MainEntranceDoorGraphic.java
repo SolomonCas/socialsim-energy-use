@@ -2,6 +2,7 @@ package com.socialsim.controller.graphics.amenity.graphic;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.model.core.environment.patchobject.passable.goal.MainEntranceDoor;
+
 import java.util.Objects;
 
 public class MainEntranceDoorGraphic extends AmenityGraphic {

@@ -4,31 +4,30 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.WhiteboardGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class Whiteboard extends Goal {
 
     /***** VARIABLES *****/
-    public static final Whiteboard.WhiteboardFactory whiteboardFactory;
+    public static final WhiteboardFactory whiteboardFactory;
     private final WhiteboardGraphic whiteboardGraphic;
 
     static {
-        whiteboardFactory = new Whiteboard.WhiteboardFactory();
+        whiteboardFactory = new WhiteboardFactory();
     }
 
     /***** CONSTRUCTOR *****/
-    protected Whiteboard(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+    protected Whiteboard(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String length) {
         super(amenityBlocks, enabled);
 
-        this.whiteboardGraphic = new WhiteboardGraphic(this, facing);
+        this.whiteboardGraphic = new WhiteboardGraphic(this, facing, length);
     }
 
     /***** OVERRIDE *****/
     @Override
     public String toString() {
-        return "Whiteboard" + ((this.enabled) ? "" : " (disabled)");
+        return "White Board" + ((this.enabled) ? "" : " (disabled)");
     }
 
     @Override
@@ -43,28 +42,28 @@ public class Whiteboard extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class WhiteboardBlock extends Amenity.AmenityBlock {
-        public static Whiteboard.WhiteboardBlock.WhiteboardBlockFactory whiteboardBlockFactory;
+    public static class WhiteboardBlock extends AmenityBlock {
+        public static WhiteboardBlockFactory whiteboardBlockFactory;
 
         static {
-            whiteboardBlockFactory = new Whiteboard.WhiteboardBlock.WhiteboardBlockFactory();
+            whiteboardBlockFactory = new WhiteboardBlockFactory();
         }
 
         private WhiteboardBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class WhiteboardBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class WhiteboardBlockFactory extends AmenityBlockFactory {
             @Override
-            public Whiteboard.WhiteboardBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new Whiteboard.WhiteboardBlock(patch, attractor, hasGraphic);
+            public WhiteboardBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new WhiteboardBlock(patch, attractor, hasGraphic);
             }
         }
     }
 
     public static class WhiteboardFactory extends GoalFactory {
-        public static Whiteboard create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
-            return new Whiteboard(amenityBlocks, enabled, facing);
+        public static Whiteboard create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String length) {
+            return new Whiteboard(amenityBlocks, enabled, facing, length);
         }
     }
 

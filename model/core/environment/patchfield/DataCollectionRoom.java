@@ -17,10 +17,10 @@ public class DataCollectionRoom extends PatchField {
 
     // CONSTRUCTOR
 
-    protected DataCollectionRoom(List<Patch> patches, int num) {
+    protected DataCollectionRoom(List<Patch> patches, String str) {
         super(patches);
 
-        Pair<PatchField, Integer> pair = new Pair<>(this, num);
+        Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
         }
@@ -35,8 +35,8 @@ public class DataCollectionRoom extends PatchField {
 
     // INNER CLASS
     public static class DataCollectionRoomFactory extends PatchFieldFactory {
-        public DataCollectionRoom create(List<Patch> patches, int num) {
-            return new DataCollectionRoom(patches, num);
+        public DataCollectionRoom create(List<Patch> patches, String str) {
+            return new DataCollectionRoom(patches, str);
         }
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DirectorChairMapper extends AmenityMapper {
 
-    public static void draw(List<Patch> patches, int index) {
+    public static void draw(List<Patch> patches, int index, String facing, String type) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = DirectorChair.DirectorChairBlock.directorChairBlockFactory;
@@ -19,7 +19,7 @@ public class DirectorChairMapper extends AmenityMapper {
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 
-            DirectorChair chairToAdd = DirectorChair.DirectorChairFactory.create(amenityBlocks, true);
+            DirectorChair chairToAdd = DirectorChair.DirectorChairFactory.create(amenityBlocks, true, facing, type);
             Main.simulator.getEnvironment().getDirectorTables().get(index).getDirectorChairs().add(chairToAdd);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }

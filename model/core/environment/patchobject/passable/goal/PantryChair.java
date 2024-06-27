@@ -2,27 +2,25 @@ package com.socialsim.model.core.environment.patchobject.passable.goal;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
-import com.socialsim.controller.graphics.amenity.graphic.PantryChairGraphic;
+import com.socialsim.controller.graphics.amenity.graphic.ChairGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class PantryChair extends Goal {
 
     /***** VARIABLES *****/
-    public static final PantryChair.PantryChairFactory pantryChairFactory;
-    private final PantryChairGraphic pantryChairGraphic;
+    public static final PantryChairFactory pantryChairFactory;
+    private final ChairGraphic pantryChairGraphic;
 
     static {
-        pantryChairFactory = new PantryChair.PantryChairFactory();
+        pantryChairFactory = new PantryChairFactory();
     }
 
     /***** CONSTRUCTOR *****/
-    protected PantryChair(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected PantryChair(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String type) {
         super(amenityBlocks, enabled);
-
-        this.pantryChairGraphic = new PantryChairGraphic(this);
+        this.pantryChairGraphic = new ChairGraphic(this, facing, type);
     }
 
     /***** OVERRIDE *****/
@@ -43,28 +41,28 @@ public class PantryChair extends Goal {
 
 
     /***** INNER STATIC CLASSES *****/
-    public static class PantryChairBlock extends Amenity.AmenityBlock {
-        public static PantryChair.PantryChairBlock.PantryChairBlockFactory pantryChairBlockFactory;
+    public static class PantryChairBlock extends AmenityBlock {
+        public static PantryChairBlockFactory pantryChairBlockFactory;
 
         static {
-            pantryChairBlockFactory = new PantryChair.PantryChairBlock.PantryChairBlockFactory();
+            pantryChairBlockFactory = new PantryChairBlockFactory();
         }
 
         private PantryChairBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class PantryChairBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class PantryChairBlockFactory extends AmenityBlockFactory {
             @Override
-            public PantryChair.PantryChairBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new PantryChair.PantryChairBlock(patch, attractor, hasGraphic);
+            public PantryChairBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new PantryChairBlock(patch, attractor, hasGraphic);
             }
         }
     }
 
     public static class PantryChairFactory extends GoalFactory {
-        public static PantryChair create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new PantryChair(amenityBlocks, enabled);
+        public static PantryChair create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String type) {
+            return new PantryChair(amenityBlocks, enabled, facing, type);
         }
     }
 }

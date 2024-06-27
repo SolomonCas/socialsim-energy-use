@@ -4,19 +4,18 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.PlantGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class Plant extends Goal {
 
     /***** VARIABLES *****/
-    public static final Plant.PlantFactory plantFactory;
+    public static final PlantFactory plantFactory;
     private final PlantGraphic plantGraphic;
     private boolean isWatered = false;
 
     static {
-        plantFactory = new Plant.PlantFactory();
+        plantFactory = new PlantFactory();
     }
 
     /***** CONSTRUCTOR *****/
@@ -55,21 +54,21 @@ public class Plant extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class PlantBlock extends Amenity.AmenityBlock {
-        public static Plant.PlantBlock.PlantBlockFactory plantBlockFactory;
+    public static class PlantBlock extends AmenityBlock {
+        public static PlantBlockFactory plantBlockFactory;
 
         static {
-            plantBlockFactory = new Plant.PlantBlock.PlantBlockFactory();
+            plantBlockFactory = new PlantBlockFactory();
         }
 
         private PlantBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class PlantBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class PlantBlockFactory extends AmenityBlockFactory {
             @Override
-            public Plant.PlantBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new Plant.PlantBlock(patch, attractor, hasGraphic);
+            public PlantBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new PlantBlock(patch, attractor, hasGraphic);
             }
         }
     }

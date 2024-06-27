@@ -1,7 +1,7 @@
 package com.socialsim.controller.graphics.amenity.graphic;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
-import com.socialsim.model.core.environment.patchobject.passable.gate.Gate;
+import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
 
 public class GateGraphic extends AmenityGraphic {
 
@@ -16,8 +16,8 @@ public class GateGraphic extends AmenityGraphic {
 
     /***** CONSTRUCTOR *****/
 
-    public GateGraphic(Gate gate) {
-        super(gate, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
+    public GateGraphic(Elevator elevator) {
+        super(elevator, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
     }
 
 }

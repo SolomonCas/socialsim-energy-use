@@ -4,18 +4,17 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.DoorGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class Door extends Goal {
 
     /***** VARIABLES *****/
-    public static final Door.DoorFactory doorFactory;
+    public static final DoorFactory doorFactory;
     private final DoorGraphic doorGraphic;
 
     static {
-        doorFactory = new Door.DoorFactory();
+        doorFactory = new DoorFactory();
     }
 
     /***** CONSTRUCTOR *****/
@@ -43,21 +42,21 @@ public class Door extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class DoorBlock extends Amenity.AmenityBlock {
-        public static Door.DoorBlock.DoorBlockFactory doorBlockFactory;
+    public static class DoorBlock extends AmenityBlock {
+        public static DoorBlockFactory doorBlockFactory;
 
         static {
-            doorBlockFactory = new Door.DoorBlock.DoorBlockFactory();
+            doorBlockFactory = new DoorBlockFactory();
         }
 
         private DoorBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class DoorBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class DoorBlockFactory extends AmenityBlockFactory {
             @Override
-            public Door.DoorBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new Door.DoorBlock(patch, attractor, hasGraphic);
+            public DoorBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new DoorBlock(patch, attractor, hasGraphic);
             }
         }
     }

@@ -18,6 +18,8 @@ public class PlantGraphic extends AmenityGraphic {
 
     public PlantGraphic(Plant plant) {
         super(plant, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
+
+        this.graphicIndex = 0;
     }
 
 }

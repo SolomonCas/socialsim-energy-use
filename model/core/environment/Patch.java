@@ -22,8 +22,8 @@ public class Patch extends BaseObject implements Comparable<Patch> {
     private final Coordinates patchCenterCoordinates;
     private CopyOnWriteArrayList<Agent> agent;
     private Amenity.AmenityBlock amenityBlock; // Denotes the amenity block present on this patch
-    private Pair<PatchField, Integer> patchField;
-    private Pair<QueueingPatchField, Integer> queueingPatchField;
+    private Pair<PatchField, String> patchField;
+    private Pair<QueueingPatchField, String> queueingPatchField;
     private final Environment environment;
     private final List<MatrixPosition> neighborIndices;
     private final List<MatrixPosition> neighbor7x7Indices; // Denotes the positions of the neighbors of this patch within a 7x7 range
@@ -250,10 +250,10 @@ public class Patch extends BaseObject implements Comparable<Patch> {
     public CopyOnWriteArrayList<Agent> getAgents() {
         return agent;
     }
-    public Pair<PatchField, Integer> getPatchField() {
+    public Pair<PatchField, String> getPatchField() {
         return patchField;
     }
-    public Pair<QueueingPatchField, Integer> getQueueingPatchField() {
+    public Pair<QueueingPatchField, String> getQueueingPatchField() {
         return queueingPatchField;
     }
     public int getWallsAround() {
@@ -276,10 +276,10 @@ public class Patch extends BaseObject implements Comparable<Patch> {
 
 
     // SETTERS
-    public void setPatchField(Pair<PatchField, Integer> patchField) {
+    public void setPatchField(Pair<PatchField, String> patchField) {
         this.patchField = patchField;
     }
-    public void setQueueingPatchField(Pair<QueueingPatchField, Integer> queueingPatchField) {
+    public void setQueueingPatchField(Pair<QueueingPatchField, String> queueingPatchField) {
         this.queueingPatchField = queueingPatchField;
     }
     public void setWallsAround(int wallsAround) {

@@ -4,18 +4,17 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.ServerGraphic;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchobject.Amenity;
 
 import java.util.List;
 
 public class Server extends Goal {
 
     /***** VARIABLES *****/
-    public static final Server.ServerFactory serverFactory;
+    public static final ServerFactory serverFactory;
     private final ServerGraphic serverGraphic;
 
     static {
-        serverFactory = new Server.ServerFactory();
+        serverFactory = new ServerFactory();
     }
 
     /***** CONSTRUCTOR *****/
@@ -43,21 +42,21 @@ public class Server extends Goal {
 
 
     /***** INNER STATIC CLASS *****/
-    public static class ServerBlock extends Amenity.AmenityBlock {
-        public static Server.ServerBlock.ServerBlockFactory serverBlockFactory;
+    public static class ServerBlock extends AmenityBlock {
+        public static ServerBlockFactory serverBlockFactory;
 
         static {
-            serverBlockFactory = new Server.ServerBlock.ServerBlockFactory();
+            serverBlockFactory = new ServerBlockFactory();
         }
 
         private ServerBlock(Patch patch, boolean attractor, boolean hasGraphic) {
             super(patch, attractor, hasGraphic);
         }
 
-        public static class ServerBlockFactory extends Amenity.AmenityBlock.AmenityBlockFactory {
+        public static class ServerBlockFactory extends AmenityBlockFactory {
             @Override
-            public Server.ServerBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
-                return new Server.ServerBlock(patch, attractor, hasGraphic);
+            public ServerBlock create(Patch patch, boolean attractor, boolean hasGraphic) {
+                return new ServerBlock(patch, attractor, hasGraphic);
             }
         }
     }
