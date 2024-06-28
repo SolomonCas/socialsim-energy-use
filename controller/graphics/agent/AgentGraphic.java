@@ -186,7 +186,18 @@ public class AgentGraphic extends Graphic {
         double agentHeading = agent.getAgentMovement().getHeading();
         double agentHeadingDegrees = Math.toDegrees(agentHeading);
 
+        // TODO: Have usingEnergy in Agent Movement to use the energy consumption graphic
+        // Looking east
         if (agentHeadingDegrees >= 315 && agentHeadingDegrees < 360 || agentHeadingDegrees >= 0 && agentHeadingDegrees < 45) {
+            if (this.agent.getAgentMovement().isInteracting()) {
+                this.graphicIndex = 6;
+            }
+            else {
+                this.graphicIndex = 3;
+            }
+        }
+        // Looking north
+        else if (agentHeadingDegrees >= 45 && agentHeadingDegrees < 135) {
             if (this.agent.getAgentMovement().isInteracting()) {
                 this.graphicIndex = 5;
             }
@@ -194,28 +205,22 @@ public class AgentGraphic extends Graphic {
                 this.graphicIndex = 1;
             }
         }
-        else if (agentHeadingDegrees >= 45 && agentHeadingDegrees < 135) {
-            if (this.agent.getAgentMovement().isInteracting()) {
-                this.graphicIndex = 4;
-            }
-            else {
-                this.graphicIndex = 0;
-            }
-        }
+        // Looking west
         else if (agentHeadingDegrees >= 135 && agentHeadingDegrees < 225) {
-            if (this.agent.getAgentMovement().isInteracting()) {
-                this.graphicIndex = 7;
-            }
-            else {
-                this.graphicIndex = 3;
-            }
-        }
-        else if (agentHeadingDegrees >= 225 && agentHeadingDegrees < 315) {
             if (this.agent.getAgentMovement().isInteracting()) {
                 this.graphicIndex = 6;
             }
             else {
                 this.graphicIndex = 2;
+            }
+        }
+        // Looking south
+        else if (agentHeadingDegrees >= 225 && agentHeadingDegrees < 315) {
+            if (this.agent.getAgentMovement().isInteracting()) {
+                this.graphicIndex = 4;
+            }
+            else {
+                this.graphicIndex = 0;
             }
         }
     }

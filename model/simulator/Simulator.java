@@ -609,6 +609,7 @@ public class Simulator {
                     }
                 }
                 else {
+                    System.out.println("Current Position: " + agentMovement.getCurrentPatch());
                     agentMovement.setSimultaneousInteractionAllowed(true);
                     agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
                     if (agentMovement.getRoutePlan().getCanUrgent()) {

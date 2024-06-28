@@ -495,10 +495,9 @@ public class GraphicsController extends Controller {
                                     CURRENT_URL,
                                     agentGraphicLocation.getSourceX(), agentGraphicLocation.getSourceY(),
                                     agentGraphicLocation.getSourceWidth(), agentGraphicLocation.getSourceHeight(),
-                                    getScaledAgentCoordinates(officeAgent).getX() * tileSize,
-                                    getScaledAgentCoordinates(officeAgent).getY() * tileSize,
-//                                    tileSize * 0.7, tileSize * 0.7);
-                                    tileSize * 1, tileSize * 1);
+                                    column * tileSize,
+                                    row * tileSize,
+                                    tileSize, tileSize);
                         }
                     }
                 }
