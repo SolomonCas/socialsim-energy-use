@@ -54,6 +54,7 @@ public class AmenityGraphic extends Graphic {
         CubicleGraphic.add(new AmenityGraphicLocation(13, 19)); // FACING EAST
 
         AMENITY_GRAPHICS.put(Cubicle.class, CubicleGraphic);
+        AMENITY_GRAPHICS.put(MESATable.class, CubicleGraphic);
 
 
         /*** Bar ***/

@@ -36,6 +36,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.socialsim.controller.Main.simulator;
+
 public class ScreenController extends Controller {
 
 
@@ -61,6 +63,22 @@ public class ScreenController extends Controller {
     @FXML private TextField exchangeMean;
     @FXML private TextField exchangeStdDev;
     @FXML private TextField fieldOfView;
+
+    //WATER DISPENSER
+    @FXML private TextField waterDispenserWattage;
+    @FXML private TextField waterDispenserWattageInUse;
+    @FXML private TextField waterDispenserWattageActive;
+    //FRIDGE
+    @FXML private TextField fridgeWattage;
+    @FXML private TextField fridgeWattageInUse;
+    @FXML private TextField fridgeWattageActive;
+    //AIRCON
+    @FXML private TextField airconWattage;
+    @FXML private TextField airconWattageActive;
+    //LIGHT
+    @FXML private TextField lightWattage;
+    //MONITOR
+    @FXML private TextField monitorWattage;
 
     // Label: Current Agent Count
     @FXML private Label currentDirectorCount;
@@ -170,6 +188,23 @@ public class ScreenController extends Controller {
         environment.setExchangeStdDev(Integer.parseInt(exchangeStdDev.getText()));
         environment.setFieldOfView(Integer.parseInt(fieldOfView.getText()));
 
+        //Wattage
+        //WATER DISPENSER
+        simulator.setWaterDispenserWattage(Float.parseFloat(waterDispenserWattage.getText()));
+        simulator.setWaterDispenserWattageInUse(Float.parseFloat(waterDispenserWattageInUse.getText()));
+        simulator.setWaterDispenserWattageActive(Float.parseFloat(waterDispenserWattageActive.getText()));
+        //FRIDGE
+        simulator.setFridgeWattage(Float.parseFloat(fridgeWattage.getText()));
+        simulator.setFridgeWattageInUse(Float.parseFloat(fridgeWattage.getText()));
+        simulator.setFridgeWattageActive(Float.parseFloat(fridgeWattage.getText()));
+        //AIRCON
+        simulator.setAirconWattage(Float.parseFloat(airconWattage.getText()));
+        simulator.setAirconWattageActive(Float.parseFloat(airconWattage.getText()));
+        //LIGHT
+        simulator.setLightWattage(Float.parseFloat(lightWattage.getText()));
+        //MONITOR
+        simulator.setMonitorWattage(Float.parseFloat(monitorWattage.getText()));
+
         // Current Agent Count Per Type
         currentDirectorCount.setText(String.valueOf(Simulator.currentDirectorCount));
         currentFacultyCount.setText(String.valueOf(Simulator.currentFacultyCount));
@@ -257,6 +292,10 @@ public class ScreenController extends Controller {
 //        resetToDefaultButton.setDisable(true);
         configureIOSButton.setDisable(true);
         editInteractionButton.setDisable(true);
+        //WATTAGE
+//        waterDispenserWattage.setDisable(true);
+//        waterDispenserWattageActive.setDisable(true);
+
     }
 
     public void resetToDefault() {
@@ -267,6 +306,21 @@ public class ScreenController extends Controller {
         exchangeMean.setText(Integer.toString(AgentMovement.defaultExchangeMean));
         exchangeStdDev.setText(Integer.toString(AgentMovement.defaultExchangeStdDev));
         fieldOfView.setText(Integer.toString(AgentMovement.defaultFieldOfView));
+
+        waterDispenserWattage.setText(Float.toString(Simulator.getWaterDispenserWattage()));
+        waterDispenserWattageInUse.setText(Float.toString(Simulator.getWaterDispenserWattageInUse()));
+        waterDispenserWattageActive.setText(Float.toString(Simulator.getWaterDispenserWattageActive()));
+
+        fridgeWattage.setText(Float.toString(Simulator.getFridgeWattage()));
+        fridgeWattageInUse.setText(Float.toString(Simulator.getFridgeWattageInUse()));
+        fridgeWattageActive.setText(Float.toString(Simulator.getFridgeWattageActive()));
+
+        airconWattage.setText(Float.toString(Simulator.getAirconWattage()));
+        airconWattageActive.setText(Float.toString(Simulator.getAirconWattageActive()));
+
+        lightWattage.setText(Float.toString(Simulator.getLightWattage()));
+        monitorWattage.setText(Float.toString(Simulator.getMonitorWattage()));
+
     }
 
     public void openIOSLevels() {
@@ -308,14 +362,14 @@ public class ScreenController extends Controller {
     // METHODS: SIMULATE
 
     public void initializeEnvironment(Environment environment) {
-        GraphicsController.tileSize = backgroundCanvas.getHeight() / Main.simulator.getEnvironment().getRows();
+        GraphicsController.tileSize = backgroundCanvas.getHeight() / simulator.getEnvironment().getRows();
         mapEnvironment();
-        Main.simulator.spawnInitialAgents(environment);
+        simulator.spawnInitialAgents(environment);
         drawInterface();
     }
 
     public void mapEnvironment() {
-        Environment environment = Main.simulator.getEnvironment();
+        Environment environment = simulator.getEnvironment();
 
         List<Patch> floorPatches = new ArrayList<>();
 
@@ -327,7 +381,7 @@ public class ScreenController extends Controller {
 
 
         /*** FLOORS ***/
-        Main.simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floorPatches, "floor"));
+        simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floorPatches, "floor"));
 
 
 
@@ -461,7 +515,7 @@ public class ScreenController extends Controller {
                 wallTopsOutside.add(environment.getPatch(i, 203));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsOutside, "wallTopOut"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsOutside, "wallTopOut"));
 
 
 
@@ -506,7 +560,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsOutside, "wallOut"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsOutside, "wallOut"));
 
 
 
@@ -535,7 +589,7 @@ public class ScreenController extends Controller {
                 doorWallsOutside.add(environment.getPatch(i, 191));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsOutside, "doorWallOut"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsOutside, "doorWallOut"));
 
 
 
@@ -562,7 +616,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(patchesOutsideBuilding, "outsideBuilding"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(patchesOutsideBuilding, "outsideBuilding"));
 
 
 
@@ -589,7 +643,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(maleBathroom, "male"));
+            simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(maleBathroom, "male"));
 
 
 
@@ -616,7 +670,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(femaleBathroom, "female"));
+            simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(femaleBathroom, "female"));
 
 
         /****** INSIDE OFFICE ******/
@@ -710,7 +764,7 @@ public class ScreenController extends Controller {
             }
 
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsOfficeOutline, "outlineWallTop"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsOfficeOutline, "outlineWallTop"));
 
 
 
@@ -778,7 +832,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallOfficeOutline, "outlineWall"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallOfficeOutline, "outlineWall"));
 
 
 
@@ -806,7 +860,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(floorReception, ""));
+            simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(floorReception, ""));
 
 
             /** Wall Tops **/
@@ -819,7 +873,7 @@ public class ScreenController extends Controller {
                 wallTopsReception.add(environment.getPatch(76, j));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsReception, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsReception, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsReception = new ArrayList<>();
@@ -830,7 +884,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsReception, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsReception, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsReception = new ArrayList<>();
@@ -842,7 +896,7 @@ public class ScreenController extends Controller {
                 doorWallsReception.add(environment.getPatch(i, 182));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsReception, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsReception, "doorWallIn"));
 
 
 
@@ -872,7 +926,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getStaffRooms().add(StaffArea.staffAreaFactory.create(floorStaffArea, ""));
+            simulator.getEnvironment().getStaffRooms().add(StaffArea.staffAreaFactory.create(floorStaffArea, ""));
 
 
             /** Wall Tops **/
@@ -895,7 +949,7 @@ public class ScreenController extends Controller {
             }
 
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsStaffArea, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsStaffArea, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsStaffArea = new ArrayList<>();
@@ -912,7 +966,7 @@ public class ScreenController extends Controller {
             }
 
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsStaffArea, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsStaffArea, "wallIn"));
 
 
 
@@ -933,7 +987,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR1, "SR1"));
+            simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR1, "SR1"));
 
             /** Solo Room 2 Floor **/
             List<Patch> floorSR2 = new ArrayList<>();
@@ -949,7 +1003,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR2, "SR2"));
+            simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR2, "SR2"));
 
             /** Solo Room 3 Floor **/
             List<Patch> floorSR3 = new ArrayList<>();
@@ -965,7 +1019,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR3, "SR3"));
+            simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR3, "SR3"));
 
             /** Solo Room 4 Floor **/
             List<Patch> floorSR4 = new ArrayList<>();
@@ -981,7 +1035,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR4, "SR4"));
+            simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR4, "SR4"));
 
 
             /** Wall Tops **/
@@ -1034,7 +1088,7 @@ public class ScreenController extends Controller {
             }
 
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsSoloRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsSoloRoom, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsSoloRoom = new ArrayList<>();
@@ -1080,7 +1134,7 @@ public class ScreenController extends Controller {
             }
 
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsSoloRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsSoloRoom, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsSoloRoom = new ArrayList<>();
@@ -1116,7 +1170,7 @@ public class ScreenController extends Controller {
                 doorWallsSoloRoom.add(environment.getPatch(i, 44));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsSoloRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsSoloRoom, "doorWallIn"));
 
 
 
@@ -1137,7 +1191,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(floorDataCenter, ""));
+            simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(floorDataCenter, ""));
 
 
             /** Wall Tops **/
@@ -1161,7 +1215,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDataCenter, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDataCenter, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsDataCenter = new ArrayList<>();
@@ -1180,7 +1234,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDataCenter, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDataCenter, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsDataCenter = new ArrayList<>();
@@ -1192,7 +1246,7 @@ public class ScreenController extends Controller {
                 doorWallsDataCenter.add(environment.getPatch(i, 145));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDataCenter, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDataCenter, "doorWallIn"));
 
 
 
@@ -1208,7 +1262,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(floorControlCenter, ""));
+            simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(floorControlCenter, ""));
 
 
             /** Wall Tops **/
@@ -1223,7 +1277,7 @@ public class ScreenController extends Controller {
             }
             wallTopsControlCenter.add(environment.getPatch(56, 125));
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsControlCenter, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsControlCenter, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsControlCenter = new ArrayList<>();
@@ -1244,7 +1298,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsControlCenter, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsControlCenter, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsControlCenter = new ArrayList<>();
@@ -1262,7 +1316,7 @@ public class ScreenController extends Controller {
                 doorWallsControlCenter.add(environment.getPatch(i, 125));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsControlCenter, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsControlCenter, "doorWallIn"));
 
 
 
@@ -1278,7 +1332,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS1, "LS1"));
+            simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS1, "LS1"));
 
             /** Learning Space 2 Floor **/
             List<Patch> floorLS2 = new ArrayList<>();
@@ -1289,7 +1343,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS2, "LS2"));
+            simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS2, "LS2"));
 
             /** Learning Space 3 Floor **/
             List<Patch> floorLS3 = new ArrayList<>();
@@ -1300,7 +1354,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS3, "LS3"));
+            simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS3, "LS3"));
 
             /** Learning Space 4 Floor **/
             List<Patch> floorLS4 = new ArrayList<>();
@@ -1311,7 +1365,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS4, "LS4"));
+            simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS4, "LS4"));
 
 
             /** Wall Tops **/
@@ -1354,7 +1408,7 @@ public class ScreenController extends Controller {
             }
 
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsLS, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsLS, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsLS = new ArrayList<>();
@@ -1386,7 +1440,7 @@ public class ScreenController extends Controller {
             }
 
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsLS, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsLS, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsLS = new ArrayList<>();
@@ -1423,7 +1477,7 @@ public class ScreenController extends Controller {
                 doorWallsLS.add(environment.getPatch(i, 31));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsLS, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsLS, "doorWallIn"));
 
 
 
@@ -1439,7 +1493,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(floorBreakerRoom, ""));
+            simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(floorBreakerRoom, ""));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsBreakerRoom = new ArrayList<>();
@@ -1448,7 +1502,7 @@ public class ScreenController extends Controller {
                 doorWallsBreakerRoom.add(environment.getPatch(i, 22));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsBreakerRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsBreakerRoom, "doorWallIn"));
 
 
 
@@ -1464,7 +1518,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(floorMeetingRoom, ""));
+            simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(floorMeetingRoom, ""));
 
 
             /** Wall Tops **/
@@ -1484,7 +1538,7 @@ public class ScreenController extends Controller {
             }
 
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsMeetingRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsMeetingRoom, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsMeetingRoom = new ArrayList<>();
@@ -1503,7 +1557,7 @@ public class ScreenController extends Controller {
                 wallsMeetingRoom.add(environment.getPatch(i, 16));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsMeetingRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsMeetingRoom, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsMeetingRoom = new ArrayList<>();
@@ -1515,7 +1569,7 @@ public class ScreenController extends Controller {
                 doorWallsMeetingRoom.add(environment.getPatch(i, 15));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsMeetingRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsMeetingRoom, "doorWallIn"));
 
 
 
@@ -1530,7 +1584,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(floorConferenceRoom, ""));
+            simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(floorConferenceRoom, ""));
 
 
             /** Wall Tops **/
@@ -1565,7 +1619,7 @@ public class ScreenController extends Controller {
             }
 
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsConferenceRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsConferenceRoom, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsConferenceRoom = new ArrayList<>();
@@ -1601,7 +1655,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsConferenceRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsConferenceRoom, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsConferenceRoom = new ArrayList<>();
@@ -1619,7 +1673,7 @@ public class ScreenController extends Controller {
                 doorWallsConferenceRoom.add(environment.getPatch(i, 168));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsConferenceRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsConferenceRoom, "doorWallIn"));
 
 
 
@@ -1634,7 +1688,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(floorStorageRoom, ""));
+            simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(floorStorageRoom, ""));
 
 
             /** Wall Tops **/
@@ -1654,7 +1708,7 @@ public class ScreenController extends Controller {
                 wallTopsStorageRoom.add(environment.getPatch(107, j));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsStorageRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsStorageRoom, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsStorageRoom = new ArrayList<>();
@@ -1680,7 +1734,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsStorageRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsStorageRoom, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsStorageRoom = new ArrayList<>();
@@ -1692,7 +1746,7 @@ public class ScreenController extends Controller {
                 doorWallsStorageRoom.add(environment.getPatch(i, 141));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsStorageRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsStorageRoom, "doorWallIn"));
 
 
 
@@ -1707,7 +1761,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(floorFacultyRoom, ""));
+            simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(floorFacultyRoom, ""));
 
 
             /** Wall Tops **/
@@ -1731,7 +1785,7 @@ public class ScreenController extends Controller {
                 wallTopsFacultyRoom.add(environment.getPatch(i, 128));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsFacultyRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsFacultyRoom, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsFacultyRoom = new ArrayList<>();
@@ -1747,7 +1801,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsFacultyRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsFacultyRoom, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsFacultyRoom = new ArrayList<>();
@@ -1762,7 +1816,7 @@ public class ScreenController extends Controller {
                 doorWallsFacultyRoom.add(environment.getPatch(i, 127));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsFacultyRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsFacultyRoom, "doorWallIn"));
 
 
 
@@ -1778,7 +1832,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(floorResearchCenter, ""));
+            simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(floorResearchCenter, ""));
 
 
             /** Wall Tops **/
@@ -1807,7 +1861,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsResearchCenter, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsResearchCenter, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsResearchCenter = new ArrayList<>();
@@ -1833,7 +1887,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsResearchCenter, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsResearchCenter, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsResearchCenter = new ArrayList<>();
@@ -1848,7 +1902,7 @@ public class ScreenController extends Controller {
                 doorWallsResearchCenter.add(environment.getPatch(i, 98));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsResearchCenter, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsResearchCenter, "doorWallIn"));
 
 
 
@@ -1864,7 +1918,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(floorDCRoom, ""));
+            simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(floorDCRoom, ""));
 
 
             /** Wall Tops **/
@@ -1887,7 +1941,7 @@ public class ScreenController extends Controller {
                 wallTopsDCRoom.add(environment.getPatch(i, 23));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDCRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDCRoom, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsDCRoom = new ArrayList<>();
@@ -1906,7 +1960,7 @@ public class ScreenController extends Controller {
                 wallsDCRoom.add(environment.getPatch(i, 15));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDCRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDCRoom, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsDCRoom = new ArrayList<>();
@@ -1927,7 +1981,7 @@ public class ScreenController extends Controller {
                 doorWallsDCRoom.add(environment.getPatch(i, 6));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDCRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDCRoom, "doorWallIn"));
 
 
 
@@ -1943,7 +1997,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(floorHERoom, ""));
+            simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(floorHERoom, ""));
 
 
             /** Wall Tops **/
@@ -1956,7 +2010,7 @@ public class ScreenController extends Controller {
                 wallTopsHERoom.add(environment.getPatch(i, 15));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsHERoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsHERoom, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsHERoom = new ArrayList<>();
@@ -1967,7 +2021,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsHERoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsHERoom, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsHERoom = new ArrayList<>();
@@ -1976,7 +2030,7 @@ public class ScreenController extends Controller {
                 doorWallsHERoom.add(environment.getPatch(i, 15));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsHERoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsHERoom, "doorWallIn"));
 
 
 
@@ -1992,7 +2046,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(floorClinic, ""));
+            simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(floorClinic, ""));
 
 
             /** Wall Tops **/
@@ -2008,7 +2062,7 @@ public class ScreenController extends Controller {
                 wallTopsClinic.add(environment.getPatch(i, 194));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsClinic, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsClinic, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsClinic = new ArrayList<>();
@@ -2019,7 +2073,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsClinic, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsClinic, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsClinic = new ArrayList<>();
@@ -2028,7 +2082,7 @@ public class ScreenController extends Controller {
                 doorWallsHERoom.add(environment.getPatch(i, 186));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsHERoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsHERoom, "doorWallIn"));
 
 
 
@@ -2044,7 +2098,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorDB, "director"));
+            simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorDB, "director"));
 
 
             /** Wall Tops **/
@@ -2054,7 +2108,7 @@ public class ScreenController extends Controller {
                 wallTopsDB.add(environment.getPatch(88, j));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDB, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDB, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsDB = new ArrayList<>();
@@ -2065,7 +2119,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDB, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDB, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsDB = new ArrayList<>();
@@ -2077,7 +2131,7 @@ public class ScreenController extends Controller {
                 doorWallsDB.add(environment.getPatch(i, 200));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDB, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDB, "doorWallIn"));
 
 
 
@@ -2093,7 +2147,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(floorDRoom, ""));
+            simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(floorDRoom, ""));
 
 
             /** Wall Tops **/
@@ -2108,7 +2162,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDRoom, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsDRoom = new ArrayList<>();
@@ -2119,7 +2173,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDRoom, "wallIn"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsDRoom = new ArrayList<>();
@@ -2128,7 +2182,7 @@ public class ScreenController extends Controller {
                 doorWallsDRoom.add(environment.getPatch(i, 186));
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDRoom, "doorWallIn"));
 
 
 
@@ -2144,7 +2198,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(floorPantry, ""));
+            simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(floorPantry, ""));
 
 
             /** Wall Tops **/
@@ -2167,7 +2221,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsPantry, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsPantry, "wallTopIn"));
 
             /** Walls **/
             List<Patch> wallsPantry = new ArrayList<>();
@@ -2188,7 +2242,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            Main.simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsPantry, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsPantry, "wallIn"));
 
 
 
@@ -2545,8 +2599,8 @@ public class ScreenController extends Controller {
     }
 
     private void drawInterface() {
-        drawEnvironmentViewBackground(Main.simulator.getEnvironment());
-        drawEnvironmentViewForeground(Main.simulator.getEnvironment(), false);
+        drawEnvironmentViewBackground(simulator.getEnvironment());
+        drawEnvironmentViewForeground(simulator.getEnvironment(), false);
     }
 
     public void drawEnvironmentViewBackground(Environment environment) {
@@ -2564,8 +2618,8 @@ public class ScreenController extends Controller {
     }
 
     public void updateSimulationTime() {
-        LocalTime currentTime = Main.simulator.getSimulationTime().getTime();
-        long elapsedTime = Main.simulator.getSimulationTime().getStartTime().until(currentTime, ChronoUnit.SECONDS) / 5;
+        LocalTime currentTime = simulator.getSimulationTime().getTime();
+        long elapsedTime = simulator.getSimulationTime().getStartTime().until(currentTime, ChronoUnit.SECONDS) / 5;
         String timeString;
         timeString = String.format("%02d", currentTime.getHour()) + ":" + String.format("%02d", currentTime.getMinute()) + ":" + String.format("%02d", currentTime.getSecond());
         elapsedTimeText.setText("Current time: " + timeString + " (" + elapsedTime + " ticks)");
@@ -2639,8 +2693,8 @@ public class ScreenController extends Controller {
         stackPane.setScaleX(CANVAS_SCALE);
         stackPane.setScaleY(CANVAS_SCALE);
 
-        double rowsScaled = Main.simulator.getEnvironment().getRows() * GraphicsController.tileSize;
-        double columnsScaled = Main.simulator.getEnvironment().getColumns() * GraphicsController.tileSize;
+        double rowsScaled = simulator.getEnvironment().getRows() * GraphicsController.tileSize;
+        double columnsScaled = simulator.getEnvironment().getColumns() * GraphicsController.tileSize;
 
         stackPane.setPrefWidth(columnsScaled);
         stackPane.setPrefHeight(rowsScaled);
@@ -2692,7 +2746,7 @@ public class ScreenController extends Controller {
         int rows = (int) Math.ceil(width / Patch.PATCH_SIZE_IN_SQUARE_METERS);
         int columns = (int) Math.ceil(length / Patch.PATCH_SIZE_IN_SQUARE_METERS);
         Environment environment = Environment.Factory.create(rows, columns);
-        Main.simulator.resetToDefaultConfiguration(environment);
+        simulator.resetToDefaultConfiguration(environment);
 
         // Configure
         Environment.configureDefaultIOS();
@@ -2710,13 +2764,13 @@ public class ScreenController extends Controller {
     public void initializeAction() {
 
 
-        if (Main.simulator.isRunning()) {
+        if (simulator.isRunning()) {
             playAction();
             playButton.setSelected(false);
         }
 
         if (validateParameters()) {
-            Environment environment = Main.simulator.getEnvironment();
+            Environment environment = simulator.getEnvironment();
             this.configureParameters(environment);
             initializeEnvironment(environment);
             environment.convertIOSToChances();
@@ -2724,7 +2778,7 @@ public class ScreenController extends Controller {
             playButton.setDisable(false);
             exportToCSVButton.setDisable(true);
             exportHeatMapButton.setDisable(true);
-            Main.simulator.replenishStaticVars();
+            simulator.replenishStaticVars();
             disableEdits();
         }
 
@@ -2732,15 +2786,15 @@ public class ScreenController extends Controller {
 
     @FXML
     public void playAction() {
-        if (!Main.simulator.isRunning()) {
-            Main.simulator.setRunning(true);
-            Main.simulator.getPlaySemaphore().release();
+        if (!simulator.isRunning()) {
+            simulator.setRunning(true);
+            simulator.getPlaySemaphore().release();
             playButton.setText("Pause");
             exportToCSVButton.setDisable(true);
             exportHeatMapButton.setDisable(true);
         }
         else {
-            Main.simulator.setRunning(false);
+            simulator.setRunning(false);
             playButton.setText("Play");
             exportToCSVButton.setDisable(false);
             exportHeatMapButton.setDisable(false);

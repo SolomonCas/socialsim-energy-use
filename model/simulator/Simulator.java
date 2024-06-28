@@ -75,8 +75,10 @@ public class Simulator {
 
     //Aircon
     public static float airconWattage = 0;
+    public static float airconWattageActive = 0;
     //Light
     public static float lightWattage = 0;
+
     //Fridge
     public static float fridgeWattage = 0.6F;
     public static float fridgeWattageInUse = 1.3F;
@@ -2696,10 +2698,45 @@ public class Simulator {
         return playSemaphore;
     }
 
+    public static float getWaterDispenserWattage() {
+        return waterDispenserWattage;
+    }
 
+    public static float getWaterDispenserWattageInUse() {
+        return waterDispenserWattageInUse;
+    }
 
+    public static float getWaterDispenserWattageActive() {
+        return waterDispenserWattageActive;
+    }
 
+    public static float getFridgeWattage() {
+        return fridgeWattage;
+    }
 
+    public static float getFridgeWattageInUse() {
+        return fridgeWattageInUse;
+    }
+
+    public static float getFridgeWattageActive() {
+        return fridgeWattageActive;
+    }
+
+    public static float getAirconWattage() {
+        return airconWattage;
+    }
+
+    public static float getAirconWattageActive() {
+        return airconWattageActive;
+    }
+
+    public static float getLightWattage() {
+        return lightWattage;
+    }
+
+    public static float getMonitorWattage() {
+        return monitorWattage;
+    }
 
     /***** SETTERS ******/
     public void setEnvironment(Environment environment) {
@@ -2710,5 +2747,44 @@ public class Simulator {
         this.running.set(running);
     }
 
+    public void setWaterDispenserWattage(float waterDispenserWattage) {
+        Simulator.waterDispenserWattage = waterDispenserWattage;
+    }
+
+    public void setWaterDispenserWattageInUse(float waterDispenserWattageInUse) {
+        Simulator.waterDispenserWattageInUse = waterDispenserWattageInUse;
+    }
+
+    public void setWaterDispenserWattageActive(float waterDispenserWattageActive) {
+        Simulator.waterDispenserWattageActive = waterDispenserWattageActive;
+    }
+
+    public void setFridgeWattage(float fridgeWattage) {
+        Simulator.fridgeWattage = fridgeWattage;
+    }
+
+    public void setFridgeWattageInUse(float fridgeWattageInUse) {
+        Simulator.fridgeWattageInUse = fridgeWattageInUse;
+    }
+
+    public void setFridgeWattageActive(float fridgeWattageActive) {
+        Simulator.fridgeWattageActive = fridgeWattageActive;
+    }
+
+    public static void setAirconWattage(float airconWattage) {
+        Simulator.airconWattage = airconWattage;
+    }
+
+    public static void setAirconWattageActive(float airconWattageActive) {
+        Simulator.airconWattageActive = airconWattageActive;
+    }
+
+    public static void setLightWattage(float lightWattage) {
+        Simulator.lightWattage = lightWattage;
+    }
+
+    public static void setMonitorWattage(float monitorWattage) {
+        Simulator.monitorWattage = monitorWattage;
+    }
 
 }

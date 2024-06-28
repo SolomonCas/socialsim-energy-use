@@ -88,6 +88,75 @@
                                     </VBox>
                                 </content>
                             </TitledPane>
+                            <TitledPane animated="false" prefHeight="70.0" prefWidth="100.0" text="Wattage Parameters">
+                                <content>
+                                    <VBox alignment="TOP_CENTER" prefHeight="794.0" prefWidth="286.0">
+                                        <children>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Standby Fridge Wattage" />
+                                                    <TextField fx:id="fridgeWattage" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="In Use Fridge Wattage" />
+                                                    <TextField fx:id="fridgeWattageInUse" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Active Fridge Wattage" />
+                                                    <TextField fx:id="fridgeWattageActive" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Standby Water Dispenser Wattage" />
+                                                    <TextField fx:id="waterDispenserWattage" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="In Use Fridge Wattage" />
+                                                    <TextField fx:id="waterDispenserWattageInUse" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Active Fridge Wattage" />
+                                                    <TextField fx:id="waterDispenserWattageActive" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Standby Aircon Wattage" />
+                                                    <TextField fx:id="airconWattage" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Active Aircon Wattage" />
+                                                    <TextField fx:id="airconWattageActive" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Light Wattage" />
+                                                    <TextField fx:id="lightWattage" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Monitor Wattage" />
+                                                    <TextField fx:id="monitorWattage" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                        </children>
+                                    </VBox>
+                                </content>
+                            </TitledPane>
+
                             <Button fx:id="configureIOSButton" mnemonicParsing="false" onAction="#openIOSLevels" text="Configure IOS Levels">
                                 <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
