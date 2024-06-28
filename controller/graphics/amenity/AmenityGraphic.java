@@ -222,7 +222,47 @@ public class AmenityGraphic extends Graphic {
         MicrowaveBarGraphic.add(new AmenityGraphicLocation(1, 28));
         AMENITY_GRAPHICS.put(MicrowaveBar.class, MicrowaveBarGraphic);
 
+        /*** Switch ***/
+        final List<AmenityGraphicLocation> SwitchGraphic = new ArrayList<>();
 
+        // LIGHTING
+        SwitchGraphic.add(new AmenityGraphicLocation(33, 16)); // SOUTH
+        SwitchGraphic.add(new AmenityGraphicLocation(33, 17)); // NORTH
+        SwitchGraphic.add(new AmenityGraphicLocation(33, 18)); // EAST
+        SwitchGraphic.add(new AmenityGraphicLocation(33, 19)); // WEST
+
+        // AC
+        SwitchGraphic.add(new AmenityGraphicLocation(35, 16)); // SOUTH
+        SwitchGraphic.add(new AmenityGraphicLocation(35, 17)); // NORTH
+        SwitchGraphic.add(new AmenityGraphicLocation(35, 18)); // EAST
+        SwitchGraphic.add(new AmenityGraphicLocation(35, 19)); // WEST
+        AMENITY_GRAPHICS.put(Switch.class, SwitchGraphic);
+
+        /*** Aircon ***/
+        final List<AmenityGraphicLocation> AirconGraphic = new ArrayList<>();
+        AirconGraphic.add(new AmenityGraphicLocation(31, 13));
+        AMENITY_GRAPHICS.put(Aircon.class, AirconGraphic);
+
+        /*** Light ***/
+        final List<AmenityGraphicLocation> LightGraphic = new ArrayList<>();
+
+        // SINGLE_PENDANT_LIGHT
+        LightGraphic.add(new AmenityGraphicLocation(35, 22));
+
+        // LINEAR_PENDANT_LIGHT
+        LightGraphic.add(new AmenityGraphicLocation(33, 22)); // HORIZONTAL
+        LightGraphic.add(new AmenityGraphicLocation(33, 21)); // VERTICAL
+
+
+        // RECESSED_LINEAR_LIGHT
+        LightGraphic.add(new AmenityGraphicLocation(34, 28)); // HORIZONTAL
+        LightGraphic.add(new AmenityGraphicLocation(34, 27)); // VERTICAL
+
+        // TRACK_LIGHT
+        LightGraphic.add(new AmenityGraphicLocation(32, 26)); // HORIZONTAL
+        LightGraphic.add(new AmenityGraphicLocation(32, 25)); // VERTICAL
+
+        AMENITY_GRAPHICS.put(Light.class, LightGraphic);
 
 
 //        final List<AmenityGraphicLocation> cabinetGraphic = new ArrayList<>();

@@ -2596,6 +2596,451 @@ public class ScreenController extends Controller {
             List<Patch> microwaveBar = new ArrayList<>();
             microwaveBar.add(environment.getPatch(111,135));
             MicrowaveBarMapper.draw(microwaveBar);
+
+            /*** Switches ***/
+
+            // South Light Switches
+            List<Patch> southLightSwitches = new ArrayList<>();
+            southLightSwitches.add(environment.getPatch(25,13));
+            southLightSwitches.add(environment.getPatch(69,12));
+            southLightSwitches.add(environment.getPatch(36,115));
+            southLightSwitches.add(environment.getPatch(89,117));
+            southLightSwitches.add(environment.getPatch(53,136));
+            southLightSwitches.add(environment.getPatch(91,133));
+            southLightSwitches.add(environment.getPatch(91,151));
+            southLightSwitches.add(environment.getPatch(58,174));
+            southLightSwitches.add(environment.getPatch(78,188));
+            southLightSwitches.add(environment.getPatch(90,188));
+            SwitchMapper.draw(southLightSwitches, "LIGHT", "SOUTH");
+
+            // South AC Switches
+            List<Patch> southACSwitches = new ArrayList<>();
+            southACSwitches.add(environment.getPatch(25,14));
+            southACSwitches.add(environment.getPatch(69,13));
+            southACSwitches.add(environment.getPatch(36,116));
+            southACSwitches.add(environment.getPatch(89,118));
+            southACSwitches.add(environment.getPatch(53,137));
+            southACSwitches.add(environment.getPatch(91,134));
+            southACSwitches.add(environment.getPatch(91,152));
+            southACSwitches.add(environment.getPatch(58,175));
+            southACSwitches.add(environment.getPatch(78,189));
+            southACSwitches.add(environment.getPatch(90,189));
+            southACSwitches.add(environment.getPatch(109,168));
+            SwitchMapper.draw(southACSwitches, "AC", "SOUTH");
+
+            // North Light Switches
+            List<Patch> northLightSwitches = new ArrayList<>();
+            northLightSwitches.add(environment.getPatch(95,4));
+            SwitchMapper.draw(northLightSwitches, "LIGHT", "NORTH");
+
+            // North AC Switches
+            List<Patch> northACSwitches = new ArrayList<>();
+            northACSwitches.add(environment.getPatch(95,5));
+            SwitchMapper.draw(northACSwitches, "AC", "NORTH");
+
+            // East Light Switches
+            List<Patch> eastLightSwitches = new ArrayList<>();
+            eastLightSwitches.add(environment.getPatch(53,23));
+            eastLightSwitches.add(environment.getPatch(72,39));
+            eastLightSwitches.add(environment.getPatch(74,85));
+            eastLightSwitches.add(environment.getPatch(56,147));
+            eastLightSwitches.add(environment.getPatch(87,195));
+            SwitchMapper.draw(eastLightSwitches, "LIGHT", "EAST");
+
+            // East AC Switches
+            List<Patch> eastACSwitches = new ArrayList<>();
+            eastACSwitches.add(environment.getPatch(54,23));
+            eastACSwitches.add(environment.getPatch(57,147));
+            SwitchMapper.draw(eastACSwitches, "AC", "EAST");
+
+            // West Light Switches
+            List<Patch> westLightSwitches = new ArrayList<>();
+            westLightSwitches.add(environment.getPatch(74,55));
+            westLightSwitches.add(environment.getPatch(72,101));
+            westLightSwitches.add(environment.getPatch(53,105));
+            westLightSwitches.add(environment.getPatch(103,82));
+            westLightSwitches.add(environment.getPatch(112,185));
+            SwitchMapper.draw(westLightSwitches, "LIGHT", "WEST");
+
+            // West AC Switches
+            List<Patch> westACSwitches = new ArrayList<>();
+            westACSwitches.add(environment.getPatch(54,105));
+            westACSwitches.add(environment.getPatch(104,82));
+            SwitchMapper.draw(westACSwitches, "AC", "WEST");
+
+            /*** Aircon ***/
+            List<Patch> aircons = new ArrayList<>();
+            aircons.add(environment.getPatch(40,7));
+            aircons.add(environment.getPatch(94,9));
+
+            // Research Center
+            aircons.add(environment.getPatch(92,34));
+            aircons.add(environment.getPatch(92,40));
+            aircons.add(environment.getPatch(97,71));
+            aircons.add(environment.getPatch(95,88));
+
+            // Faculty Room
+            aircons.add(environment.getPatch(95,101));
+            aircons.add(environment.getPatch(95,112));
+            aircons.add(environment.getPatch(100,122));
+
+            // Conference Room
+            aircons.add(environment.getPatch(94,149));
+            aircons.add(environment.getPatch(94,161));
+
+            aircons.add(environment.getPatch(119,151));
+            aircons.add(environment.getPatch(99,191));
+            aircons.add(environment.getPatch(82,189));
+            aircons.add(environment.getPatch(66,175));
+            aircons.add(environment.getPatch(39,132));
+            aircons.add(environment.getPatch(41,117));
+            aircons.add(environment.getPatch(50,117));
+            aircons.add(environment.getPatch(39,139));
+            aircons.add(environment.getPatch(27,99));
+            aircons.add(environment.getPatch(27,78));
+            aircons.add(environment.getPatch(47,70));
+            aircons.add(environment.getPatch(27,55));
+            aircons.add(environment.getPatch(50,48));
+            aircons.add(environment.getPatch(50,56));
+            aircons.add(environment.getPatch(28,35));
+            aircons.add(environment.getPatch(50,25));
+
+            aircons.add(environment.getPatch(72,21));
+            aircons.add(environment.getPatch(72,62));
+            aircons.add(environment.getPatch(72,99));
+            aircons.add(environment.getPatch(72,111));
+            aircons.add(environment.getPatch(72,125));
+            AirconMapper.draw(aircons);
+
+            /*** Lights ***/
+
+            // SINGLE_PENDANT_LIGHT
+            List<Patch> singlePendantLights = new ArrayList<>();
+
+            // Research Center
+            singlePendantLights.add(environment.getPatch(97,27));
+            singlePendantLights.add(environment.getPatch(103,27));
+            singlePendantLights.add(environment.getPatch(93,69));
+            singlePendantLights.add(environment.getPatch(93,76));
+            singlePendantLights.add(environment.getPatch(93,83));
+            singlePendantLights.add(environment.getPatch(93,90));
+
+            // Pantry
+            singlePendantLights.add(environment.getPatch(117,135));
+            singlePendantLights.add(environment.getPatch(120,135));
+            singlePendantLights.add(environment.getPatch(123,135));
+            singlePendantLights.add(environment.getPatch(114,184));
+            singlePendantLights.add(environment.getPatch(121,184));
+
+            // Director Room
+            singlePendantLights.add(environment.getPatch(98,198));
+
+            // Director Bathroom
+            singlePendantLights.add(environment.getPatch(82,196));
+            singlePendantLights.add(environment.getPatch(82,201));
+
+            // Hall
+            singlePendantLights.add(environment.getPatch(75,78));
+            singlePendantLights.add(environment.getPatch(75,106));
+
+            LightMapper.draw(singlePendantLights, "SINGLE_PENDANT_LIGHT", "");
+
+
+            //  HORIZONTAL LINEAR_PENDANT_LIGHT
+            List<Patch> horizontalLinearPendantLights = new ArrayList<>();
+
+            // Data Coll Room
+            horizontalLinearPendantLights.add(environment.getPatch(91,5));
+
+            // Faculty Room
+            horizontalLinearPendantLights.add(environment.getPatch(97,109));
+            horizontalLinearPendantLights.add(environment.getPatch(98,109));
+            horizontalLinearPendantLights.add(environment.getPatch(97,115));
+            horizontalLinearPendantLights.add(environment.getPatch(98,115));
+
+            // Conference Room
+            horizontalLinearPendantLights.add(environment.getPatch(99,153));
+            horizontalLinearPendantLights.add(environment.getPatch(99,155));
+            horizontalLinearPendantLights.add(environment.getPatch(99,157));
+
+            // Director Room
+            horizontalLinearPendantLights.add(environment.getPatch(107,191));
+
+            // MESA
+            horizontalLinearPendantLights.add(environment.getPatch(68,146));
+            horizontalLinearPendantLights.add(environment.getPatch(79,146));
+            horizontalLinearPendantLights.add(environment.getPatch(68,157));
+            horizontalLinearPendantLights.add(environment.getPatch(79,157));
+
+            // Hall
+            horizontalLinearPendantLights.add(environment.getPatch(75,62));
+            horizontalLinearPendantLights.add(environment.getPatch(75,118));
+
+
+
+            LightMapper.draw(horizontalLinearPendantLights, "LINEAR_PENDANT_LIGHT", "HORIZONTAL");
+
+            //  VERTICAL LINEAR_PENDANT_LIGHT
+            List<Patch> verticalLinearPendantLights = new ArrayList<>();
+
+            // Hall
+            verticalLinearPendantLights.add(environment.getPatch(73,33));
+            verticalLinearPendantLights.add(environment.getPatch(75,33));
+
+            // Research Center
+            verticalLinearPendantLights.add(environment.getPatch(100,38));
+            verticalLinearPendantLights.add(environment.getPatch(102,38));
+            verticalLinearPendantLights.add(environment.getPatch(100,47));
+            verticalLinearPendantLights.add(environment.getPatch(102,47));
+            verticalLinearPendantLights.add(environment.getPatch(100,60));
+            verticalLinearPendantLights.add(environment.getPatch(102,60));
+            verticalLinearPendantLights.add(environment.getPatch(100,68));
+            verticalLinearPendantLights.add(environment.getPatch(102,68));
+            verticalLinearPendantLights.add(environment.getPatch(100,76));
+            verticalLinearPendantLights.add(environment.getPatch(102,76));
+            verticalLinearPendantLights.add(environment.getPatch(100,90));
+            verticalLinearPendantLights.add(environment.getPatch(102,90));
+
+            LightMapper.draw(verticalLinearPendantLights, "LINEAR_PENDANT_LIGHT", "VERTICAL");
+
+            //  HORIZONTAL RECESSED_LINEAR_LIGHT
+            List<Patch> horizontalRecessedLinearLights = new ArrayList<>();
+
+            // Faculty Room
+            horizontalRecessedLinearLights.add(environment.getPatch(96,126));
+            horizontalRecessedLinearLights.add(environment.getPatch(102,126));
+
+            // Pantry
+            horizontalRecessedLinearLights.add(environment.getPatch(114,147));
+            horizontalRecessedLinearLights.add(environment.getPatch(114,158));
+            horizontalRecessedLinearLights.add(environment.getPatch(114,170));
+            horizontalRecessedLinearLights.add(environment.getPatch(123,161));
+            horizontalRecessedLinearLights.add(environment.getPatch(123,170));
+
+            // Hall
+            horizontalRecessedLinearLights.add(environment.getPatch(63,22));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,30));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,38));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,46));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,54));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,62));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,70));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,78));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,86));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,94));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,102));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,110));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,118));
+            horizontalRecessedLinearLights.add(environment.getPatch(63,126));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,22));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,30));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,38));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,46));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,54));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,62));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,70));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,78));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,86));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,94));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,102));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,110));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,118));
+            horizontalRecessedLinearLights.add(environment.getPatch(83,126));
+
+            LightMapper.draw(horizontalRecessedLinearLights, "RECESSED_LINEAR_LIGHT", "HORIZONTAL");
+
+
+            //  VERTICAL RECESSED_LINEAR_LIGHT
+            List<Patch> verticalRecessedLinearLights = new ArrayList<>();
+
+            // MeetingRoom
+            verticalRecessedLinearLights.add(environment.getPatch(31,8));
+            verticalRecessedLinearLights.add(environment.getPatch(46,8));
+
+            // HumanExpRoom
+            verticalRecessedLinearLights.add(environment.getPatch(78,6));
+            verticalRecessedLinearLights.add(environment.getPatch(78,10));
+
+            // Data Coll Room
+            verticalRecessedLinearLights.add(environment.getPatch(93,5));
+
+            // Research Center
+            verticalRecessedLinearLights.add(environment.getPatch(92,33));
+            verticalRecessedLinearLights.add(environment.getPatch(92,39));
+            verticalRecessedLinearLights.add(environment.getPatch(92,45));
+            verticalRecessedLinearLights.add(environment.getPatch(92,51));
+            verticalRecessedLinearLights.add(environment.getPatch(92,64));
+            verticalRecessedLinearLights.add(environment.getPatch(92,71));
+            verticalRecessedLinearLights.add(environment.getPatch(92,78));
+            verticalRecessedLinearLights.add(environment.getPatch(92,85));
+            verticalRecessedLinearLights.add(environment.getPatch(92,92));
+            verticalRecessedLinearLights.add(environment.getPatch(97,39));
+            verticalRecessedLinearLights.add(environment.getPatch(97,46));
+            verticalRecessedLinearLights.add(environment.getPatch(97,70));
+            verticalRecessedLinearLights.add(environment.getPatch(97,78));
+            verticalRecessedLinearLights.add(environment.getPatch(97,85));
+            verticalRecessedLinearLights.add(environment.getPatch(97,92));
+
+            // Faculty Room
+            verticalRecessedLinearLights.add(environment.getPatch(92,102));
+            verticalRecessedLinearLights.add(environment.getPatch(92,107));
+            verticalRecessedLinearLights.add(environment.getPatch(92,114));
+            verticalRecessedLinearLights.add(environment.getPatch(98,107));
+            verticalRecessedLinearLights.add(environment.getPatch(98,114));
+
+            // Storage Room
+            verticalRecessedLinearLights.add(environment.getPatch(95,134));
+            verticalRecessedLinearLights.add(environment.getPatch(103,134));
+
+            // Conference Room
+            verticalRecessedLinearLights.add(environment.getPatch(95,158));
+
+            // Director Room
+            verticalRecessedLinearLights.add(environment.getPatch(93,189));
+            verticalRecessedLinearLights.add(environment.getPatch(104,189));
+            verticalRecessedLinearLights.add(environment.getPatch(111,189));
+            verticalRecessedLinearLights.add(environment.getPatch(93,194));
+            verticalRecessedLinearLights.add(environment.getPatch(109,194));
+
+            // Clinic
+            verticalRecessedLinearLights.add(environment.getPatch(82,187));
+            verticalRecessedLinearLights.add(environment.getPatch(82,192));
+
+            // Reception
+            verticalRecessedLinearLights.add(environment.getPatch(62,172));
+            verticalRecessedLinearLights.add(environment.getPatch(71,172));
+            verticalRecessedLinearLights.add(environment.getPatch(62,179));
+            verticalRecessedLinearLights.add(environment.getPatch(71,179));
+
+            // Data Center
+            verticalRecessedLinearLights.add(environment.getPatch(39,129));
+            verticalRecessedLinearLights.add(environment.getPatch(39,136));
+            verticalRecessedLinearLights.add(environment.getPatch(39,143));
+
+            // Control Center
+            verticalRecessedLinearLights.add(environment.getPatch(39,109));
+            verticalRecessedLinearLights.add(environment.getPatch(52,109));
+            verticalRecessedLinearLights.add(environment.getPatch(39,116));
+            verticalRecessedLinearLights.add(environment.getPatch(39,123));
+            verticalRecessedLinearLights.add(environment.getPatch(52,123));
+
+            // Learning Space 1
+            verticalRecessedLinearLights.add(environment.getPatch(27,88));
+            verticalRecessedLinearLights.add(environment.getPatch(52,88));
+            verticalRecessedLinearLights.add(environment.getPatch(27,96));
+            verticalRecessedLinearLights.add(environment.getPatch(52,96));
+
+            // Learning Space 2
+            verticalRecessedLinearLights.add(environment.getPatch(27,67));
+            verticalRecessedLinearLights.add(environment.getPatch(52,67));
+            verticalRecessedLinearLights.add(environment.getPatch(27,75));
+            verticalRecessedLinearLights.add(environment.getPatch(52,75));
+
+            // Learning Space 3
+            verticalRecessedLinearLights.add(environment.getPatch(28,46));
+            verticalRecessedLinearLights.add(environment.getPatch(28,58));
+            verticalRecessedLinearLights.add(environment.getPatch(52,54));
+
+            // Learning Space 4
+            verticalRecessedLinearLights.add(environment.getPatch(28,25));
+            verticalRecessedLinearLights.add(environment.getPatch(28,40));
+            verticalRecessedLinearLights.add(environment.getPatch(50,33));
+
+            // Hall
+            verticalRecessedLinearLights.add(environment.getPatch(31,19));
+            verticalRecessedLinearLights.add(environment.getPatch(49,19));
+            verticalRecessedLinearLights.add(environment.getPatch(62,4));
+            verticalRecessedLinearLights.add(environment.getPatch(62,16));
+            verticalRecessedLinearLights.add(environment.getPatch(54,149));
+            verticalRecessedLinearLights.add(environment.getPatch(62,138));
+            verticalRecessedLinearLights.add(environment.getPatch(62,158));
+            verticalRecessedLinearLights.add(environment.getPatch(62,166));
+            verticalRecessedLinearLights.add(environment.getPatch(71,138));
+            verticalRecessedLinearLights.add(environment.getPatch(71,146));
+            verticalRecessedLinearLights.add(environment.getPatch(71,158));
+            verticalRecessedLinearLights.add(environment.getPatch(71,166));
+            verticalRecessedLinearLights.add(environment.getPatch(80,138));
+            verticalRecessedLinearLights.add(environment.getPatch(80,146));
+            verticalRecessedLinearLights.add(environment.getPatch(80,158));
+            verticalRecessedLinearLights.add(environment.getPatch(80,166));
+
+            LightMapper.draw(verticalRecessedLinearLights, "RECESSED_LINEAR_LIGHT", "VERTICAL");
+
+
+            //  HORIZONTAL TRACK_LIGHT
+            List<Patch> horizontalTrackLights = new ArrayList<>();
+
+            // Meeting Room
+            horizontalTrackLights.add(environment.getPatch(29,7));
+
+            // Research Center
+            horizontalTrackLights.add(environment.getPatch(95,34));
+            horizontalTrackLights.add(environment.getPatch(95,48));
+            horizontalTrackLights.add(environment.getPatch(95,59));
+            horizontalTrackLights.add(environment.getPatch(95,75));
+            horizontalTrackLights.add(environment.getPatch(95,91));
+
+            // Faculty Room
+            horizontalTrackLights.add(environment.getPatch(93,121));
+            horizontalTrackLights.add(environment.getPatch(102,111));
+            horizontalTrackLights.add(environment.getPatch(102,121));
+
+            // Pantry
+            horizontalTrackLights.add(environment.getPatch(118,151));
+            horizontalTrackLights.add(environment.getPatch(114,135));
+
+            // Director Room
+            horizontalTrackLights.add(environment.getPatch(112,190));
+
+            // Learning Space 1
+            horizontalTrackLights.add(environment.getPatch(27,90));
+            horizontalTrackLights.add(environment.getPatch(43,90));
+            horizontalTrackLights.add(environment.getPatch(43,98));
+            horizontalTrackLights.add(environment.getPatch(54,94));
+
+
+            // Learning Space 2
+            horizontalTrackLights.add(environment.getPatch(27,69));
+            horizontalTrackLights.add(environment.getPatch(43,69));
+            horizontalTrackLights.add(environment.getPatch(43,77));
+            horizontalTrackLights.add(environment.getPatch(54,73));
+
+
+            // Learning Space 3
+            horizontalTrackLights.add(environment.getPatch(27,49));
+            horizontalTrackLights.add(environment.getPatch(43,48));
+            horizontalTrackLights.add(environment.getPatch(54,52));
+
+            horizontalTrackLights.add(environment.getPatch(43,56));
+
+            // Learning Space 4
+            horizontalTrackLights.add(environment.getPatch(27,27));
+            horizontalTrackLights.add(environment.getPatch(43,27));
+            horizontalTrackLights.add(environment.getPatch(54,27));
+            horizontalTrackLights.add(environment.getPatch(43,35));
+
+
+            LightMapper.draw(horizontalTrackLights, "TRACK_LIGHT", "HORIZONTAL");
+
+
+
+            //  VERTICAL TRACK_LIGHT
+            List<Patch> verticalTrackLights = new ArrayList<>();
+
+            // Conference Room
+            verticalTrackLights.add(environment.getPatch(96,144));
+            verticalTrackLights.add(environment.getPatch(96,167));
+
+            // Pantry
+            verticalTrackLights.add(environment.getPatch(116,149));
+            verticalTrackLights.add(environment.getPatch(116,155));
+            verticalTrackLights.add(environment.getPatch(116,167));
+            verticalTrackLights.add(environment.getPatch(116,178));
+
+            // Reception
+            verticalTrackLights.add(environment.getPatch(66,180));
+
+            LightMapper.draw(verticalTrackLights, "TRACK_LIGHT", "VERTICAL");
     }
 
     private void drawInterface() {

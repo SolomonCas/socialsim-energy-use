@@ -96,8 +96,9 @@ public class Environment extends BaseObject implements Serializable {
     private final List<TrashCan> trashCans;
     private final List<WaterDispenser> waterDispensers;
     private final List<StorageCabinet> storageCabinets;
-    private final List<AirConditioner> airConditioners;
-
+    private final List<Aircon> aircons;
+    private final List<Light> lights;
+    private final List<Switch> switches;
 
 
 
@@ -216,7 +217,9 @@ public class Environment extends BaseObject implements Serializable {
         this.toilets = Collections.synchronizedList(new ArrayList<>());
         this.officeToilets = Collections.synchronizedList(new ArrayList<>());
         this.storageCabinets = Collections.synchronizedList(new ArrayList<>());
-        this.airConditioners = Collections.synchronizedList(new ArrayList<>());
+        this.aircons = Collections.synchronizedList(new ArrayList<>());
+        this.lights = Collections.synchronizedList(new ArrayList<>());
+        this.switches = Collections.synchronizedList(new ArrayList<>());
 
         // Agents
         this.agents = new CopyOnWriteArrayList<>();
@@ -1190,8 +1193,16 @@ public class Environment extends BaseObject implements Serializable {
     public List<StorageCabinet> getStorageCabinets() {
         return storageCabinets;
     }
-    public List<AirConditioner> getAirConditioners() {
-        return airConditioners;
+    public List<Aircon> getAircons() {
+        return aircons;
+    }
+
+    public List<Light> getLights() {
+        return lights;
+    }
+
+    public List<Switch> getSwitches() {
+        return switches;
     }
 
     public List<? extends Amenity> getAmenityList(Class<? extends Amenity> amenityClass) {
@@ -1249,8 +1260,14 @@ public class Environment extends BaseObject implements Serializable {
         else if(amenityClass == Whiteboard.class) {
             return this.getWhiteboards();
         }
-        else if (amenityClass == AirConditioner.class) {
-            return this.getAirConditioners();
+        else if (amenityClass == Aircon.class) {
+            return this.getAircons();
+        }
+        else if (amenityClass == Light.class) {
+            return this.getLights();
+        }
+        else if (amenityClass == Switch.class) {
+            return this.getSwitches();
         }
         else {
             return null;

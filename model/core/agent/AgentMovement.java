@@ -1671,7 +1671,9 @@ public class AgentMovement {
         if ((patch.getAmenityBlock() != null && (!patch.getAmenityBlock().getParent().equals(this.goalAmenity) &&
                 patch.getAmenityBlock().getParent().getClass() != ReceptionChair.class &&
                 patch.getAmenityBlock().getParent().getClass() != Chair.class &&
-                patch.getAmenityBlock().getParent().getClass() != AirConditioner.class &&
+                patch.getAmenityBlock().getParent().getClass() != Aircon.class &&
+                patch.getAmenityBlock().getParent().getClass() != Light.class &&
+                patch.getAmenityBlock().getParent().getClass() != Switch.class &&
                 patch.getAmenityBlock().getParent().getClass() != Toilet.class &&
                 patch.getAmenityBlock().getParent().getClass() != Couch.class &&
                 patch.getAmenityBlock().getParent().getClass() != MeetingChair.class &&
