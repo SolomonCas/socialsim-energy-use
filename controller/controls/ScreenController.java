@@ -2306,14 +2306,11 @@ public class ScreenController extends Controller {
 
             // FACING WEST
             List<Patch> WCubicleTypeC = new ArrayList<>();
-//            WCubicleTypeC.add(environment.getPatch(41,120));
+            WCubicleTypeC.add(environment.getPatch(41,120));
             WCubicleTypeC.add(environment.getPatch(44,120));
-//            WCubicleTypeC.add(environment.getPatch(47,120));
-//            WCubicleTypeC.add(environment.getPatch(50,120));
+            WCubicleTypeC.add(environment.getPatch(47,120));
+            WCubicleTypeC.add(environment.getPatch(50,120));
             CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "EAST", "", false);
-            floorPatches = new ArrayList<>();
-            floorPatches.add(environment.getPatch(45,119));
-            simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floorPatches, "floor"));
 
 
             /*** Reception Table ***/
