@@ -15,7 +15,7 @@ public class ResearchTable extends Goal {
     /***** VARIABLES *****/
     public static final ResearchTableFactory researchTableFactory;
     private final ResearchTableGraphic researchTableGraphic;
-    private final List<ResearchChair> researchChairs;
+    private final List<Chair> researchChairs;
     static {
         researchTableFactory = new ResearchTable.ResearchTableFactory();
     }
@@ -38,7 +38,7 @@ public class ResearchTable extends Goal {
 
 
     /***** GETTERS *****/
-    public List<ResearchChair> getResearchChairs() {
+    public List<Chair> getResearchChairs() {
         return researchChairs;
     }
     public boolean withAppliance() {

@@ -21,6 +21,13 @@ public class CubicleMapper extends AmenityMapper {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
             int origPatchCol = patch.getMatrixPosition().getColumn();
+            int index = 0;
+            String belongTo = "";
+
+            List<Patch> chairWestPatches = new ArrayList<>();
+            List<Patch> chairEastPatches = new ArrayList<>();
+            List<Patch> chairNorthPatches = new ArrayList<>();
+            List<Patch> chairSouthPatches = new ArrayList<>();
 
             // CUBICLE'S FIRST PATCH (UPPER LEFT CORNER)
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cubicle.CubicleBlock.cubicleBlockFactory;
@@ -63,27 +70,23 @@ public class CubicleMapper extends AmenityMapper {
                     }
 
                     // Set chairs as attractors
-                    if (tableOn.equals("NORTH_AND_EAST") || tableOn.equals("SOUTH_AND_WEST")) {
-                        Patch seat1 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1);
-                        nextAmenityBlock = amenityBlockFactory.create(seat1, true, false);
-                        amenityBlocks.add(nextAmenityBlock);
-                        seat1.setAmenityBlock(nextAmenityBlock);
-
-                        Patch seat2 = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 2);
-                        nextAmenityBlock = amenityBlockFactory.create(seat1, true, false);
-                        amenityBlocks.add(nextAmenityBlock);
-                        seat2.setAmenityBlock(nextAmenityBlock);
-                    }
-                    else if (tableOn.equals("NORTH_AND_WEST") || tableOn.equals("SOUTH_AND_EAST")) {
-                        Patch seat1 = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 2);
-                        nextAmenityBlock = amenityBlockFactory.create(seat1, true, false);
-                        amenityBlocks.add(nextAmenityBlock);
-                        seat1.setAmenityBlock(nextAmenityBlock);
-
-                        Patch seat2 = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 1);
-                        nextAmenityBlock = amenityBlockFactory.create(seat1, true, false);
-                        amenityBlocks.add(nextAmenityBlock);
-                        seat2.setAmenityBlock(nextAmenityBlock);
+                    switch (tableOn) {
+                        case "NORTH_AND_EAST" -> {
+                            chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                            chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 2));
+                        }
+                        case "SOUTH_AND_WEST" -> {
+                            chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                            chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 2));
+                        }
+                        case "NORTH_AND_WEST" -> {
+                            chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 2));
+                            chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 1));
+                        }
+                        case "SOUTH_AND_EAST" -> {
+                            chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 2));
+                            chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 1));
+                        }
                     }
                 }
                 case "TYPE_A" -> {
@@ -125,35 +128,11 @@ public class CubicleMapper extends AmenityMapper {
                         nextPatch.setAmenityBlock(nextAmenityBlock);
                     }
 
-                    // Set chairs as attractors
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1);
-
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
-
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 3);
-
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
-
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 6, origPatchCol + 1);
-
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
-
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 6, origPatchCol + 3);
-
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
-
+                    // Set chairs
+                    chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                    chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 6, origPatchCol + 1));
+                    chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 3));
+                    chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 6, origPatchCol + 3));
                 }
                 case "TYPE_B" -> {
                     Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol);
@@ -194,78 +173,74 @@ public class CubicleMapper extends AmenityMapper {
                         nextPatch.setAmenityBlock(nextAmenityBlock);
                     }
 
-                    // Set chairs as attractors
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
 
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
-
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1);
-
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
-
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 4);
-
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
-
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 5);
-
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
+                    // Set chairs
+                    chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
+                    chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 5));
+                    chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
+                    chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 4));
                 }
                 case "TYPE_C" -> {
                     if (facing.equals("NORTH") || facing.equals("SOUTH")) {
+                        Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
+                        nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                        amenityBlocks.add(nextAmenityBlock);
+                        nextPatch.setAmenityBlock(nextAmenityBlock);
                         for (int i = 0; i <= 1; i++) {
-                            for (int j = 0; j <= 2; j++) {
-                                if (i == 0) {
-                                    j++;
-                                }
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + 2);
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
 
-                                Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
+                        if (facing.equals("NORTH")) {
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1);
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
 
-                                if ((facing.equals("NORTH") && (i == 0 && j == 1)) ||
-                                        (facing.equals("SOUTH") && (i == 1 && j == 1))) {
-                                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-                                } else {
-                                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-                                }
+                            // Set Chair
+                            chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+                        }
+                        else if (facing.equals("SOUTH")) {
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
 
-
-                                amenityBlocks.add(nextAmenityBlock);
-                                nextPatch.setAmenityBlock(nextAmenityBlock);
-                            }
+                            // Set Chair
+                            chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                         }
                     }
                     else if (facing.equals("WEST") || facing.equals("EAST")) {
-                        for (int i = 0; i <= 2; i++) {
-                            for (int j = 0; j <= 1; j++) {
-                                if (i == 0) {
-                                    j++;
-                                }
+                        Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
+                        nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                        amenityBlocks.add(nextAmenityBlock);
+                        nextPatch.setAmenityBlock(nextAmenityBlock);
+                        for (int j = 0; j <= 1; j++) {
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + j);
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
 
-                                Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
+                        if (facing.equals("WEST")) {
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1);
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
 
-                                if ((facing.equals("WEST") && (i == 1 && j == 1)) ||
-                                        (facing.equals("EAST") && (i == 1 && j == 0))) {
-                                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
-                                } else {
-                                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-                                }
+                            // Set Chair
+                            chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
+                        }
+                        else if (facing.equals("EAST")) {
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
 
-
-                                amenityBlocks.add(nextAmenityBlock);
-                                nextPatch.setAmenityBlock(nextAmenityBlock);
-                            }
+                            // Set Chair
+                            chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                         }
                     }
                 }
@@ -273,11 +248,24 @@ public class CubicleMapper extends AmenityMapper {
             if (type.equals("MESA")) {
                 MESATable mesaTableToAdd = MESATable.MESATableFactory.create(amenityBlocks, true, type, facing, tableOn, withAppliance);
                 Main.simulator.getEnvironment().getMesaTables().add(mesaTableToAdd);
+                index =  Main.simulator.getEnvironment().getMesaTables().indexOf(mesaTableToAdd);
+                belongTo = "MESATable";
             }
             else {
                 Cubicle cubicleToAdd = Cubicle.CubicleFactory.create(amenityBlocks, true, type, facing, tableOn, withAppliance);
                 Main.simulator.getEnvironment().getCubicles().add(cubicleToAdd);
+                index =  Main.simulator.getEnvironment().getCubicles().indexOf(cubicleToAdd);
+                belongTo = "Cubicle";
+
             };
+            if (!chairWestPatches.isEmpty())
+                ChairMapper.draw(chairWestPatches, index, "WEST", "OFFICE", belongTo);
+            if (!chairSouthPatches.isEmpty())
+                ChairMapper.draw(chairSouthPatches, index, "SOUTH", "OFFICE", belongTo);
+            if (!chairEastPatches.isEmpty())
+                ChairMapper.draw(chairEastPatches, index, "EAST", "OFFICE", belongTo);
+            if (!chairNorthPatches.isEmpty())
+                ChairMapper.draw(chairNorthPatches, index, "NORTH", "OFFICE", belongTo);
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }
     }

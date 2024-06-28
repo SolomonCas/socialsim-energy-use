@@ -16,7 +16,7 @@ public class LearningTable extends Goal {
     public static final LearningTableFactory learningTableFactory;
     private final LearningTableGraphic learningTableGraphic;
 
-    private final List<LearningChair> learningChairs;
+    private final List<Chair> learningChairs;
     
     static {
         learningTableFactory = new LearningTable.LearningTableFactory();
@@ -34,7 +34,7 @@ public class LearningTable extends Goal {
 
 
     /***** GETTERS *****/
-    public List<LearningChair> getLearningChairs() {
+    public List<Chair> getLearningChairs() {
         return learningChairs;
     }
 

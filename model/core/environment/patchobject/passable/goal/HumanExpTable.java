@@ -18,7 +18,7 @@ public class HumanExpTable extends Goal {
     public static final HumanExpTableFactory humanExpTableFactory;
     private final BarGraphic barGraphic;
 
-    private final List<HumanExpChair> humanExpChairs;
+    private final List<Chair> humanExpChairs;
 
     static {
         humanExpTableFactory = new HumanExpTableFactory();
@@ -32,7 +32,7 @@ public class HumanExpTable extends Goal {
     }
 
     /***** GETTER *****/
-    public List<HumanExpChair> getHumanExpChairs() {
+    public List<Chair> getHumanExpChairs() {
         return humanExpChairs;
     }
 

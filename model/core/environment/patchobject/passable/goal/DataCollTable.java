@@ -18,7 +18,7 @@ public class DataCollTable extends Goal {
     public static final DataCollTableFactory dataCollTableFactory;
     private final BarGraphic barGraphic;
 
-    private final List<DataCollChair> dataCollChairs;
+    private final List<Chair> dataCollChairs;
 
     static {
         dataCollTableFactory = new DataCollTableFactory();
@@ -32,7 +32,7 @@ public class DataCollTable extends Goal {
     }
 
     /***** GETTER *****/
-    public List<DataCollChair> getDataCollChairs() {
+    public List<Chair> getDataCollChairs() {
         return dataCollChairs;
     }
 

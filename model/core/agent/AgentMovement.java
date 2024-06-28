@@ -827,21 +827,23 @@ public class AgentMovement {
 
             // Only add amenities that aren't reserved
             if (Agent.Type.FACULTY == this.parent.getType()) {
-                for(Amenity amenity: environment.getCubicles()) {
-                    int attractorCount = 0;
-                    // This part checks for amenities with more than 1 attractors
-                    for(int i = 0; i < amenity.getAttractors().size(); i++) {
-                        if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
-                            attractorCount++;
+                for(Cubicle amenity: environment.getCubicles()) {
+                    for(Chair chair : amenity.getCubicleChairs()) {
+                        int attractorCount = 0;
+                        // This part checks for amenities with more than 1 attractors
+                        for(int i = 0; i < chair.getAttractors().size(); i++) {
+                            if (chair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                                attractorCount++;
+                            }
                         }
-                    }
-                    if(attractorCount == 0) {
-                        temp.add(amenity);
+                        if(attractorCount == 0) {
+                            temp.add(chair);
+                        }
                     }
                 }
 
                 for (SoloTable amenity : environment.getSoloTables()) {
-                    for (SoloChair soloChair : amenity.getSoloChairs()) {
+                    for (Chair soloChair : amenity.getSoloChairs()) {
                         int attractorCount = 0;
                         // This part checks for amenities with more than 1 attractors
                         for(int i = 0; i < soloChair.getAttractors().size(); i++) {
@@ -857,7 +859,7 @@ public class AgentMovement {
             }
             else if (Agent.Type.STUDENT == this.parent.getType()) {
                 for(ResearchTable researchTable: environment.getResearchTables()) {
-                    for (ResearchChair researchChair : researchTable.getResearchChairs()) {
+                    for (Chair researchChair : researchTable.getResearchChairs()) {
                         int attractorCount = 0;
                         // This part checks for amenities with more than 1 attractors
                         for(int i = 0; i < researchChair.getAttractors().size(); i++) {
@@ -873,7 +875,7 @@ public class AgentMovement {
 
                 if (this.parent.getTeam() == 0) {
                     for (SoloTable amenity : environment.getSoloTables()) {
-                        for (SoloChair soloChair : amenity.getSoloChairs()) {
+                        for (Chair soloChair : amenity.getSoloChairs()) {
                             int attractorCount = 0;
                             // This part checks for amenities with more than 1 attractors
                             for(int i = 0; i < soloChair.getAttractors().size(); i++) {
@@ -954,6 +956,7 @@ public class AgentMovement {
 
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
                 Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
+                System.out.println("isReserved: " + candidateAttractor.getPatch().getAmenityBlock().getIsReserved());
                 if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
                     this.goalAmenity =  candidateAttractor.getParent();
                     this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
@@ -971,6 +974,8 @@ public class AgentMovement {
 
         return false;
     }
+
+    // TODO: Fix this function
     public boolean chooseCollaborationChair(){
         System.out.println("choose collab chair");
         if(this.goalAmenity == null){
@@ -1669,19 +1674,12 @@ public class AgentMovement {
     private boolean hasObstacle(Patch patch) {
         // check if the patch is not the whitelist of amenity or a wall
         if ((patch.getAmenityBlock() != null && (!patch.getAmenityBlock().getParent().equals(this.goalAmenity) &&
-                patch.getAmenityBlock().getParent().getClass() != ReceptionChair.class &&
                 patch.getAmenityBlock().getParent().getClass() != Chair.class &&
                 patch.getAmenityBlock().getParent().getClass() != Aircon.class &&
                 patch.getAmenityBlock().getParent().getClass() != Light.class &&
                 patch.getAmenityBlock().getParent().getClass() != Switch.class &&
                 patch.getAmenityBlock().getParent().getClass() != Toilet.class &&
                 patch.getAmenityBlock().getParent().getClass() != Couch.class &&
-                patch.getAmenityBlock().getParent().getClass() != MeetingChair.class &&
-                patch.getAmenityBlock().getParent().getClass() != LearningChair.class &&
-                patch.getAmenityBlock().getParent().getClass() != DirectorChair.class &&
-                patch.getAmenityBlock().getParent().getClass() != PantryChair.class &&
-                patch.getAmenityBlock().getParent().getClass() != HumanExpChair.class &&
-                patch.getAmenityBlock().getParent().getClass() != DataCollChair.class &&
                 patch.getAmenityBlock().getParent().getClass() != TrashCan.class &&
                 patch.getAmenityBlock().getParent().getClass() != Whiteboard.class
         )) || (patch.getPatchField() != null && patch.getPatchField().getKey().getClass() == Wall.class)) {

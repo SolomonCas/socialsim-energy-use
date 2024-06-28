@@ -5,8 +5,6 @@ import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.amenity.AmenityMapper;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
-import com.socialsim.model.core.environment.patchobject.passable.goal.PantryTable;
-import com.socialsim.model.core.environment.patchobject.passable.goal.ResearchChair;
 import com.socialsim.model.core.environment.patchobject.passable.goal.ResearchTable;
 
 import java.util.ArrayList;
@@ -54,7 +52,7 @@ public class ResearchTableMapper extends AmenityMapper {
                 List<Patch> eastChairPatches = new ArrayList<>();
                 eastChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol - 1));
                 eastChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol - 1));
-                ResearchChairMapper.draw(eastChairPatches, index, "EAST", "OFFICE");
+                ChairMapper.draw(eastChairPatches, index, "EAST", "OFFICE", "ResearchTable");
 
             }
             else if (Objects.equals(facing, "EAST")) {
@@ -62,7 +60,7 @@ public class ResearchTableMapper extends AmenityMapper {
                 List<Patch> eastChairPatches = new ArrayList<>();
                 eastChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                 eastChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
-                ResearchChairMapper.draw(eastChairPatches, index, "WEST", "OFFICE");
+                ChairMapper.draw(eastChairPatches, index, "WEST", "OFFICE", "ResearchTable");
 
             }
 

@@ -47,7 +47,7 @@ public class DataCollTableMapper extends AmenityMapper {
                 for (int j = 1; j <= 4; j++) {
                     dataCollChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + j));
                 }
-                DataCollChairMapper.draw(dataCollChairNorthPatches, index, "NORTH", "OFFICE");
+                ChairMapper.draw(dataCollChairNorthPatches, index, "NORTH", "OFFICE", "DataCollTable");
 
             }
 

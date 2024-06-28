@@ -2310,7 +2310,7 @@ public class ScreenController extends Controller {
             WCubicleTypeC.add(environment.getPatch(44,120));
             WCubicleTypeC.add(environment.getPatch(47,120));
             WCubicleTypeC.add(environment.getPatch(50,120));
-            CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "EAST", "", false);
+            CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "WEST", "", false);
 
 
             /*** Reception Table ***/
@@ -2415,7 +2415,7 @@ public class ScreenController extends Controller {
             southPantryChairTypeA.add(environment.getPatch(111,152));
             southPantryChairTypeA.add(environment.getPatch(111,153));
             southPantryChairTypeA.add(environment.getPatch(111,154));
-            PantryChairMapper.draw(southPantryChairTypeA, PantryTableMapper.getIndex(), "SOUTH", "PANTRY_TYPE_A");
+            ChairMapper.draw(southPantryChairTypeA, 0, "SOUTH", "PANTRY_TYPE_A", "NULL");
 
             // TYPE B CHAIRS
             List<Patch> southPantryChairTypeB = new ArrayList<>();
@@ -2424,7 +2424,7 @@ public class ScreenController extends Controller {
             southPantryChairTypeB.add(environment.getPatch(111,147));
             southPantryChairTypeB.add(environment.getPatch(111,148));
             southPantryChairTypeB.add(environment.getPatch(111,149));
-            PantryChairMapper.draw(southPantryChairTypeB, PantryTableMapper.getIndex(), "SOUTH", "PANTRY_TYPE_B");
+            ChairMapper.draw(southPantryChairTypeB, 0, "SOUTH", "PANTRY_TYPE_B", "NULL");
 
 
             /*** Director Table ***/

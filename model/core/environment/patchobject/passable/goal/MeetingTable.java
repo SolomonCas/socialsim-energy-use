@@ -16,7 +16,7 @@ public class MeetingTable extends Goal {
     /***** VARIABLES *****/
     public static final MeetingTableFactory meetingTableFactory;
     private final MeetingTableGraphic meetingTableGraphic;
-    private final List<MeetingChair> meetingChairs;
+    private final List<Chair> meetingChairs;
     static {
         meetingTableFactory = new MeetingTable.MeetingTableFactory();
     }
@@ -31,7 +31,7 @@ public class MeetingTable extends Goal {
 
 
     /***** GETTERS *****/
-    public List<MeetingChair> getMeetingChairs() {
+    public List<Chair> getMeetingChairs() {
         return meetingChairs;
     }
 

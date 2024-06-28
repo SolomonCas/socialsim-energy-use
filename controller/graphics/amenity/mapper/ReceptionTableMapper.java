@@ -204,7 +204,7 @@ public class ReceptionTableMapper extends AmenityMapper {
                 Main.simulator.getEnvironment().getReceptionQueues().add(ReceptionQueue.receptionQueueFactory.create(receptionQueuePatches, receptionTableToAdd, "receptionQueue"));
             }
 
-            ReceptionChairMapper.draw(receptionChairNorthPatches, index, "NORTH", "OFFICE");
+            ChairMapper.draw(receptionChairNorthPatches, index, "NORTH", "OFFICE", "ReceptionTable");
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }
     }

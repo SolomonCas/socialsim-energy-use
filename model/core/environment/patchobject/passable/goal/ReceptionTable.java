@@ -19,7 +19,7 @@ public class ReceptionTable extends QueueableGoal implements Serializable {
     public static final ReceptionTableFactory receptionTableFactory;
     private final BarGraphic barGraphic;
 
-    private final List<ReceptionChair> receptionChairs;
+    private final List<Chair> receptionChairs;
 
     static {
         receptionTableFactory = new ReceptionTableFactory();
@@ -33,7 +33,7 @@ public class ReceptionTable extends QueueableGoal implements Serializable {
     }
 
     /***** GETTER *****/
-    public List<ReceptionChair> getReceptionChairs() {
+    public List<Chair> getReceptionChairs() {
         return receptionChairs;
     }
 

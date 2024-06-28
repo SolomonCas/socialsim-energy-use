@@ -15,7 +15,7 @@ public class PantryTable extends Goal {
     public static final PantryTableFactory pantryTableFactory;
     private final PantryTableGraphic pantryTableGraphic;
 
-    private final List<PantryChair> pantryChairs;
+    private final List<Chair> pantryChairs;
 
     static {
         pantryTableFactory = new PantryTableFactory();
@@ -30,7 +30,7 @@ public class PantryTable extends Goal {
 
 
     /***** GETTER *****/
-    public List<PantryChair> getPantryChairs() {
+    public List<Chair> getPantryChairs() {
         return pantryChairs;
     }
 

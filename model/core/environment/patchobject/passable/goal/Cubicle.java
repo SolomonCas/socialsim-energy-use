@@ -4,7 +4,10 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphic;
 import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.CubicleGraphic;
 import com.socialsim.model.core.environment.Patch;
+import javafx.util.Pair;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Cubicle extends Goal {
@@ -17,16 +20,22 @@ public class Cubicle extends Goal {
     }
     private final boolean withAppliance;
     private boolean isOn;
+    private List<Chair> chairs;
 
     /***** CONSTRUCTOR *****/
     protected Cubicle(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn, boolean withAppliance) {
         super(amenityBlocks, enabled);
         this.cubicleGraphic = new CubicleGraphic(this, type, facing, tableOn, withAppliance);
         this.withAppliance = withAppliance;
+        this.chairs = Collections.synchronizedList(new ArrayList<>());
         this.isOn = false;
     }
 
     /***** GETTERS *****/
+    public List<Chair> getCubicleChairs() {
+        return chairs;
+    }
+
     public boolean withAppliance() {
         return withAppliance;
     }

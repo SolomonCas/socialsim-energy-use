@@ -46,7 +46,7 @@ public class DirectorTableMapper extends AmenityMapper {
                 // NORTH CHAIR(S)
                 List<Patch> directorChairNorthPatches = new ArrayList<>();
                 directorChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
-                DirectorChairMapper.draw(directorChairNorthPatches, index, "NORTH", "OFFICE");
+                ChairMapper.draw(directorChairNorthPatches, index, "NORTH", "OFFICE", "DirectorTable");
 
             }
 

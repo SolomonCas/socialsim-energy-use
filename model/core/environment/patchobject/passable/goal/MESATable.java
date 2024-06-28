@@ -5,6 +5,8 @@ import com.socialsim.controller.graphics.amenity.AmenityGraphicLocation;
 import com.socialsim.controller.graphics.amenity.graphic.CubicleGraphic;
 import com.socialsim.model.core.environment.Patch;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MESATable extends Goal {
@@ -12,6 +14,7 @@ public class MESATable extends Goal {
     /***** VARIABLES *****/
     public static final MESATableFactory mesaTableFactory;
     private final CubicleGraphic mesaTableGraphic;
+    private final List<Chair> mesaChairs;
     static {
         mesaTableFactory = new MESATableFactory();
     }
@@ -20,8 +23,13 @@ public class MESATable extends Goal {
     protected MESATable(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn, boolean withAppliance) {
         super(amenityBlocks, enabled);
         this.mesaTableGraphic = new CubicleGraphic(this, type, facing, tableOn, withAppliance);
+        this.mesaChairs = Collections.synchronizedList(new ArrayList<>());
     }
 
+    /***** GETTER *****/
+    public List<Chair> getMesaChairs() {
+        return mesaChairs;
+    }
 
     /***** OVERRIDE *****/
     @Override

@@ -46,7 +46,7 @@ public class SoloTableMapper extends AmenityMapper {
 
                     // CHAIR
                     soloChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 5));
-                    SoloChairMapper.draw(soloChairNorthPatches, index, "NORTH", "OFFICE");
+                    ChairMapper.draw(soloChairNorthPatches, index, "NORTH", "OFFICE", "SoloTable");
                 }
                 else if (position.equals("BOTTOM")) {
                     soloTableToAdd = SoloTable.SoloTableFactory.create(amenityBlocks, true, "1x8", "BOTTOM");
@@ -55,7 +55,7 @@ public class SoloTableMapper extends AmenityMapper {
 
                     // CHAIR
                     soloChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 2));
-                    SoloChairMapper.draw(soloChairNorthPatches, index, "SOUTH", "OFFICE");
+                    ChairMapper.draw(soloChairNorthPatches, index, "SOUTH", "OFFICE", "SoloTable");
                 }
             }
             

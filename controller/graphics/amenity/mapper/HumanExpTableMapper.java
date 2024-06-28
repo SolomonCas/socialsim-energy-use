@@ -46,11 +46,11 @@ public class HumanExpTableMapper extends AmenityMapper {
 
                 // WEST CHAIR
                 humanExpChairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 2));
-                HumanExpChairMapper.draw(humanExpChairWestPatches, index, "WEST", "OFFICE");
+                ChairMapper.draw(humanExpChairWestPatches, index, "WEST", "OFFICE", "HumanExpTable");
 
                 // EAST CHAIR
                 humanExpChairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol - 2));
-                HumanExpChairMapper.draw(humanExpChairEastPatches, index, "EAST", "OFFICE");
+                ChairMapper.draw(humanExpChairEastPatches, index, "EAST", "OFFICE", "HumanExpTable");
             }
             
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));

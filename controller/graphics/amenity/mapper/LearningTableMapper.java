@@ -52,13 +52,13 @@ public class LearningTableMapper extends AmenityMapper {
                 southHorizontalLearningChair.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol));
                 southHorizontalLearningChair.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 2));
                 southHorizontalLearningChair.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 4));
-                LearningChairMapper.draw(southHorizontalLearningChair, index, "SOUTH", "OFFICE");
+                ChairMapper.draw(southHorizontalLearningChair, index, "SOUTH", "OFFICE", "LearningTable");
                 // NORTH CHAIR(S)
                 List<Patch> northHorizontalLearningChair = new ArrayList<>();
                 northHorizontalLearningChair.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
                 northHorizontalLearningChair.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 2));
                 northHorizontalLearningChair.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 4));
-                LearningChairMapper.draw(northHorizontalLearningChair, index, "NORTH", "OFFICE");
+                ChairMapper.draw(northHorizontalLearningChair, index, "NORTH", "OFFICE", "LearningTable");
             }
 
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));

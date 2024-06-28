@@ -19,7 +19,7 @@ public class SoloTable extends Goal {
     public static final SoloTableFactory soloTableFactory;
     private final BarGraphic barGraphic;
 
-    private final List<SoloChair> soloChairs;
+    private final List<Chair> soloChairs;
 
     static {
         soloTableFactory = new SoloTableFactory();
@@ -33,7 +33,7 @@ public class SoloTable extends Goal {
     }
 
     /***** GETTER *****/
-    public List<SoloChair> getSoloChairs() {
+    public List<Chair> getSoloChairs() {
         return soloChairs;
     }
 

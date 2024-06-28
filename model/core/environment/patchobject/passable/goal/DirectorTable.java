@@ -14,7 +14,7 @@ public class DirectorTable extends Goal {
     /***** VARIABLES *****/
     public static final DirectorTableFactory directorTableFactory;
     private final DirectorTableGraphic directorTableGraphic;
-    private final List<DirectorChair> directorChairs;
+    private final List<Chair> directorChairs;
 
     static {
         directorTableFactory = new DirectorTableFactory();
@@ -40,7 +40,7 @@ public class DirectorTable extends Goal {
     public boolean isOn() {
         return isOn;
     }
-    public List<DirectorChair> getDirectorChairs() {
+    public List<Chair> getDirectorChairs() {
         return directorChairs;
     }
 
