@@ -245,7 +245,8 @@ public class CubicleMapper extends AmenityMapper {
                                 nextPatch.setAmenityBlock(nextAmenityBlock);
                             }
                         }
-                    } else if (facing.equals("WEST") || facing.equals("EAST")) {
+                    }
+                    else if (facing.equals("WEST") || facing.equals("EAST")) {
                         for (int i = 0; i <= 2; i++) {
                             for (int j = 0; j <= 1; j++) {
                                 if (i == 0) {

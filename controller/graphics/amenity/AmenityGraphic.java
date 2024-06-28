@@ -44,14 +44,14 @@ public class AmenityGraphic extends Graphic {
         // TYPE C WITH APPLIANCES
         CubicleGraphic.add(new AmenityGraphicLocation(10, 13)); // FACING NORTH
         CubicleGraphic.add(new AmenityGraphicLocation(10, 16)); // FACING SOUTH
-        CubicleGraphic.add(new AmenityGraphicLocation(10, 21)); // FACING WEST
-        CubicleGraphic.add(new AmenityGraphicLocation(10, 19)); // FACING EAST
+        CubicleGraphic.add(new AmenityGraphicLocation(10, 19)); // FACING WEST
+        CubicleGraphic.add(new AmenityGraphicLocation(10, 21)); // FACING EAST
 
         // TYPE C NO APPLIANCES
         CubicleGraphic.add(new AmenityGraphicLocation(12, 13)); // FACING NORTH
         CubicleGraphic.add(new AmenityGraphicLocation(12, 16)); // FACING SOUTH
-        CubicleGraphic.add(new AmenityGraphicLocation(13, 21)); // FACING WEST
-        CubicleGraphic.add(new AmenityGraphicLocation(13, 19)); // FACING EAST
+        CubicleGraphic.add(new AmenityGraphicLocation(13, 19)); // FACING WEST
+        CubicleGraphic.add(new AmenityGraphicLocation(13, 21)); // FACING EAST
 
         AMENITY_GRAPHICS.put(Cubicle.class, CubicleGraphic);
         AMENITY_GRAPHICS.put(MESATable.class, CubicleGraphic);

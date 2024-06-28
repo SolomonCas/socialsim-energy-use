@@ -348,6 +348,7 @@ public class AgentMovement {
                 Stack<Patch> path = new Stack<>();
 
                 if (includeGoalPatch) {
+                    System.out.println("Goal Patch: " + goalPatch);
                     path.push(goalPatch);
                 }
 

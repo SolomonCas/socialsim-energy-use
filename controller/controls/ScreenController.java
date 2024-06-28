@@ -2275,42 +2275,45 @@ public class ScreenController extends Controller {
 
             /*** Cubicle Type A ***/
 
-            // Two Cubicles Back-to-Back (Vertical) with appliance
-            List<Patch> CubicleTypeA = new ArrayList<>();
-            CubicleTypeA.add(environment.getPatch(43,111));
-            CubicleMapper.draw(CubicleTypeA, "TYPE_A", "", "", true);
-
-
-            /*** Cubicle Type B ***/
-
-            // FACING WEST
-            List<Patch> WCubicleTypeB = new ArrayList<>();
-            WCubicleTypeB.add(environment.getPatch(95,105));
-            WCubicleTypeB.add(environment.getPatch(95,115));
-            WCubicleTypeB.add(environment.getPatch(95,125));
-            WCubicleTypeB.add(environment.getPatch(99,105));
-            WCubicleTypeB.add(environment.getPatch(99,115));
-            WCubicleTypeB.add(environment.getPatch(99,125));
-            CubicleMapper.draw(WCubicleTypeB, "TYPE_B", "WEST", "", true);
-
-            // FACING WEST
-            List<Patch> ECubicleTypeB = new ArrayList<>();
-            ECubicleTypeB.add(environment.getPatch(95,108));
-            ECubicleTypeB.add(environment.getPatch(95,118));
-            ECubicleTypeB.add(environment.getPatch(99,108));
-            ECubicleTypeB.add(environment.getPatch(99,118));
-            CubicleMapper.draw(ECubicleTypeB, "TYPE_B", "EAST", "", true);
+//            // Two Cubicles Back-to-Back (Vertical) with appliance
+//            List<Patch> CubicleTypeA = new ArrayList<>();
+//            CubicleTypeA.add(environment.getPatch(43,111));
+//            CubicleMapper.draw(CubicleTypeA, "TYPE_A", "", "", true);
+//
+//
+//            /*** Cubicle Type B ***/
+//
+//            // FACING WEST
+//            List<Patch> WCubicleTypeB = new ArrayList<>();
+//            WCubicleTypeB.add(environment.getPatch(95,105));
+//            WCubicleTypeB.add(environment.getPatch(95,115));
+//            WCubicleTypeB.add(environment.getPatch(95,125));
+//            WCubicleTypeB.add(environment.getPatch(99,105));
+//            WCubicleTypeB.add(environment.getPatch(99,115));
+//            WCubicleTypeB.add(environment.getPatch(99,125));
+//            CubicleMapper.draw(WCubicleTypeB, "TYPE_B", "WEST", "", true);
+//
+//            // FACING WEST
+//            List<Patch> ECubicleTypeB = new ArrayList<>();
+//            ECubicleTypeB.add(environment.getPatch(95,108));
+//            ECubicleTypeB.add(environment.getPatch(95,118));
+//            ECubicleTypeB.add(environment.getPatch(99,108));
+//            ECubicleTypeB.add(environment.getPatch(99,118));
+//            CubicleMapper.draw(ECubicleTypeB, "TYPE_B", "EAST", "", true);
 
 
             /*** Cubicle Type C ***/
 
             // FACING WEST
             List<Patch> WCubicleTypeC = new ArrayList<>();
-            WCubicleTypeC.add(environment.getPatch(41,120));
+//            WCubicleTypeC.add(environment.getPatch(41,120));
             WCubicleTypeC.add(environment.getPatch(44,120));
-            WCubicleTypeC.add(environment.getPatch(47,120));
-            WCubicleTypeC.add(environment.getPatch(50,120));
-            CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "WEST", "", false);
+//            WCubicleTypeC.add(environment.getPatch(47,120));
+//            WCubicleTypeC.add(environment.getPatch(50,120));
+            CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "EAST", "", false);
+            floorPatches = new ArrayList<>();
+            floorPatches.add(environment.getPatch(45,119));
+            simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floorPatches, "floor"));
 
 
             /*** Reception Table ***/
@@ -2436,16 +2439,16 @@ public class ScreenController extends Controller {
             /*** Solo Table ***/
 
             // TOP
-            List<Patch> topSoloTables = new ArrayList<>();
-            topSoloTables.add(environment.getPatch(71,48));
-            topSoloTables.add(environment.getPatch(71,85));
-            SoloTableMapper.draw(topSoloTables, "1x8", "TOP");
-
-            // BOTTOM
-            List<Patch> bottomSoloTables = new ArrayList<>();
-            bottomSoloTables.add(environment.getPatch(75,39));
-            bottomSoloTables.add(environment.getPatch(75,94));
-            SoloTableMapper.draw(bottomSoloTables, "1x8", "BOTTOM");
+//            List<Patch> topSoloTables = new ArrayList<>();
+//            topSoloTables.add(environment.getPatch(71,48));
+//            topSoloTables.add(environment.getPatch(71,85));
+//            SoloTableMapper.draw(topSoloTables, "1x8", "TOP");
+//
+//            // BOTTOM
+//            List<Patch> bottomSoloTables = new ArrayList<>();
+//            bottomSoloTables.add(environment.getPatch(75,39));
+//            bottomSoloTables.add(environment.getPatch(75,94));
+//            SoloTableMapper.draw(bottomSoloTables, "1x8", "BOTTOM");
 
             /*** Human Experience Table ***/
             List<Patch> humanExpTable = new ArrayList<>();
