@@ -336,11 +336,11 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-//            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
-//            actions.add(new Action(Action.Name.FILL_UP_NAME, 3));
-//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+            actions.add(new Action(Action.Name.FILL_UP_NAME, 3));
+            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION));

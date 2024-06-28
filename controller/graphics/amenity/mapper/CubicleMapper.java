@@ -135,50 +135,78 @@ public class CubicleMapper extends AmenityMapper {
                     chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 6, origPatchCol + 3));
                 }
                 case "TYPE_B" -> {
-                    Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol);
-
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
-                    for (int i = 1; i <= 2; i++) {
-                        nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + 2);
+                    if (facing.equals("WEST")) {
+                        Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol);
 
                         nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
 
                         amenityBlocks.add(nextAmenityBlock);
                         nextPatch.setAmenityBlock(nextAmenityBlock);
+                        for (int i = 1; i <= 2; i++) {
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + 2);
 
-                        nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + 3);
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
 
-                        nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
 
-                        amenityBlocks.add(nextAmenityBlock);
-                        nextPatch.setAmenityBlock(nextAmenityBlock);
+                        for (int j = 1; j <= 2; j++) {
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + j);
+
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + j);
+
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
+                        // Set chairs
+                        chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
+                        chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
                     }
-
-                    for (int j = 1; j <= 5; j++) {
-                        nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + j);
-
-                        nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-
-                        amenityBlocks.add(nextAmenityBlock);
-                        nextPatch.setAmenityBlock(nextAmenityBlock);
-
-                        nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + j);
+                    else if (facing.equals("EAST")) {
+                        Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol);
 
                         nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
 
                         amenityBlocks.add(nextAmenityBlock);
                         nextPatch.setAmenityBlock(nextAmenityBlock);
+                        for (int i = 1; i <= 2; i++) {
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol);
+
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
+
+                        for (int j = 1; j <= 2; j++) {
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + j);
+
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+
+                            nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + j);
+
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+
+                            amenityBlocks.add(nextAmenityBlock);
+                            nextPatch.setAmenityBlock(nextAmenityBlock);
+                        }
+
+
+                        // Set chairs
+                        chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 2));
+                        chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
                     }
-
-
-                    // Set chairs
-                    chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
-                    chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 5));
-                    chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
-                    chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 4));
                 }
                 case "TYPE_C" -> {
                     if (facing.equals("NORTH") || facing.equals("SOUTH")) {
