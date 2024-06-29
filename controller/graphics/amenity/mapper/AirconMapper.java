@@ -29,7 +29,7 @@ public class AirconMapper extends AmenityMapper {
                         j++;
                     }
                     Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
-                    Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                    Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
                     amenityBlocks.add(nextAmenityBlock);
                     nextPatch.setAmenityBlock(nextAmenityBlock);
                 }

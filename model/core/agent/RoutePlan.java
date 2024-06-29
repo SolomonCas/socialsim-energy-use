@@ -25,7 +25,7 @@ public class RoutePlan {
     private int DISPENSER_LUNCH = 1, DISPENSER_PM = 1;
     private int REFRIGERATOR_LUNCH = 1, REFRIGERATOR_PM = 1;
 
-    private Amenity agentSeat;
+    private Chair agentSeat;
 
     private Amenity.AmenityBlock lunchAttractor;
     private Amenity lunchAmenity;
@@ -52,7 +52,7 @@ public class RoutePlan {
 
     /***** CONSTRUCTOR *****/
 
-    public RoutePlan(Agent agent, Environment environment, Patch spawnPatch, int team, Amenity assignedSeat) {
+    public RoutePlan(Agent agent, Environment environment, Patch spawnPatch, int team, Chair assignedSeat) {
         this.routePlan = new ArrayList<>();
         ArrayList<Action> actions;
 
@@ -109,9 +109,9 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
-//            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
+            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
 
 //            actions = new ArrayList<>();
 //            // Inspect Meeting Room/s
@@ -172,6 +172,8 @@ public class RoutePlan {
 //            }
 //            routePlan.add(new State(State.Name.INSPECT_ROOMS, this, agent, actions));
 
+            routePlan.add(addUrgentRoute("FIX_VISUAL_COMFORT", agent, environment));
+
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GUARD_STAY_PUT, assignedSeat.getAttractors().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GUARD, this, agent, actions));
@@ -196,11 +198,11 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-//            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
-//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
 //            actions = new ArrayList<>();
 //            // Maintenance put their stuff in the Clinic Room/ Storage Room
@@ -287,13 +289,13 @@ public class RoutePlan {
 //            routePlan.add(new State(State.Name.MAINTENANCE_PLANT, this, agent, actions));
 
             actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_WAIT_AREA)); // The destination is set on the Simulator.java
+            routePlan.add(new State(State.Name.WAIT_FOR_ACTIVITY, this, agent, actions));
+
+            actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_LUNCH)); // Maintenance does not have an assigned seat in the model
             actions.add(new Action(Action.Name.EAT_LUNCH, 720));
             routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
-
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_WAIT_AREA)); // The destination is set on the Simulator.java
-            routePlan.add(new State(State.Name.WAIT_FOR_ACTIVITY, this, agent, actions));
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
@@ -308,11 +310,11 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-//            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
-//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch()));
@@ -364,18 +366,11 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-//            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
-//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
-
-
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_STATION, 2));
-            routePlan.add(new State(State.Name.WORKING, this, agent, actions));
-
-            routePlan.add(addUrgentRoute("EWAN", agent, environment));
+            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION));
@@ -477,8 +472,15 @@ public class RoutePlan {
             }
             case "FIX_THERMAL_COMFORT" -> {
                 actions = new ArrayList<>();
+                // TODO: Need to determine what action to do (e.g. set AC to cool or warm, or turn on or off AC)
                 actions.add(new Action(Action.Name.SET_AC_TO_COOL));
                 officeState = new State(State.Name.FIXING_THERMAL_COMFORT, this, agent, actions);
+            }
+            case "FIX_VISUAL_COMFORT" -> {
+                actions = new ArrayList<>();
+                // TODO: Need to determine what action to do (e.g. open or close blinds, or turn on or off Lights)
+                actions.add(new Action(Action.Name.TURN_OFF_LIGHT));
+                officeState = new State(State.Name.FIXING_VISUAL_COMFORT, this, agent, actions);
             }
             case "EAT_OUTSIDE" -> {
                 actions = new ArrayList<>();
@@ -549,7 +551,7 @@ public class RoutePlan {
         return currentState;
     }
 
-    public Amenity getAgentSeat() {
+    public Chair getAgentSeat() {
         return agentSeat;
     }
     public int getBATH_AM() {
@@ -627,7 +629,7 @@ public class RoutePlan {
     public void setBathAM(boolean bathAM) {
         this.bathAM = bathAM;
     }
-    public void setAgentSeat(Amenity agentSeat) {
+    public void setAgentSeat(Chair agentSeat) {
         this.agentSeat = agentSeat;
     }
     public void setBATH_AM(int BATH_AM) {

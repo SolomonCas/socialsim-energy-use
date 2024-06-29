@@ -13,6 +13,7 @@ public class Chair extends Goal {
     /***** VARIABLES *****/
     public static final ChairFactory chairFactory;
     private final ChairGraphic chairGraphic;
+    private final String facing;
 
     static {
         chairFactory = new ChairFactory();
@@ -21,8 +22,13 @@ public class Chair extends Goal {
     /***** CONSTRUCTOR *****/
     protected Chair(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, String type) {
         super(amenityBlocks, enabled);
-
+        this.facing = facing;
         this.chairGraphic = new ChairGraphic(this, facing, type);
+    }
+
+    /***** GETTER *****/
+    public String getFacing() {
+        return facing;
     }
 
     /***** OVERRIDE *****/

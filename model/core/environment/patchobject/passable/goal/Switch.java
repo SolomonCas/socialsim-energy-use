@@ -17,11 +17,19 @@ public class Switch extends Goal {
         switchFactory = new SwitchFactory();
     }
 
+    private String type;
+
     /***** CONSTRUCTOR *****/
     protected Switch(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing) {
         super(amenityBlocks, enabled);
+        this.type = type;
 
         this.switchGraphic = new SwitchGraphic(this, type, facing);
+    }
+
+    /***** GETTER *****/
+    public String getType() {
+        return type;
     }
 
     /***** OVERRIDE *****/

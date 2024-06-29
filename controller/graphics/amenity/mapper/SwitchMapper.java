@@ -19,9 +19,16 @@ public class SwitchMapper extends AmenityMapper {
 
             // FIRST PATCH
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Switch.SwitchBlock.switchBlockFactory;
-            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
+
+            if (facing.equals("SOUTH")) {
+                Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
+                Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
+                amenityBlocks.add(nextAmenityBlock);
+                nextPatch.setAmenityBlock(nextAmenityBlock);
+            }
 
             List<Switch> switches = Main.simulator.getEnvironment().getSwitches();
             Switch switchToAdd;

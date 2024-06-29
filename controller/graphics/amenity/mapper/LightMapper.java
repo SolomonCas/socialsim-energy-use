@@ -21,7 +21,7 @@ public class LightMapper extends AmenityMapper {
 
             // FIRST PATCH
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Light.LightBlock.lightBlockFactory;
-            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 
@@ -35,13 +35,13 @@ public class LightMapper extends AmenityMapper {
                     switch (orientation) {
                         case "HORIZONTAL":
                             nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
-                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
                             amenityBlocks.add(nextAmenityBlock);
                             nextPatch.setAmenityBlock(nextAmenityBlock);
                             break;
                         case "VERTICAL":
                             nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
-                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
                             amenityBlocks.add(nextAmenityBlock);
                             nextPatch.setAmenityBlock(nextAmenityBlock);
                             break;
@@ -56,7 +56,7 @@ public class LightMapper extends AmenityMapper {
                             // THE REST OF THE PATCHES
                             for (int j = 1; j <= 3; j++) {
                                 nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + j);
-                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
                                 amenityBlocks.add(nextAmenityBlock);
                                 nextPatch.setAmenityBlock(nextAmenityBlock);
                             }
@@ -65,7 +65,7 @@ public class LightMapper extends AmenityMapper {
                             // THE REST OF THE PATCHES
                             for (int i = 1; i <= 3; i++) {
                                 nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol);
-                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                                nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
                                 amenityBlocks.add(nextAmenityBlock);
                                 nextPatch.setAmenityBlock(nextAmenityBlock);
                             }

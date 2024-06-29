@@ -305,13 +305,29 @@ public class Environment extends BaseObject implements Serializable {
     // where they specifically indicate what time they enter and exit the office
     public void createInitialAgentDemographics(){
         int offset = 30; // equivalent to 30 mins
-        for (int i = 0; i < 4; i++) {
-            Agent agent = AgentFactory.create(Type.FACULTY, true, 1, LocalTime.of(9,0, i), LocalTime.of(17,0));
+
+        for (int i = 0; i < 1; i++) {
+            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
             this.getAgents().add(agent);
         }
 
 //        for (int i = 0; i < 1; i++) {
-//            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 1, LocalTime.of(10,0, i), LocalTime.of(17,0));
+//            Agent agent = AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
+//            this.getAgents().add(agent);
+//        }
+//
+//        for (int i = 0; i < 4; i++) {
+//            Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(9,0, i), LocalTime.of(10,0));
+//            this.getAgents().add(agent);
+//        }
+//
+//        for (int i = 0; i < 1; i++) {
+//            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
+//            this.getAgents().add(agent);
+//        }
+//
+//        for (int i = 0; i < 4; i++) {
+//            Agent agent = AgentFactory.create(Type.FACULTY, true, 1, LocalTime.of(9,0, i), LocalTime.of(10,0));
 //            this.getAgents().add(agent);
 //        }
 

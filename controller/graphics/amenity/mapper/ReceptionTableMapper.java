@@ -61,8 +61,8 @@ public class ReceptionTableMapper extends AmenityMapper {
                 index = receptionTables.indexOf(receptionTableToAdd);
 
                 // NORTH CHAIR(S)
-                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                 receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 1));
+                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
 
                 // QUEUE POSITION
                 receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol -1));
@@ -83,8 +83,8 @@ public class ReceptionTableMapper extends AmenityMapper {
                 index = receptionTables.indexOf(receptionTableToAdd);
 
                 // NORTH CHAIR(S)
-                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                 receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
+                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
 
                 // QUEUE POSITION
                 receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol - 1));
@@ -103,8 +103,8 @@ public class ReceptionTableMapper extends AmenityMapper {
                 index = receptionTables.indexOf(receptionTableToAdd);
 
                 // NORTH CHAIR(S)
-                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
                 receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
 
                 // QUEUE POSITION
                 receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol - 1));
@@ -132,8 +132,8 @@ public class ReceptionTableMapper extends AmenityMapper {
                 index = receptionTables.indexOf(receptionTableToAdd);
 
                 // NORTH CHAIR(S)
-                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 2));
                 receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 5));
+                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 2));
 
                 // QUEUE POSITION
                 receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 5));
@@ -154,8 +154,8 @@ public class ReceptionTableMapper extends AmenityMapper {
                 index = receptionTables.indexOf(receptionTableToAdd);
 
                 // NORTH CHAIR(S)
-                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                 receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 4));
+                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
 
                 // QUEUE POSITION
                 receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 4));
@@ -176,8 +176,8 @@ public class ReceptionTableMapper extends AmenityMapper {
                 index = receptionTables.indexOf(receptionTableToAdd);
 
                 // NORTH CHAIR(S)
-                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
                 receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 2));
+                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
 
                 // QUEUE POSITION
                 receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 2));
@@ -196,8 +196,8 @@ public class ReceptionTableMapper extends AmenityMapper {
                 index = receptionTables.indexOf(receptionTableToAdd);
 
                 // NORTH CHAIR(S)
-                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
                 receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
 
                 // QUEUE POSITION
                 receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 1));
