@@ -55,6 +55,9 @@ public class ScreenController extends Controller {
     // Text
     @FXML private Text elapsedTimeText;
 
+    // WATTAGE TEXT
+    @FXML private Text totalWattageCountText;
+
     // TextField
     @FXML private TextField nonverbalMean;
     @FXML private TextField nonverbalStdDev;
@@ -63,6 +66,7 @@ public class ScreenController extends Controller {
     @FXML private TextField exchangeMean;
     @FXML private TextField exchangeStdDev;
     @FXML private TextField fieldOfView;
+
 
     //WATER DISPENSER
     @FXML private TextField waterDispenserWattage;
@@ -189,6 +193,8 @@ public class ScreenController extends Controller {
         environment.setFieldOfView(Integer.parseInt(fieldOfView.getText()));
 
         //Wattage
+
+        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " W");
         //WATER DISPENSER
         simulator.setWaterDispenserWattage(Float.parseFloat(waterDispenserWattage.getText()));
         simulator.setWaterDispenserWattageInUse(Float.parseFloat(waterDispenserWattageInUse.getText()));
@@ -3131,6 +3137,9 @@ public class ScreenController extends Controller {
         currentLightInteractionCount.setText(String.valueOf(Simulator.currentLightInteractionCount));
         currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
+
+        // WATTAGE
+        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " W");
     }
 
 
