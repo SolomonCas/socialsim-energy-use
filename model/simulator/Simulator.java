@@ -2368,14 +2368,46 @@ public class Simulator {
         //APPLIANCES
         int waterDispenserCount = environment.getWaterDispensers().size();
         int fridgeCount = environment.getRefrigerators().size();
-        int activeLightCount = 0; //environment.getLights().size();
+        int activeLightCount = 0; //check how many lights are on
         int activeMonitorCount = 0; //check how many monitors are on;
-        // TODO: Update this for loop for getting monitor count
-//        for (int i = 0; i < environment.getCubicles().size(); i++) {
-//            if (environment.getCubicles().get(i).isOn()) {
-//                activeMonitorCount++;
-//            }
-//        }
+        int activeAirConCount = 0; //check how many airCon are on;
+
+        for (Aircon aircon : environment.getAircons()) {
+            if (aircon.isOn()) {
+                activeAirConCount++;
+            }
+        }
+
+        for (Light light : environment.getLights()) {
+            if (light.isOn()) {
+                activeLightCount++;
+            }
+        }
+
+        // Check Monitor in Cubicle
+        for (Cubicle cubicle : environment.getCubicles()) {
+            for (Monitor monitor : cubicle.getMonitors()) {
+                if (monitor.isOn()) {
+                    activeMonitorCount++;
+                }
+            }
+        }
+        // Check Monitor in DirectorTable
+        for (DirectorTable directorTable : environment.getDirectorTables()) {
+            for (Monitor monitor : directorTable.getMonitors()) {
+                if (monitor.isOn()) {
+                    activeMonitorCount++;
+                }
+            }
+        }
+        // Check Monitor in ResearchTable
+        for (ResearchTable researchTable : environment.getResearchTables()) {
+            for (Monitor monitor : researchTable.getMonitors()) {
+                if (monitor.isOn()) {
+                    activeMonitorCount++;
+                }
+            }
+        }
 
         totalWattageCount+= ((fridgeWattage * fridgeCount * 5) / 3600) + ((waterDispenserWattage * waterDispenserCount * 5) / 3600);
 

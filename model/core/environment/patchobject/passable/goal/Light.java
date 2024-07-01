@@ -17,11 +17,24 @@ public class Light extends Goal {
         lightFactory = new LightFactory();
     }
 
+    boolean isOn;
+
     /***** CONSTRUCTOR *****/
     protected Light(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String orientation) {
         super(amenityBlocks, enabled);
+        this.isOn = false;
 
         this.lightGraphic = new LightGraphic(this, type, orientation);
+    }
+
+    /***** GETTER *****/
+    public boolean isOn() {
+        return isOn;
+    }
+
+    /***** SETTER *****/
+    public void setOn(boolean on) {
+        isOn = on;
     }
 
     /***** OVERRIDE *****/

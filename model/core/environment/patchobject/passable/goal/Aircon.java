@@ -12,6 +12,8 @@ public class Aircon extends Goal {
     /***** VARIABLES *****/
     public static final AirconFactory airconFactory;
     private final AirconGraphic airconGraphic;
+    private boolean isInActiveCycle;
+    private boolean isOn;
 
     static {
         airconFactory = new AirconFactory();
@@ -20,8 +22,28 @@ public class Aircon extends Goal {
     /***** CONSTRUCTOR *****/
     protected Aircon(List<AmenityBlock> amenityBlocks, boolean enabled) {
         super(amenityBlocks, enabled);
+        this.isOn = false;
+        this.isInActiveCycle = false;
 
         this.airconGraphic = new AirconGraphic(this);
+    }
+
+    /***** GETTER *****/
+    public boolean isOn() {
+        return isOn;
+    }
+
+    public boolean isInActiveCycle() {
+        return isInActiveCycle;
+    }
+
+    /***** SETTER *****/
+    public void setOn(boolean on) {
+        isOn = on;
+    }
+
+    public void setInActiveCycle(boolean inActiveCycle) {
+        isInActiveCycle = inActiveCycle;
     }
 
     /***** OVERRIDE *****/
