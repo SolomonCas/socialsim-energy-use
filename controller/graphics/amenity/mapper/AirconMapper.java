@@ -19,7 +19,7 @@ public class AirconMapper extends AmenityMapper {
 
             // FIRST PATCH
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Aircon.AirconBlock.airconBlockFactory;
-            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 

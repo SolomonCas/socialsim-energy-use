@@ -19,7 +19,7 @@ public class PantryCabinetMapper extends AmenityMapper {
 
             // FIRST PATCH
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = PantryCabinet.PantryCabinetBlock.pantryCabinetBlockFactory;
-            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 

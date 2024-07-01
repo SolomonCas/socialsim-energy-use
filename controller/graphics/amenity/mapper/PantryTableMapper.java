@@ -20,7 +20,7 @@ public class PantryTableMapper extends AmenityMapper {
 
             // TABLE'S FIRST PATCH (UPPER LEFT CORNER)
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = PantryTable.PantryTableBlock.pantryTableBlockFactory;
-            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 

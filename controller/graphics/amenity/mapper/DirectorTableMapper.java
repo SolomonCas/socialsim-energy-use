@@ -21,7 +21,7 @@ public class DirectorTableMapper extends AmenityMapper {
             int origPatchCol = patch.getMatrixPosition().getColumn();
 
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = DirectorTable.DirectorTableBlock.directorTableBlockFactory;
-            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, false, true);
+            Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
 

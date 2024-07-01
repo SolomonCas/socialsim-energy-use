@@ -13,6 +13,7 @@ import java.util.Objects;
 
 public class WhiteboardMapper extends AmenityMapper {
 
+    // TODO: UPDATE THIS MAPPER
     public static void draw(List<Patch> patches, String facing, String length) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
@@ -75,7 +76,7 @@ public class WhiteboardMapper extends AmenityMapper {
                 patch2.setAmenityBlock(amenityBlock2);
 
                 Patch patch3 = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
-                Amenity.AmenityBlock amenityBlock3 = amenityBlockFactory.create(patch3, false, false);
+                Amenity.AmenityBlock amenityBlock3 = amenityBlockFactory.create(patch3, true, false);
                 amenityBlocks.add(amenityBlock3);
                 patch3.setAmenityBlock(amenityBlock3);
 
@@ -84,7 +85,7 @@ public class WhiteboardMapper extends AmenityMapper {
                 amenityBlocks.add(amenityBlock4);
                 patch4.setAmenityBlock(amenityBlock4);
             }
-            else {
+            else if (facing.equals("EAST")){
                 Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Whiteboard.WhiteboardBlock.whiteboardBlockFactory;
                 Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
                 amenityBlocks.add(amenityBlock);
