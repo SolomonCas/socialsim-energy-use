@@ -74,10 +74,10 @@ public class Simulator {
     public static float totalWattageCount = 0;
 
     //Aircon
-    public static float airconWattage = 0;
-    public static float airconWattageActive = 0;
+    public static float airconWattage = 50.0F;
+    public static float airconWattageActive = 100.0F;
     //Light
-    public static float lightWattage = 0;
+    public static float lightWattage = 20.0F;
 
     //Fridge
     public static float fridgeWattage = 0.6F;
