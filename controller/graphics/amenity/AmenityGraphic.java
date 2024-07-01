@@ -255,48 +255,15 @@ public class AmenityGraphic extends Graphic {
 
         AMENITY_GRAPHICS.put(Light.class, LightGraphic);
 
+        /*** Monitor ***/
+        final List<AmenityGraphicLocation> MonitorGraphic = new ArrayList<>();
+        MonitorGraphic.add(new AmenityGraphicLocation(34, 0)); // SOUTH
+        MonitorGraphic.add(new AmenityGraphicLocation(34, 1)); // NORTH
+        MonitorGraphic.add(new AmenityGraphicLocation(34, 2)); // EAST
+        MonitorGraphic.add(new AmenityGraphicLocation(34, 3)); // WEST
 
-//        final List<AmenityGraphicLocation> cabinetGraphic = new ArrayList<>();
-//        cabinetGraphic.add(new AmenityGraphicLocation(10, 0));
-//        cabinetGraphic.add(new AmenityGraphicLocation(8, 2));
-//        AMENITY_GRAPHICS.put(Cabinet.class, cabinetGraphic);
-//
-//        final List<AmenityGraphicLocation> storageCabinetGraphic = new ArrayList<>();
-//        storageCabinetGraphic.add(new AmenityGraphicLocation(10, 0));
-//        storageCabinetGraphic.add(new AmenityGraphicLocation(8, 2));
-//        AMENITY_GRAPHICS.put(StorageCabinet.class, storageCabinetGraphic);
-//
-//
-//        final List<AmenityGraphicLocation> doorGraphic = new ArrayList<>();
-//        doorGraphic.add(new AmenityGraphicLocation(9, 0));
-//        doorGraphic.add(new AmenityGraphicLocation(0, 3));
-//        AMENITY_GRAPHICS.put(Door.class, doorGraphic);
-//
-//        final List<AmenityGraphicLocation> maleBathroomDoorGraphic = new ArrayList<>();
-//        maleBathroomDoorGraphic.add(new AmenityGraphicLocation(9, 0));
-//        maleBathroomDoorGraphic.add(new AmenityGraphicLocation(0, 3));
-//        AMENITY_GRAPHICS.put(MaleBathroomDoor.class, maleBathroomDoorGraphic);
-//
-//        final List<AmenityGraphicLocation> femaleBathroomDoorGraphic = new ArrayList<>();
-//        femaleBathroomDoorGraphic.add(new AmenityGraphicLocation(9, 0));
-//        femaleBathroomDoorGraphic.add(new AmenityGraphicLocation(0, 3));
-//        AMENITY_GRAPHICS.put(FemaleBathroomDoor.class, femaleBathroomDoorGraphic);
-//
-//        final List<AmenityGraphicLocation> mainEntranceDoorGraphic = new ArrayList<>();
-//        mainEntranceDoorGraphic.add(new AmenityGraphicLocation(9, 0));
-//        mainEntranceDoorGraphic.add(new AmenityGraphicLocation(0, 3));
-//        AMENITY_GRAPHICS.put(MainEntranceDoor.class, mainEntranceDoorGraphic);
-//
-//        final List<AmenityGraphicLocation> officeGateGraphic = new ArrayList<>();
-//        officeGateGraphic.add(new AmenityGraphicLocation(0, 1));
-//        AMENITY_GRAPHICS.put(Gate.class, officeGateGraphic);
-//
-//
-//
-//
-//        final List<AmenityGraphicLocation> serverGraphic = new ArrayList<>();
-//        serverGraphic.add(new AmenityGraphicLocation(16, 2));
-//        AMENITY_GRAPHICS.put(Server.class, serverGraphic);
+        AMENITY_GRAPHICS.put(Monitor.class, MonitorGraphic);
+
 
 
     }

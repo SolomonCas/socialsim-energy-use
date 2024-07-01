@@ -20,9 +20,9 @@ public class MESATable extends Goal {
     }
 
     /***** CONSTRUCTOR *****/
-    protected MESATable(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn, boolean withAppliance) {
+    protected MESATable(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn) {
         super(amenityBlocks, enabled);
-        this.mesaTableGraphic = new CubicleGraphic(this, type, facing, tableOn, withAppliance);
+        this.mesaTableGraphic = new CubicleGraphic(this, type, facing, tableOn);
         this.mesaChairs = Collections.synchronizedList(new ArrayList<>());
     }
 
@@ -67,8 +67,8 @@ public class MESATable extends Goal {
     }
 
     public static class MESATableFactory extends GoalFactory {
-        public static MESATable create(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn, boolean withAppliance) {
-            return new MESATable(amenityBlocks, enabled, type, facing, tableOn, withAppliance);
+        public static MESATable create(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn) {
+            return new MESATable(amenityBlocks, enabled, type, facing, tableOn);
         }
     }
 }

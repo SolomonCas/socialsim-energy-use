@@ -6,6 +6,7 @@ import com.socialsim.controller.graphics.amenity.graphic.ResearchTableGraphic;
 import com.socialsim.model.core.environment.Patch;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,11 +17,10 @@ public class ResearchTable extends Goal {
     public static final ResearchTableFactory researchTableFactory;
     private final ResearchTableGraphic researchTableGraphic;
     private final List<Chair> researchChairs;
+    private final List<Monitor> monitors;
     static {
         researchTableFactory = new ResearchTable.ResearchTableFactory();
     }
-    private final boolean withAppliance;
-    private boolean isOn;
 
 
 
@@ -30,8 +30,7 @@ public class ResearchTable extends Goal {
         super(amenityBlocks, enabled);
         this.researchTableGraphic = new ResearchTableGraphic(this, facing, withAppliance);
         this.researchChairs = Collections.synchronizedList(new ArrayList<>());
-        this.withAppliance = withAppliance;
-        this.isOn = false;
+        this.monitors = Collections.synchronizedList(new ArrayList<>());
     }
 
 
@@ -41,21 +40,10 @@ public class ResearchTable extends Goal {
     public List<Chair> getResearchChairs() {
         return researchChairs;
     }
-    public boolean withAppliance() {
-        return withAppliance;
+
+    public List<Monitor> getMonitors() {
+        return monitors;
     }
-
-    public boolean isOn() {
-        return isOn;
-    }
-
-    /***** SETTER *****/
-    public void setOn(boolean on) {
-        isOn = on;
-    }
-
-
-
 
     /***** OVERRIDE *****/
     @Override

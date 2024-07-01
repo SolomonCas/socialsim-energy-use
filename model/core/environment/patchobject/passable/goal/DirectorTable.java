@@ -15,43 +15,29 @@ public class DirectorTable extends Goal {
     public static final DirectorTableFactory directorTableFactory;
     private final DirectorTableGraphic directorTableGraphic;
     private final List<Chair> directorChairs;
+    private final List<Monitor> monitors;
 
     static {
         directorTableFactory = new DirectorTableFactory();
     }
 
-    private final boolean withAppliance;
-    private boolean isOn;
-
     /***** CONSTRUCTOR *****/
-    protected DirectorTable(List<AmenityBlock> amenityBlocks, boolean enabled, String orientation, boolean withAppliance) {
+    protected DirectorTable(List<AmenityBlock> amenityBlocks, boolean enabled, String orientation) {
         super(amenityBlocks, enabled);
-        this.withAppliance = withAppliance;
-        this.isOn = false;
         this.directorTableGraphic = new DirectorTableGraphic(this, orientation);
         this.directorChairs = Collections.synchronizedList(new ArrayList<>());
+        this.monitors = Collections.synchronizedList(new ArrayList<>());
 
     }
 
     /***** GETTERS *****/
-    public boolean withAppliance() {
-        return withAppliance;
-    }
-    public boolean isOn() {
-        return isOn;
-    }
     public List<Chair> getDirectorChairs() {
         return directorChairs;
     }
 
-    /***** SETTER *****/
-    public void setOn(boolean on) {
-        isOn = on;
+    public List<Monitor> getMonitors() {
+        return monitors;
     }
-
-
-
-
 
     /***** OVERRIDE *****/
     @Override
@@ -93,8 +79,8 @@ public class DirectorTable extends Goal {
     }
 
     public static class DirectorTableFactory extends GoalFactory {
-        public static DirectorTable create(List<AmenityBlock> amenityBlocks, boolean enabled, String orientation, boolean withAppliance) {
-            return new DirectorTable(amenityBlocks, enabled, orientation, withAppliance);
+        public static DirectorTable create(List<AmenityBlock> amenityBlocks, boolean enabled, String orientation) {
+            return new DirectorTable(amenityBlocks, enabled, orientation);
         }
     }
 }

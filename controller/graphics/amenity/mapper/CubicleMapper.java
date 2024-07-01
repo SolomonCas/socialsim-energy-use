@@ -16,7 +16,7 @@ public class CubicleMapper extends AmenityMapper {
 
     /***** METHOD *****/
 
-    public static void draw(List<Patch> patches, String type, String facing, String tableOn, boolean withAppliance) {
+    public static void draw(List<Patch> patches, String type, String facing, String tableOn, boolean withAppliance, int numberOfMonitor) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
@@ -28,6 +28,11 @@ public class CubicleMapper extends AmenityMapper {
             List<Patch> chairEastPatches = new ArrayList<>();
             List<Patch> chairNorthPatches = new ArrayList<>();
             List<Patch> chairSouthPatches = new ArrayList<>();
+
+            List<Patch> monitorWestPatches = new ArrayList<>();
+            List<Patch> monitorEastPatches = new ArrayList<>();
+            List<Patch> monitorNorthPatches = new ArrayList<>();
+            List<Patch> monitorSouthPatches = new ArrayList<>();
 
             // CUBICLE'S FIRST PATCH (UPPER LEFT CORNER)
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Cubicle.CubicleBlock.cubicleBlockFactory;
@@ -133,6 +138,9 @@ public class CubicleMapper extends AmenityMapper {
                     chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 6, origPatchCol + 1));
                     chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 3));
                     chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 6, origPatchCol + 3));
+
+                    // Set Monitors
+                    monitorWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 4));
                 }
                 case "TYPE_B" -> {
                     if (facing.equals("WEST")) {
@@ -167,8 +175,12 @@ public class CubicleMapper extends AmenityMapper {
                             nextPatch.setAmenityBlock(nextAmenityBlock);
                         }
                         // Set chairs
-                        chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
-                        chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
+                        chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                        chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
+
+                        // Set Monitors
+                        monitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+                        monitorNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 1));
                     }
                     else if (facing.equals("EAST")) {
                         Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol);
@@ -204,8 +216,12 @@ public class CubicleMapper extends AmenityMapper {
 
 
                         // Set chairs
-                        chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 2));
-                        chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
+                        chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                        chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
+
+                        // Set Monitors
+                        monitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+                        monitorNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 1));
                     }
                 }
                 case "TYPE_C" -> {
@@ -229,6 +245,9 @@ public class CubicleMapper extends AmenityMapper {
 
                             // Set Chair
                             chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+
+                            // Set Monitors
+                            monitorNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                         }
                         else if (facing.equals("SOUTH")) {
                             nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
@@ -238,6 +257,9 @@ public class CubicleMapper extends AmenityMapper {
 
                             // Set Chair
                             chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+
+                            // Set Monitors
+                            monitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
                         }
                     }
                     else if (facing.equals("WEST") || facing.equals("EAST")) {
@@ -260,6 +282,9 @@ public class CubicleMapper extends AmenityMapper {
 
                             // Set Chair
                             chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
+
+                            // Set Monitors
+                            monitorWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                         }
                         else if (facing.equals("EAST")) {
                             nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
@@ -269,18 +294,21 @@ public class CubicleMapper extends AmenityMapper {
 
                             // Set Chair
                             chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+
+                            // Set Monitors
+                            monitorEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
                         }
                     }
                 }
             }
             if (type.equals("MESA")) {
-                MESATable mesaTableToAdd = MESATable.MESATableFactory.create(amenityBlocks, true, type, facing, tableOn, withAppliance);
+                MESATable mesaTableToAdd = MESATable.MESATableFactory.create(amenityBlocks, true, type, facing, tableOn);
                 Main.simulator.getEnvironment().getMesaTables().add(mesaTableToAdd);
                 index =  Main.simulator.getEnvironment().getMesaTables().indexOf(mesaTableToAdd);
                 belongTo = "MESATable";
             }
             else {
-                Cubicle cubicleToAdd = Cubicle.CubicleFactory.create(amenityBlocks, true, type, facing, tableOn, withAppliance);
+                Cubicle cubicleToAdd = Cubicle.CubicleFactory.create(amenityBlocks, true, type, facing, tableOn);
                 Main.simulator.getEnvironment().getCubicles().add(cubicleToAdd);
                 index =  Main.simulator.getEnvironment().getCubicles().indexOf(cubicleToAdd);
                 belongTo = "Cubicle";
@@ -294,6 +322,16 @@ public class CubicleMapper extends AmenityMapper {
                 ChairMapper.draw(chairEastPatches, index, "EAST", "OFFICE", belongTo);
             if (!chairNorthPatches.isEmpty())
                 ChairMapper.draw(chairNorthPatches, index, "NORTH", "OFFICE", belongTo);
+
+            if (!monitorWestPatches.isEmpty())
+                MonitorMapper.draw(monitorWestPatches, index, "WEST", belongTo);
+            if (!monitorSouthPatches.isEmpty())
+                MonitorMapper.draw(monitorSouthPatches, index, "SOUTH", belongTo);
+            if (!monitorEastPatches.isEmpty())
+                MonitorMapper.draw(monitorEastPatches, index, "EAST", belongTo);
+            if (!monitorNorthPatches.isEmpty())
+                MonitorMapper.draw(monitorNorthPatches, index, "NORTH", belongTo);
+
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }
     }

@@ -515,7 +515,6 @@ public class Simulator {
         if (action.getName() == Action.Name.GO_TO_STATION) {
             agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
-                // TODO: Modify this if FacultyCubicles are implemented
                 if((type == Agent.Type.STUDENT || type == Agent.Type.FACULTY) && agentMovement.getAssignedSeat() == null) {
                     if(!agentMovement.chooseWorkingSeat()) {
                         isFull = true;
@@ -549,21 +548,37 @@ public class Simulator {
                         agentMovement.reachPatchInPath();
                         if (agentMovement.hasAgentReachedFinalPatchInPath()) {
                             agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-                            agentMovement.reachGoal();
                             agentMovement.setHeading(agentMovement.getWorkingSeatHeading());
+                            agentMovement.reachGoal();
                         }
                     }
 
                 }
                 else if (agentMovement.getDuration() > -1){  // if duration has been set
-                    if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Cubicle) {
-                        int index = environmentInstance.getCubicles().indexOf(((Cubicle) agentMovement.getCurrentAmenity()));
-                        if (environmentInstance.getCubicles().get(index).withAppliance()
-                                && !environmentInstance.getCubicles().get(index).isOn()) {
-//                            System.out.println("TURN ON  MONITOR");
-                            environmentInstance.getCubicles().get(index).setOn(true);
-                        }
-                    }
+//                    if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Cubicle) {
+//                        int index = environmentInstance.getCubicles().indexOf(((Cubicle) agentMovement.getCurrentAmenity()));
+//                        if (environmentInstance.getCubicles().get(index).withAppliance()
+//                                && !environmentInstance.getCubicles().get(index).isOn()) {
+////                            System.out.println("TURN ON  MONITOR");
+//                            environmentInstance.getCubicles().get(index).setOn(true);
+//                        }
+//                    }
+//                    else if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof DirectorTable) {
+//                        int index = environmentInstance.getDirectorTables().indexOf(((DirectorTable) agentMovement.getCurrentAmenity()));
+//                        if (environmentInstance.getDirectorTables().get(index).withAppliance()
+//                                && !environmentInstance.getDirectorTables().get(index).isOn()) {
+////                                    System.out.println("TURN OFF  MONITOR");
+//                            environmentInstance.getDirectorTables().get(index).setOn(true);
+//                        }
+//                    }
+//                    else if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof ResearchTable) {
+//                        int index = environmentInstance.getResearchTables().indexOf(((ResearchTable) agentMovement.getCurrentAmenity()));
+//                        if (environmentInstance.getResearchTables().get(index).withAppliance()
+//                                && !environmentInstance.getResearchTables().get(index).isOn()) {
+////                                    System.out.println("TURN OFF  MONITOR");
+//                            environmentInstance.getResearchTables().get(index).setOn(true);
+//                        }
+//                    }
 
                     agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
 
@@ -579,14 +594,30 @@ public class Simulator {
                         // turn of monitor (only if the current amenity is a cubicle with a monitor),
                         // if the student is going home, remove its reservation for it is not his or her assigned seat.
                         if (state.getName() == State.Name.GOING_HOME) {
-                            if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Cubicle) {
-                                int index = environmentInstance.getCubicles().indexOf(((Cubicle) agentMovement.getCurrentAmenity()));
-                                if (environmentInstance.getCubicles().get(index).withAppliance()
-                                        && environmentInstance.getCubicles().get(index).isOn()) {
-//                                    System.out.println("TURN OFF  MONITOR");
-                                    environmentInstance.getCubicles().get(index).setOn(false);
-                                }
-                            }
+//                            if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Cubicle) {
+//                                int index = environmentInstance.getCubicles().indexOf(((Cubicle) agentMovement.getCurrentAmenity()));
+//                                if (environmentInstance.getCubicles().get(index).withAppliance()
+//                                        && environmentInstance.getCubicles().get(index).isOn()) {
+////                                    System.out.println("TURN OFF  MONITOR");
+//                                    environmentInstance.getCubicles().get(index).setOn(false);
+//                                }
+//                            }
+//                            else if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof DirectorTable) {
+//                                int index = environmentInstance.getDirectorTables().indexOf(((DirectorTable) agentMovement.getCurrentAmenity()));
+//                                if (environmentInstance.getDirectorTables().get(index).withAppliance()
+//                                        && environmentInstance.getDirectorTables().get(index).isOn()) {
+////                                    System.out.println("TURN OFF  MONITOR");
+//                                    environmentInstance.getDirectorTables().get(index).setOn(false);
+//                                }
+//                            }
+//                            else if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof ResearchTable) {
+//                                int index = environmentInstance.getResearchTables().indexOf(((ResearchTable) agentMovement.getCurrentAmenity()));
+//                                if (environmentInstance.getResearchTables().get(index).withAppliance()
+//                                        && environmentInstance.getResearchTables().get(index).isOn()) {
+////                                    System.out.println("TURN OFF  MONITOR");
+//                                    environmentInstance.getResearchTables().get(index).setOn(false);
+//                                }
+//                            }
                             if (type == Agent.Type.STUDENT) {
 //                                System.out.println("set reservation to false");
                                 agentMovement.getGoalAttractor().setIsReserved(false);
@@ -611,7 +642,31 @@ public class Simulator {
                     }
                 }
                 else {
-//                    System.out.println("Current Position: " + agentMovement.getCurrentPatch());
+//                    if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Cubicle) {
+//                        int index = environmentInstance.getCubicles().indexOf(((Cubicle) agentMovement.getCurrentAmenity()));
+//                        if (environmentInstance.getCubicles().get(index).withAppliance()
+//                                && !environmentInstance.getCubicles().get(index).isOn()) {
+////                            System.out.println("TURN ON  MONITOR");
+//                            environmentInstance.getCubicles().get(index).setOn(true);
+//                        }
+//                    }
+//                    else if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof DirectorTable) {
+//                        int index = environmentInstance.getDirectorTables().indexOf(((DirectorTable) agentMovement.getCurrentAmenity()));
+//                        if (environmentInstance.getDirectorTables().get(index).withAppliance()
+//                                && !environmentInstance.getDirectorTables().get(index).isOn()) {
+////                                    System.out.println("TURN OFF  MONITOR");
+//                            environmentInstance.getDirectorTables().get(index).setOn(true);
+//                        }
+//                    }
+//                    else if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof ResearchTable) {
+//                        int index = environmentInstance.getResearchTables().indexOf(((ResearchTable) agentMovement.getCurrentAmenity()));
+//                        if (environmentInstance.getResearchTables().get(index).withAppliance()
+//                                && !environmentInstance.getResearchTables().get(index).isOn()) {
+////                                    System.out.println("TURN OFF  MONITOR");
+//                            environmentInstance.getResearchTables().get(index).setOn(true);
+//                        }
+//                    }
+
                     agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
                     if (agentMovement.getRoutePlan().getCanUrgent()) {
                         double CHANCE = Simulator.roll();
@@ -2315,11 +2370,12 @@ public class Simulator {
         int fridgeCount = environment.getRefrigerators().size();
         int activeLightCount = 0; //environment.getLights().size();
         int activeMonitorCount = 0; //check how many monitors are on;
-        for (int i = 0; i < environment.getCubicles().size(); i++) {
-            if (environment.getCubicles().get(i).isOn()) {
-                activeMonitorCount++;
-            }
-        }
+        // TODO: Update this for loop for getting monitor count
+//        for (int i = 0; i < environment.getCubicles().size(); i++) {
+//            if (environment.getCubicles().get(i).isOn()) {
+//                activeMonitorCount++;
+//            }
+//        }
 
         totalWattageCount+= ((fridgeWattage * fridgeCount * 5) / 3600) + ((waterDispenserWattage * waterDispenserCount * 5) / 3600);
 

@@ -18,37 +18,24 @@ public class Cubicle extends Goal {
     static {
         cubicleFactory = new CubicleFactory();
     }
-    private final boolean withAppliance;
-    private boolean isOn;
+    private List<Monitor> monitors;
     private List<Chair> chairs;
 
     /***** CONSTRUCTOR *****/
-    protected Cubicle(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn, boolean withAppliance) {
+    protected Cubicle(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn) {
         super(amenityBlocks, enabled);
-        this.cubicleGraphic = new CubicleGraphic(this, type, facing, tableOn, withAppliance);
-        this.withAppliance = withAppliance;
+        this.cubicleGraphic = new CubicleGraphic(this, type, facing, tableOn);
+        this.monitors = Collections.synchronizedList(new ArrayList<>());
         this.chairs = Collections.synchronizedList(new ArrayList<>());
-        this.isOn = false;
     }
 
     /***** GETTERS *****/
     public List<Chair> getCubicleChairs() {
         return chairs;
     }
-
-    public boolean withAppliance() {
-        return withAppliance;
+    public List<Monitor> getMonitors() {
+        return monitors;
     }
-
-    public boolean isOn() {
-        return isOn;
-    }
-
-    /***** SETTER *****/
-    public void setOn(boolean on) {
-        isOn = on;
-    }
-
 
     /***** OVERRIDE *****/
     @Override
@@ -86,8 +73,8 @@ public class Cubicle extends Goal {
     }
 
     public static class CubicleFactory extends GoalFactory {
-        public static Cubicle create(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn, boolean withAppliance) {
-            return new Cubicle(amenityBlocks, enabled, type, facing, tableOn, withAppliance);
+        public static Cubicle create(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn) {
+            return new Cubicle(amenityBlocks, enabled, type, facing, tableOn);
         }
     }
 }

@@ -5,6 +5,7 @@ import com.socialsim.controller.graphics.amenity.AmenityMapper;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.DirectorTable;
+import com.socialsim.model.core.environment.patchobject.passable.goal.Monitor;
 import com.socialsim.model.core.environment.patchobject.passable.goal.PantryTable;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class DirectorTableMapper extends AmenityMapper {
                     nextPatch.setAmenityBlock(nextAmenityBlock);
                 }
 
-                directorTableToAdd = DirectorTable.DirectorTableFactory.create(amenityBlocks, true, orientation, true);
+                directorTableToAdd = DirectorTable.DirectorTableFactory.create(amenityBlocks, true, orientation);
                 directorTables.add(directorTableToAdd);
                 index = directorTables.indexOf(directorTableToAdd);
 
@@ -47,6 +48,11 @@ public class DirectorTableMapper extends AmenityMapper {
                 List<Patch> directorChairNorthPatches = new ArrayList<>();
                 directorChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                 ChairMapper.draw(directorChairNorthPatches, index, "NORTH", "OFFICE", "DirectorTable");
+
+                // Set Monitor
+                List<Patch> directorMonitorSouthPatches = new ArrayList<>();
+                directorMonitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+                MonitorMapper.draw(directorMonitorSouthPatches, index, "SOUTH", "DirectorTable");
 
             }
 

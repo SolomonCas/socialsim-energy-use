@@ -2262,29 +2262,29 @@ public class ScreenController extends Controller {
             // Table on North and West
             List<Patch> NWMESATableChairSetPatches = new ArrayList<>();
             NWMESATableChairSetPatches.add(environment.getPatch(67,153));
-            CubicleMapper.draw(NWMESATableChairSetPatches, "MESA", "", "NORTH_AND_WEST", true);
+            CubicleMapper.draw(NWMESATableChairSetPatches, "MESA", "", "NORTH_AND_WEST", false, 0);
 
             // Table on North and East
             List<Patch> NEMESATableChairSetPatches = new ArrayList<>();
             NEMESATableChairSetPatches.add(environment.getPatch(67,148));
-            CubicleMapper.draw(NEMESATableChairSetPatches, "MESA", "", "NORTH_AND_EAST", false);
+            CubicleMapper.draw(NEMESATableChairSetPatches, "MESA", "", "NORTH_AND_EAST", false, 0);
 
             // Table on South and West
             List<Patch> SWMESATableChairSetPatches = new ArrayList<>();
             SWMESATableChairSetPatches.add(environment.getPatch(76,153));
-            CubicleMapper.draw(SWMESATableChairSetPatches, "MESA", "", "SOUTH_AND_WEST", false);
+            CubicleMapper.draw(SWMESATableChairSetPatches, "MESA", "", "SOUTH_AND_WEST", false, 0);
 
             // Table on South and East
             List<Patch> SEMESATableChairSetPatches = new ArrayList<>();
             SEMESATableChairSetPatches.add(environment.getPatch(76,148));
-            CubicleMapper.draw(SEMESATableChairSetPatches, "MESA", "", "SOUTH_AND_EAST", false);
+            CubicleMapper.draw(SEMESATableChairSetPatches, "MESA", "", "SOUTH_AND_EAST", false, 0);
 
             /*** Cubicle Type A ***/
 
             // Two Cubicles Back-to-Back (Vertical) with appliance
             List<Patch> CubicleTypeA = new ArrayList<>();
             CubicleTypeA.add(environment.getPatch(43,111));
-            CubicleMapper.draw(CubicleTypeA, "TYPE_A", "", "", true);
+            CubicleMapper.draw(CubicleTypeA, "TYPE_A", "", "", true, 1);
 
 
             /*** Cubicle Type B ***/
@@ -2297,7 +2297,7 @@ public class ScreenController extends Controller {
             WCubicleTypeB.add(environment.getPatch(99,105));
             WCubicleTypeB.add(environment.getPatch(99,115));
             WCubicleTypeB.add(environment.getPatch(99,125));
-            CubicleMapper.draw(WCubicleTypeB, "TYPE_B", "WEST", "", true);
+            CubicleMapper.draw(WCubicleTypeB, "TYPE_B", "WEST", "", true, 2);
 
             // FACING WEST
             List<Patch> ECubicleTypeB = new ArrayList<>();
@@ -2305,7 +2305,7 @@ public class ScreenController extends Controller {
             ECubicleTypeB.add(environment.getPatch(95,118));
             ECubicleTypeB.add(environment.getPatch(99,108));
             ECubicleTypeB.add(environment.getPatch(99,118));
-            CubicleMapper.draw(ECubicleTypeB, "TYPE_B", "EAST", "", true);
+            CubicleMapper.draw(ECubicleTypeB, "TYPE_B", "EAST", "", true, 2);
 
 
             /*** Cubicle Type C ***/
@@ -2316,7 +2316,7 @@ public class ScreenController extends Controller {
             WCubicleTypeC.add(environment.getPatch(44,120));
             WCubicleTypeC.add(environment.getPatch(47,120));
             WCubicleTypeC.add(environment.getPatch(50,120));
-            CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "WEST", "", false);
+            CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "WEST", "", false, 0);
 
 
             /*** Reception Table ***/
@@ -2339,20 +2339,20 @@ public class ScreenController extends Controller {
             ResearchTableMapper.draw(FEResearchTableWithApp, "EAST", true);
 
             // Facing West no appliance
-            List<Patch> FWResearchTableNoApp = new ArrayList<>();
-            FWResearchTableNoApp.add(environment.getPatch(99,38));
-            FWResearchTableNoApp.add(environment.getPatch(99,60));
-            FWResearchTableNoApp.add(environment.getPatch(99,90));
-            ResearchTableMapper.draw(FWResearchTableNoApp, "WEST", false);
-
-            // Facing East no appliance
-            List<Patch> FEResearchTableNoApp = new ArrayList<>();
-            FEResearchTableNoApp.add(environment.getPatch(99,39));
-            FEResearchTableNoApp.add(environment.getPatch(99,47));
-            FEResearchTableNoApp.add(environment.getPatch(99,61));
-            FEResearchTableNoApp.add(environment.getPatch(99,69));
-            FEResearchTableNoApp.add(environment.getPatch(99,77));
-            ResearchTableMapper.draw(FEResearchTableNoApp, "EAST", false);
+//            List<Patch> FWResearchTableNoApp = new ArrayList<>();
+//            FWResearchTableNoApp.add(environment.getPatch(99,38));
+//            FWResearchTableNoApp.add(environment.getPatch(99,60));
+//            FWResearchTableNoApp.add(environment.getPatch(99,90));
+//            ResearchTableMapper.draw(FWResearchTableNoApp, "WEST", false);
+//
+//            // Facing East no appliance
+//            List<Patch> FEResearchTableNoApp = new ArrayList<>();
+//            FEResearchTableNoApp.add(environment.getPatch(99,39));
+//            FEResearchTableNoApp.add(environment.getPatch(99,47));
+//            FEResearchTableNoApp.add(environment.getPatch(99,61));
+//            FEResearchTableNoApp.add(environment.getPatch(99,69));
+//            FEResearchTableNoApp.add(environment.getPatch(99,77));
+//            ResearchTableMapper.draw(FEResearchTableNoApp, "EAST", false);
 
             /*** Meeting Table ***/
 

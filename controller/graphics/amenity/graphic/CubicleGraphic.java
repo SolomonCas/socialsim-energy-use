@@ -24,7 +24,7 @@ public class CubicleGraphic extends AmenityGraphic {
     private static final int NORMAL_COLUMN_OFFSET = 0;
 
     /***** CONSTRUCTOR *****/
-    public CubicleGraphic(Amenity cubicle, String type, String facing, String tableOn, boolean withAppliance) {
+    public CubicleGraphic(Amenity cubicle, String type, String facing, String tableOn) {
         super(
             cubicle,
             getRowSpan(type, facing),
@@ -32,7 +32,7 @@ public class CubicleGraphic extends AmenityGraphic {
             NORMAL_ROW_OFFSET,
             NORMAL_COLUMN_OFFSET);
 
-        this.graphicIndex = getGraphicIndex(type, facing, tableOn, withAppliance);
+        this.graphicIndex = getGraphicIndex(type, facing, tableOn);
     }
 
     private static int getRowSpan(String type, String facing) {
@@ -75,7 +75,7 @@ public class CubicleGraphic extends AmenityGraphic {
         }
     }
 
-    private static int getGraphicIndex(String type, String facing, String tableOn, boolean withAppliance) {
+    private static int getGraphicIndex(String type, String facing, String tableOn) {
         switch (type) {
             case "MESA":
                 switch (tableOn) {
@@ -98,32 +98,18 @@ public class CubicleGraphic extends AmenityGraphic {
                         return 6;
                 }
             case "TYPE_C":
-                if (withAppliance) {
-                    switch (facing) {
-                        case "NORTH":
-                            return 7;
-                        case "SOUTH":
-                            return 8;
-                        case "WEST":
-                            return 9;
-                        case "EAST":
-                            return 10;
-                        default:
-                            throw new IllegalArgumentException("Unknown facing: " + facing);
-                    }
-                } else {
-                    switch (facing) {
-                        case "NORTH":
-                            return 11;
-                        case "SOUTH":
-                            return 12;
-                        case "WEST":
-                            return 13;
-                        case "EAST":
-                            return 14;
-                        default:
-                            throw new IllegalArgumentException("Unknown facing: " + facing);
-                    }
+                // TODO: Change Graphic index
+                switch (facing) {
+                    case "NORTH":
+                        return 11;
+                    case "SOUTH":
+                        return 12;
+                    case "WEST":
+                        return 13;
+                    case "EAST":
+                        return 14;
+                    default:
+                        throw new IllegalArgumentException("Unknown facing: " + facing);
                 }
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);

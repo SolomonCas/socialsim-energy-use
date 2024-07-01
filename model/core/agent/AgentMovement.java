@@ -1917,7 +1917,58 @@ public class AgentMovement {
         this.setPosition(patchCenter);
 
         // Set the current amenity
-        this.currentAmenity = this.goalAmenity;
+        double agentHeading = this.heading;
+        double agentHeadingDegrees = Math.toDegrees(agentHeading);
+        int originalRow = this.currentPatch.getMatrixPosition().getRow();
+        int originalCol = this.currentPatch.getMatrixPosition().getColumn();
+        // Looking east
+        if (agentHeadingDegrees >= 315 && agentHeadingDegrees < 360 || agentHeadingDegrees >= 0 && agentHeadingDegrees < 45) {
+            Patch infrontPatch = environment.getPatch(originalRow, originalCol + 1);
+            if (infrontPatch.getAmenityBlock().getParent() instanceof Cubicle ||
+                    infrontPatch.getAmenityBlock().getParent() instanceof ResearchTable ||
+                    infrontPatch.getAmenityBlock().getParent() instanceof DirectorTable) {
+                currentAmenity = infrontPatch.getAmenityBlock().getParent();
+            }
+            else {
+                currentAmenity = goalAmenity;
+            }
+        }
+        // Looking north
+        else if (agentHeadingDegrees >= 45 && agentHeadingDegrees < 135) {
+            Patch infrontPatch = environment.getPatch(originalRow, originalCol + 1);
+            if (infrontPatch.getAmenityBlock().getParent() instanceof Cubicle ||
+                    infrontPatch.getAmenityBlock().getParent() instanceof ResearchTable ||
+                    infrontPatch.getAmenityBlock().getParent() instanceof DirectorTable) {
+                currentAmenity = infrontPatch.getAmenityBlock().getParent();
+            }
+            else {
+                currentAmenity = goalAmenity;
+            }
+        }
+        // Looking west
+        else if (agentHeadingDegrees >= 135 && agentHeadingDegrees < 225) {
+            Patch infrontPatch = environment.getPatch(originalRow, originalCol + 1);
+            if (infrontPatch.getAmenityBlock().getParent() instanceof Cubicle ||
+                    infrontPatch.getAmenityBlock().getParent() instanceof ResearchTable ||
+                    infrontPatch.getAmenityBlock().getParent() instanceof DirectorTable) {
+                currentAmenity = infrontPatch.getAmenityBlock().getParent();
+            }
+            else {
+                currentAmenity = goalAmenity;
+            }
+        }
+        // Looking south
+        else if (agentHeadingDegrees >= 225 && agentHeadingDegrees < 315) {
+            Patch infrontPatch = environment.getPatch(originalRow, originalCol + 1);
+            if (infrontPatch.getAmenityBlock().getParent() instanceof Cubicle ||
+                    infrontPatch.getAmenityBlock().getParent() instanceof ResearchTable ||
+                    infrontPatch.getAmenityBlock().getParent() instanceof DirectorTable) {
+                currentAmenity = infrontPatch.getAmenityBlock().getParent();
+            }
+            else {
+                currentAmenity = goalAmenity;
+            }
+        }
         this.currentPath = null;
     }
 

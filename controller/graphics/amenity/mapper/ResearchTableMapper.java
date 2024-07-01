@@ -54,6 +54,11 @@ public class ResearchTableMapper extends AmenityMapper {
                 eastChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol - 1));
                 ChairMapper.draw(eastChairPatches, index, "EAST", "OFFICE", "ResearchTable");
 
+                // Set Monitor
+                List<Patch> researchMonitorWestPatches = new ArrayList<>();
+                researchMonitorWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
+                MonitorMapper.draw(researchMonitorWestPatches, index, "WEST", "ResearchTable");
+
             }
             else if (Objects.equals(facing, "EAST")) {
                 // WEST CHAIR(S)
@@ -62,6 +67,10 @@ public class ResearchTableMapper extends AmenityMapper {
                 eastChairPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
                 ChairMapper.draw(eastChairPatches, index, "WEST", "OFFICE", "ResearchTable");
 
+                // Set Monitor
+                List<Patch> researchMonitorEastPatches = new ArrayList<>();
+                researchMonitorEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
+                MonitorMapper.draw(researchMonitorEastPatches, index, "EAST", "ResearchTable");
             }
 
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
