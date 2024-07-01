@@ -307,7 +307,7 @@ public class Environment extends BaseObject implements Serializable {
         int offset = 30; // equivalent to 30 mins
 
         for (int i = 0; i < 1; i++) {
-            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
+            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(9,0, i), LocalTime.of(18,0));
             this.getAgents().add(agent);
         }
 
