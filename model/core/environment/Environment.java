@@ -69,6 +69,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<LearningTable> learningTables;
     private final List<PantryTable> pantryTables;
     private final List<DirectorTable> directorTables;
+    private final List<Table2x2> table2x2s;
     private final List<ReceptionTable> receptionTables;
     private final List<SoloTable> soloTables;
 
@@ -80,6 +81,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<CoffeeMakerBar> coffeeMakerBars;
     private final List<KettleBar> kettleBars;
     private final List<MicrowaveBar> microwaveBars;
+    private final List<WindowBlinds> windowBlinds;
 
 
 
@@ -94,6 +96,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<Toilet> toilets;
     private final List<OfficeToilet> officeToilets;
     private final List<TrashCan> trashCans;
+    private final List<Box> boxes;
     private final List<WaterDispenser> waterDispensers;
     private final List<StorageCabinet> storageCabinets;
     private final List<Aircon> aircons;
@@ -188,6 +191,7 @@ public class Environment extends BaseObject implements Serializable {
         this.learningTables = Collections.synchronizedList(new ArrayList<>());
         this.pantryTables = Collections.synchronizedList(new ArrayList<>());
         this.directorTables = Collections.synchronizedList(new ArrayList<>());
+        this.table2x2s = Collections.synchronizedList(new ArrayList<>());
         this.receptionTables = Collections.synchronizedList(new ArrayList<>());
         this.soloTables = Collections.synchronizedList(new ArrayList<>());
         this.humanExpTables = Collections.synchronizedList(new ArrayList<>());
@@ -195,6 +199,7 @@ public class Environment extends BaseObject implements Serializable {
         this.whiteboards = Collections.synchronizedList(new ArrayList<>());
         this.refrigerators = Collections.synchronizedList(new ArrayList<>());
         this.trashCans = Collections.synchronizedList(new ArrayList<>());
+        this.boxes = Collections.synchronizedList(new ArrayList<>());
         this.couches = Collections.synchronizedList(new ArrayList<>());
         this.waterDispensers = Collections.synchronizedList(new ArrayList<>());
         this.plants = Collections.synchronizedList(new ArrayList<>());
@@ -202,6 +207,7 @@ public class Environment extends BaseObject implements Serializable {
         this.coffeeMakerBars = Collections.synchronizedList(new ArrayList<>());
         this.kettleBars = Collections.synchronizedList(new ArrayList<>());
         this.microwaveBars = Collections.synchronizedList(new ArrayList<>());
+        this.windowBlinds = Collections.synchronizedList(new ArrayList<>());
 
 
 
@@ -1135,6 +1141,9 @@ public class Environment extends BaseObject implements Serializable {
     public List<DirectorTable> getDirectorTables() {
         return directorTables;
     }
+    public List<Table2x2> getTable2x2s() {
+        return table2x2s;
+    }
     public List<Whiteboard> getWhiteboards() {
         return whiteboards;
     }
@@ -1160,8 +1169,8 @@ public class Environment extends BaseObject implements Serializable {
     public List<KettleBar> getKettleBars() {
         return kettleBars;
     }
-    public List<MicrowaveBar> getMicrowaveBars() {
-        return microwaveBars;
+    public List<WindowBlinds> getWindowBlinds() {
+        return windowBlinds;
     }
 
     public List<ReceptionTable> getReceptionTables() {
@@ -1203,6 +1212,9 @@ public class Environment extends BaseObject implements Serializable {
     public List<TrashCan> getTrashCans() {
         return trashCans;
     }
+    public List<Box> getBoxes() {
+        return boxes;
+    }
     public List<WaterDispenser> getWaterDispensers() {
         return waterDispensers;
     }
@@ -1237,8 +1249,14 @@ public class Environment extends BaseObject implements Serializable {
         else if (amenityClass == DirectorTable.class) {
             return this.getDirectorTables();
         }
+        else if (amenityClass == Table2x2.class) {
+            return this.getTable2x2s();
+        }
         else if (amenityClass == ReceptionTable.class) {
             return this.getReceptionTables();
+        }
+        else if (amenityClass == ReceptionTable.class) {
+            return this.getWindowBlinds();
         }
 
 
@@ -1272,6 +1290,9 @@ public class Environment extends BaseObject implements Serializable {
         }
         else if(amenityClass == TrashCan.class) {
             return this.getTrashCans();
+        }
+        else if(amenityClass == Box.class) {
+            return this.getBoxes();
         }
         else if(amenityClass == Whiteboard.class) {
             return this.getWhiteboards();
