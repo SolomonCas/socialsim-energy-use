@@ -109,9 +109,9 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
-//            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
+            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
 
             actions = new ArrayList<>();
             // Inspect Meeting Room/s
@@ -134,10 +134,12 @@ public class RoutePlan {
             for(int i = 0; i < environment.getFacultyRooms().size(); i++) {
                 maintenanceInspect(environment.getFacultyRooms().get(i), environment, actions);
             }
-            // Inspect Storage Room/s
-            for(int i = 0; i < environment.getStorageRooms().size(); i++) {
-                maintenanceInspect(environment.getStorageRooms().get(i), environment, actions);
+
+            // Inspect Learning Space Room/s
+            for(int i = 0; i < environment.getLearningSpaces().size(); i++) {
+                maintenanceInspect(environment.getLearningSpaces().get(i), environment, actions);
             }
+
             // Inspect Pantry Room/s
             for(int i = 0; i < environment.getPantries().size(); i++) {
                 maintenanceInspect(environment.getPantries().get(i), environment, actions);
@@ -162,6 +164,12 @@ public class RoutePlan {
             for(int i = 0; i < environment.getStaffRooms().size(); i++) {
                 maintenanceInspect(environment.getStaffRooms().get(i), environment, actions);
             }
+
+            // Inspect Storage Room/s
+            for(int i = 0; i < environment.getStorageRooms().size(); i++) {
+                maintenanceInspect(environment.getStorageRooms().get(i), environment, actions);
+            }
+
             // Inspect Director Room/s
             for(int i = 0; i < environment.getDirectorRooms().size(); i++) {
                 maintenanceInspect(environment.getDirectorRooms().get(i), environment, actions);
