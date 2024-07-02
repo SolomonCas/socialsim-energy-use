@@ -17,18 +17,16 @@ public class RoutePlan {
     private ArrayList<State> routePlan;
     private boolean bathPM, bathAM, isAtDesk;
     private int lastDuration = -1;
-    private boolean canUrgent = true;
+
     private long collaborationEnd = 0, meetingStart = -1, meetingEnd, meetingRoom;
 
-    private int BATH_AM = 0, BATH_PM = 0, BATH_LUNCH = 0;
-    private int COLLABORATE_COUNT = 0, BREAK_COUNT = 0;
-    private int DISPENSER_LUNCH = 1, DISPENSER_PM = 1;
-    private int REFRIGERATOR_LUNCH = 1, REFRIGERATOR_PM = 1;
+
 
     private Chair agentSeat;
 
     private Amenity.AmenityBlock lunchAttractor;
     private Amenity lunchAmenity;
+    private boolean isTakingLunch = false;
 
     State LUNCH_INSTANCE = null;
 
@@ -40,6 +38,13 @@ public class RoutePlan {
     public static final double APP_FACULTY_COOPERATE = 0.9;
     public static final double INT_STUDENT_COOPERATE = 0.6;
     public static final double EXT_STUDENT_COOPERATE = 0.9;
+
+    /*** Responsible for doing Urgent Task ***/
+    private boolean canUrgent = false;
+    private int BATH_AM = 2, BATH_PM = 2, BATH_LUNCH = 1;
+    private int BREAK_COUNT = 2;
+    private int DISPENSER_LUNCH = 1, DISPENSER_PM = 1;
+    private int REFRIGERATOR_LUNCH = 1, REFRIGERATOR_PM = 1;
     public static final double  BATH_CHANCE = 0.15,
                                 DISPENSER_CHANCE = 0.25,
                                 REFRIGERATOR_CHANCE = 0.3,
@@ -113,80 +118,74 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
             routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
 
-            actions = new ArrayList<>();
-            // Inspect Meeting Room/s
-            for(int i = 0; i < environment.getMeetingRooms().size(); i++) {
-                maintenanceInspect(environment.getMeetingRooms().get(i), environment, actions);
-            }
-            // Inspect Human Experience Room/s
-            for(int i = 0; i < environment.getHumanExpRooms().size(); i++) {
-                maintenanceInspect(environment.getHumanExpRooms().get(i), environment, actions);
-            }
-            // Inspect Data Collection Room/s
-            for(int i = 0; i < environment.getDataCollectionRooms().size(); i++) {
-                maintenanceInspect(environment.getDataCollectionRooms().get(i), environment, actions);
-            }
-            // Inspect Research Centers Room/s
-            for(int i = 0; i < environment.getResearchCenters().size(); i++) {
-                maintenanceInspect(environment.getResearchCenters().get(i), environment, actions);
-            }
-            // Inspect Faculty Room/s
-            for(int i = 0; i < environment.getFacultyRooms().size(); i++) {
-                maintenanceInspect(environment.getFacultyRooms().get(i), environment, actions);
-            }
-
-            // Inspect Learning Space Room/s
-            for(int i = 0; i < environment.getLearningSpaces().size(); i++) {
-                maintenanceInspect(environment.getLearningSpaces().get(i), environment, actions);
-            }
-
-            // Inspect Pantry Room/s
-            for(int i = 0; i < environment.getPantries().size(); i++) {
-                maintenanceInspect(environment.getPantries().get(i), environment, actions);
-            }
-            // Inspect Learning Space Room/s
-            for(int i = 0; i < environment.getLearningSpaces().size(); i++) {
-                maintenanceInspect(environment.getLearningSpaces().get(i), environment, actions);
-            }
-            // Inspect Control Center Room/s
-            for(int i = 0; i < environment.getControlCenters().size(); i++) {
-                maintenanceInspect(environment.getControlCenters().get(i), environment, actions);
-            }
-            // Inspect Data Center Room/s
-            for(int i = 0; i < environment.getDataCenters().size(); i++) {
-                maintenanceInspect(environment.getDataCenters().get(i), environment, actions);
-            }
-            // Inspect Solo Room/s
-            for(int i = 0; i < environment.getSoloRooms().size(); i++) {
-                maintenanceInspect(environment.getSoloRooms().get(i), environment, actions);
-            }
-            // Inspect Staff Room/s
-            for(int i = 0; i < environment.getStaffRooms().size(); i++) {
-                maintenanceInspect(environment.getStaffRooms().get(i), environment, actions);
-            }
-
-            // Inspect Storage Room/s
-            for(int i = 0; i < environment.getStorageRooms().size(); i++) {
-                maintenanceInspect(environment.getStorageRooms().get(i), environment, actions);
-            }
-
-            // Inspect Director Room/s
-            for(int i = 0; i < environment.getDirectorRooms().size(); i++) {
-                maintenanceInspect(environment.getDirectorRooms().get(i), environment, actions);
-            }
-
-            routePlan.add(new State(State.Name.INSPECT_ROOMS, this, agent, actions));
-
-//            routePlan.add(addUrgentRoute("FIX_VISUAL_COMFORT", agent, environment));
+//            actions = new ArrayList<>();
+//            // Inspect Meeting Room/s
+//            for(int i = 0; i < environment.getMeetingRooms().size(); i++) {
+//                maintenanceInspect(environment.getMeetingRooms().get(i), environment, actions);
+//            }
+//            // Inspect Human Experience Room/s
+//            for(int i = 0; i < environment.getHumanExpRooms().size(); i++) {
+//                maintenanceInspect(environment.getHumanExpRooms().get(i), environment, actions);
+//            }
+//            // Inspect Data Collection Room/s
+//            for(int i = 0; i < environment.getDataCollectionRooms().size(); i++) {
+//                maintenanceInspect(environment.getDataCollectionRooms().get(i), environment, actions);
+//            }
+//            // Inspect Research Centers Room/s
+//            for(int i = 0; i < environment.getResearchCenters().size(); i++) {
+//                maintenanceInspect(environment.getResearchCenters().get(i), environment, actions);
+//            }
+//            // Inspect Faculty Room/s
+//            for(int i = 0; i < environment.getFacultyRooms().size(); i++) {
+//                maintenanceInspect(environment.getFacultyRooms().get(i), environment, actions);
+//            }
+//
+//            // Inspect Learning Space Room/s
+//            for(int i = 0; i < environment.getLearningSpaces().size(); i++) {
+//                maintenanceInspect(environment.getLearningSpaces().get(i), environment, actions);
+//            }
+//
+//            // Inspect Pantry Room/s
+//            for(int i = 0; i < environment.getPantries().size(); i++) {
+//                maintenanceInspect(environment.getPantries().get(i), environment, actions);
+//            }
+//            // Inspect Control Center Room/s
+//            for(int i = 0; i < environment.getControlCenters().size(); i++) {
+//                maintenanceInspect(environment.getControlCenters().get(i), environment, actions);
+//            }
+//            // Inspect Data Center Room/s
+//            for(int i = 0; i < environment.getDataCenters().size(); i++) {
+//                maintenanceInspect(environment.getDataCenters().get(i), environment, actions);
+//            }
+//            // Inspect Solo Room/s
+//            for(int i = 0; i < environment.getSoloRooms().size(); i++) {
+//                maintenanceInspect(environment.getSoloRooms().get(i), environment, actions);
+//            }
+//            // Inspect Staff Room/s
+//            for(int i = 0; i < environment.getStaffRooms().size(); i++) {
+//                maintenanceInspect(environment.getStaffRooms().get(i), environment, actions);
+//            }
+//
+//            // Inspect Storage Room/s
+//            for(int i = 0; i < environment.getStorageRooms().size(); i++) {
+//                maintenanceInspect(environment.getStorageRooms().get(i), environment, actions);
+//            }
+//
+//            // Inspect Director Room/s
+//            for(int i = 0; i < environment.getDirectorRooms().size(); i++) {
+//                maintenanceInspect(environment.getDirectorRooms().get(i), environment, actions);
+//            }
+//
+//            routePlan.add(new State(State.Name.INSPECT_ROOMS, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GUARD_STAY_PUT, assignedSeat.getAttractors().getFirst().getPatch()));
             routePlan.add(new State(State.Name.GUARD, this, agent, actions));
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().getFirst().getPatch()));
-//            actions.add(new Action(Action.Name.EAT_LUNCH, 360));
-//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.EAT_LUNCH, 360));
+            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
             // Developer Note: The thesis does not need to implement elevator behavior, where agents will wait for an elevator to leave
@@ -276,13 +275,13 @@ public class RoutePlan {
 //                actions.add(new Action(Action.Name.MAINTENANCE_CLEAN_TOILET, 10)); // Cleans only OfficeToilet
 //            }
 //            routePlan.add(new State(State.Name.MAINTENANCE_BATHROOM, this, agent, actions));
-
+//
 //            actions = new ArrayList<>();
 //            for (int i = 0; i < environment.getOfficeSinks().size(); i++) {
 //                actions.add(new Action(Action.Name.MAINTENANCE_CLEAN_SINK, 10)); // Cleans only OfficeToilet
 //            }
 //            routePlan.add(new State(State.Name.MAINTENANCE_BATHROOM, this, agent, actions));
-
+//
 //            actions = new ArrayList<>();
 //            for(int i = 0; i < environment.getPlants().size(); i++) {
 //                actions.add(new Action(Action.Name.MAINTENANCE_WATER_PLANT, 10));
@@ -298,12 +297,12 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.EAT_LUNCH, 720));
             routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
-            actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
-
-            actions.add(new Action(Action.Name.GO_TO_STATION, environment.getStorageCabinets().getFirst().getAttractors().getFirst().getPatch(), 2));
-            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
+//            actions = new ArrayList<>();
+//            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+//            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
+//
+//            actions.add(new Action(Action.Name.GO_TO_STATION, environment.getStorageCabinets().getFirst().getAttractors().getFirst().getPatch(), 2));
+//            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.DIRECTOR) {
             setBathAM(false);
@@ -320,12 +319,11 @@ public class RoutePlan {
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch()));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
-//            routePlan.add(addUrgentRoute("BATHROOM", agent));
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().getFirst().getPatch()));
-//            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
-//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_LUNCH, assignedSeat.getAttractors().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
+            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
@@ -349,10 +347,10 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GO_TO_STATION));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GO_TO_LUNCH));
-//            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
-//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_LUNCH));
+            actions.add(new Action(Action.Name.EAT_LUNCH, 180, 360));
+            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
@@ -377,10 +375,10 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GO_TO_STATION));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GO_TO_LUNCH));
-//            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
-//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_LUNCH));
+            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
+            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
@@ -393,6 +391,22 @@ public class RoutePlan {
     }
 
     /***** METHODS *****/
+    public void guardInspect(PatchField room, Environment environment, ArrayList<Action> actions) {
+        List<Amenity> allAmenities = new ArrayList<>();
+        allAmenities.addAll(environment.getLights());
+        allAmenities.addAll(environment.getAircons());
+
+
+        for (Amenity amenity : allAmenities) {
+            // Check if the amenity is in the selected room
+            if (amenity.getAmenityBlocks().get(0).getPatch().getPatchField() != null && amenity.getAmenityBlocks().get(0).getPatch().getPatchField().getKey() == room) {
+                // Add an action if the amenity is in the selected room
+                actions.add(new Action(Action.Name.INSPECTING_ROOM,
+                        amenity.getAttractors().getFirst().getPatch(),
+                        3));
+            }
+        }
+    }
 
     public void maintenanceInspect(PatchField room, Environment environment, ArrayList<Action> actions) {
 
@@ -437,8 +451,10 @@ public class RoutePlan {
         switch (s) {
             case "BATHROOM" -> {
                 actions = new ArrayList<>();
-                actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
-                actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+                if (agent.getType() != Agent.Type.DIRECTOR) {
+                    actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
+                    actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+                }
                 actions.add(new Action(Action.Name.GO_TO_BATHROOM));
                 actions.add(new Action(Action.Name.RELIEVE_IN_CUBICLE, 12, 60));
                 actions.add(new Action(Action.Name.FIND_SINK));
@@ -495,7 +511,7 @@ public class RoutePlan {
                 actions = new ArrayList<>();
                 if (agent.getType() == Agent.Type.DIRECTOR) {
                     for (Agent agent1 : environment.getMovableAgents()) {
-                        if (agent1 != agent && agent1.getType() == Agent.Type.FACULTY) { // for director inquire to all directors
+                        if (agent1 != agent && agent1.getType() == Agent.Type.FACULTY && agent1.getAgentMovement().getRoutePlan().isAtDesk()) { // for director inquire to all directors
                             agent1.getAgentMovement().getRoutePlan().setCanUrgent(false); // turn off urgent so faculties will wait for the director
                             actions.add(new Action(Action.Name.GO_TO_FACULTY, agent1.getAgentMovement().getAssignedSeat().getAttractors().getFirst().getPatch()));
                             actions.add(new Action(Action.Name.ASK_FACULTY, 5));
@@ -579,9 +595,6 @@ public class RoutePlan {
     public int getLastDuration() {
         return lastDuration;
     }
-    public int getCOLLABORATE_COUNT() {
-        return COLLABORATE_COUNT;
-    }
     public long getCollaborationEnd() {
         return collaborationEnd;
     }
@@ -608,6 +621,10 @@ public class RoutePlan {
     }
     public int getBREAK_COUNT() {
         return BREAK_COUNT;
+    }
+
+    public boolean isTakingLunch() {
+        return isTakingLunch;
     }
 
     /***** SETTERS *****/
@@ -659,9 +676,6 @@ public class RoutePlan {
     public void setCanUrgent(boolean canUrgent) {
         this.canUrgent = canUrgent;
     }
-    public void setCOLLABORATE_COUNT(int count) {
-        this.COLLABORATE_COUNT += count;
-    }
     public void setCollaborationEnd(long tick, int duration) {
         this.collaborationEnd = tick + duration;
     }
@@ -676,5 +690,9 @@ public class RoutePlan {
     }
     public void setBREAK_COUNT(int BREAK_COUNT) {
         this.BREAK_COUNT -= BREAK_COUNT;
+    }
+
+    public void setTakingLunch(boolean takingLunch) {
+        isTakingLunch = takingLunch;
     }
 }

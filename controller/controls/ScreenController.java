@@ -6,6 +6,7 @@ import com.socialsim.controller.graphics.amenity.mapper.*;
 import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
+import com.socialsim.model.core.environment.patchobject.passable.goal.OfficeToilet;
 import com.socialsim.model.core.environment.patchobject.passable.goal.StorageCabinet;
 import com.socialsim.model.simulator.Simulator;
 
@@ -2549,6 +2550,17 @@ public class ScreenController extends Controller {
             pantryCabinets.add(environment.getPatch(109,138));
             PantryCabinetMapper.draw(pantryCabinets);
 
+            /*** Office Toilet/Director Toilet ***/
+            List<Patch> southOfficeToilets = new ArrayList<>();
+            southOfficeToilets.add(environment.getPatch(79, 200));
+            ToiletMapper.draw(southOfficeToilets, "SOUTH", "OfficeToilet");
+
+            /*** Director Sink/ Office Sink ***/
+            List<Patch> southOfficeSinks = new ArrayList<>();
+            southOfficeSinks.add(environment.getPatch(80,197));
+            southOfficeSinks.add(environment.getPatch(111,136));
+            SinkMapper.draw(southOfficeSinks, "SOUTH", "OfficeSink");
+
             /*** Sink ***/
 
             // South
@@ -2556,18 +2568,17 @@ public class ScreenController extends Controller {
             southSinks.add(environment.getPatch(60,194));
             southSinks.add(environment.getPatch(60,197));
             southSinks.add(environment.getPatch(60,200));
-            southSinks.add(environment.getPatch(80,197));
-            southSinks.add(environment.getPatch(111,136));
-            SinkMapper.draw(southSinks, "SOUTH");
+
+            SinkMapper.draw(southSinks, "SOUTH", "Sink");
 
             // North
             List<Patch> northSinks = new ArrayList<>();
             northSinks.add(environment.getPatch(18,194));
             northSinks.add(environment.getPatch(18,197));
             northSinks.add(environment.getPatch(18,200));
-            SinkMapper.draw(northSinks, "NORTH");
+            SinkMapper.draw(northSinks, "NORTH", "Sink");
 
-            /*** Sink ***/
+            /*** Toilet ***/
 
             // South
             List<Patch> southToilets = new ArrayList<>();
@@ -2576,8 +2587,8 @@ public class ScreenController extends Controller {
             southToilets.add(environment.getPatch(3,194));
             southToilets.add(environment.getPatch(3,197));
             southToilets.add(environment.getPatch(3,200));
-            southToilets.add(environment.getPatch(79,200));
-            ToiletMapper.draw(southToilets, "SOUTH");
+
+            ToiletMapper.draw(southToilets, "SOUTH", "Toilet");
 
             // North
             List<Patch> northToilets = new ArrayList<>();
@@ -2586,7 +2597,7 @@ public class ScreenController extends Controller {
             northToilets.add(environment.getPatch(73,194));
             northToilets.add(environment.getPatch(73,197));
             northToilets.add(environment.getPatch(73,200));
-            ToiletMapper.draw(northToilets, "NORTH");
+            ToiletMapper.draw(northToilets, "NORTH", "Toilet");
 
             /*** Coffee Maker Bar ***/
             List<Patch> coffeeMakerBar = new ArrayList<>();

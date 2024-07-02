@@ -75,8 +75,6 @@ public class Action {
     /***** ENUM *****/
     public enum Name {
 
-        GO_TO_DIRECTOR_ROOM(),
-        GO_TO_FACULTY_ROOM(),
         INSPECTING_ROOM(),
         LEAVE_OFFICE(),
         GO_TO_LUNCH(),
@@ -86,7 +84,6 @@ public class Action {
         GOING_TO_RECEPTION_QUEUE(),
         FILL_UP_NAME(),
         GUARD_STAY_PUT(),
-        GREET_PERSON(),
         MAINTENANCE_CLEAN_TOILET(),
         MAINTENANCE_CLEAN_SINK(),
         MAINTENANCE_WATER_PLANT(),
@@ -104,19 +101,33 @@ public class Action {
         GO_TO_FACULTY(),
         GO_TO_STUDENT(),
         GO_TO_GUARD(),
+        GO_TO_MAINTENANCE(),
+        ASK_MAINTENANCE(),
         ASK_FACULTY(),
         ASK_STUDENT(),
         ASK_GUARD(),
-        ANSWER_DIRECTOR(),
-        ANSWER_FACULTY(),
-        ANSWER_STUDENT(),
         GO_TO_BATHROOM(),
         RELIEVE_IN_CUBICLE(),
-        FIND_SINK(), WASH_IN_SINK(),
-        GO_TO_COLLAB(), WAIT_FOR_COLLAB(), COLLABORATE(),
-        GO_MEETING(), WAIT_MEETING(), MEETING(), GOING_DISPENSER(),
-        GETTING_WATER(), GOING_FRIDGE(), GETTING_FOOD(), TAKING_BREAK(),
-        GO_TO_WAIT_AREA(), WAIT_FOR_VACANT(), WAIT_FOR_COLLEAGUE();
+        FIND_SINK(),
+        WASH_IN_SINK(),
+        GO_TO_COLLAB(),
+        WAIT_FOR_COLLAB(),
+        COLLABORATE(),
+        GO_MEETING(),
+        WAIT_MEETING(),
+        MEETING(),
+        GOING_DISPENSER(),
+        GETTING_WATER(),
+        GOING_FRIDGE(),
+        GETTING_FOOD(),
+        GOING_MICROWAVE(),
+        USE_MICROWAVE(),
+        GOING_COFFEEMAKER(),
+        MAKE_COFFEE(),
+        TAKING_BREAK(),
+        GO_TO_WAIT_AREA(),
+        WAIT_FOR_VACANT(),
+        WAIT_FOR_COLLEAGUE();
 
         final int ID;
 

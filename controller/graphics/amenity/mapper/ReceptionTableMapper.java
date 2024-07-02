@@ -107,7 +107,7 @@ public class ReceptionTableMapper extends AmenityMapper {
                 receptionChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
 
                 // QUEUE POSITION
-                receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol - 1));
+                receptionQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 1));
                 Main.simulator.getEnvironment().getReceptionQueues().add(ReceptionQueue.receptionQueueFactory.create(receptionQueuePatches, receptionTableToAdd, "receptionQueue"));
             }
             else if (dimensions.equals("1x8")) {

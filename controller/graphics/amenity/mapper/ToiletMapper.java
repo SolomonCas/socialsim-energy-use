@@ -4,6 +4,7 @@ import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.amenity.AmenityMapper;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
+import com.socialsim.model.core.environment.patchobject.passable.goal.OfficeToilet;
 import com.socialsim.model.core.environment.patchobject.passable.goal.Toilet;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class ToiletMapper extends AmenityMapper {
 
-    public static void draw(List<Patch> patches, String facing) {
+    public static void draw(List<Patch> patches, String facing, String type) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
@@ -29,10 +30,18 @@ public class ToiletMapper extends AmenityMapper {
             amenityBlocks.add(nextAmenityBlock);
             nextPatch.setAmenityBlock(nextAmenityBlock);
 
-            List<Toilet> toilets = Main.simulator.getEnvironment().getToilets();
-            Toilet toiletToAdd;
-            toiletToAdd = Toilet.ToiletFactory.create(amenityBlocks, true, facing);
-            toilets.add(toiletToAdd);
+
+
+            switch (type) {
+                case "Toilet" -> {
+                    Toilet toiletToAdd = Toilet.ToiletFactory.create(amenityBlocks, true, facing);
+                    Main.simulator.getEnvironment().getToilets().add(toiletToAdd);
+                }
+                case "OfficeToilet" -> {
+                    OfficeToilet officeToiletToAdd = OfficeToilet.OfficeToiletFactory.create(amenityBlocks, true, facing);
+                    Main.simulator.getEnvironment().getOfficeToilets().add(officeToiletToAdd);
+                }
+            }
 
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }

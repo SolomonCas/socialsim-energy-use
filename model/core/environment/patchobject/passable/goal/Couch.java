@@ -16,12 +16,19 @@ public class Couch extends Goal {
         couchFactory = new CouchFactory();
     }
 
+    private final String facing;
+
 
     /***** CONSTRUCTOR *****/
     protected Couch(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
-
+        this.facing = facing;
         this.couchGraphic = new CouchGraphic(this, facing);
+    }
+
+    /***** GETTER *****/
+    public String getFacing() {
+        return facing;
     }
 
     /***** OVERRIDE *****/
