@@ -7,6 +7,7 @@ import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
 import com.socialsim.model.core.environment.patchobject.passable.goal.StorageCabinet;
+import com.socialsim.model.core.environment.patchobject.passable.goal.WindowBlinds;
 import com.socialsim.model.simulator.Simulator;
 
 import com.socialsim.model.core.environment.Patch;
@@ -3047,6 +3048,159 @@ public class ScreenController extends Controller {
 
             /* WINDOW + BLINDS */
 
+            /* Data collection room windows */
+            List<Patch> WindowBlinds = new ArrayList<>();
+            for(int j = 8; j <= 11; j++ ){
+                WindowBlinds.add(environment.getPatch(106, j));
+            }
+
+            for(int j = 13; j <= 16; j++ ){
+                WindowBlinds.add(environment.getPatch(106, j));
+            }
+
+            for(int j = 18; j <= 21; j++ ) {
+                WindowBlinds.add(environment.getPatch(106, j));
+            }
+
+            /* Research center windows */
+            for(int j = 24; j <= 27; j++ ) {
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 29; j <= 32; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for (int j = 34; j <= 37; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 39; j <= 42; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 44; j <= 47; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 49; j <= 52; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 54; j <= 57; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 59; j <= 62; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 64; j <= 67; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 69; j <= 72; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 74; j <= 77; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 79; j <= 82; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 84; j <= 87; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 89; j <= 92; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 94; j <= 97; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            /* Faculty room windows */
+            for(int j = 100; j <= 103; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 106; j <= 109; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 112; j <= 115; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 118; j <= 121; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            for(int j = 124; j <= 127; j++){
+                WindowBlinds.add(environment.getPatch(108, j));
+            }
+
+            /* Pantry windows */
+            for(int j = 136; j <= 139; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            for(int j = 141; j <= 144; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            for(int j = 146; j <= 149; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            for(int j = 151; j <= 154; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            for(int j = 156; j <= 159; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            for(int j = 161; j <= 164; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            for(int j = 166; j <= 169; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            for(int j = 171; j <= 174; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            for(int j = 176; j <= 179; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            for(int j = 181; j <= 184; j++){
+                WindowBlinds.add(environment.getPatch(126, j));
+            }
+
+            /* Director's office windows */
+            for(int j = 188; j <= 191; j++){
+                WindowBlinds.add(environment.getPatch(115, j));
+            }
+
+            for(int j = 193; j <= 197; j++){
+                WindowBlinds.add(environment.getPatch(115, j));
+            }
+
+            for(int j = 199; j <= 202; j++){
+                WindowBlinds.add(environment.getPatch(115, j));
+            }
+
+
+
+            WindowBlindsMapper.draw(WindowBlinds, "GLASS");
 
     }
 
