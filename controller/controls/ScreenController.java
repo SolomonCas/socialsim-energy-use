@@ -6,6 +6,7 @@ import com.socialsim.controller.graphics.amenity.mapper.*;
 import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
+import com.socialsim.model.core.environment.patchobject.passable.goal.StorageCabinet;
 import com.socialsim.model.simulator.Simulator;
 
 import com.socialsim.model.core.environment.Patch;
@@ -2405,7 +2406,7 @@ public class ScreenController extends Controller {
             pantryTableTypeB.add(environment.getPatch(121,154));
             pantryTableTypeB.add(environment.getPatch(121,160));
             PantryTableMapper.draw(pantryTableTypeB, "TYPE_B");
-            
+
             // TYPE A CHAIRS
             List<Patch> southPantryChairTypeA = new ArrayList<>();
             southPantryChairTypeA.add(environment.getPatch(111,150));
@@ -2434,7 +2435,7 @@ public class ScreenController extends Controller {
 
             /* TABLE 2x2 */
             List<Patch> table2x2 = new ArrayList<>();
-            table2x2.add(environment.getPatch(127,45));
+            table2x2.add(environment.getPatch(45,127));
             Table2x2Mapper.draw(table2x2);
 
 
@@ -3044,10 +3045,8 @@ public class ScreenController extends Controller {
 
 
 
-        /* WINDOW + BLINDS */
+            /* WINDOW + BLINDS */
 
-        // TODO: Draw all WindowBlinds; layer opened and closed on top of each other
-        // and figure out a way to change display when opened and closed
 
     }
 

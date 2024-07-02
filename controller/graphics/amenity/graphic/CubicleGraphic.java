@@ -98,16 +98,15 @@ public class CubicleGraphic extends AmenityGraphic {
                         return 6;
                 }
             case "TYPE_C":
-                // TODO: Change Graphic index
                 switch (facing) {
                     case "NORTH":
-                        return 11;
+                        return 7;
                     case "SOUTH":
-                        return 12;
+                        return 8;
                     case "WEST":
-                        return 13;
+                        return 9;
                     case "EAST":
-                        return 14;
+                        return 10;
                     default:
                         throw new IllegalArgumentException("Unknown facing: " + facing);
                 }

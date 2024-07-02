@@ -103,7 +103,7 @@ public class AmenityGraphic extends Graphic {
         /* 2x2 TABLE */
 
         final List<AmenityGraphicLocation> Table2x2Graphic = new ArrayList<>();
-        Table2x2Graphic.add(new AmenityGraphicLocation(5, 25)); // 1 variation
+        Table2x2Graphic.add(new AmenityGraphicLocation(21, 17)); // 1 variation
         AMENITY_GRAPHICS.put(Table2x2.class, Table2x2Graphic);
 
 
@@ -156,17 +156,11 @@ public class AmenityGraphic extends Graphic {
         CubicleGraphic.add(new AmenityGraphicLocation(8, 6)); // FACING WEST
         CubicleGraphic.add(new AmenityGraphicLocation(8, 9)); // FACING EAST
 
-        // TYPE C WITH APPLIANCES
+        // TYPE C
         CubicleGraphic.add(new AmenityGraphicLocation(10, 13)); // FACING NORTH
         CubicleGraphic.add(new AmenityGraphicLocation(10, 16)); // FACING SOUTH
         CubicleGraphic.add(new AmenityGraphicLocation(10, 21)); // FACING WEST
         CubicleGraphic.add(new AmenityGraphicLocation(10, 19)); // FACING EAST
-
-        // TYPE C NO APPLIANCES
-        CubicleGraphic.add(new AmenityGraphicLocation(12, 13)); // FACING NORTH
-        CubicleGraphic.add(new AmenityGraphicLocation(12, 16)); // FACING SOUTH
-        CubicleGraphic.add(new AmenityGraphicLocation(13, 21)); // FACING WEST
-        CubicleGraphic.add(new AmenityGraphicLocation(13, 19)); // FACING EAST
 
         AMENITY_GRAPHICS.put(Cubicle.class, CubicleGraphic);
         AMENITY_GRAPHICS.put(MESATable.class, CubicleGraphic);

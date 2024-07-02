@@ -642,31 +642,6 @@ public class Simulator {
                     }
                 }
                 else {
-//                    if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Cubicle) {
-//                        int index = environmentInstance.getCubicles().indexOf(((Cubicle) agentMovement.getCurrentAmenity()));
-//                        if (environmentInstance.getCubicles().get(index).withAppliance()
-//                                && !environmentInstance.getCubicles().get(index).isOn()) {
-////                            System.out.println("TURN ON  MONITOR");
-//                            environmentInstance.getCubicles().get(index).setOn(true);
-//                        }
-//                    }
-//                    else if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof DirectorTable) {
-//                        int index = environmentInstance.getDirectorTables().indexOf(((DirectorTable) agentMovement.getCurrentAmenity()));
-//                        if (environmentInstance.getDirectorTables().get(index).withAppliance()
-//                                && !environmentInstance.getDirectorTables().get(index).isOn()) {
-////                                    System.out.println("TURN OFF  MONITOR");
-//                            environmentInstance.getDirectorTables().get(index).setOn(true);
-//                        }
-//                    }
-//                    else if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof ResearchTable) {
-//                        int index = environmentInstance.getResearchTables().indexOf(((ResearchTable) agentMovement.getCurrentAmenity()));
-//                        if (environmentInstance.getResearchTables().get(index).withAppliance()
-//                                && !environmentInstance.getResearchTables().get(index).isOn()) {
-////                                    System.out.println("TURN OFF  MONITOR");
-//                            environmentInstance.getResearchTables().get(index).setOn(true);
-//                        }
-//                    }
-
                     agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
                     if (agentMovement.getRoutePlan().getCanUrgent()) {
                         double CHANCE = Simulator.roll();
@@ -743,6 +718,7 @@ public class Simulator {
                             agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                             agentMovement.resetGoal();
                         }
+                        
                     }
                 }
             }
