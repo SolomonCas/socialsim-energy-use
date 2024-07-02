@@ -26,9 +26,9 @@ public class ResearchTable extends Goal {
 
 
     /***** CONSTRUCTOR *****/
-    protected ResearchTable(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, boolean withAppliance) {
+    protected ResearchTable(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
         super(amenityBlocks, enabled);
-        this.researchTableGraphic = new ResearchTableGraphic(this, facing, withAppliance);
+        this.researchTableGraphic = new ResearchTableGraphic(this, facing);
         this.researchChairs = Collections.synchronizedList(new ArrayList<>());
         this.monitors = Collections.synchronizedList(new ArrayList<>());
     }
@@ -85,8 +85,8 @@ public class ResearchTable extends Goal {
     }
 
     public static class ResearchTableFactory extends GoalFactory {
-        public static ResearchTable create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing, boolean withAppliance) {
-            return new ResearchTable(amenityBlocks, enabled, facing, withAppliance);
+        public static ResearchTable create(List<AmenityBlock> amenityBlocks, boolean enabled, String facing) {
+            return new ResearchTable(amenityBlocks, enabled, facing);
         }
     }
 }

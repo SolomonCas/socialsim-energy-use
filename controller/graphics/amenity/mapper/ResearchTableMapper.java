@@ -14,7 +14,7 @@ import java.util.Objects;
 public class ResearchTableMapper extends AmenityMapper {
 
     /***** METHOD *****/
-    public static void draw(List<Patch> patches, String facing, boolean withAppliance) {
+    public static void draw(List<Patch> patches, String facing) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
@@ -38,11 +38,7 @@ public class ResearchTableMapper extends AmenityMapper {
                 nextPatch.setAmenityBlock(nextAmenityBlock);
             }
 
-            if (withAppliance) {
-                tableToAdd = ResearchTable.ResearchTableFactory.create(amenityBlocks, true, facing, true);
-            } else {
-                tableToAdd = ResearchTable.ResearchTableFactory.create(amenityBlocks, true, facing, false);
-            }
+            tableToAdd = ResearchTable.ResearchTableFactory.create(amenityBlocks, true, facing);
             researchTables.add(tableToAdd);
             index = researchTables.indexOf(tableToAdd);
 

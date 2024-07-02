@@ -301,7 +301,7 @@ public class AmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> MonitorGraphic = new ArrayList<>();
         MonitorGraphic.add(new AmenityGraphicLocation(28, 7));  // SOUTH
         MonitorGraphic.add(new AmenityGraphicLocation(28, 8));  // NORTH
-        MonitorGraphic.add(new AmenityGraphicLocation(29, 8));  // NORTH (BEHIND CUBICLE WALL)
+        MonitorGraphic.add(new AmenityGraphicLocation(30, 8));  // NORTH (BEHIND CUBICLE WALL)
         MonitorGraphic.add(new AmenityGraphicLocation(28, 9));  // EAST
         MonitorGraphic.add(new AmenityGraphicLocation(28, 10)); // WEST
         AMENITY_GRAPHICS.put(Monitor.class, MonitorGraphic);
@@ -330,7 +330,7 @@ public class AmenityGraphic extends Graphic {
 
         final List<AmenityGraphicLocation> AirconGraphic = new ArrayList<>();
         AirconGraphic.add(new AmenityGraphicLocation(35, 14));
-        AMENITY_GRAPHICS.put(Refrigerator.class, AirconGraphic);
+        AMENITY_GRAPHICS.put(Aircon.class, AirconGraphic);
 
 
         /* LIGHT */
@@ -380,7 +380,7 @@ public class AmenityGraphic extends Graphic {
         BoxGraphic.add(new AmenityGraphicLocation(28, 0)); // 1x1
         BoxGraphic.add(new AmenityGraphicLocation(30, 0)); // 2x1
         BoxGraphic.add(new AmenityGraphicLocation(30, 3)); // 2x2
-        AMENITY_GRAPHICS.put(Box.class, BoxGraphic);
+//        AMENITY_GRAPHICS.put(Box.class, BoxGraphic);
 
     }
 

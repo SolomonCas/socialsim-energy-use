@@ -6,7 +6,7 @@ import com.socialsim.model.core.environment.patchobject.passable.goal.Switch;
 public class SwitchGraphic extends AmenityGraphic {
 
     /***** VARIABLES *****/
-    private static final int ROW_SPAN = 1;
+    private static final int ROW_SPAN = 2;
     private static final int COLUMN_SPAN = 1;
 
     private static final int NORMAL_ROW_OFFSET = 0;

@@ -33,11 +33,8 @@ public class DirectorTableGraphic extends AmenityGraphic {
 
         switch (orientation) {
             case "HORIZONTAL" -> this.graphicIndex = 0;
-            case "VERTICAL" -> this.graphicIndex = 1; // no sprite yet
+            case "VERTICAL" -> this.graphicIndex = 1;
         }
-
-        // no sprites for no appliance yet, add as needed
-        // and modify this as needed
     }
 
 }

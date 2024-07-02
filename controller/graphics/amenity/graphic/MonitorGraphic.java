@@ -8,7 +8,7 @@ public class MonitorGraphic extends AmenityGraphic {
 
     /***** VARIABLES *****/
 
-    private static final int ROW_SPAN = 2;
+    private static final int ROW_SPAN = 1; // HI I CHANGED THIS FROM 2 TO 1 IDK WHY IT WAS SET TO 2
     private static final int COLUMN_SPAN = 1;
 
     private static final int NORMAL_ROW_OFFSET = 0;
@@ -24,8 +24,9 @@ public class MonitorGraphic extends AmenityGraphic {
         switch (facing) {
             case "SOUTH" -> this.graphicIndex = 0;
             case "NORTH" -> this.graphicIndex = 1;
-            case "EAST" -> this.graphicIndex = 2;
-            case "WEST" -> this.graphicIndex = 3;
+            case "NORTH_BEHIND_CUBICLE" -> this.graphicIndex = 2;
+            case "EAST" -> this.graphicIndex = 3;
+            case "WEST" -> this.graphicIndex = 4;
         }
     }
 

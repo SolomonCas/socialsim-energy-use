@@ -16,7 +16,7 @@ public class ResearchTableGraphic extends AmenityGraphic {
     private static final int NORMAL_COLUMN_OFFSET = 0;
 
     /***** CONSTRUCTOR *****/
-    public ResearchTableGraphic(ResearchTable researchTable, String facing, boolean withAppliance) {
+    public ResearchTableGraphic(ResearchTable researchTable, String facing) {
         super(
                 researchTable,
                 facing.equals("NORTH") || facing.equals("SOUTH") ? ROW_SPAN_HORIZONTAL : ROW_SPAN_VERTICAL,
@@ -25,18 +25,10 @@ public class ResearchTableGraphic extends AmenityGraphic {
                 NORMAL_COLUMN_OFFSET
         );
 
-        if (!withAppliance) {
-            switch (facing) {
-                case "WEST" -> this.graphicIndex = 0;
-                case "EAST" -> this.graphicIndex = 1;
-                case "SOUTH" -> this.graphicIndex = 2;
-            }
-        }
-        else {
-            switch (facing) {
-                case "WEST" -> this.graphicIndex = 3;
-                case "EAST" -> this.graphicIndex = 4;
-            }
+        switch (facing) {
+            case "WEST" -> this.graphicIndex = 0;
+            case "EAST" -> this.graphicIndex = 1;
+            case "SOUTH" -> this.graphicIndex = 2;
         }
     }
 

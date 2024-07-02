@@ -2326,33 +2326,25 @@ public class ScreenController extends Controller {
 
             /*** Research Table ***/
 
-            // Facing West with appliance
-            List<Patch> FWResearchTableWithApp = new ArrayList<>();
-            FWResearchTableWithApp.add(environment.getPatch(99,46));
-            FWResearchTableWithApp.add(environment.getPatch(99,68));
-            FWResearchTableWithApp.add(environment.getPatch(99,76));
-            ResearchTableMapper.draw(FWResearchTableWithApp, "WEST", true);
+            // Facing West
+            List<Patch> westResearchTable = new ArrayList<>();
+            westResearchTable.add(environment.getPatch(99,46));
+            westResearchTable.add(environment.getPatch(99,68));
+            westResearchTable.add(environment.getPatch(99,76));
+            westResearchTable.add(environment.getPatch(99,38));
+            westResearchTable.add(environment.getPatch(99,60));
+            westResearchTable.add(environment.getPatch(99,90));
+            ResearchTableMapper.draw(westResearchTable, "WEST");
 
-            // Facing East with appliance
-            List<Patch> FEResearchTableWithApp = new ArrayList<>();
-            FEResearchTableWithApp.add(environment.getPatch(99,91));
-            ResearchTableMapper.draw(FEResearchTableWithApp, "EAST", true);
-
-            // Facing West no appliance
-//            List<Patch> FWResearchTableNoApp = new ArrayList<>();
-//            FWResearchTableNoApp.add(environment.getPatch(99,38));
-//            FWResearchTableNoApp.add(environment.getPatch(99,60));
-//            FWResearchTableNoApp.add(environment.getPatch(99,90));
-//            ResearchTableMapper.draw(FWResearchTableNoApp, "WEST", false);
-//
-//            // Facing East no appliance
-//            List<Patch> FEResearchTableNoApp = new ArrayList<>();
-//            FEResearchTableNoApp.add(environment.getPatch(99,39));
-//            FEResearchTableNoApp.add(environment.getPatch(99,47));
-//            FEResearchTableNoApp.add(environment.getPatch(99,61));
-//            FEResearchTableNoApp.add(environment.getPatch(99,69));
-//            FEResearchTableNoApp.add(environment.getPatch(99,77));
-//            ResearchTableMapper.draw(FEResearchTableNoApp, "EAST", false);
+            // Facing East
+            List<Patch> eastResearchTable = new ArrayList<>();
+            eastResearchTable.add(environment.getPatch(99,91));
+            eastResearchTable.add(environment.getPatch(99,39));
+            eastResearchTable.add(environment.getPatch(99,47));
+            eastResearchTable.add(environment.getPatch(99,61));
+            eastResearchTable.add(environment.getPatch(99,69));
+            eastResearchTable.add(environment.getPatch(99,77));
+            ResearchTableMapper.draw(eastResearchTable, "EAST");
 
             /*** Meeting Table ***/
 
@@ -2438,6 +2430,13 @@ public class ScreenController extends Controller {
             List<Patch> directorTable = new ArrayList<>();
             directorTable.add(environment.getPatch(108,190));
             DirectorTableMapper.draw(directorTable, "HORIZONTAL", true);
+
+
+            /* TABLE 2x2 */
+            List<Patch> table2x2 = new ArrayList<>();
+            table2x2.add(environment.getPatch(127,45));
+            Table2x2Mapper.draw(table2x2);
+
 
             /*** Solo Table ***/
 
@@ -2525,13 +2524,13 @@ public class ScreenController extends Controller {
 
             /*** Plant ***/
             List<Patch> plants = new ArrayList<>();
-            plants.add(environment.getPatch(62,1));
+            plants.add(environment.getPatch(62,2));
             plants.add(environment.getPatch(74,179));
             plants.add(environment.getPatch(74,181));
             plants.add(environment.getPatch(75,180));
-            plants.add(environment.getPatch(82,202));
-            plants.add(environment.getPatch(84,202));
-            plants.add(environment.getPatch(86,202));
+            plants.add(environment.getPatch(82,201));
+            plants.add(environment.getPatch(84,201));
+            plants.add(environment.getPatch(86,201));
             PlantMapper.draw(plants);
 
             /*** Trash Can ***/
@@ -2732,9 +2731,9 @@ public class ScreenController extends Controller {
             singlePendantLights.add(environment.getPatch(93,90));
 
             // Pantry
-            singlePendantLights.add(environment.getPatch(117,135));
-            singlePendantLights.add(environment.getPatch(120,135));
-            singlePendantLights.add(environment.getPatch(123,135));
+            singlePendantLights.add(environment.getPatch(117,136));
+            singlePendantLights.add(environment.getPatch(120,136));
+            singlePendantLights.add(environment.getPatch(123,136));
             singlePendantLights.add(environment.getPatch(114,184));
             singlePendantLights.add(environment.getPatch(121,184));
 
@@ -2742,8 +2741,8 @@ public class ScreenController extends Controller {
             singlePendantLights.add(environment.getPatch(98,198));
 
             // Director Bathroom
-            singlePendantLights.add(environment.getPatch(82,196));
-            singlePendantLights.add(environment.getPatch(82,201));
+            singlePendantLights.add(environment.getPatch(82,197));
+            singlePendantLights.add(environment.getPatch(82,200));
 
             // Hall
             singlePendantLights.add(environment.getPatch(75,78));
@@ -2759,10 +2758,8 @@ public class ScreenController extends Controller {
             horizontalLinearPendantLights.add(environment.getPatch(91,5));
 
             // Faculty Room
-            horizontalLinearPendantLights.add(environment.getPatch(97,109));
-            horizontalLinearPendantLights.add(environment.getPatch(98,109));
-            horizontalLinearPendantLights.add(environment.getPatch(97,115));
-            horizontalLinearPendantLights.add(environment.getPatch(98,115));
+            horizontalLinearPendantLights.add(environment.getPatch(97,112));
+            horizontalLinearPendantLights.add(environment.getPatch(98,112));
 
             // Conference Room
             horizontalLinearPendantLights.add(environment.getPatch(99,153));
@@ -2794,27 +2791,23 @@ public class ScreenController extends Controller {
             verticalLinearPendantLights.add(environment.getPatch(75,33));
 
             // Research Center
-            verticalLinearPendantLights.add(environment.getPatch(100,38));
-            verticalLinearPendantLights.add(environment.getPatch(102,38));
-            verticalLinearPendantLights.add(environment.getPatch(100,47));
-            verticalLinearPendantLights.add(environment.getPatch(102,47));
-            verticalLinearPendantLights.add(environment.getPatch(100,60));
-            verticalLinearPendantLights.add(environment.getPatch(102,60));
-            verticalLinearPendantLights.add(environment.getPatch(100,68));
-            verticalLinearPendantLights.add(environment.getPatch(102,68));
-            verticalLinearPendantLights.add(environment.getPatch(100,76));
-            verticalLinearPendantLights.add(environment.getPatch(102,76));
-            verticalLinearPendantLights.add(environment.getPatch(100,90));
-            verticalLinearPendantLights.add(environment.getPatch(102,90));
+            verticalLinearPendantLights.add(environment.getPatch(99,36));
+            verticalLinearPendantLights.add(environment.getPatch(101,36));
+            verticalLinearPendantLights.add(environment.getPatch(99,44));
+            verticalLinearPendantLights.add(environment.getPatch(101,44));
+            verticalLinearPendantLights.add(environment.getPatch(99,58));
+            verticalLinearPendantLights.add(environment.getPatch(101,58));
+            verticalLinearPendantLights.add(environment.getPatch(99,66));
+            verticalLinearPendantLights.add(environment.getPatch(101,66));
+            verticalLinearPendantLights.add(environment.getPatch(99,74));
+            verticalLinearPendantLights.add(environment.getPatch(101,74));
+            verticalLinearPendantLights.add(environment.getPatch(99,88));
+            verticalLinearPendantLights.add(environment.getPatch(101,88));
 
             LightMapper.draw(verticalLinearPendantLights, "LINEAR_PENDANT_LIGHT", "VERTICAL");
 
             //  HORIZONTAL RECESSED_LINEAR_LIGHT
             List<Patch> horizontalRecessedLinearLights = new ArrayList<>();
-
-            // Faculty Room
-            horizontalRecessedLinearLights.add(environment.getPatch(96,126));
-            horizontalRecessedLinearLights.add(environment.getPatch(102,126));
 
             // Pantry
             horizontalRecessedLinearLights.add(environment.getPatch(114,147));
@@ -3047,6 +3040,15 @@ public class ScreenController extends Controller {
             verticalTrackLights.add(environment.getPatch(66,180));
 
             LightMapper.draw(verticalTrackLights, "TRACK_LIGHT", "VERTICAL");
+
+
+
+
+        /* WINDOW + BLINDS */
+
+        // TODO: Draw all WindowBlinds; layer opened and closed on top of each other
+        // and figure out a way to change display when opened and closed
+
     }
 
     private void drawInterface() {
