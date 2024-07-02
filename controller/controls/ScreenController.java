@@ -3200,7 +3200,7 @@ public class ScreenController extends Controller {
 
 
 
-            WindowBlindsMapper.draw(WindowBlinds, "GLASS");
+            WindowBlindsMapper.draw(WindowBlinds, "CLOSED_SOUTH_FROM_INSIDE");
 
     }
 
