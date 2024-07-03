@@ -215,7 +215,7 @@ public class Simulator {
     public Simulator() {
         this.environment = null;
         this.running = new AtomicBoolean(false);
-        this.time = new SimulationTime(11, 0, 0);
+        this.time = new SimulationTime(7, 30, 0);
         this.playSemaphore = new Semaphore(0);
         this.start();
     }
@@ -560,7 +560,8 @@ public class Simulator {
 
                 }
                 else {
-                    if (agentMovement.getDuration() > -1){  // if duration has been set
+                    if (agentMovement.getCurrentState().getName() == State.Name.GOING_TO_EAT_OUTSIDE ||
+                            agentMovement.getCurrentState().getName() == State.Name.GOING_HOME || agentMovement.getDuration() > -1) {
                         if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Monitor) {
                             if (!( (Monitor) agentMovement.getCurrentAmenity()).isOn()) {
                                 System.out.println("Turn on Monitor");
@@ -754,11 +755,13 @@ public class Simulator {
                     agentMovement.setActionIndex(0); // JIC if needed to set the new action
                     if(!agentMovement.getCurrentState().getActions().isEmpty()) {
                         agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                     }
-                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+
                     agentMovement.resetGoal();
                 }
                 if (agentMovement.getCurrentState().getActions().isEmpty()){
+                    System.out.println("GO_TO_STATION");
                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                     agentMovement.setStateIndex(0); // JIC if needed
@@ -1320,7 +1323,7 @@ public class Simulator {
                     double CHANCE = Simulator.roll();
 
 
-                    if (type != Agent.Type.MAINTENANCE && type != Agent.Type.GUARD && action.getName() == Action.Name.GO_TO_LUNCH /*&& CHANCE < RoutePlan.EAT_OUTSIDE*/) {
+                    if (type != Agent.Type.MAINTENANCE && type != Agent.Type.GUARD && action.getName() == Action.Name.GO_TO_LUNCH && CHANCE < RoutePlan.EAT_OUTSIDE) {
                         // eat outside
                         System.out.println("Eat on outside");
                         if(agent.getTeam() != 0 && type == Agent.Type.STUDENT) {
