@@ -15,7 +15,7 @@ public class WindowBlindsGraphic extends AmenityGraphic {
     private static final int NORMAL_COLUMN_OFFSET = 0;
 
     /***** CONSTRUCTOR *****/
-    public WindowBlindsGraphic(WindowBlinds windowBlinds, boolean isOpened, String state) {
+    public WindowBlindsGraphic(WindowBlinds windowBlinds, String state) {
         super(
                 windowBlinds,
                 getRowSpan(state),
@@ -23,7 +23,8 @@ public class WindowBlindsGraphic extends AmenityGraphic {
                 NORMAL_ROW_OFFSET,
                 NORMAL_COLUMN_OFFSET
         );
-        this.graphicIndex = getGraphicIndex(isOpened, state);
+        this.graphicIndex = getGraphicIndex(state);
+
     }
 
     private static int getRowSpan(String state) {
@@ -45,30 +46,21 @@ public class WindowBlindsGraphic extends AmenityGraphic {
         };
     }
 
-    private static int getGraphicIndex(boolean isOpened, String state) {
-        if (state.equals("GLASS")) {
-            return 10;
-        }
-
-        if (isOpened) {
-            return switch (state) {
-                case "OPENED_SOUTH_FROM_INSIDE" -> 0;
-                case "OPENED_SOUTH_FROM_OUTSIDE" -> 1;
-                case "OPENED_NORTH" -> 2;
-                case "OPENED_EAST" -> 3;
-                case "OPENED_WEST" -> 4;
-                default -> throw new IllegalArgumentException("Unknown state: " + state);
-            };
-        } else {
-            return switch (state) {
-                case "CLOSED_SOUTH_FROM_INSIDE" -> 5;
-                case "CLOSED_SOUTH_FROM_OUTSIDE" -> 6;
-                case "CLOSED_NORTH" -> 7;
-                case "CLOSED_EAST" -> 8;
-                case "CLOSED_WEST" -> 9;
-                default -> throw new IllegalArgumentException("Unknown state: " + state);
-            };
-        }
+    private static int getGraphicIndex(String state) {
+        return switch (state) {
+            case "OPENED_SOUTH_FROM_INSIDE" -> 0;
+            case "OPENED_SOUTH_FROM_OUTSIDE" -> 1;
+            case "OPENED_NORTH" -> 2;
+            case "OPENED_EAST" -> 3;
+            case "OPENED_WEST" -> 4;
+            case "CLOSED_SOUTH_FROM_INSIDE" -> 5;
+            case "CLOSED_SOUTH_FROM_OUTSIDE" -> 6;
+            case "CLOSED_NORTH" -> 7;
+            case "CLOSED_EAST" -> 8;
+            case "CLOSED_WEST" -> 9;
+            case "GLASS" -> 10;
+            default -> throw new IllegalArgumentException("Unknown state: " + state);
+        };
     }
 
 

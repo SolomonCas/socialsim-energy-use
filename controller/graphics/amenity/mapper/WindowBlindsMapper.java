@@ -4,7 +4,7 @@ import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.amenity.AmenityMapper;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Table2x2;
+import com.socialsim.model.core.environment.patchobject.passable.goal.WindowBlinds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ public class WindowBlindsMapper extends AmenityMapper {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
             int origPatchCol = patch.getMatrixPosition().getColumn();
-            Table2x2 table2x2ToAdd;
-            List<Table2x2> table2x2s = Main.simulator.getEnvironment().getTable2x2s();
+            WindowBlinds windowBlindsToAdd;
+            List<WindowBlinds> windowBlinds = Main.simulator.getEnvironment().getWindowBlinds();
             int index = 0;
 
             // FIRST PATCH
-            Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = Table2x2.Table2x2Block.table2x2BlockFactory;
+            Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = WindowBlinds.WindowBlindsBlock.windowBlindsBlockFactory;
             Amenity.AmenityBlock amenityBlock = amenityBlockFactory.create(patch, true, true);
             amenityBlocks.add(amenityBlock);
             patch.setAmenityBlock(amenityBlock);
@@ -34,10 +34,6 @@ public class WindowBlindsMapper extends AmenityMapper {
                 Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
                 amenityBlocks.add(nextAmenityBlock);
                 nextPatch.setAmenityBlock(nextAmenityBlock);
-
-                table2x2ToAdd = Table2x2.Table2x2Factory.create(amenityBlocks, true);
-                table2x2s.add(table2x2ToAdd);
-                index = table2x2s.indexOf(table2x2ToAdd);
             }
             else if (   state.equals("OPENED_SOUTH_FROM_INSIDE") ||
                         state.equals("OPENED_SOUTH_FROM_OUTSIDE") ||
@@ -50,11 +46,11 @@ public class WindowBlindsMapper extends AmenityMapper {
                     amenityBlocks.add(nextAmenityBlock);
                     nextPatch.setAmenityBlock(nextAmenityBlock);
                 }
-
-                table2x2ToAdd = Table2x2.Table2x2Factory.create(amenityBlocks, true);
-                table2x2s.add(table2x2ToAdd);
-                index = table2x2s.indexOf(table2x2ToAdd);
             }
+
+            windowBlindsToAdd = WindowBlinds.WindowBlindsFactory.create(amenityBlocks, true, state);
+            windowBlinds.add(windowBlindsToAdd);
+//                index = windowBlinds.indexOf(windowBlindsToAdd);
 
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }

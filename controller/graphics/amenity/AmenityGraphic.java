@@ -233,18 +233,18 @@ public class AmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> WindowBlindsGraphic = new ArrayList<>();
 
         // Opened Blinds
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(17, 9)); // SOUTH (FROM THE INSIDE)
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(14, 6)); // SOUTH (FROM THE OUTSIDE)
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(17, 8)); // NORTH
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(17, 7)); // EAST
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(17, 6)); // WEST
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 6)); // SOUTH (FROM THE INSIDE)
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 7)); // SOUTH (FROM THE OUTSIDE)
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 8)); // NORTH
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 9)); // EAST
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 10)); // WEST
 
         // Closed Blinds
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(17, 9)); // SOUTH (FROM THE INSIDE)
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(14, 6)); // SOUTH (FROM THE OUTSIDE)
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(17, 8)); // NORTH
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(17, 7)); // EAST
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(17, 6)); // WEST
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 11)); // SOUTH (FROM THE INSIDE)
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 12)); // SOUTH (FROM THE OUTSIDE)
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 13)); // NORTH
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 14)); // EAST
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 15)); // WEST
 
         // Glass
         WindowBlindsGraphic.add(new AmenityGraphicLocation(35, 9)); // SOUTH
