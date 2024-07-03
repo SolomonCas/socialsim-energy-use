@@ -12,8 +12,16 @@ public class Aircon extends Goal {
     /***** VARIABLES *****/
     public static final AirconFactory airconFactory;
     private final AirconGraphic airconGraphic;
+
+    /* Indicates whether aircon will go active cycle or not
+          and what temperature the agent will feel */
+    private int roomTemp;
+    //aircon's set temp and threshold
+    private int airconTemp;
+    private int coolingTimeInTicks;
     private boolean isInActiveCycle;
     private boolean isOn;
+    private int coolingRange;
 
     static {
         airconFactory = new AirconFactory();
@@ -22,8 +30,13 @@ public class Aircon extends Goal {
     /***** CONSTRUCTOR *****/
     protected Aircon(List<AmenityBlock> amenityBlocks, boolean enabled) {
         super(amenityBlocks, enabled);
-        this.isOn = false;
+        this.isOn = true;
         this.isInActiveCycle = false;
+
+        this.roomTemp = 27;
+        this.airconTemp = 19;
+        this.coolingTimeInTicks = 12;
+        this.coolingRange = 25;
 
         this.airconGraphic = new AirconGraphic(this);
     }
@@ -37,6 +50,22 @@ public class Aircon extends Goal {
         return isInActiveCycle;
     }
 
+    public int getRoomTemp() {
+        return roomTemp;
+    }
+
+    public int getAirconTemp() {
+        return airconTemp;
+    }
+
+    public int getCoolingTimeInTicks() {
+        return coolingTimeInTicks;
+    }
+
+    public int getCoolingRange() {
+        return coolingRange;
+    }
+
     /***** SETTER *****/
     public void setOn(boolean on) {
         isOn = on;
@@ -44,6 +73,22 @@ public class Aircon extends Goal {
 
     public void setInActiveCycle(boolean inActiveCycle) {
         isInActiveCycle = inActiveCycle;
+    }
+
+    public void setRoomTemp(int roomTemp) {
+        this.roomTemp = roomTemp;
+    }
+
+    public void setAirconTemp(int airconTemp) {
+        this.airconTemp = airconTemp;
+    }
+
+    public void setCoolingTimeInTicks(int coolingTimeInTicks) {
+        this.coolingTimeInTicks = coolingTimeInTicks;
+    }
+
+    public void setCoolingRange(int coolingRange) {
+        this.coolingRange = coolingRange;
     }
 
     /***** OVERRIDE *****/
@@ -61,7 +106,6 @@ public class Aircon extends Goal {
     public AmenityGraphicLocation getGraphicLocation() {
         return this.airconGraphic.getGraphicLocation();
     }
-
 
     /***** INNER STATIC CLASS *****/
     public static class AirconBlock extends AmenityBlock {

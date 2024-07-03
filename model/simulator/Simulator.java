@@ -238,6 +238,7 @@ public class Simulator {
                         long currentTick = this.time.getStartTime().until(this.time.getTime(), ChronoUnit.SECONDS) / 5;
                         try {
                             updateAgentsInEnvironment(environment, currentTick, this.time);
+                            environment.tempChanger();
                             runWattageCount(currentTick);
                             spawnAgent(environment, this.time, currentTick);
                         } catch (Exception ex) {
@@ -560,6 +561,7 @@ public class Simulator {
 
                 }
                 else {
+                    agentMovement.airconChecker();
                     if (agentMovement.getCurrentState().getName() == State.Name.GOING_TO_EAT_OUTSIDE ||
                             agentMovement.getCurrentState().getName() == State.Name.GOING_HOME || agentMovement.getDuration() > -1) {
                         if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Monitor) {

@@ -1004,7 +1004,71 @@ public class Environment extends BaseObject implements Serializable {
         }
     }
 
+    //TODO: coolingtime will differ based on whether there are nearby groups of people minimum of 4
+    public void tempChanger(){
+        int closeAgentCount = 0;
+        for(Aircon aircon : this.getAircons()) {
+            for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
+                for(Agent agent : this.getMovableAgents()){
+                    if (agent.getAgentMovement() != null && agent.getAgentMovement().getRoutePlan().isAtDesk()) {
+                        double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
+                        if(distanceToAircon < aircon.getCoolingRange()){
+                            closeAgentCount++;
+                        }
+                    }
+                }
+            }
 
+
+            int coolingTicks = 0;
+            //IF TEMP IS GOING HIGHER OR HEATING
+
+            if(aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.isOn()){
+                if(closeAgentCount < 4){
+                    coolingTicks = 18;
+                }
+                else{
+                    coolingTicks = 42;
+                }
+                //THIS MEANS THAT 2 MINUTES OR GREATER HAS PASSED
+                if(coolingTimer(aircon, coolingTicks)){
+                    System.out.println("HEATING");
+                    int newTemp = aircon.getRoomTemp();
+                    newTemp++;
+
+                    aircon.setRoomTemp(newTemp);
+                    aircon.setCoolingTimeInTicks(24);
+                }
+            }//TEMP IS LOWERING OR COOLING
+            else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isOn()){
+                if(closeAgentCount < 4)
+                {
+                    coolingTicks = 24;
+                }
+                else{
+                    coolingTicks = 18;
+                }
+                //THIS MEANS THAT 1 MINUTES OR GREATER HAS PASSED
+                if(coolingTimer(aircon, coolingTicks)){
+                    System.out.println("COOLING ");
+                    int newTemp = aircon.getRoomTemp();
+                    newTemp --;
+
+                    aircon.setRoomTemp(newTemp);
+                    aircon.setCoolingTimeInTicks(12);
+                }
+            }
+        }
+    }
+
+    public boolean coolingTimer(Aircon aircon, int duration) {
+        if (aircon.getCoolingTimeInTicks() <= 0) {
+            aircon.setCoolingTimeInTicks(duration); // set cool down duration
+            return true;
+        }
+        aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - 1);
+        return false;
+    }
 
     // GETTERS: GENERAL
     public int getRows() {
