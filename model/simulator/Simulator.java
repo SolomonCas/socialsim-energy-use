@@ -215,7 +215,7 @@ public class Simulator {
     public Simulator() {
         this.environment = null;
         this.running = new AtomicBoolean(false);
-        this.time = new SimulationTime(7, 30, 0);
+        this.time = new SimulationTime(9, 0, 0);
         this.playSemaphore = new Semaphore(0);
         this.start();
     }

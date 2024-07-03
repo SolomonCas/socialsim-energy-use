@@ -1950,6 +1950,7 @@ public class AgentMovement {
         // check if the patch is not the whitelist of amenity or a wall
         if ((patch.getAmenityBlock() != null && (!patch.getAmenityBlock().getParent().equals(this.goalAmenity) &&
                 patch.getAmenityBlock().getParent().getClass() != Chair.class &&
+                patch.getAmenityBlock().getParent().getClass() != WindowBlinds.class &&
                 patch.getAmenityBlock().getParent().getClass() != Aircon.class &&
                 patch.getAmenityBlock().getParent().getClass() != Light.class &&
                 patch.getAmenityBlock().getParent().getClass() != Switch.class &&
@@ -2008,8 +2009,8 @@ public class AgentMovement {
         // Set the current amenity
         double agentHeading = this.heading;
         double agentHeadingDegrees = Math.toDegrees(agentHeading);
-        int originalRow = this.currentPatch.getMatrixPosition().getRow();
-        int originalCol = this.currentPatch.getMatrixPosition().getColumn();
+        int originalRow = this.goalAttractor.getPatch().getMatrixPosition().getRow();
+        int originalCol = this.goalAttractor.getPatch().getMatrixPosition().getColumn();
         // Looking east
         if (agentHeadingDegrees >= 315 && agentHeadingDegrees < 360 || agentHeadingDegrees >= 0 && agentHeadingDegrees < 45) {
             Patch infrontPatch = environment.getPatch(originalRow, originalCol + 1);
@@ -2023,7 +2024,7 @@ public class AgentMovement {
         }
         // Looking north
         else if (agentHeadingDegrees >= 45 && agentHeadingDegrees < 135) {
-            Patch infrontPatch = environment.getPatch(originalRow, originalCol + 1);
+            Patch infrontPatch = environment.getPatch(originalRow - 1, originalCol);
             if (infrontPatch.getAmenityBlock() != null && infrontPatch.getAmenityBlock().getParent() instanceof Monitor) {
                 System.out.println("Is monitor");
                 currentAmenity = infrontPatch.getAmenityBlock().getParent();
@@ -2034,7 +2035,7 @@ public class AgentMovement {
         }
         // Looking west
         else if (agentHeadingDegrees >= 135 && agentHeadingDegrees < 225) {
-            Patch infrontPatch = environment.getPatch(originalRow, originalCol + 1);
+            Patch infrontPatch = environment.getPatch(originalRow, originalCol - 1);
             if (infrontPatch.getAmenityBlock() != null && infrontPatch.getAmenityBlock().getParent() instanceof Monitor) {
                 System.out.println("Is monitor");
                 currentAmenity = infrontPatch.getAmenityBlock().getParent();
@@ -2045,7 +2046,7 @@ public class AgentMovement {
         }
         // Looking south
         else if (agentHeadingDegrees >= 225 && agentHeadingDegrees < 315) {
-            Patch infrontPatch = environment.getPatch(originalRow, originalCol + 1);
+            Patch infrontPatch = environment.getPatch(originalRow + 1, originalCol);
             if (infrontPatch.getAmenityBlock() != null && infrontPatch.getAmenityBlock().getParent() instanceof Monitor) {
                 System.out.println("Is monitor");
                 currentAmenity = infrontPatch.getAmenityBlock().getParent();
