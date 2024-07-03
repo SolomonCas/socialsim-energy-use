@@ -1,14 +1,11 @@
 package com.socialsim.controller.controls;
 
-import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.GraphicsController;
 import com.socialsim.controller.graphics.amenity.mapper.*;
 import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
-import com.socialsim.model.core.environment.patchobject.passable.goal.OfficeToilet;
-import com.socialsim.model.core.environment.patchobject.passable.goal.StorageCabinet;
-import com.socialsim.model.core.environment.patchobject.passable.goal.WindowBlinds;
+import com.socialsim.model.core.environment.patchobject.passable.goal.CabinetDrawer;
 import com.socialsim.model.simulator.Simulator;
 
 import com.socialsim.model.core.environment.Patch;
@@ -18,7 +15,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -30,9 +26,6 @@ import javafx.stage.Stage;
 
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.transform.Scale;
-import javafx.scene.transform.Translate;
-import javafx.scene.layout.Pane;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -3036,7 +3029,8 @@ public class ScreenController extends Controller {
 
 
 
-            //  VERTICAL TRACK_LIGHT
+            /* VERTICAL TRACK_LIGHT */
+
             List<Patch> verticalTrackLights = new ArrayList<>();
 
             // Conference Room
@@ -3055,35 +3049,34 @@ public class ScreenController extends Controller {
             LightMapper.draw(verticalTrackLights, "TRACK_LIGHT", "VERTICAL");
 
 
-
-
             /* WINDOW + BLINDS */
 
-            /* Data collection room windows */
             List<Patch> glass = new ArrayList<>();
-            List<Patch> northWindowBlinds = new ArrayList<>();
-            List<Patch> southWindowBlinds = new ArrayList<>();
+            List<Patch> eastHallwayWindowBlinds = new ArrayList<>();
+            List<Patch> northSouthWindowBlinds = new ArrayList<>();
             List<Patch> eastPantryWindowBlinds = new ArrayList<>();
             List<Patch> westWindowBlinds = new ArrayList<>();
             List<Patch> westDirectorWindowBlinds = new ArrayList<>();
 
+            // Hallway
+            eastHallwayWindowBlinds.add(environment.getPatch(61, 1));
 
             // Data Collection Room
             glass.add(environment.getPatch(88, 1));
 
             for (int j = 8; j <= 21; j += 5) {
-                southWindowBlinds.add(environment.getPatch(104, j));
+                northSouthWindowBlinds.add(environment.getPatch(104, j));
             }
 
             // Research Center
             for (int j = 24; j <= 97; j += 5) {
-                southWindowBlinds.add(environment.getPatch(106, j));
+                northSouthWindowBlinds.add(environment.getPatch(106, j));
 
             }
 
             // Faculty Room
             for (int j = 100; j <= 127; j += 6) {
-                southWindowBlinds.add(environment.getPatch(106, j));
+                northSouthWindowBlinds.add(environment.getPatch(106, j));
 
             }
 
@@ -3092,7 +3085,7 @@ public class ScreenController extends Controller {
 
 
             for (int j = 136; j <= 184; j += 5) {
-                southWindowBlinds.add(environment.getPatch(124, j));
+                northSouthWindowBlinds.add(environment.getPatch(124, j));
             }
 
             // Director Bathroom
@@ -3108,172 +3101,60 @@ public class ScreenController extends Controller {
             }
 
             for (int j = 188; j <= 201; j += 5) {
-                southWindowBlinds.add(environment.getPatch(113, j));
+                northSouthWindowBlinds.add(environment.getPatch(113, j));
 
             }
 
-
             WindowBlindsMapper.draw(glass, "GLASS", 7);
-            WindowBlindsMapper.draw(southWindowBlinds, "CLOSED_SOUTH_FROM_OUTSIDE", 4);
-            WindowBlindsMapper.draw(eastPantryWindowBlinds, "CLOSED_EAST",8);
-            WindowBlindsMapper.draw(westWindowBlinds, "CLOSED_WEST",4);
-            WindowBlindsMapper.draw(westDirectorWindowBlinds, "CLOSED_WEST",2);
+            WindowBlindsMapper.draw(northSouthWindowBlinds, "CLOSED_NORTH_AND_SOUTH", 4);
+            WindowBlindsMapper.draw(eastPantryWindowBlinds, "CLOSED_EAST", 8);
+            WindowBlindsMapper.draw(eastHallwayWindowBlinds, "CLOSED_EAST", 5);
+            WindowBlindsMapper.draw(westWindowBlinds, "CLOSED_WEST", 4);
+            WindowBlindsMapper.draw(westDirectorWindowBlinds, "CLOSED_WEST", 2);
 
 
+            /* CABINETS & DRAWERS + STORAGE */
+
+            List<Patch> storage = new ArrayList<>();
+            List<Patch> southCabinet = new ArrayList<>();
+            List<Patch> southDrawers = new ArrayList<>();
+            List<Patch> northCabinet1x2 = new ArrayList<>();
+            List<Patch> eastDoubleDrawers = new ArrayList<>();
+            List<Patch> westDoubleDrawers = new ArrayList<>();
+
+            storage.add(environment.getPatch(85, 187));
+            StorageMapper.draw(storage, "DOUBLE_DRAWERS", "EAST");
 
 
+            southCabinet.add(environment.getPatch(52, 147));
+            CabinetDrawerMapper.draw(southCabinet, "CABINET", "SOUTH");
 
+            southDrawers.add(environment.getPatch(50, 151));
+            southDrawers.add(environment.getPatch(50, 152));
+            CabinetDrawerMapper.draw(southDrawers, "DRAWERS", "SOUTH");
 
-//            for(int j = 8; j <= 11; j++ ){
-//                WindowBlinds.add(environment.getPatch(106, j));
-//            }
-//
-//            for(int j = 13; j <= 16; j++ ){
-//                WindowBlinds.add(environment.getPatch(106, j));
-//            }
-//
-//            for(int j = 18; j <= 21; j++ ) {
-//                WindowBlinds.add(environment.getPatch(106, j));
-//            }
-//
-//            /* Research center windows */
-//            for(int j = 24; j <= 27; j++ ) {
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 29; j <= 32; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for (int j = 34; j <= 37; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 39; j <= 42; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 44; j <= 47; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 49; j <= 52; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 54; j <= 57; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 59; j <= 62; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 64; j <= 67; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 69; j <= 72; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 74; j <= 77; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 79; j <= 82; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 84; j <= 87; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 89; j <= 92; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 94; j <= 97; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            /* Faculty room windows */
-//            for(int j = 100; j <= 103; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 106; j <= 109; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 112; j <= 115; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 118; j <= 121; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            for(int j = 124; j <= 127; j++){
-//                WindowBlinds.add(environment.getPatch(108, j));
-//            }
-//
-//            /* Pantry windows */
-//            for(int j = 136; j <= 139; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            for(int j = 141; j <= 144; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            for(int j = 146; j <= 149; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            for(int j = 151; j <= 154; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            for(int j = 156; j <= 159; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            for(int j = 161; j <= 164; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            for(int j = 166; j <= 169; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            for(int j = 171; j <= 174; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            for(int j = 176; j <= 179; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            for(int j = 181; j <= 184; j++){
-//                WindowBlinds.add(environment.getPatch(126, j));
-//            }
-//
-//            /* Director's office windows */
-//            for(int j = 188; j <= 191; j++){
-//                WindowBlinds.add(environment.getPatch(115, j));
-//            }
-//
-//            for(int j = 193; j <= 197; j++){
-//                WindowBlinds.add(environment.getPatch(115, j));
-//            }
-//
-//            for(int j = 199; j <= 202; j++){
-//                WindowBlinds.add(environment.getPatch(115, j));
-//            }
+            northCabinet1x2.add(environment.getPatch(88, 129));
+            northCabinet1x2.add(environment.getPatch(106, 26));
+            northCabinet1x2.add(environment.getPatch(106, 28));
+            CabinetDrawerMapper.draw(northCabinet1x2, "CABINET_1x2", "NORTH");
 
-//            WindowBlindsMapper.draw(WindowBlinds, "CLOSED_SOUTH_FROM_INSIDE");
+            eastDoubleDrawers.add(environment.getPatch(72, 162));
+            CabinetDrawerMapper.draw(eastDoubleDrawers, "DOUBLE_DRAWERS", "EAST");
 
+            westDoubleDrawers.add(environment.getPatch(72, 168));
+            CabinetDrawerMapper.draw(westDoubleDrawers, "DOUBLE_DRAWERS", "WEST");
+
+            /* SERVER */
+
+            List<Patch> serverTypeA = new ArrayList<>();
+            serverTypeA.add(environment.getPatch(43, 129));
+            ServerMapper.draw(serverTypeA, "TYPE_A");
+
+            List<Patch> serverTypeB = new ArrayList<>();
+            serverTypeB.add(environment.getPatch(47, 134));
+            serverTypeB.add(environment.getPatch(47, 135));
+            ServerMapper.draw(serverTypeB, "TYPE_B");
+        
     }
 
     private void drawInterface() {

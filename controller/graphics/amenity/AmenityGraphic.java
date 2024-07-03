@@ -47,10 +47,10 @@ public class AmenityGraphic extends Graphic {
         BarGraphic.add(new AmenityGraphicLocation(1, 24)); // 2x1
 
         // Horizontal Bars
-        BarGraphic.add(new AmenityGraphicLocation(8, 23)); // 1x8
-        BarGraphic.add(new AmenityGraphicLocation(9, 25)); // 1x6
-        BarGraphic.add(new AmenityGraphicLocation(10, 28)); // 1x3
-        BarGraphic.add(new AmenityGraphicLocation(11, 29)); // 1x2
+        BarGraphic.add(new AmenityGraphicLocation(7, 23)); // 1x8
+        BarGraphic.add(new AmenityGraphicLocation(8, 25)); // 1x6
+        BarGraphic.add(new AmenityGraphicLocation(9, 28)); // 1x3
+        BarGraphic.add(new AmenityGraphicLocation(10, 29)); // 1x2
 
         AMENITY_GRAPHICS.put(ReceptionTable.class, BarGraphic);
         AMENITY_GRAPHICS.put(SoloTable.class, BarGraphic);
@@ -58,19 +58,41 @@ public class AmenityGraphic extends Graphic {
         AMENITY_GRAPHICS.put(DataCollTable.class, BarGraphic);
 
 
+        /* CABINETS & DRAWERS + STORAGE */
+
+        final List<AmenityGraphicLocation> CabinetDrawerGraphic = new ArrayList<>();
+
+        // Cabinets
+        CabinetDrawerGraphic.add(new AmenityGraphicLocation(26, 27)); // FACING SOUTH
+        CabinetDrawerGraphic.add(new AmenityGraphicLocation(26, 28)); // FACING NORTH
+
+        // Drawers
+        CabinetDrawerGraphic.add(new AmenityGraphicLocation(23, 27)); // FACING SOUTH
+        CabinetDrawerGraphic.add(new AmenityGraphicLocation(23, 28)); // FACING NORTH
+        CabinetDrawerGraphic.add(new AmenityGraphicLocation(23, 29)); // FACING EAST
+        CabinetDrawerGraphic.add(new AmenityGraphicLocation(23, 30)); // FACING WEST
+
+        // Double Drawers
+        CabinetDrawerGraphic.add(new AmenityGraphicLocation(23, 24)); // FACING EAST
+        CabinetDrawerGraphic.add(new AmenityGraphicLocation(23, 25)); // FACING WEST
+
+        AMENITY_GRAPHICS.put(CabinetDrawer.class, CabinetDrawerGraphic);
+        AMENITY_GRAPHICS.put(Storage.class, CabinetDrawerGraphic);
+
         // TODO: What if we just merge all tables in one graphic & mapper?
+
         /* DIRECTOR TABLE */
 
         final List<AmenityGraphicLocation> directorTableGraphic = new ArrayList<>();
-        directorTableGraphic.add(new AmenityGraphicLocation(28, 14)); // HORIZONTAL
-        directorTableGraphic.add(new AmenityGraphicLocation(27, 12)); // VERTICAL
+        directorTableGraphic.add(new AmenityGraphicLocation(24, 15)); // HORIZONTAL
+        directorTableGraphic.add(new AmenityGraphicLocation(24, 14)); // VERTICAL
         AMENITY_GRAPHICS.put(DirectorTable.class, directorTableGraphic);
 
 
         /* LEARNING TABLE */
         final List<AmenityGraphicLocation> LearningTableGraphic = new ArrayList<>();
-        LearningTableGraphic.add(new AmenityGraphicLocation(23, 8)); // HORIZONTAL
-        LearningTableGraphic.add(new AmenityGraphicLocation(21, 14)); // VERTICAL
+        LearningTableGraphic.add(new AmenityGraphicLocation(20, 13)); // HORIZONTAL
+        LearningTableGraphic.add(new AmenityGraphicLocation(20, 10)); // VERTICAL
         AMENITY_GRAPHICS.put(LearningTable.class, LearningTableGraphic);
 
         /* MEETING TABLE */
@@ -78,8 +100,8 @@ public class AmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> MeetingTableGraphic = new ArrayList<>();
         MeetingTableGraphic.add(new AmenityGraphicLocation(12, 24)); // VERTICAL LARGE
         MeetingTableGraphic.add(new AmenityGraphicLocation(14, 28)); // VERTICAL SMALL
-        MeetingTableGraphic.add(new AmenityGraphicLocation(14, 13)); // HORIZONTAL LARGE
-        MeetingTableGraphic.add(new AmenityGraphicLocation(18, 13)); // HORIZONTAL SMALL
+        MeetingTableGraphic.add(new AmenityGraphicLocation(13, 13)); // HORIZONTAL LARGE
+        MeetingTableGraphic.add(new AmenityGraphicLocation(17, 13)); // HORIZONTAL SMALL
         AMENITY_GRAPHICS.put(MeetingTable.class, MeetingTableGraphic);
 
 
@@ -103,7 +125,7 @@ public class AmenityGraphic extends Graphic {
         /* 2x2 TABLE */
 
         final List<AmenityGraphicLocation> Table2x2Graphic = new ArrayList<>();
-        Table2x2Graphic.add(new AmenityGraphicLocation(21, 17)); // 1 variation
+        Table2x2Graphic.add(new AmenityGraphicLocation(23, 7)); // 1 variation
         AMENITY_GRAPHICS.put(Table2x2.class, Table2x2Graphic);
 
 
@@ -112,22 +134,22 @@ public class AmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> ChairGraphic = new ArrayList<>();
 
         // Office Chair
-        ChairGraphic.add(new AmenityGraphicLocation(24, 19)); // SOUTH
-        ChairGraphic.add(new AmenityGraphicLocation(24, 20)); // NORTH
-        ChairGraphic.add(new AmenityGraphicLocation(24, 21)); // EAST
-        ChairGraphic.add(new AmenityGraphicLocation(24, 22)); // WEST
+        ChairGraphic.add(new AmenityGraphicLocation(20, 19)); // FACING SOUTH
+        ChairGraphic.add(new AmenityGraphicLocation(20, 20)); // FACING NORTH
+        ChairGraphic.add(new AmenityGraphicLocation(20, 21)); // FACING EAST
+        ChairGraphic.add(new AmenityGraphicLocation(20, 22)); // FACING WEST
 
         // Pantry Chair Type A
-        ChairGraphic.add(new AmenityGraphicLocation(27, 19)); // SOUTH
-        ChairGraphic.add(new AmenityGraphicLocation(27, 20)); // NORTH
-        ChairGraphic.add(new AmenityGraphicLocation(27, 21)); // EAST
-        ChairGraphic.add(new AmenityGraphicLocation(27, 22)); // WEST
+        ChairGraphic.add(new AmenityGraphicLocation(23, 19)); // FACING SOUTH
+        ChairGraphic.add(new AmenityGraphicLocation(23, 20)); // FACING NORTH
+        ChairGraphic.add(new AmenityGraphicLocation(23, 21)); // FACING EAST
+        ChairGraphic.add(new AmenityGraphicLocation(23, 22)); // FACING WEST
 
         // Pantry Chair Type B
-        ChairGraphic.add(new AmenityGraphicLocation(30, 19)); // SOUTH
-        ChairGraphic.add(new AmenityGraphicLocation(30, 20)); // NORTH
-        ChairGraphic.add(new AmenityGraphicLocation(30, 21)); // EAST
-        ChairGraphic.add(new AmenityGraphicLocation(30, 22)); // WEST
+        ChairGraphic.add(new AmenityGraphicLocation(26, 19)); // FACING SOUTH
+        ChairGraphic.add(new AmenityGraphicLocation(26, 20)); // FACING NORTH
+        ChairGraphic.add(new AmenityGraphicLocation(26, 21)); // FACING EAST
+        ChairGraphic.add(new AmenityGraphicLocation(26, 22)); // FACING WEST
 
         AMENITY_GRAPHICS.put(Chair.class, ChairGraphic);
 
@@ -157,10 +179,10 @@ public class AmenityGraphic extends Graphic {
         CubicleGraphic.add(new AmenityGraphicLocation(8, 9)); // FACING EAST
 
         // TYPE C
-        CubicleGraphic.add(new AmenityGraphicLocation(10, 13)); // FACING NORTH
-        CubicleGraphic.add(new AmenityGraphicLocation(10, 16)); // FACING SOUTH
-        CubicleGraphic.add(new AmenityGraphicLocation(10, 21)); // FACING WEST
-        CubicleGraphic.add(new AmenityGraphicLocation(10, 19)); // FACING EAST
+        CubicleGraphic.add(new AmenityGraphicLocation(9, 13)); // FACING NORTH
+        CubicleGraphic.add(new AmenityGraphicLocation(9, 16)); // FACING SOUTH
+        CubicleGraphic.add(new AmenityGraphicLocation(9, 21)); // FACING WEST
+        CubicleGraphic.add(new AmenityGraphicLocation(9, 19)); // FACING EAST
 
         AMENITY_GRAPHICS.put(Cubicle.class, CubicleGraphic);
         AMENITY_GRAPHICS.put(MESATable.class, CubicleGraphic);
@@ -172,31 +194,11 @@ public class AmenityGraphic extends Graphic {
         AMENITY_GRAPHICS.put(Plant.class, PlantGraphic);
 
 
-        /* STORAGE */
-        final List<AmenityGraphicLocation> StorageGraphic = new ArrayList<>();
-
-        // Regular Cabinets
-        StorageGraphic.add(new AmenityGraphicLocation(27, 27)); // SOUTH
-        StorageGraphic.add(new AmenityGraphicLocation(27, 29)); // NORTH
-
-        // Drawers
-        StorageGraphic.add(new AmenityGraphicLocation(24, 27)); // FACING SOUTH
-        StorageGraphic.add(new AmenityGraphicLocation(24, 28)); // FACING NORTH
-        StorageGraphic.add(new AmenityGraphicLocation(24, 29)); // FACING EAST
-        StorageGraphic.add(new AmenityGraphicLocation(24, 30)); // FACING WEST
-
-        // Double Drawers
-        StorageGraphic.add(new AmenityGraphicLocation(23, 24)); // FACING EAST
-        StorageGraphic.add(new AmenityGraphicLocation(23, 25)); // FACING WEST
-
-        AMENITY_GRAPHICS.put(StorageCabinet.class, StorageGraphic);
-
-
         /* SINK */
 
         final List<AmenityGraphicLocation> SinkGraphic = new ArrayList<>();
-        SinkGraphic.add(new AmenityGraphicLocation(34, 3)); // SOUTH
-        SinkGraphic.add(new AmenityGraphicLocation(34, 4)); // NORTH
+        SinkGraphic.add(new AmenityGraphicLocation(34, 3)); // FACING SOUTH
+        SinkGraphic.add(new AmenityGraphicLocation(34, 4)); // FACING NORTH
         AMENITY_GRAPHICS.put(Sink.class, SinkGraphic);
         AMENITY_GRAPHICS.put(OfficeSink.class, SinkGraphic);
 
@@ -204,8 +206,8 @@ public class AmenityGraphic extends Graphic {
         /* TOILET */
 
         final List<AmenityGraphicLocation> ToiletGraphic = new ArrayList<>();
-        ToiletGraphic.add(new AmenityGraphicLocation(34, 0)); // SOUTH
-        ToiletGraphic.add(new AmenityGraphicLocation(34, 1)); // NORTH
+        ToiletGraphic.add(new AmenityGraphicLocation(34, 0)); // FACING SOUTH
+        ToiletGraphic.add(new AmenityGraphicLocation(34, 1)); // FACING NORTH
         AMENITY_GRAPHICS.put(Toilet.class, ToiletGraphic);
         AMENITY_GRAPHICS.put(OfficeToilet.class, ToiletGraphic);
 
@@ -220,11 +222,11 @@ public class AmenityGraphic extends Graphic {
         /* WHITEBOARD */
 
         final List<AmenityGraphicLocation> WhiteboardGraphic = new ArrayList<>();
-        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 9)); // NORTH
-        WhiteboardGraphic.add(new AmenityGraphicLocation(14, 6)); // SOUTH
-        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 8)); // WEST
-        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 7)); // EAST 4
-        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 6)); // EAST 11
+        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 9)); // FACING NORTH
+        WhiteboardGraphic.add(new AmenityGraphicLocation(14, 6)); // FACING SOUTH
+        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 8)); // FACING WEST
+        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 7)); // FACING EAST (4PX ROW SPAN)
+        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 6)); // FACING EAST (11PX ROW SPAN)
         AMENITY_GRAPHICS.put(Whiteboard.class, WhiteboardGraphic);
 
 
@@ -233,21 +235,23 @@ public class AmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> WindowBlindsGraphic = new ArrayList<>();
 
         // Opened Blinds
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 6)); // SOUTH (FROM THE INSIDE)
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 7)); // SOUTH (FROM THE OUTSIDE)
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 8)); // NORTH
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 9)); // EAST
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 10)); // WEST
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(27, 7)); // FACING SOUTH (FROM THE INSIDE)
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(27, 8)); // FACING SOUTH (FROM THE OUTSIDE)
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(27, 9)); // FACING NORTH AND SOUTH
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(27, 10)); // FACING NORTH
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(27, 11)); // FACING EAST
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(27, 12)); // FACING WEST
 
         // Closed Blinds
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 11)); // SOUTH (FROM THE INSIDE)
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 12)); // SOUTH (FROM THE OUTSIDE)
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 13)); // NORTH
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 14)); // EAST
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(32, 15)); // WEST
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(33, 7)); // FACING SOUTH (FROM THE INSIDE)
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(33, 8)); // FACING SOUTH (FROM THE OUTSIDE)
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(33, 9)); // FACING NORTH AND SOUTH
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(33, 10)); // FACING NORTH
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(33, 11)); // FACING EAST
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(33, 12)); // FACING WEST
 
         // Glass
-        WindowBlindsGraphic.add(new AmenityGraphicLocation(35, 9)); // SOUTH
+        WindowBlindsGraphic.add(new AmenityGraphicLocation(35, 12)); // FACING SOUTH
 
         AMENITY_GRAPHICS.put(WindowBlinds.class, WindowBlindsGraphic);
 
@@ -293,11 +297,11 @@ public class AmenityGraphic extends Graphic {
         /* MONITOR */
 
         final List<AmenityGraphicLocation> MonitorGraphic = new ArrayList<>();
-        MonitorGraphic.add(new AmenityGraphicLocation(28, 7));  // SOUTH
-        MonitorGraphic.add(new AmenityGraphicLocation(28, 8));  // NORTH
-        MonitorGraphic.add(new AmenityGraphicLocation(30, 8));  // NORTH (BEHIND CUBICLE WALL)
-        MonitorGraphic.add(new AmenityGraphicLocation(28, 9));  // EAST
-        MonitorGraphic.add(new AmenityGraphicLocation(28, 10)); // WEST
+        MonitorGraphic.add(new AmenityGraphicLocation(29, 14)); // SOUTH
+        MonitorGraphic.add(new AmenityGraphicLocation(29, 15)); // NORTH
+        MonitorGraphic.add(new AmenityGraphicLocation(31, 15)); // NORTH (BEHIND CUBICLE WALL)
+        MonitorGraphic.add(new AmenityGraphicLocation(29, 16)); // EAST
+        MonitorGraphic.add(new AmenityGraphicLocation(29, 17)); // WEST
         AMENITY_GRAPHICS.put(Monitor.class, MonitorGraphic);
 
 
@@ -306,16 +310,16 @@ public class AmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> SwitchGraphic = new ArrayList<>();
 
         // For Light
-        SwitchGraphic.add(new AmenityGraphicLocation(33, 17)); // SOUTH
-        SwitchGraphic.add(new AmenityGraphicLocation(33, 18)); // NORTH
-        SwitchGraphic.add(new AmenityGraphicLocation(33, 19)); // EAST
-        SwitchGraphic.add(new AmenityGraphicLocation(33, 20)); // WEST
+        SwitchGraphic.add(new AmenityGraphicLocation(29, 19)); // SOUTH
+        SwitchGraphic.add(new AmenityGraphicLocation(29, 20)); // NORTH
+        SwitchGraphic.add(new AmenityGraphicLocation(29, 21)); // EAST
+        SwitchGraphic.add(new AmenityGraphicLocation(29, 22)); // WEST
 
         // For AC
-        SwitchGraphic.add(new AmenityGraphicLocation(36, 17)); // SOUTH
-        SwitchGraphic.add(new AmenityGraphicLocation(36, 18)); // NORTH
-        SwitchGraphic.add(new AmenityGraphicLocation(36, 19)); // EAST
-        SwitchGraphic.add(new AmenityGraphicLocation(36, 20)); // WEST
+        SwitchGraphic.add(new AmenityGraphicLocation(32, 19)); // SOUTH
+        SwitchGraphic.add(new AmenityGraphicLocation(32, 20)); // NORTH
+        SwitchGraphic.add(new AmenityGraphicLocation(32, 21)); // EAST
+        SwitchGraphic.add(new AmenityGraphicLocation(32, 22)); // WEST
 
         AMENITY_GRAPHICS.put(Switch.class, SwitchGraphic);
 
@@ -323,7 +327,7 @@ public class AmenityGraphic extends Graphic {
         /* AIR CON */
 
         final List<AmenityGraphicLocation> AirconGraphic = new ArrayList<>();
-        AirconGraphic.add(new AmenityGraphicLocation(35, 14));
+        AirconGraphic.add(new AmenityGraphicLocation(31, 28));
         AMENITY_GRAPHICS.put(Aircon.class, AirconGraphic);
 
 
@@ -332,19 +336,19 @@ public class AmenityGraphic extends Graphic {
         final List<AmenityGraphicLocation> LightGraphic = new ArrayList<>();
 
         // Single Pendant Light
-        LightGraphic.add(new AmenityGraphicLocation(36, 24));
+        LightGraphic.add(new AmenityGraphicLocation(36, 22));
 
         // Linear Pendant Light
-        LightGraphic.add(new AmenityGraphicLocation(33, 23)); // HORIZONTAL
-        LightGraphic.add(new AmenityGraphicLocation(33, 22)); // VERTICAL
+        LightGraphic.add(new AmenityGraphicLocation(36, 20)); // HORIZONTAL
+        LightGraphic.add(new AmenityGraphicLocation(36, 19)); // VERTICAL
 
         // Recessed Linear Light
-        LightGraphic.add(new AmenityGraphicLocation(35, 29)); // HORIZONTAL
-        LightGraphic.add(new AmenityGraphicLocation(35, 28)); // VERTICAL
+        LightGraphic.add(new AmenityGraphicLocation(36, 26)); // HORIZONTAL
+        LightGraphic.add(new AmenityGraphicLocation(36, 25)); // VERTICAL
 
         // Track Light
-        LightGraphic.add(new AmenityGraphicLocation(32, 27)); // HORIZONTAL
-        LightGraphic.add(new AmenityGraphicLocation(32, 26)); // VERTICAL
+        LightGraphic.add(new AmenityGraphicLocation(34, 25)); // HORIZONTAL
+        LightGraphic.add(new AmenityGraphicLocation(34, 24)); // VERTICAL
 
         AMENITY_GRAPHICS.put(Light.class, LightGraphic);
 
@@ -363,12 +367,13 @@ public class AmenityGraphic extends Graphic {
         /* SERVER */
 
         final List<AmenityGraphicLocation> ServerGraphic = new ArrayList<>();
-        ServerGraphic.add(new AmenityGraphicLocation(27, 24)); // TYPE A
-        ServerGraphic.add(new AmenityGraphicLocation(27, 25)); // TYPE B
+        ServerGraphic.add(new AmenityGraphicLocation(28, 24)); // TYPE A
+        ServerGraphic.add(new AmenityGraphicLocation(28, 25)); // TYPE B
         AMENITY_GRAPHICS.put(Server.class, ServerGraphic);
 
 
         /* BOX */
+        // TODO: If needed to be used, implement Box.java (under goal), BoxGraphic, and Box Mapper
 
         final List<AmenityGraphicLocation> BoxGraphic = new ArrayList<>();
         BoxGraphic.add(new AmenityGraphicLocation(28, 0)); // 1x1

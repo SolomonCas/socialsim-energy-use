@@ -87,7 +87,7 @@ public class Environment extends BaseObject implements Serializable {
 
     private final List<Chair> chairs;
     private final List<Elevator> elevators;
-    private final List<Cabinet> cabinets;
+    private final List<CabinetDrawer> cabinetDrawers;
     private final List<Couch> couches;
     private final List<Plant> plants;
     private final List<Sink> sinks;
@@ -98,7 +98,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<TrashCan> trashCans;
 //    private final List<Box> boxes;
     private final List<WaterDispenser> waterDispensers;
-    private final List<StorageCabinet> storageCabinets;
+    private final List<Storage> storages;
     private final List<Aircon> aircons;
     private final List<Light> lights;
     private final List<Switch> switches;
@@ -216,13 +216,13 @@ public class Environment extends BaseObject implements Serializable {
 
 
         this.chairs = Collections.synchronizedList(new ArrayList<>());
-        this.cabinets = Collections.synchronizedList(new ArrayList<>());
+        this.cabinetDrawers = Collections.synchronizedList(new ArrayList<>());
         this.sinks = Collections.synchronizedList(new ArrayList<>());
         this.officeSinks = Collections.synchronizedList(new ArrayList<>());
         this.servers = Collections.synchronizedList(new ArrayList<>());
         this.toilets = Collections.synchronizedList(new ArrayList<>());
         this.officeToilets = Collections.synchronizedList(new ArrayList<>());
-        this.storageCabinets = Collections.synchronizedList(new ArrayList<>());
+        this.storages = Collections.synchronizedList(new ArrayList<>());
         this.aircons = Collections.synchronizedList(new ArrayList<>());
         this.lights = Collections.synchronizedList(new ArrayList<>());
         this.switches = Collections.synchronizedList(new ArrayList<>());
@@ -1208,8 +1208,8 @@ public class Environment extends BaseObject implements Serializable {
     public List<Elevator> getElevators() {
         return elevators;
     }
-    public List<Cabinet> getCabinets() {
-        return cabinets;
+    public List<CabinetDrawer> getCabinetDrawers() {
+        return cabinetDrawers;
     }
     public List<Couch> getCouches() {
         return couches;
@@ -1278,8 +1278,8 @@ public class Environment extends BaseObject implements Serializable {
     public List<WaterDispenser> getWaterDispensers() {
         return waterDispensers;
     }
-    public List<StorageCabinet> getStorageCabinets() {
-        return storageCabinets;
+    public List<Storage> getStorages() {
+        return storages;
     }
     public List<Aircon> getAircons() {
         return aircons;
@@ -1325,8 +1325,11 @@ public class Environment extends BaseObject implements Serializable {
         else if (amenityClass == Server.class) {
             return this.getServers();
         }
-        else if (amenityClass == Cabinet.class) {
-            return this.getCabinets();
+        else if (amenityClass == CabinetDrawer.class) {
+            return this.getCabinetDrawers();
+        }
+        else if (amenityClass == Storage.class) {
+            return this.getStorages();
         }
 
         else if (amenityClass == Couch.class) {

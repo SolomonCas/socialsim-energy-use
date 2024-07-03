@@ -10,6 +10,7 @@ public class WindowBlindsGraphic extends AmenityGraphic {
     private static final int SPAN_1 = 1;
     private static final int SPAN_2 = 2;
     private static final int SPAN_3 = 3;
+    private static final int SPAN_5 = 5;
 
     private static final int NORMAL_ROW_OFFSET = 0;
     private static final int NORMAL_COLUMN_OFFSET = 0;
@@ -23,12 +24,15 @@ public class WindowBlindsGraphic extends AmenityGraphic {
                 NORMAL_ROW_OFFSET,
                 NORMAL_COLUMN_OFFSET
         );
-        this.graphicIndex = getGraphicIndex(state);
 
+        this.graphicIndex = getGraphicIndex(state);
     }
 
     private static int getRowSpan(String state) {
         return switch (state) {
+            case    "OPENED_NORTH_AND_SOUTH",
+                    "CLOSED_NORTH_AND_SOUTH"
+                    -> SPAN_5;
             case    "OPENED_SOUTH_FROM_INSIDE",
                     "OPENED_SOUTH_FROM_OUTSIDE",
                     "CLOSED_SOUTH_FROM_INSIDE",
@@ -50,15 +54,17 @@ public class WindowBlindsGraphic extends AmenityGraphic {
         return switch (state) {
             case "OPENED_SOUTH_FROM_INSIDE" -> 0;
             case "OPENED_SOUTH_FROM_OUTSIDE" -> 1;
-            case "OPENED_NORTH" -> 2;
-            case "OPENED_EAST" -> 3;
-            case "OPENED_WEST" -> 4;
-            case "CLOSED_SOUTH_FROM_INSIDE" -> 5;
-            case "CLOSED_SOUTH_FROM_OUTSIDE" -> 6;
-            case "CLOSED_NORTH" -> 7;
-            case "CLOSED_EAST" -> 8;
-            case "CLOSED_WEST" -> 9;
-            case "GLASS" -> 10;
+            case "OPENED_NORTH_AND_SOUTH" -> 2;
+            case "OPENED_NORTH" -> 3;
+            case "OPENED_EAST" -> 4;
+            case "OPENED_WEST" -> 5;
+            case "CLOSED_SOUTH_FROM_INSIDE" -> 6;
+            case "CLOSED_SOUTH_FROM_OUTSIDE" -> 7;
+            case "CLOSED_NORTH_AND_SOUTH" -> 8;
+            case "CLOSED_NORTH" -> 9;
+            case "CLOSED_EAST" -> 10;
+            case "CLOSED_WEST" -> 11;
+            case "GLASS" -> 12;
             default -> throw new IllegalArgumentException("Unknown state: " + state);
         };
     }
