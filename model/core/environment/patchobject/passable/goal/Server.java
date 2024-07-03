@@ -18,10 +18,10 @@ public class Server extends Goal {
     }
 
     /***** CONSTRUCTOR *****/
-    protected Server(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected Server(List<AmenityBlock> amenityBlocks, boolean enabled, String type) {
         super(amenityBlocks, enabled);
 
-        this.serverGraphic = new ServerGraphic(this);
+        this.serverGraphic = new ServerGraphic(this, type);
     }
 
     /***** OVERRIDE *****/
@@ -62,8 +62,8 @@ public class Server extends Goal {
     }
 
     public static class ServerFactory extends GoalFactory {
-        public static Server create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new Server(amenityBlocks, enabled);
+        public static Server create(List<AmenityBlock> amenityBlocks, boolean enabled, String type) {
+            return new Server(amenityBlocks, enabled, type);
         }
     }
 

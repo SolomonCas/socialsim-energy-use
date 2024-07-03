@@ -8,8 +8,9 @@ public class ServerGraphic extends AmenityGraphic {
 
     /***** VARIABLES *****/
 
-    private static final int ROW_SPAN = 2;
-    private static final int COLUMN_SPAN = 2;
+    private static final int SPAN_1 = 1;
+    private static final int SPAN_2 = 2;
+    private static final int SPAN_3 = 3;
 
     private static final int NORMAL_ROW_OFFSET = 0;
     private static final int NORMAL_COLUMN_OFFSET = 0;
@@ -18,8 +19,26 @@ public class ServerGraphic extends AmenityGraphic {
 
     /***** CONSTRUCTOR *****/
 
-    public ServerGraphic(Server server) {
-        super(server, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
+    public ServerGraphic(Server server, String type) {
+        super(
+                server,
+                getRowSpan(type),
+                SPAN_1,
+                NORMAL_ROW_OFFSET,
+                NORMAL_COLUMN_OFFSET);
+
+        switch (type) {
+            case "TYPE_A" -> this.graphicIndex = 0;
+            case "TYPE_B" -> this.graphicIndex = 1;
+        }
+    }
+
+    private static int getRowSpan(String type) {
+        return switch (type) {
+            case "TYPE_A" -> SPAN_2;
+            case "TYPE_B" -> SPAN_3;
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        };
     }
 
 }
