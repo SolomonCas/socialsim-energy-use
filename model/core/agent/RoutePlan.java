@@ -558,6 +558,15 @@ public class RoutePlan {
         return -1;
     }
 
+    public int findIndexAction(Action.Name name, int stateIndex) {
+        for (int i = 0; i < this.routePlan.get(stateIndex).getActions().size(); i++) {
+            if (this.routePlan.get(stateIndex).getActions().get(i).getName()  == name) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public State addUrgentRoute(String s, Agent agent, Environment environment) {
         ArrayList<Action> actions;
         State officeState = null;

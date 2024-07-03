@@ -715,10 +715,17 @@ public class Simulator {
             if (agentMovement.getGoalAmenity() == null) {
                 // check if the agent is in his/her work place before leaving
                 if(!agentMovement.getRoutePlan().isAtDesk()){
-                    agentMovement.setActionIndex(agentMovement.getActionIndex() + 1); // SET ACTION TO GO_TO_STATION WHICH SHOULD BE SET ON THE ROUTE PLAN
-                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-                    agentMovement.resetGoal();
+                    // SET ACTION TO GO_TO_STATION WHICH SHOULD BE SET ON THE ROUTE PLAN
+                    int actionIndex = agentMovement.getRoutePlan().findIndexAction(Action.Name.GO_TO_STATION, agentMovement.getStateIndex());
+                    if (actionIndex != -1) {
+                        agentMovement.setActionIndex(actionIndex);
+                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                        agentMovement.resetGoal();
+                    }
+                    else {
+                        System.out.println("BAdoy");
+                    }
                 }
                 else{ // Use destination in route plan
                     agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
@@ -2744,66 +2751,66 @@ public class Simulator {
         /** COMPILED **/
 
         // Current Agent Count Per Type
-        compiledCurrentDirectorCount = new int[6481];
-        compiledCurrentFacultyCount = new int[6481];
-        compiledCurrentStudentCount = new int[6481];
-        compiledCurrentMaintenanceCount = new int[6481];
-        compiledCurrentGuardCount = new int[6481];
+        compiledCurrentDirectorCount = new int[11160];
+        compiledCurrentFacultyCount = new int[11160];
+        compiledCurrentStudentCount = new int[11160];
+        compiledCurrentMaintenanceCount = new int[11160];
+        compiledCurrentGuardCount = new int[11160];
 
         // Current Interaction Count
-        compiledCurrentNonverbalCount = new int[6481];
-        compiledCurrentCooperativeCount = new int[6481];
-        compiledCurrentExchangeCount = new int[6481];
+        compiledCurrentNonverbalCount = new int[11160];
+        compiledCurrentCooperativeCount = new int[11160];
+        compiledCurrentExchangeCount = new int[11160];
 
         // Current Power Consumption Interaction Count
-        compiledCurrentAirconInteractionCount = new int[6481];
-        compiledCurrentLightInteractionCount = new int[6481];
-        compiledCurrentFridgeInteractionCount = new int[6481];
-        compiledCurrentWaterDispenserInteractionCount = new int[6481];
+        compiledCurrentAirconInteractionCount = new int[11160];
+        compiledCurrentLightInteractionCount = new int[11160];
+        compiledCurrentFridgeInteractionCount = new int[11160];
+        compiledCurrentWaterDispenserInteractionCount = new int[11160];
 
 
 
 
         // Average Interaction Duration
-        compiledAverageNonverbalDuration = new float[6481];
-        compiledAverageCooperativeDuration = new float[6481];
-        compiledAverageExchangeDuration = new float[6481];
+        compiledAverageNonverbalDuration = new float[11160];
+        compiledAverageCooperativeDuration = new float[11160];
+        compiledAverageExchangeDuration = new float[11160];
 
 
         // Current Team Count
-        compiledCurrentTeam1Count = new int[6481];
-        compiledCurrentTeam2Count = new int[6481];
-        compiledCurrentTeam3Count = new int[6481];
-        compiledCurrentTeam4Count = new int[6481];
+        compiledCurrentTeam1Count = new int[11160];
+        compiledCurrentTeam2Count = new int[11160];
+        compiledCurrentTeam3Count = new int[11160];
+        compiledCurrentTeam4Count = new int[11160];
 
 
         // Current Director to ____ Interaction Count
-        compiledCurrentDirectorFacultyCount = new int[6481];
-        compiledCurrentDirectorStudentCount = new int[6481];
-        compiledCurrentDirectorMaintenanceCount = new int[6481];
-        compiledCurrentDirectorGuardCount = new int[6481];
+        compiledCurrentDirectorFacultyCount = new int[11160];
+        compiledCurrentDirectorStudentCount = new int[11160];
+        compiledCurrentDirectorMaintenanceCount = new int[11160];
+        compiledCurrentDirectorGuardCount = new int[11160];
 
 
         // Current Faculty to ____ Interaction Count
-        compiledCurrentFacultyFacultyCount = new int[6481];
-        compiledCurrentFacultyStudentCount = new int[6481];
-        compiledCurrentFacultyMaintenanceCount = new int[6481];
-        compiledCurrentFacultyGuardCount = new int[6481];
+        compiledCurrentFacultyFacultyCount = new int[11160];
+        compiledCurrentFacultyStudentCount = new int[11160];
+        compiledCurrentFacultyMaintenanceCount = new int[11160];
+        compiledCurrentFacultyGuardCount = new int[11160];
 
 
         // Current Student to ____ Interaction Count
-        compiledCurrentStudentStudentCount = new int[6481];
-        compiledCurrentStudentMaintenanceCount = new int[6481];
-        compiledCurrentStudentGuardCount = new int[6481];
+        compiledCurrentStudentStudentCount = new int[11160];
+        compiledCurrentStudentMaintenanceCount = new int[11160];
+        compiledCurrentStudentGuardCount = new int[11160];
 
 
         // Current Maintenance to ____ Interaction Count
-        compiledCurrentMaintenanceMaintenanceCount = new int[6481];
-        compiledCurrentMaintenanceGuardCount = new int[6481];
+        compiledCurrentMaintenanceMaintenanceCount = new int[11160];
+        compiledCurrentMaintenanceGuardCount = new int[11160];
 
 
         // Current Guard to Guard Interaction Count
-        compiledCurrentGuardGuardCount = new int[6481];
+        compiledCurrentGuardGuardCount = new int[11160];
 
 
         /** Patch Count **/
@@ -2881,7 +2888,7 @@ public class Simulator {
         sb.append(",");
         sb.append("Current Guard Guard Count");;
         sb.append("\n");
-        for (int i = 0; i < 6481; i++){
+        for (int i = 0; i < 11160; i++){
             sb.append(compiledCurrentDirectorCount[i]);
             sb.append(",");
             sb.append(compiledCurrentFacultyCount[i]);
