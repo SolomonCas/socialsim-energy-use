@@ -3106,11 +3106,11 @@ public class ScreenController extends Controller {
             }
 
             WindowBlindsMapper.draw(glass, "GLASS", 7);
-            WindowBlindsMapper.draw(northSouthWindowBlinds, "CLOSED_NORTH_AND_SOUTH", 4);
-            WindowBlindsMapper.draw(eastPantryWindowBlinds, "CLOSED_EAST", 8);
-            WindowBlindsMapper.draw(eastHallwayWindowBlinds, "CLOSED_EAST", 5);
-            WindowBlindsMapper.draw(westWindowBlinds, "CLOSED_WEST", 4);
-            WindowBlindsMapper.draw(westDirectorWindowBlinds, "CLOSED_WEST", 2);
+            WindowBlindsMapper.draw(northSouthWindowBlinds, "OPENED_NORTH_AND_SOUTH", 4);
+            WindowBlindsMapper.draw(eastPantryWindowBlinds, "OPENED_EAST", 8);
+            WindowBlindsMapper.draw(eastHallwayWindowBlinds, "OPENED_EAST", 5);
+            WindowBlindsMapper.draw(westWindowBlinds, "OPENED_WEST", 4);
+            WindowBlindsMapper.draw(westDirectorWindowBlinds, "OPENED_WEST", 2);
 
 
             /* CABINETS & DRAWERS + STORAGE */

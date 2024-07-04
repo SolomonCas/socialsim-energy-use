@@ -266,11 +266,11 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
             routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
-//            actions = new ArrayList<>();
-//            // Maintenance put their stuff in the Clinic Room/ Storage Room
-//            actions.add(new Action(Action.Name.GO_TO_STATION,
-//                    environment.getStorageCabinets().getFirst().getAttractors().getFirst().getPatch(), 5));
-//            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
+            actions = new ArrayList<>();
+            // Maintenance put their stuff in the Clinic Room/ Storage Room
+            actions.add(new Action(Action.Name.GO_TO_STATION,
+                    environment.getStorages().getFirst().getAttractors().getFirst().getPatch(), 5));
+            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
 
             actions = new ArrayList<>();
 
@@ -411,12 +411,12 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.EAT_LUNCH, 720));
             routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
-//            actions = new ArrayList<>();
-//            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
-//            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
-//
-//            actions.add(new Action(Action.Name.GO_TO_STATION, environment.getStorageCabinets().getFirst().getAttractors().getFirst().getPatch(), 2));
-//            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
+            actions = new ArrayList<>();
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
+
+            actions.add(new Action(Action.Name.GO_TO_STATION, environment.getStorages().getFirst().getAttractors().getFirst().getPatch(), 2));
+            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
         else if (agent.getPersona() == Agent.Persona.DIRECTOR) {
             setBathAM(false);
@@ -486,13 +486,15 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_STATION));
+            actions.add(new Action(Action.Name.GO_TO_STATION, 3));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_LUNCH));
-            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
-            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+            routePlan.add(addUrgentRoute("FIX_VISUAL_COMFORT", agent, environment));
+
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GO_TO_LUNCH));
+//            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
+//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
@@ -613,12 +615,18 @@ public class RoutePlan {
                 actions = new ArrayList<>();
                 // TODO: Need to determine what action to do (e.g. set AC to cool or warm, or turn on or off AC)
                 actions.add(new Action(Action.Name.SET_AC_TO_COOL));
+                actions.add(new Action(Action.Name.SET_AC_TO_WARM));
+                actions.add(new Action(Action.Name.TURN_OFF_AC));
+                actions.add(new Action(Action.Name.TURN_OFF_AC));
                 officeState = new State(State.Name.FIXING_THERMAL_COMFORT, this, agent, actions);
             }
             case "FIX_VISUAL_COMFORT" -> {
                 actions = new ArrayList<>();
                 // TODO: Need to determine what action to do (e.g. open or close blinds, or turn on or off Lights)
                 actions.add(new Action(Action.Name.TURN_OFF_LIGHT));
+                actions.add(new Action(Action.Name.TURN_ON_LIGHT));
+                actions.add(new Action(Action.Name.OPEN_BLINDS));
+                actions.add(new Action(Action.Name.CLOSE_BLINDS));
                 officeState = new State(State.Name.FIXING_VISUAL_COMFORT, this, agent, actions);
             }
             case "EAT_OUTSIDE" -> {

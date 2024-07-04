@@ -18,10 +18,10 @@ public class WindowBlinds extends Goal {
     private boolean isOpened;
 
     /***** CONSTRUCTOR *****/
-    protected WindowBlinds(List<AmenityBlock> amenityBlocks, boolean enabled, String state) {
+    protected WindowBlinds(List<AmenityBlock> amenityBlocks, boolean enabled, String state, boolean isOpened) {
         super(amenityBlocks, enabled);
         this.windowBlindsGraphic = new WindowBlindsGraphic(this, state);
-        this.isOpened = false;
+        this.isOpened = isOpened;
     }
 
     /***** GETTERS *****/
@@ -30,8 +30,12 @@ public class WindowBlinds extends Goal {
         return isOpened;
     }
 
+    public WindowBlindsGraphic getWindowBlindsGraphic() {
+        return windowBlindsGraphic;
+    }
+
     /***** SETTER *****/
-    public void Open(boolean opened) {
+    public void open(boolean opened) {
         isOpened = opened;
     }
 
@@ -72,8 +76,8 @@ public class WindowBlinds extends Goal {
     }
 
     public static class WindowBlindsFactory extends GoalFactory {
-        public static WindowBlinds create(List<AmenityBlock> amenityBlocks, boolean enabled, String state) {
-            return new WindowBlinds(amenityBlocks, enabled, state);
+        public static WindowBlinds create(List<AmenityBlock> amenityBlocks, boolean enabled, String state, boolean isOpened) {
+            return new WindowBlinds(amenityBlocks, enabled, state, isOpened);
         }
     }
 }

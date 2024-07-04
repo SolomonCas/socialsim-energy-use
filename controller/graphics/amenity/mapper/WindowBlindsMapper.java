@@ -17,6 +17,9 @@ public class WindowBlindsMapper extends AmenityMapper {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
             int origPatchCol = patch.getMatrixPosition().getColumn();
+            boolean isOpened = state.equals("OPENED_SOUTH_FROM_INSIDE") || state.equals("OPENED_SOUTH_FROM_OUTSIDE") ||
+                    state.equals("OPENED_NORTH_AND_SOUTH") || state.equals("OPENED_NORTH") ||
+                    state.equals("OPENED_EAST") || state.equals("OPENED_WEST");
 
             WindowBlinds windowBlindsToAdd;
             List<WindowBlinds> windowBlinds = Main.simulator.getEnvironment().getWindowBlinds();
@@ -142,7 +145,7 @@ public class WindowBlindsMapper extends AmenityMapper {
 
 
 
-            windowBlindsToAdd = WindowBlinds.WindowBlindsFactory.create(amenityBlocks, true, state);
+            windowBlindsToAdd = WindowBlinds.WindowBlindsFactory.create(amenityBlocks, true, state, isOpened);
             windowBlinds.add(windowBlindsToAdd);
 
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));

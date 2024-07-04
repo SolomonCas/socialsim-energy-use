@@ -887,6 +887,79 @@ public class AgentMovement {
 
         return false;
     }
+    public boolean chooseWindowBlindGoal() {
+        if (goalAmenity == null) {
+            List<WindowBlinds> temp = new ArrayList<>();
+            HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
+            List<Map.Entry<Amenity.AmenityBlock, Double> > list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >();
+
+            for (WindowBlinds amenity : this.environment.getWindowBlinds()) {
+                if (this.currentAction.getName() == Action.Name.CLOSE_BLINDS && amenity.isOpened()) {
+                    int attractorCount = 0;
+                    // This part checks for amenities with more than 1 attractors
+                    for(int i = 0; i < amenity.getAttractors().size(); i++) {
+                        if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                            attractorCount++;
+                        }
+                    }
+                    if(attractorCount == 0) {
+                        temp.add(amenity);
+                    }
+                }
+                else if (this.currentAction.getName() == Action.Name.OPEN_BLINDS && !amenity.isOpened()) {
+                    int attractorCount = 0;
+                    // This part checks for amenities with more than 1 attractors
+                    for(int i = 0; i < amenity.getAttractors().size(); i++) {
+                        if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                            attractorCount++;
+                        }
+                    }
+                    if(attractorCount == 0) {
+                        temp.add(amenity);
+                    }
+                }
+            }
+
+            for (Amenity amenity : temp) {
+                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+                    double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
+                    distancesToAttractors.put(attractor, distanceToAttractor);
+                }
+            }
+
+            list =
+                    new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAttractors.entrySet());
+
+
+            Collections.sort(list, new Comparator<Map.Entry<Amenity.AmenityBlock, Double> >() {
+                public int compare(Map.Entry<Amenity.AmenityBlock, Double> o1, Map.Entry<Amenity.AmenityBlock, Double> o2) {
+                    return (o1.getValue()).compareTo(o2.getValue());
+                }
+            });
+
+            HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+            for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
+                sortedDistances.put(aa.getKey(), aa.getValue());
+            }
+
+            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
+                Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
+                if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                    this.goalAmenity =  candidateAttractor.getParent();
+                    this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
+                    this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
+                    getGoalAttractor().setIsReserved(true);
+                    return true;
+                }
+            }
+
+            return false;
+
+
+        }
+
+        return false;
+    }
     public boolean chooseBathroomGoal(Class<? extends Amenity> nextAmenityClass){
         if(this.goalAmenity == null){
             List<Amenity> temp = new ArrayList<>();

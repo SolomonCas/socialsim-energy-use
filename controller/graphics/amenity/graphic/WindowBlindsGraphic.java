@@ -14,6 +14,8 @@ public class WindowBlindsGraphic extends AmenityGraphic {
 
     private static final int NORMAL_ROW_OFFSET = 0;
     private static final int NORMAL_COLUMN_OFFSET = 0;
+    private final WindowBlinds windowBlinds;
+    private String state;
 
     /***** CONSTRUCTOR *****/
     public WindowBlindsGraphic(WindowBlinds windowBlinds, String state) {
@@ -24,10 +26,72 @@ public class WindowBlindsGraphic extends AmenityGraphic {
                 NORMAL_ROW_OFFSET,
                 NORMAL_COLUMN_OFFSET
         );
-
+        this.windowBlinds = windowBlinds;
+        this.state = state;
         this.graphicIndex = getGraphicIndex(state);
     }
 
+    /***** METHOD *****/
+    public void change() {
+        if(windowBlinds.isOpened()) {
+            switch (this.state) {
+                case "CLOSED_SOUTH_FROM_INSIDE" -> {
+                    this.state = "OPENED_SOUTH_FROM_INSIDE";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "CLOSED_SOUTH_FROM_OUTSIDE" -> {
+                    this.state = "OPENED_SOUTH_FROM_OUTSIDE";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "CLOSED_NORTH_AND_SOUTH" -> {
+                    this.state = "OPENED_NORTH_AND_SOUTH";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "CLOSED_NORTH" -> {
+                    this.state = "OPENED_NORTH";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "CLOSED_EAST" -> {
+                    this.state = "OPENED_EAST";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "CLOSED_WEST" -> {
+                    this.state = "OPENED_WEST";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                default -> throw new IllegalArgumentException("Unknown state: " + state);
+            }
+        }
+        else {
+            switch (this.state) {
+                case "OPENED_SOUTH_FROM_INSIDE" -> {
+                    this.state = "CLOSED_SOUTH_FROM_INSIDE";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "OPENED_SOUTH_FROM_OUTSIDE" -> {
+                    this.state = "CLOSED_SOUTH_FROM_OUTSIDE";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "OPENED_NORTH_AND_SOUTH" -> {
+                    this.state = "CLOSED_NORTH_AND_SOUTH";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "OPENED_NORTH" -> {
+                    this.state = "CLOSED_NORTH";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "OPENED_EAST" -> {
+                    this.state = "CLOSED_EAST";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                case "OPENED_WEST" -> {
+                    this.state = "CLOSED_WEST";
+                    this.graphicIndex = getGraphicIndex(this.state);
+                }
+                default -> throw new IllegalArgumentException("Unknown state: " + state);
+            }
+        }
+    }
     private static int getRowSpan(String state) {
         return switch (state) {
             case    "OPENED_NORTH_AND_SOUTH",
