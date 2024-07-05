@@ -1109,8 +1109,40 @@ public class AgentMovement {
                 temp.addAll(this.environment.getPantryTables().get(i).getPantryChairs());
             }
 
-            // This can be altered
-            temp.addAll(this.environment.getChairs());
+            if (Agent.Type.MAINTENANCE == this.parent.getType()) {
+                for (SoloTable amenity : environment.getSoloTables()) {
+                    for (Chair soloChair : amenity.getSoloChairs()) {
+                        int attractorCount = 0;
+                        // This part checks for amenities with more than 1 attractors
+                        for(int i = 0; i < soloChair.getAttractors().size(); i++) {
+                            if (soloChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                                attractorCount++;
+                            }
+                        }
+                        if(attractorCount == 0) {
+                            temp.add(soloChair);
+                        }
+                    }
+                }
+
+                for (MESATable amenity : environment.getMesaTables()) {
+                    for (Chair mesaChair : amenity.getMesaChairs()) {
+                        int attractorCount = 0;
+                        // This part checks for amenities with more than 1 attractors
+                        for(int i = 0; i < mesaChair.getAttractors().size(); i++) {
+                            if (mesaChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                                attractorCount++;
+                            }
+                        }
+                        if(attractorCount == 0) {
+                            temp.add(mesaChair);
+                        }
+                    }
+                }
+            }
+
+          // This can be altered
+//            temp.addAll(this.environment.getChairs());
 
             // Agents are not allowed to work and eat their lunch on the couch
             if(this.getCurrentState().getName() != State.Name.GOING_TO_LUNCH) {

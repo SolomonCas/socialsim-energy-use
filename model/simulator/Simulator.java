@@ -215,7 +215,7 @@ public class Simulator {
     public Simulator() {
         this.environment = null;
         this.running = new AtomicBoolean(false);
-        this.time = new SimulationTime(9, 0, 0);
+        this.time = new SimulationTime(7, 0, 0);
         this.playSemaphore = new Semaphore(0);
         this.start();
     }
@@ -2256,7 +2256,7 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(true);
 
                             if (agentMovement.getAgentToInquire() != null &&
-                                    agentMovement.getAgentToInquire().getAgentMovement().getCurrentState().getName() == State.Name.WORKING) {
+                                    agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().isAtDesk()) {
                                 agentMovement.setDuration(agentMovement.getDuration() - 1);
 
 
