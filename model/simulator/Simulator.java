@@ -561,7 +561,13 @@ public class Simulator {
 
                 }
                 else {
-                    agentMovement.airconChecker();
+                    //SET THE CHECKING OF THERMAL COMFORT BASED ON CHANCES
+                    //COOLDOWN ARE SET WHENEVER INTERACTED WITH AIRCON SWITCH
+                    double AIRCON_CHANCE = Simulator.roll();
+                    if(AIRCON_CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown()){
+                        agentMovement.airconChecker();
+                    }
+
                     if (agentMovement.getCurrentState().getName() == State.Name.GOING_TO_EAT_OUTSIDE ||
                             agentMovement.getCurrentState().getName() == State.Name.GOING_HOME || agentMovement.getDuration() > -1) {
                         if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Monitor) {

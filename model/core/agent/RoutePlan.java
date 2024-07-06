@@ -52,7 +52,8 @@ public class RoutePlan {
                                 INQUIRE_FACULTY_CHANCE = 0.3,
                                 INQUIRE_STUDENT_CHANCE = 0.3,
                                 INQUIRE_MAINTENANCE_CHANCE = 0.3,
-                                INQUIRE_GUARD_CHANCE = 0.3;
+                                INQUIRE_GUARD_CHANCE = 0.3,
+                                CHECK_TEMP_CHANCE = 0.15;
     public static ArrayList<ArrayList<Long>> meetingTimes = new ArrayList<>();
 
     /***** CONSTRUCTOR *****/
