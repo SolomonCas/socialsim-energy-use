@@ -389,7 +389,7 @@ public class AgentMovement {
             List<Patch> patchToExploreNeighbors = patchToExplore.getNeighbors();
             for (Patch patchToExploreNeighbor : patchToExploreNeighbors) {
                 if ((patchToExploreNeighbor.getAmenityBlock() == null && patchToExploreNeighbor.getPatchField() == null)
-                        || (patchToExploreNeighbor.getPatchField() != null && patchToExploreNeighbor.getPatchField().getKey().getClass() != Wall.class)
+                        || (patchToExploreNeighbor.getPatchField() != null && patchToExploreNeighbor.getPatchField().getKey().getClass() != Divider.class)
                         || (patchToExploreNeighbor.getAmenityBlock() != null && (patchToExploreNeighbor.getAmenityBlock().getParent().getClass() != Light.class || patchToExploreNeighbor.getAmenityBlock().getParent().getClass() != Aircon.class))
                         || ((includeStartingPatch && patchToExplore.equals(startingPatch)) || (includeGoalPatch && patchToExploreNeighbor.equals(goalPatch)))) {
                     double obstacleClosenessPenalty = (patchToExploreNeighbor.getAmenityBlocksAround() + patchToExploreNeighbor.getWallsAround()) * 2.0;
@@ -2296,7 +2296,7 @@ public class AgentMovement {
                 patch.getAmenityBlock().getParent().getClass() != Couch.class &&
                 patch.getAmenityBlock().getParent().getClass() != TrashCan.class &&
                 patch.getAmenityBlock().getParent().getClass() != Whiteboard.class
-        )) || (patch.getPatchField() != null && patch.getPatchField().getKey().getClass() == Wall.class)) {
+        )) || (patch.getPatchField() != null && patch.getPatchField().getKey().getClass() == Divider.class)) {
             return true;
         }
 

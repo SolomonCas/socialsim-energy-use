@@ -5,7 +5,7 @@ import javafx.util.Pair;
 
 import java.util.List;
 
-public class Wall extends PatchField {
+public class Divider extends PatchField {
 
 
     // VARIABLES
@@ -17,7 +17,7 @@ public class Wall extends PatchField {
 
 
     // CONSTRUCTOR
-    protected Wall(List<Patch> patches, String str) {
+    protected Divider(List<Patch> patches, String str) {
         super(patches);
 
         Pair<PatchField, String> pair = new Pair<>(this, str);
@@ -31,8 +31,8 @@ public class Wall extends PatchField {
 
     // INNER ABSTRACT CLASS
     public static class WallFactory extends PatchFieldFactory {
-        public Wall create(List<Patch> patches, String str) {
-            return new Wall(patches, str);
+        public Divider create(List<Patch> patches, String str) {
+            return new Divider(patches, str);
         }
     }
 

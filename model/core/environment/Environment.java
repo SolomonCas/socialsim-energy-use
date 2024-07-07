@@ -31,7 +31,7 @@ public class Environment extends BaseObject implements Serializable {
     // Environment
 
     private final List<Floor> floors;
-    private final List<Wall> walls;
+    private final List<Divider> dividers;
     private final List<Bathroom> bathrooms;
     private final List<Reception> receptions;
     private final List<StaffArea> staffAreas;
@@ -152,7 +152,7 @@ public class Environment extends BaseObject implements Serializable {
 
         // Environment
         this.floors = Collections.synchronizedList(new ArrayList<>());
-        this.walls = Collections.synchronizedList(new ArrayList<>());
+        this.dividers = Collections.synchronizedList(new ArrayList<>());
         this.bathrooms = Collections.synchronizedList(new ArrayList<>());
         this.receptions = Collections.synchronizedList(new ArrayList<>());
         this.staffAreas = Collections.synchronizedList(new ArrayList<>());
@@ -1100,8 +1100,8 @@ public class Environment extends BaseObject implements Serializable {
     public List<Floor> getFloors() {
         return floors;
     }
-    public List<Wall> getWalls() {
-        return walls;
+    public List<Divider> getWalls() {
+        return dividers;
     }
     public List<Bathroom> getBathrooms() {
         return bathrooms;

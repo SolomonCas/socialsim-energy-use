@@ -5,7 +5,6 @@ import com.socialsim.controller.graphics.amenity.mapper.*;
 import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
-import com.socialsim.model.core.environment.patchobject.passable.goal.CabinetDrawer;
 import com.socialsim.model.simulator.Simulator;
 
 import com.socialsim.model.core.environment.Patch;
@@ -517,7 +516,7 @@ public class ScreenController extends Controller {
                 wallTopsOutside.add(environment.getPatch(i, 203));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsOutside, "wallTopOut"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsOutside, "officeNextDoor"));
 
 
 
@@ -562,7 +561,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsOutside, "wallOut"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsOutside, "wallTop"));
 
 
 
@@ -591,7 +590,7 @@ public class ScreenController extends Controller {
                 doorWallsOutside.add(environment.getPatch(i, 191));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsOutside, "doorWallOut"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsOutside, "doorPatch"));
 
 
 
@@ -618,7 +617,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(patchesOutsideBuilding, "outsideBuilding"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(patchesOutsideBuilding, "outsideBuilding"));
 
 
 
@@ -645,7 +644,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(maleBathroom, "male"));
+            simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(maleBathroom, "maleBathroom"));
 
 
 
@@ -672,7 +671,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(femaleBathroom, "female"));
+            simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(femaleBathroom, "femaleBathroom"));
 
 
         /****** INSIDE OFFICE ******/
@@ -766,7 +765,7 @@ public class ScreenController extends Controller {
             }
 
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsOfficeOutline, "outlineWallTop"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsOfficeOutline, "permanentWallTop"));
 
 
 
@@ -834,7 +833,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallOfficeOutline, "outlineWall"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallOfficeOutline, "permanentWall"));
 
 
 
@@ -875,7 +874,7 @@ public class ScreenController extends Controller {
                 wallTopsReception.add(environment.getPatch(76, j));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsReception, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsReception, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsReception = new ArrayList<>();
@@ -886,7 +885,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsReception, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsReception, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsReception = new ArrayList<>();
@@ -898,7 +897,7 @@ public class ScreenController extends Controller {
                 doorWallsReception.add(environment.getPatch(i, 182));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsReception, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsReception, "doorPatch"));
 
 
 
@@ -951,7 +950,7 @@ public class ScreenController extends Controller {
             }
 
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsStaffArea, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsStaffArea, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsStaffArea = new ArrayList<>();
@@ -968,7 +967,7 @@ public class ScreenController extends Controller {
             }
 
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsStaffArea, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsStaffArea, "wall"));
 
 
 
@@ -1090,7 +1089,7 @@ public class ScreenController extends Controller {
             }
 
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsSoloRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsSoloRoom, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsSoloRoom = new ArrayList<>();
@@ -1136,7 +1135,7 @@ public class ScreenController extends Controller {
             }
 
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsSoloRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsSoloRoom, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsSoloRoom = new ArrayList<>();
@@ -1172,7 +1171,7 @@ public class ScreenController extends Controller {
                 doorWallsSoloRoom.add(environment.getPatch(i, 44));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsSoloRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsSoloRoom, "doorPatch"));
 
 
 
@@ -1217,7 +1216,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDataCenter, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDataCenter, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsDataCenter = new ArrayList<>();
@@ -1236,7 +1235,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDataCenter, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDataCenter, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsDataCenter = new ArrayList<>();
@@ -1248,7 +1247,7 @@ public class ScreenController extends Controller {
                 doorWallsDataCenter.add(environment.getPatch(i, 145));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDataCenter, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDataCenter, "doorPatch"));
 
 
 
@@ -1279,7 +1278,7 @@ public class ScreenController extends Controller {
             }
             wallTopsControlCenter.add(environment.getPatch(56, 125));
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsControlCenter, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsControlCenter, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsControlCenter = new ArrayList<>();
@@ -1300,7 +1299,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsControlCenter, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsControlCenter, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsControlCenter = new ArrayList<>();
@@ -1318,7 +1317,7 @@ public class ScreenController extends Controller {
                 doorWallsControlCenter.add(environment.getPatch(i, 125));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsControlCenter, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsControlCenter, "doorPatch"));
 
 
 
@@ -1410,7 +1409,7 @@ public class ScreenController extends Controller {
             }
 
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsLS, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsLS, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsLS = new ArrayList<>();
@@ -1442,7 +1441,7 @@ public class ScreenController extends Controller {
             }
 
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsLS, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsLS, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsLS = new ArrayList<>();
@@ -1479,7 +1478,7 @@ public class ScreenController extends Controller {
                 doorWallsLS.add(environment.getPatch(i, 31));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsLS, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsLS, "doorPatch"));
 
 
 
@@ -1504,7 +1503,7 @@ public class ScreenController extends Controller {
                 doorWallsBreakerRoom.add(environment.getPatch(i, 22));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsBreakerRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsBreakerRoom, "doorPatch"));
 
 
 
@@ -1540,7 +1539,7 @@ public class ScreenController extends Controller {
             }
 
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsMeetingRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsMeetingRoom, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsMeetingRoom = new ArrayList<>();
@@ -1559,7 +1558,7 @@ public class ScreenController extends Controller {
                 wallsMeetingRoom.add(environment.getPatch(i, 16));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsMeetingRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsMeetingRoom, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsMeetingRoom = new ArrayList<>();
@@ -1571,7 +1570,7 @@ public class ScreenController extends Controller {
                 doorWallsMeetingRoom.add(environment.getPatch(i, 15));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsMeetingRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsMeetingRoom, "doorPatch"));
 
 
 
@@ -1621,7 +1620,7 @@ public class ScreenController extends Controller {
             }
 
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsConferenceRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsConferenceRoom, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsConferenceRoom = new ArrayList<>();
@@ -1657,7 +1656,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsConferenceRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsConferenceRoom, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsConferenceRoom = new ArrayList<>();
@@ -1675,7 +1674,7 @@ public class ScreenController extends Controller {
                 doorWallsConferenceRoom.add(environment.getPatch(i, 168));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsConferenceRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsConferenceRoom, "doorPatch"));
 
 
 
@@ -1710,7 +1709,7 @@ public class ScreenController extends Controller {
                 wallTopsStorageRoom.add(environment.getPatch(107, j));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsStorageRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsStorageRoom, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsStorageRoom = new ArrayList<>();
@@ -1736,7 +1735,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsStorageRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsStorageRoom, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsStorageRoom = new ArrayList<>();
@@ -1748,7 +1747,7 @@ public class ScreenController extends Controller {
                 doorWallsStorageRoom.add(environment.getPatch(i, 141));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsStorageRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsStorageRoom, "doorPatch"));
 
 
 
@@ -1787,7 +1786,7 @@ public class ScreenController extends Controller {
                 wallTopsFacultyRoom.add(environment.getPatch(i, 128));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsFacultyRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsFacultyRoom, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsFacultyRoom = new ArrayList<>();
@@ -1803,7 +1802,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsFacultyRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsFacultyRoom, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsFacultyRoom = new ArrayList<>();
@@ -1818,7 +1817,7 @@ public class ScreenController extends Controller {
                 doorWallsFacultyRoom.add(environment.getPatch(i, 127));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsFacultyRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsFacultyRoom, "doorPatch"));
 
 
 
@@ -1863,7 +1862,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsResearchCenter, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsResearchCenter, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsResearchCenter = new ArrayList<>();
@@ -1889,7 +1888,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsResearchCenter, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsResearchCenter, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsResearchCenter = new ArrayList<>();
@@ -1904,7 +1903,7 @@ public class ScreenController extends Controller {
                 doorWallsResearchCenter.add(environment.getPatch(i, 98));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsResearchCenter, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsResearchCenter, "doorPatch"));
 
 
 
@@ -1943,7 +1942,7 @@ public class ScreenController extends Controller {
                 wallTopsDCRoom.add(environment.getPatch(i, 23));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDCRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDCRoom, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsDCRoom = new ArrayList<>();
@@ -1962,7 +1961,7 @@ public class ScreenController extends Controller {
                 wallsDCRoom.add(environment.getPatch(i, 15));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDCRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDCRoom, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsDCRoom = new ArrayList<>();
@@ -1983,7 +1982,7 @@ public class ScreenController extends Controller {
                 doorWallsDCRoom.add(environment.getPatch(i, 6));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDCRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDCRoom, "doorPatch"));
 
 
 
@@ -2012,7 +2011,7 @@ public class ScreenController extends Controller {
                 wallTopsHERoom.add(environment.getPatch(i, 15));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsHERoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsHERoom, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsHERoom = new ArrayList<>();
@@ -2023,7 +2022,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsHERoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsHERoom, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsHERoom = new ArrayList<>();
@@ -2032,7 +2031,7 @@ public class ScreenController extends Controller {
                 doorWallsHERoom.add(environment.getPatch(i, 15));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsHERoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsHERoom, "doorPatch"));
 
 
 
@@ -2064,7 +2063,7 @@ public class ScreenController extends Controller {
                 wallTopsClinic.add(environment.getPatch(i, 194));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsClinic, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsClinic, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsClinic = new ArrayList<>();
@@ -2075,7 +2074,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsClinic, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsClinic, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsClinic = new ArrayList<>();
@@ -2084,7 +2083,7 @@ public class ScreenController extends Controller {
                 doorWallsHERoom.add(environment.getPatch(i, 186));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsHERoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsHERoom, "doorPatch"));
 
 
 
@@ -2100,7 +2099,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorDB, "director"));
+            simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorDB, "directorBathroom"));
 
 
             /** Wall Tops **/
@@ -2110,7 +2109,7 @@ public class ScreenController extends Controller {
                 wallTopsDB.add(environment.getPatch(88, j));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDB, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDB, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsDB = new ArrayList<>();
@@ -2121,7 +2120,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDB, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDB, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsDB = new ArrayList<>();
@@ -2133,7 +2132,7 @@ public class ScreenController extends Controller {
                 doorWallsDB.add(environment.getPatch(i, 200));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDB, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDB, "doorPatch"));
 
 
 
@@ -2164,7 +2163,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsDRoom, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDRoom, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsDRoom = new ArrayList<>();
@@ -2175,7 +2174,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsDRoom, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDRoom, "wall"));
 
             /** Walls that signify entry/exit points **/
             List<Patch> doorWallsDRoom = new ArrayList<>();
@@ -2184,7 +2183,7 @@ public class ScreenController extends Controller {
                 doorWallsDRoom.add(environment.getPatch(i, 186));
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(doorWallsDRoom, "doorWallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDRoom, "doorPatch"));
 
 
 
@@ -2223,7 +2222,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallTopsPantry, "wallTopIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsPantry, "wallTop"));
 
             /** Walls **/
             List<Patch> wallsPantry = new ArrayList<>();
@@ -2244,7 +2243,7 @@ public class ScreenController extends Controller {
                 }
             }
 
-            simulator.getEnvironment().getWalls().add(Wall.wallFactory.create(wallsPantry, "wallIn"));
+            simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsPantry, "wall"));
 
 
 
@@ -3134,8 +3133,6 @@ public class ScreenController extends Controller {
             CabinetDrawerMapper.draw(southDrawers, "DRAWERS", "SOUTH");
 
             northCabinet1x2.add(environment.getPatch(88, 129));
-            northCabinet1x2.add(environment.getPatch(106, 26));
-            northCabinet1x2.add(environment.getPatch(106, 28));
             CabinetDrawerMapper.draw(northCabinet1x2, "CABINET_1x2", "NORTH");
 
             eastDoubleDrawers.add(environment.getPatch(72, 162));
@@ -3156,6 +3153,5596 @@ public class ScreenController extends Controller {
             ServerMapper.draw(serverTypeB, "TYPE_B");
         
     }
+
+
+
+    public void initializeLayoutA(Environment environment) {
+        GraphicsController.tileSize = backgroundCanvas.getHeight() / simulator.getEnvironment().getRows();
+        mapEnvironment();
+        simulator.spawnInitialAgents(environment);
+        drawInterface();
+    }
+
+    public void mapLayoutA() {
+        Environment environment = simulator.getEnvironment();
+
+        List<Patch> floorPatches = new ArrayList<>();
+
+        for (int i = 0; i < environment.getRows(); i++) {
+            for (int j = 0; j < environment.getColumns(); j++) {
+                floorPatches.add(environment.getPatch(i, j));
+            }
+        }
+
+
+        /*** FLOORS ***/
+        simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floorPatches, "floor"));
+
+
+
+        /****** OUTSIDE OFFICE ******/
+
+        /*** WALL TOPS OUTSIDE OFFICE ***/
+
+        List<Patch> wallTopsOutside = new ArrayList<>();
+
+        for (int j = 0; j <= 203; j++) {
+            wallTopsOutside.add(environment.getPatch(0, j));
+        }
+
+        for (int i = 1; i <= 13; i++) {
+            for (int j = 0; j <= 31; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 21; i++) {
+            for (int j = 32; j <= 126; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 33; i++) {
+            for (int j = 127; j <= 146; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 46; i++) {
+            for (int j = 147; j <= 153; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 55; i++) {
+            for (int j = 154; j <= 176; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 23; i++) {
+            for (int j = 177; j <= 184; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 9; i++) {
+            wallTopsOutside.add(environment.getPatch(i, 185));
+        }
+
+        for (int j = 185; j <= 191; j++) {
+            wallTopsOutside.add(environment.getPatch(10, j));
+        }
+
+        for (int i = 1; i <= 18; i++) {
+            wallTopsOutside.add(environment.getPatch(i, 203));
+        }
+
+        for (int j = 191; j <= 203; j++) {
+            wallTopsOutside.add(environment.getPatch(19, j));
+        }
+
+        for (int i = 20; i <= 22; i++) {
+            for (int j = 193; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 23; i <= 30; i++) {
+            for (int j = 194; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 31; i <= 33; i++) {
+            for (int j = 193; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 34; i <= 41; i++) {
+            for (int j = 194; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 42; i <= 44; i++) {
+            for (int j = 193; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 45; i <= 52; i++) {
+            for (int j = 194; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 53; i <= 55; i++) {
+            for (int j = 193; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int j = 191; j <= 203; j++) {
+            wallTopsOutside.add(environment.getPatch(56, j));
+        }
+
+        for (int i = 56; i <= 75; i++) {
+            for (int j = 184; j <= 185; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 56; i <= 65; i++) {
+            wallTopsOutside.add(environment.getPatch(i, 186));
+        }
+
+        for (int j = 187; j <= 191; j++) {
+            wallTopsOutside.add(environment.getPatch(65, j));
+        }
+
+        for (int j = 186; j <= 203; j++) {
+            wallTopsOutside.add(environment.getPatch(75, j));
+        }
+
+        for (int i = 57; i <= 74; i++) {
+            wallTopsOutside.add(environment.getPatch(i, 203));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsOutside, "officeNextDoor"));
+
+
+
+
+        /*** WALLS OUTSIDE OFFICE ***/
+
+        List<Patch> wallsOutside = new ArrayList<>();
+
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 186; j <= 202; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 11; i <= 13; i++) {
+            for (int j = 185; j <= 190; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 20; i <= 22; i++) {
+            for (int j = 191; j <= 192; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 24; i <= 26; i++) {
+            for (int j = 177; j <= 184; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 192; j <= 202; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 66; i <= 68; i++) {
+            for (int j = 186; j <= 191; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsOutside, "wallTop"));
+
+
+
+
+        /*** ENTRY POINT WALLS OUTSIDE OFFICE ***/
+
+        List<Patch> doorWallsOutside = new ArrayList<>();
+
+        for (int i = 11; i <= 13; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 191));
+        }
+
+        for (int i = 23; i <= 25; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 193));
+        }
+
+        for (int i = 34; i <= 36; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 193));
+        }
+
+        for (int i = 45; i <= 47; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 193));
+        }
+
+        for (int i = 57; i <= 59; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 191));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsOutside, "doorPatch"));
+
+
+
+
+        /*** PATCHES OUTSIDE BUILDING ***/
+
+        List<Patch> patchesOutsideBuilding = new ArrayList<>();
+
+        for (int i = 109; i <= 128; i++) {
+            for (int j = 0; j <= 22; j++) {
+                patchesOutsideBuilding.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 111; i <= 128; i++) {
+            for (int j = 23; j <= 133; j++) {
+                patchesOutsideBuilding.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 118; i <= 128; i++) {
+            for (int j = 187; j <= 203; j++) {
+                patchesOutsideBuilding.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(patchesOutsideBuilding, "outsideBuilding"));
+
+
+
+
+        /*** MALE BATHROOM ***/
+
+        List<Patch> maleBathroom = new ArrayList<>();
+
+        for (int i = 4; i <= 9; i++) {
+            for (int j = 186; j <= 202; j++) {
+                maleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 10; i <= 13; i++) {
+            for (int j = 192; j <= 202; j++) {
+                maleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 14; i <= 18; i++) {
+            for (int j = 191; j <= 202; j++) {
+                maleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(maleBathroom, "maleBathroom"));
+
+
+
+
+        /*** FEMALE BATHROOM ***/
+
+        List<Patch> femaleBathroom = new ArrayList<>();
+
+        for (int i = 60; i <= 64; i++) {
+            for (int j = 191; j <= 202; j++) {
+                femaleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 65; i <= 68; i++) {
+            for (int j = 192; j <= 202; j++) {
+                femaleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 69; i <= 74; i++) {
+            for (int j = 186; j <= 202; j++) {
+                femaleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(femaleBathroom, "femaleBathroom"));
+
+
+        /****** INSIDE OFFICE ******/
+
+        /*** WALL TOPS FOR OFFICE OUTLINE ***/
+
+        List<Patch> wallTopsOfficeOutline = new ArrayList<>();
+
+        for (int i = 14; i <= 105; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 0));
+        }
+
+        for (int j = 1; j <= 30; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(14, j));
+        }
+
+        for (int i = 14; i <= 22; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 31));
+        }
+
+        for (int j = 32; j <= 125; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(22, j));
+        }
+
+        for (int i = 22; i <= 34; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 126));
+        }
+
+        for (int j = 127; j <= 145; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(34, j));
+        }
+
+        for (int i = 34; i <= 47; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 146));
+        }
+
+        for (int j = 147; j <= 152; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(47, j));
+        }
+
+        for (int i = 47; i <= 56; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 153));
+        }
+
+        for (int j = 154; j <= 176; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(56, j));
+        }
+
+        for (int j = 182; j <= 183; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(56, j));
+        }
+
+        for (int i = 57; i <= 76; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 183));
+        }
+
+        for (int j = 184; j <= 202; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(76, j));
+        }
+
+        for (int i = 76; i <= 114; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 203));
+        }
+
+        for (int j = 187; j <= 202; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(114, j));
+        }
+
+        for (int i = 114; i <= 125; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 186));
+        }
+
+        for (int j = 135; j <= 185; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(125, j));
+        }
+
+        for (int i = 107; i <= 125; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 134));
+        }
+
+        for (int j = 24; j <= 133; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(107, j));
+        }
+
+        for (int i = 105; i <= 107; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 23));
+        }
+
+        for (int j = 0; j <= 22; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(105, j));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsOfficeOutline, "permanentWallTop"));
+
+
+
+        /*** WALLS FOR OFFICE OUTLINE ***/
+
+        List<Patch> wallOfficeOutline = new ArrayList<>();
+
+        for (int i = 15; i <= 17; i++) {
+            for (int j = 1; j <= 30; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 23; i <= 25; i++) {
+            for (int j = 31; j <= 125; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 35; i <= 37; i++) {
+            for (int j = 127; j <= 145; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 48; i <= 50; i++) {
+            for (int j = 147; j <= 152; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 153; j <= 176; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 77; i <= 79; i++) {
+            for (int j = 183; j <= 202; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 115; i <= 117; i++) {
+            for (int j = 187; j <= 203; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 126; i <= 128; i++) {
+            for (int j = 134; j <= 186; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 108; i <= 110; i++) {
+            for (int j = 23; j <= 133; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 106; i <= 108; i++) {
+            for (int j = 0; j <= 22; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallOfficeOutline, "permanentWall"));
+
+
+
+
+        /*** RECEPTION AREA ***/
+
+        /** Reception Floor **/
+        List<Patch> floorReception = new ArrayList<>();
+
+        for (int i = 56; i <= 59; i++) {
+            for (int j = 177; j <= 181; j++) {
+                floorReception.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 60; i <= 66; i++) {
+            for (int j = 169; j <= 182; j++) {
+                floorReception.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 67; i <= 75; i++) {
+            for (int j = 170; j <= 182; j++) {
+                floorReception.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(floorReception, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsReception = new ArrayList<>();
+
+        for (int i = 67; i <= 76; i++) {
+            wallTopsReception.add(environment.getPatch(i, 169));
+        }
+        for (int j = 170; j <= 182; j++) {
+            wallTopsReception.add(environment.getPatch(76, j));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsReception, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsReception = new ArrayList<>();
+
+        for (int i = 77; i <= 79; i++) {
+            for (int j = 169; j <= 182; j++) {
+                wallsReception.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsReception, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsReception = new ArrayList<>();
+
+        for (int i = 57; i <= 59; i++) {
+            doorWallsReception.add(environment.getPatch(i, 169));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsReception.add(environment.getPatch(i, 182));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsReception, "doorPatch"));
+
+
+
+        /*** STAFF AREA ***/
+
+        /** Staff Area Floor **/
+        List<Patch> floorStaffArea = new ArrayList<>();
+
+        for (int i = 67; i <= 71; i++) {
+            for (int j = 144; j <= 151; j++) {
+                floorStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 67; i <= 71; i++) {
+            for (int j = 153; j <= 160; j++) {
+                floorStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 76; i <= 80; i++) {
+            for (int j = 144; j <= 151; j++) {
+                floorStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 76; i <= 80; i++) {
+            for (int j = 153; j <= 160; j++) {
+                floorStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getStaffRooms().add(StaffArea.staffAreaFactory.create(floorStaffArea, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsStaffArea = new ArrayList<>();
+
+        for (int i = 67; i <= 80; i++) {
+            wallTopsStaffArea.add(environment.getPatch(i, 143));
+        }
+        for (int i = 67; i <= 80; i++) {
+            wallTopsStaffArea.add(environment.getPatch(i, 152));
+        }
+        for (int i = 67; i <= 80; i++) {
+            wallTopsStaffArea.add(environment.getPatch(i, 161));
+        }
+        for (int j = 144; j <= 151; j++) {
+            wallTopsStaffArea.add(environment.getPatch(72, j));
+        }
+        for (int j = 153; j <= 160; j++) {
+            wallTopsStaffArea.add(environment.getPatch(72, j));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsStaffArea, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsStaffArea = new ArrayList<>();
+
+        for (int i = 73; i <= 75; i++) {
+            for (int j = 144; j <= 151; j++) {
+                wallsStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 73; i <= 75; i++) {
+            for (int j = 153; j <= 160; j++) {
+                wallsStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsStaffArea, "wall"));
+
+
+
+
+        /*** SOLO ROOMS ***/
+
+        /** Solo Room 1 Floor **/
+        List<Patch> floorSR1 = new ArrayList<>();
+
+        for (int i = 67; i <= 70; i++) {
+            for (int j = 97; j <= 100; j++) {
+                floorSR1.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 71; i <= 75; i++) {
+            for (int j = 94; j <= 101; j++) {
+                floorSR1.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR1, "SR1"));
+
+        /** Solo Room 2 Floor **/
+        List<Patch> floorSR2 = new ArrayList<>();
+
+        for (int i = 71; i <= 75; i++) {
+            for (int j = 85; j <= 92; j++) {
+                floorSR2.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 76; i <= 79; i++) {
+            for (int j = 86; j <= 89; j++) {
+                floorSR2.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR2, "SR2"));
+
+        /** Solo Room 3 Floor **/
+        List<Patch> floorSR3 = new ArrayList<>();
+
+        for (int i = 71; i <= 75; i++) {
+            for (int j = 48; j <= 55; j++) {
+                floorSR3.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 76; i <= 79; i++) {
+            for (int j = 51; j <= 54; j++) {
+                floorSR3.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR3, "SR3"));
+
+        /** Solo Room 4 Floor **/
+        List<Patch> floorSR4 = new ArrayList<>();
+
+        for (int i = 67; i <= 70; i++) {
+            for (int j = 40; j <= 43; j++) {
+                floorSR4.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 71; i <= 75; i++) {
+            for (int j = 39; j <= 46; j++) {
+                floorSR4.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR4, "SR4"));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsSoloRoom = new ArrayList<>();
+
+        // Solo Rooms 1-2
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 84));
+        }
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 93));
+        }
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 102));
+        }
+        for (int j = 84; j <= 96; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(67, j));
+        }
+        for (int j = 101; j <= 102; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(67, j));
+        }
+        for (int j = 84; j <= 85; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(76, j));
+        }
+        for (int j = 90; j <= 102; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(76, j));
+        }
+
+        // Solo Rooms 3-4
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 38));
+        }
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 47));
+        }
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 56));
+        }
+        for (int j = 38; j <= 39; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(67, j));
+        }
+        for (int j = 44; j <= 56; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(67, j));
+        }
+        for (int j = 38; j <= 50; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(76, j));
+        }
+        for (int j = 55; j <= 56; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(76, j));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsSoloRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsSoloRoom = new ArrayList<>();
+
+        // Solo Rooms 1-2
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 85; j <= 92; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 94; j <= 95; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 77; i <= 79; i++) {
+            wallsSoloRoom.add(environment.getPatch(i, 84));
+        }
+        for (int i = 77; i <= 79; i++) {
+            for (int j = 91; j <= 102; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        // Solo Rooms 3-4
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 45; j <= 46; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 48; j <= 55; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 77; i <= 79; i++) {
+            for (int j = 38; j <= 49; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 77; i <= 79; i++) {
+            wallsSoloRoom.add(environment.getPatch(i, 56));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsSoloRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsSoloRoom = new ArrayList<>();
+
+        // SR 1
+        for (int i = 68; i <= 70; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 96));
+        }
+        for (int i = 68; i <= 70; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 101));
+        }
+
+        // SR 2
+        for (int i = 77; i <= 79; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 85));
+        }
+        for (int i = 77; i <= 79; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 90));
+        }
+
+        // SR 3
+        for (int i = 77; i <= 79; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 50));
+        }
+        for (int i = 77; i <= 79; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 55));
+        }
+        // SR 4
+        for (int i = 68; i <= 70; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 39));
+        }
+        for (int i = 68; i <= 70; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 44));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsSoloRoom, "doorPatch"));
+
+
+
+
+        /*** DATA CENTER ***/
+
+        /** Data Center Floor **/
+        List<Patch> floorDataCenter = new ArrayList<>();
+
+        for (int i = 38; i <= 55; i++) {
+            for (int j = 127; j <= 145; j++) {
+                floorDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 56; i <= 59; i++) {
+            for (int j = 140; j <= 144; j++) {
+                floorDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(floorDataCenter, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsDataCenter = new ArrayList<>();
+
+        for (int i = 35; i <= 56; i++) {
+            wallTopsDataCenter.add(environment.getPatch(i, 126));
+        }
+        for (int j = 127; j <= 139; j++) {
+            wallTopsDataCenter.add(environment.getPatch(56, j));
+        }
+        for (int j = 145; j <= 146; j++) {
+            wallTopsDataCenter.add(environment.getPatch(56, j));
+        }
+        for (int i = 48; i <= 55; i++) {
+            wallTopsDataCenter.add(environment.getPatch(i, 146));
+        }
+        for (int i = 50; i <= 51; i++) {
+            for (int j = 136; j <= 137; j++) {
+                wallTopsDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDataCenter, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsDataCenter = new ArrayList<>();
+
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 126; j <= 138; j++) {
+                wallsDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            wallsDataCenter.add(environment.getPatch(i, 146));
+        }
+        for (int i = 52; i <= 54; i++) {
+            for (int j = 136; j <= 137; j++) {
+                wallsDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDataCenter, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsDataCenter = new ArrayList<>();
+
+        for (int i = 57; i <= 59; i++) {
+            doorWallsDataCenter.add(environment.getPatch(i, 139));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsDataCenter.add(environment.getPatch(i, 145));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDataCenter, "doorPatch"));
+
+
+
+
+        /*** CONTROL CENTER ***/
+
+        /** Control Center Floor **/
+        List<Patch> floorControlCenter = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 107; j <= 125; j++) {
+                floorControlCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(floorControlCenter, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsControlCenter = new ArrayList<>();
+
+        wallTopsControlCenter.add(environment.getPatch(34, 107));
+        for (int j = 113; j <= 125; j++) {
+            wallTopsControlCenter.add(environment.getPatch(34, j));
+        }
+        for (int j = 107; j <= 119; j++) {
+            wallTopsControlCenter.add(environment.getPatch(56, j));
+        }
+        wallTopsControlCenter.add(environment.getPatch(56, 125));
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsControlCenter, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsControlCenter = new ArrayList<>();
+
+        for (int i = 35; i <= 37; i++) {
+            for (int j = 114; j <= 125; j++) {
+                wallsControlCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 106; j <= 118; j++) {
+                wallsControlCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 52; i <= 54; i++) {
+            for (int j = 136; j <= 137; j++) {
+                wallsControlCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsControlCenter, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsControlCenter = new ArrayList<>();
+
+        for (int i = 35; i <= 37; i++) {
+            doorWallsControlCenter.add(environment.getPatch(i, 107));
+        }
+        for (int i = 35; i <= 37; i++) {
+            doorWallsControlCenter.add(environment.getPatch(i, 113));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsControlCenter.add(environment.getPatch(i, 119));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsControlCenter.add(environment.getPatch(i, 125));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsControlCenter, "doorPatch"));
+
+
+
+
+        /*** LEARNING SPACES ***/
+
+        /** Learning Space 1 Floor **/
+        List<Patch> floorLS1 = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 86; j <= 105; j++) {
+                floorLS1.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS1, "LS1"));
+
+        /** Learning Space 2 Floor **/
+        List<Patch> floorLS2 = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 65; j <= 84; j++) {
+                floorLS2.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS2, "LS2"));
+
+        /** Learning Space 3 Floor **/
+        List<Patch> floorLS3 = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 44; j <= 63; j++) {
+                floorLS3.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS3, "LS3"));
+
+        /** Learning Space 4 Floor **/
+        List<Patch> floorLS4 = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 23; j <= 42; j++) {
+                floorLS4.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS4, "LS4"));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsLS = new ArrayList<>();
+
+
+        for (int j = 105; j <= 106; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 84; j <= 99; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 63; j <= 78; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 37; j <= 57; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 22; j <= 31; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 23; j <= 30; j++) {
+            wallTopsLS.add(environment.getPatch(22, j));
+        }
+
+        for (int i = 23; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 106));
+        }
+        for (int i = 23; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 85));
+        }
+        for (int i = 23; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 64));
+        }
+        for (int i = 23; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 43));
+        }
+        for (int i = 22; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 22));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsLS, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsLS = new ArrayList<>();
+
+        for (int i = 23; i <= 25; i++) {
+            for (int j = 23; j <= 30; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 22; j <= 30; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 38; j <= 56; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 64; j <= 77; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 85; j <= 98; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsLS, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsLS = new ArrayList<>();
+
+        // LS 1
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 105));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 99));
+        }
+
+        // LS 2
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 84));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 78));
+        }
+
+        // LS 3
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 63));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 57));
+        }
+
+        // LS 4
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 37));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 31));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsLS, "doorPatch"));
+
+
+
+
+        /*** BREAKER ROOM ***/
+
+        /** Breaker Room Floor **/
+        List<Patch> floorBreakerRoom = new ArrayList<>();
+
+        for (int i = 18; i <= 21; i++) {
+            for (int j = 22; j <= 30; j++) {
+                floorBreakerRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(floorBreakerRoom, ""));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsBreakerRoom = new ArrayList<>();
+
+        for (int i = 15; i <= 17; i++) {
+            doorWallsBreakerRoom.add(environment.getPatch(i, 22));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsBreakerRoom, "doorPatch"));
+
+
+
+
+        /*** MEETING ROOM ***/
+
+        /** Meeting Room Floor **/
+        List<Patch> floorMeetingRoom = new ArrayList<>();
+
+        for (int i = 27; i <= 59; i++) {
+            for (int j = 1; j <= 15; j++) {
+                floorMeetingRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(floorMeetingRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsMeetingRoom = new ArrayList<>();
+
+        for (int j = 1; j <= 16; j++) {
+            wallTopsMeetingRoom.add(environment.getPatch(23, j));
+        }
+        for (int i = 24; i <= 55; i++) {
+            wallTopsMeetingRoom.add(environment.getPatch(i, 16));
+        }
+        for (int j = 1; j <= 9; j++) {
+            wallTopsMeetingRoom.add(environment.getPatch(56, j));
+        }
+        for (int j = 15; j <= 16; j++) {
+            wallTopsMeetingRoom.add(environment.getPatch(56, j));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsMeetingRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsMeetingRoom = new ArrayList<>();
+
+        for (int i = 24; i <= 26; i++) {
+            for (int j = 1; j <= 15; j++) {
+                wallsMeetingRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 1; j <= 8; j++) {
+                wallsMeetingRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            wallsMeetingRoom.add(environment.getPatch(i, 16));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsMeetingRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsMeetingRoom = new ArrayList<>();
+
+        for (int i = 57; i <= 59; i++) {
+            doorWallsMeetingRoom.add(environment.getPatch(i, 9));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsMeetingRoom.add(environment.getPatch(i, 15));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsMeetingRoom, "doorPatch"));
+
+
+
+        /*** CONFERENCE ROOM ***/
+
+        /** Conference Room Floor **/
+        List<Patch> floorConferenceRoom = new ArrayList<>();
+
+        for (int i = 89; i <= 106; i++) {
+            for (int j = 143; j <= 168; j++) {
+                floorConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(floorConferenceRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsConferenceRoom = new ArrayList<>();
+
+        for (int j = 156; j <= 157; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(88, j));
+        }
+        for (int j = 142; j <= 143; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(89, j));
+        }
+        for (int j = 149; j <= 162; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(89, j));
+        }
+        for (int j = 168; j <= 169; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(89, j));
+        }
+        for (int j = 156; j <= 157; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(90, j));
+        }
+        for (int j = 143; j <= 144; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(104, j));
+        }
+        for (int j = 142; j <= 169; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(107, j));
+        }
+        for (int i = 90; i <= 106; i++) {
+            wallTopsConferenceRoom.add(environment.getPatch(i, 142));
+        }
+        for (int i = 90; i <= 106; i++) {
+            wallTopsConferenceRoom.add(environment.getPatch(i, 169));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsConferenceRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsConferenceRoom = new ArrayList<>();
+
+        for (int i = 90; i <= 92; i++) {
+            for (int j = 150; j <= 155; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 90; i <= 92; i++) {
+            for (int j = 158; j <= 161; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 91; i <= 93; i++) {
+            for (int j = 156; j <= 157; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 105; i <= 106; i++) {
+            for (int j = 143; j <= 144; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 108; i <= 109; i++) {
+            for (int j = 143; j <= 144; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 108; i <= 110; i++) {
+            for (int j = 145; j <= 169; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsConferenceRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsConferenceRoom = new ArrayList<>();
+
+        for (int i = 90; i <= 92; i++) {
+            doorWallsConferenceRoom.add(environment.getPatch(i, 143));
+        }
+        for (int i = 90; i <= 92; i++) {
+            doorWallsConferenceRoom.add(environment.getPatch(i, 149));
+        }
+        for (int i = 90; i <= 92; i++) {
+            doorWallsConferenceRoom.add(environment.getPatch(i, 162));
+        }
+        for (int i = 90; i <= 92; i++) {
+            doorWallsConferenceRoom.add(environment.getPatch(i, 168));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsConferenceRoom, "doorPatch"));
+
+
+
+        /*** STORAGE ROOM ***/
+
+        /** Storage Room Floor **/
+        List<Patch> floorStorageRoom = new ArrayList<>();
+
+        for (int i = 89; i <= 106; i++) {
+            for (int j = 130; j <= 141; j++) {
+                floorStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(floorStorageRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsStorageRoom = new ArrayList<>();
+
+        for (int j = 131; j <= 132; j++) {
+            wallTopsStorageRoom.add(environment.getPatch(88, j));
+        }
+        for (int j = 129; j <= 135; j++) {
+            wallTopsStorageRoom.add(environment.getPatch(89, j));
+        }
+        wallTopsStorageRoom.add(environment.getPatch(89, 141));
+        for (int j = 131; j <= 132; j++) {
+            wallTopsStorageRoom.add(environment.getPatch(90, j));
+        }
+        for (int j = 135; j <= 141; j++) {
+            wallTopsStorageRoom.add(environment.getPatch(107, j));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsStorageRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsStorageRoom = new ArrayList<>();
+
+        for (int i = 90; i <= 92; i++) {
+            for (int j = 129; j <= 130; j++) {
+                wallsStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 90; i <= 92; i++) {
+            for (int j = 133; j <= 134; j++) {
+                wallsStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 91; i <= 93; i++) {
+            for (int j = 131; j <= 132; j++) {
+                wallsStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 108; i <= 110; i++) {
+            for (int j = 135; j <= 141; j++) {
+                wallsStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsStorageRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsStorageRoom = new ArrayList<>();
+
+        for (int i = 90; i <= 92; i++) {
+            doorWallsStorageRoom.add(environment.getPatch(i, 135));
+        }
+        for (int i = 90; i <= 92; i++) {
+            doorWallsStorageRoom.add(environment.getPatch(i, 141));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsStorageRoom, "doorPatch"));
+
+
+
+        /*** FACULTY ROOM ***/
+
+        /** Faculty Room Floor **/
+        List<Patch> floorFacultyRoom = new ArrayList<>();
+
+        for (int i = 87; i <= 106; i++) {
+            for (int j = 99; j <= 127; j++) {
+                floorFacultyRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(floorFacultyRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsFacultyRoom = new ArrayList<>();
+
+        for (int j = 99; j <= 120; j++) {
+            wallTopsFacultyRoom.add(environment.getPatch(87, j));
+        }
+        for (int j = 127; j <= 128; j++) {
+            wallTopsFacultyRoom.add(environment.getPatch(87, j));
+        }
+        for (int i = 101; i <= 102; i++) {
+            for (int j = 102; j <= 103; j++) {
+                wallTopsFacultyRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 98; i <= 106; i++) {
+            wallTopsFacultyRoom.add(environment.getPatch(i, 99));
+        }
+        for (int i = 88; i <= 106; i++) {
+            wallTopsFacultyRoom.add(environment.getPatch(i, 128));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsFacultyRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsFacultyRoom = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            for (int j = 100; j <= 119; j++) {
+                wallsFacultyRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 103; i <= 105; i++) {
+            for (int j = 102; j <= 103; j++) {
+                wallsFacultyRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsFacultyRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsFacultyRoom = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            doorWallsFacultyRoom.add(environment.getPatch(i, 99));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsFacultyRoom.add(environment.getPatch(i, 120));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsFacultyRoom.add(environment.getPatch(i, 127));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsFacultyRoom, "doorPatch"));
+
+
+
+
+        /*** RESEARCH CENTER ***/
+
+        /** Research Center Floor **/
+        List<Patch> floorResearchCenter = new ArrayList<>();
+
+        for (int i = 87; i <= 106; i++) {
+            for (int j = 24; j <= 98; j++) {
+                floorResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(floorResearchCenter, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsResearchCenter = new ArrayList<>();
+
+        wallTopsResearchCenter.add(environment.getPatch(87, 24));
+        for (int j = 30; j <= 98; j++) {
+            wallTopsResearchCenter.add(environment.getPatch(87, j));
+        }
+        for (int i = 98; i <= 106; i++) {
+            wallTopsResearchCenter.add(environment.getPatch(i, 98));
+        }
+        for (int i = 96; i <= 97; i++) {
+            for (int j = 31; j <= 32; j++) {
+                wallTopsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 96; i <= 97; i++) {
+            for (int j = 53; j <= 54; j++) {
+                wallTopsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 101; i <= 102; i++) {
+            for (int j = 83; j <= 84; j++) {
+                wallTopsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsResearchCenter, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsResearchCenter = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            for (int j = 31; j <= 97; j++) {
+                wallsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 103; i <= 105; i++) {
+            for (int j = 83; j <= 84; j++) {
+                wallsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 98; i <= 100; i++) {
+            for (int j = 53; j <= 54; j++) {
+                wallsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 98; i <= 100; i++) {
+            for (int j = 31; j <= 32; j++) {
+                wallsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsResearchCenter, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsResearchCenter = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            doorWallsResearchCenter.add(environment.getPatch(i, 24));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsResearchCenter.add(environment.getPatch(i, 30));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsResearchCenter.add(environment.getPatch(i, 98));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsResearchCenter, "doorPatch"));
+
+
+
+
+        /*** DATA COLLECTION ROOM ***/
+
+        /** Data Collection Room Floor **/
+        List<Patch> floorDCRoom = new ArrayList<>();
+
+        for (int i = 87; i <= 104; i++) {
+            for (int j = 1; j <= 22; j++) {
+                floorDCRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(floorDCRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsDCRoom = new ArrayList<>();
+
+        for (int j = 1; j <= 8; j++) {
+            wallTopsDCRoom.add(environment.getPatch(87, j));
+        }
+        for (int j = 14; j <= 16; j++) {
+            wallTopsDCRoom.add(environment.getPatch(87, j));
+        }
+        for (int j = 22; j <= 23; j++) {
+            wallTopsDCRoom.add(environment.getPatch(87, j));
+        }
+        for (int j = 1; j <= 6; j++) {
+            wallTopsDCRoom.add(environment.getPatch(96, j));
+        }
+        wallTopsDCRoom.add(environment.getPatch(104, 6));
+        for (int i = 88; i <= 104; i++) {
+            wallTopsDCRoom.add(environment.getPatch(i, 23));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDCRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsDCRoom = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            for (int j = 1; j <= 7; j++) {
+                wallsDCRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 97; i <= 99; i++) {
+            for (int j = 1; j <= 5; j++) {
+                wallsDCRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 88; i <= 90; i++) {
+            wallsDCRoom.add(environment.getPatch(i, 15));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDCRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsDCRoom = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 8));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 14));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 16));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 22));
+        }
+        for (int i = 97; i <= 99; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 6));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDCRoom, "doorPatch"));
+
+
+
+
+        /*** HUMAN EXPERIENCE ROOM ***/
+
+        /** Human Experience Room Floor **/
+        List<Patch> floorHERoom = new ArrayList<>();
+
+        for (int i = 71; i <= 86; i++) {
+            for (int j = 1; j <= 15; j++) {
+                floorHERoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(floorHERoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsHERoom = new ArrayList<>();
+
+        for (int j = 1; j <= 15; j++) {
+            wallTopsHERoom.add(environment.getPatch(67, j));
+        }
+        for (int i = 77; i <= 86; i++) {
+            wallTopsHERoom.add(environment.getPatch(i, 15));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsHERoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsHERoom = new ArrayList<>();
+
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 1; j <= 14; j++) {
+                wallsHERoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsHERoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsHERoom = new ArrayList<>();
+
+        for (int i = 68; i <= 70; i++) {
+            doorWallsHERoom.add(environment.getPatch(i, 15));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsHERoom, "doorPatch"));
+
+
+
+
+        /*** CLINIC ***/
+
+        /** Clinic Floor **/
+        List<Patch> floorClinic = new ArrayList<>();
+
+        for (int i = 80; i <= 87; i++) {
+            for (int j = 186; j <= 193; j++) {
+                floorClinic.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(floorClinic, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsClinic = new ArrayList<>();
+
+        for (int j = 186; j <= 194; j++) {
+            wallTopsClinic.add(environment.getPatch(88, j));
+        }
+        for (int i = 85; i <= 87; i++) {
+            wallTopsClinic.add(environment.getPatch(i, 186));
+        }
+        for (int i = 77; i <= 87; i++) {
+            wallTopsClinic.add(environment.getPatch(i, 194));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsClinic, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsClinic = new ArrayList<>();
+
+        for (int i = 89; i <= 91; i++) {
+            for (int j = 187; j <= 194; j++) {
+                wallsClinic.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsClinic, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsClinic = new ArrayList<>();
+
+        for (int i = 77; i <= 79; i++) {
+            doorWallsHERoom.add(environment.getPatch(i, 186));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsHERoom, "doorPatch"));
+
+
+
+
+        /*** DIRECTOR'S BATHROOM ***/
+
+        /** Director's BathRoom Floor **/
+        List<Patch> floorDB = new ArrayList<>();
+
+        for (int i = 80; i <= 91; i++) {
+            for (int j = 195; j <= 202; j++) {
+                floorDB.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorDB, "directorBathroom"));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsDB = new ArrayList<>();
+
+        for (int j = 200; j <= 202; j++) {
+            wallTopsDB.add(environment.getPatch(88, j));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDB, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsDB = new ArrayList<>();
+
+        for (int i = 89; i <= 91; i++) {
+            for (int j = 201; j <= 202; j++) {
+                wallsDB.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDB, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsDB = new ArrayList<>();
+
+        for (int i = 89; i <= 91; i++) {
+            doorWallsDB.add(environment.getPatch(i, 194));
+        }
+        for (int i = 89; i <= 91; i++) {
+            doorWallsDB.add(environment.getPatch(i, 200));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDB, "doorPatch"));
+
+
+
+
+        /*** DIRECTOR'S ROOM ***/
+
+        /** Director's Room Floor **/
+        List<Patch> floorDRoom = new ArrayList<>();
+
+        for (int i = 92; i <= 113; i++) {
+            for (int j = 186; j <= 202; j++) {
+                floorDRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(floorDRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsDRoom = new ArrayList<>();
+
+        for (int i = 97; i <= 113; i++) {
+            wallTopsDRoom.add(environment.getPatch(i, 186));
+        }
+        for (int i = 108; i <= 109; i++) {
+            for (int j = 201; j <= 202; j++) {
+                wallTopsDRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsDRoom = new ArrayList<>();
+
+        for (int i = 110; i <= 112; i++) {
+            for (int j = 201; j <= 202; j++) {
+                wallsDRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsDRoom = new ArrayList<>();
+
+        for (int i = 89; i <= 91; i++) {
+            doorWallsDRoom.add(environment.getPatch(i, 186));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDRoom, "doorPatch"));
+
+
+
+
+        /*** PANTRY ***/
+
+        /** Pantry Floor **/
+        List<Patch> floorPantry = new ArrayList<>();
+
+        for (int i = 111; i <= 124; i++) {
+            for (int j = 135; j <= 185; j++) {
+                floorPantry.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(floorPantry, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsPantry = new ArrayList<>();
+
+        for (int i = 108; i <= 110; i++) {
+            wallTopsPantry.add(environment.getPatch(i, 142));
+        }
+        for (int j = 143; j <= 144; j++) {
+            wallTopsPantry.add(environment.getPatch(110, j));
+        }
+        for (int i = 116; i <= 117; i++) {
+            for (int j = 144; j <= 145; j++) {
+                wallTopsPantry.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 116; i <= 117; i++) {
+            for (int j = 165; j <= 166; j++) {
+                wallTopsPantry.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsPantry, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsPantry = new ArrayList<>();
+
+        for (int i = 111; i <= 113; i++) {
+            for (int j = 142; j <= 144; j++) {
+                wallsPantry.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 118; i <= 120; i++) {
+            for (int j = 144; j <= 145; j++) {
+                wallsPantry.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 118; i <= 120; i++) {
+            for (int j = 165; j <= 166; j++) {
+                wallsPantry.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsPantry, "wall"));
+
+
+
+
+
+        /*** AMENITIES ***/
+
+
+        /*** MESA Table and Chair Set ***/
+
+        // Table on North and West
+        List<Patch> NWMESATableChairSetPatches = new ArrayList<>();
+        NWMESATableChairSetPatches.add(environment.getPatch(67,153));
+        CubicleMapper.draw(NWMESATableChairSetPatches, "MESA", "", "NORTH_AND_WEST", false, 0);
+
+        // Table on North and East
+        List<Patch> NEMESATableChairSetPatches = new ArrayList<>();
+        NEMESATableChairSetPatches.add(environment.getPatch(67,148));
+        CubicleMapper.draw(NEMESATableChairSetPatches, "MESA", "", "NORTH_AND_EAST", false, 0);
+
+        // Table on South and West
+        List<Patch> SWMESATableChairSetPatches = new ArrayList<>();
+        SWMESATableChairSetPatches.add(environment.getPatch(76,153));
+        CubicleMapper.draw(SWMESATableChairSetPatches, "MESA", "", "SOUTH_AND_WEST", false, 0);
+
+        // Table on South and East
+        List<Patch> SEMESATableChairSetPatches = new ArrayList<>();
+        SEMESATableChairSetPatches.add(environment.getPatch(76,148));
+        CubicleMapper.draw(SEMESATableChairSetPatches, "MESA", "", "SOUTH_AND_EAST", false, 0);
+
+        /*** Cubicle Type A ***/
+
+        // Two Cubicles Back-to-Back (Vertical) with appliance
+        List<Patch> CubicleTypeA = new ArrayList<>();
+        CubicleTypeA.add(environment.getPatch(43,111));
+        CubicleMapper.draw(CubicleTypeA, "TYPE_A", "", "", true, 1);
+
+
+        /*** Cubicle Type B ***/
+
+        // FACING WEST
+        List<Patch> WCubicleTypeB = new ArrayList<>();
+        WCubicleTypeB.add(environment.getPatch(95,105));
+        WCubicleTypeB.add(environment.getPatch(95,115));
+        WCubicleTypeB.add(environment.getPatch(95,125));
+        WCubicleTypeB.add(environment.getPatch(99,105));
+        WCubicleTypeB.add(environment.getPatch(99,115));
+        WCubicleTypeB.add(environment.getPatch(99,125));
+        CubicleMapper.draw(WCubicleTypeB, "TYPE_B", "WEST", "", true, 2);
+
+        // FACING WEST
+        List<Patch> ECubicleTypeB = new ArrayList<>();
+        ECubicleTypeB.add(environment.getPatch(95,108));
+        ECubicleTypeB.add(environment.getPatch(95,118));
+        ECubicleTypeB.add(environment.getPatch(99,108));
+        ECubicleTypeB.add(environment.getPatch(99,118));
+        CubicleMapper.draw(ECubicleTypeB, "TYPE_B", "EAST", "", true, 2);
+
+
+        /*** Cubicle Type C ***/
+
+        // FACING WEST
+        List<Patch> WCubicleTypeC = new ArrayList<>();
+        WCubicleTypeC.add(environment.getPatch(41,120));
+        WCubicleTypeC.add(environment.getPatch(44,120));
+        WCubicleTypeC.add(environment.getPatch(47,120));
+        WCubicleTypeC.add(environment.getPatch(50,120));
+        CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "WEST", "", false, 0);
+
+
+        /*** Reception Table ***/
+        List<Patch> ReceptionTable1x8 = new ArrayList<>();
+        ReceptionTable1x8.add(environment.getPatch(69,170)); // Reception Bar
+        ReceptionTableMapper.draw(ReceptionTable1x8, "1x8");
+
+        /*** Research Table ***/
+
+        // Facing West
+        List<Patch> westResearchTable = new ArrayList<>();
+        westResearchTable.add(environment.getPatch(99,46));
+        westResearchTable.add(environment.getPatch(99,68));
+        westResearchTable.add(environment.getPatch(99,76));
+        westResearchTable.add(environment.getPatch(99,38));
+        westResearchTable.add(environment.getPatch(99,60));
+        westResearchTable.add(environment.getPatch(99,90));
+        ResearchTableMapper.draw(westResearchTable, "WEST");
+
+        // Facing East
+        List<Patch> eastResearchTable = new ArrayList<>();
+        eastResearchTable.add(environment.getPatch(99,91));
+        eastResearchTable.add(environment.getPatch(99,39));
+        eastResearchTable.add(environment.getPatch(99,47));
+        eastResearchTable.add(environment.getPatch(99,61));
+        eastResearchTable.add(environment.getPatch(99,69));
+        eastResearchTable.add(environment.getPatch(99,77));
+        ResearchTableMapper.draw(eastResearchTable, "EAST");
+
+        /*** Meeting Table ***/
+
+        // VERTICAL LARGE
+        List<Patch> VerticalLargeTable = new ArrayList<>();
+        VerticalLargeTable.add(environment.getPatch(35,7));
+        MeetingTableMapper.draw(VerticalLargeTable, "VERTICAL", "LARGE", "");
+
+        // VERTICAL SMALL
+        List<Patch> VerticalSmallTable = new ArrayList<>();
+        VerticalSmallTable.add(environment.getPatch(97,198));
+        MeetingTableMapper.draw(VerticalSmallTable, "VERTICAL", "SMALL", "");
+
+        // HORIZONTAL LARGE
+        List<Patch> LeftHorizontalLargeTable = new ArrayList<>();
+        LeftHorizontalLargeTable.add(environment.getPatch(98,147));
+        MeetingTableMapper.draw(LeftHorizontalLargeTable, "HORIZONTAL", "LARGE", "LEFT");
+        List<Patch> RightHorizontalLargeTable = new ArrayList<>();
+        RightHorizontalLargeTable.add(environment.getPatch(98,156));
+        MeetingTableMapper.draw(RightHorizontalLargeTable, "HORIZONTAL", "LARGE", "RIGHT");
+
+
+
+        /*** Learning Table ***/
+        // HORIZONTAL
+        List<Patch> HorizontalLearningTable = new ArrayList<>();
+        HorizontalLearningTable.add(environment.getPatch(33,26));
+        HorizontalLearningTable.add(environment.getPatch(33,35));
+        HorizontalLearningTable.add(environment.getPatch(33,47));
+        HorizontalLearningTable.add(environment.getPatch(33,56));
+        HorizontalLearningTable.add(environment.getPatch(33,68));
+        HorizontalLearningTable.add(environment.getPatch(33,77));
+        HorizontalLearningTable.add(environment.getPatch(33,89));
+        HorizontalLearningTable.add(environment.getPatch(33,98));
+        HorizontalLearningTable.add(environment.getPatch(47,26));
+        HorizontalLearningTable.add(environment.getPatch(47,35));
+        HorizontalLearningTable.add(environment.getPatch(47,47));
+        HorizontalLearningTable.add(environment.getPatch(47,56));
+        HorizontalLearningTable.add(environment.getPatch(47,68));
+        HorizontalLearningTable.add(environment.getPatch(47,77));
+        HorizontalLearningTable.add(environment.getPatch(47,89));
+        HorizontalLearningTable.add(environment.getPatch(47,98));
+        LearningTableMapper.draw(HorizontalLearningTable, "HORIZONTAL");
+
+        /*** Pantry Table ***/
+
+        // TYPE A
+        List<Patch> pantryTableTypeA = new ArrayList<>();
+        pantryTableTypeA.add(environment.getPatch(117,180));
+        pantryTableTypeA.add(environment.getPatch(120,175));
+        PantryTableMapper.draw(pantryTableTypeA, "TYPE_A");
+
+        // TYPE B
+        List<Patch> pantryTableTypeB = new ArrayList<>();
+        pantryTableTypeB.add(environment.getPatch(117,169));
+        pantryTableTypeB.add(environment.getPatch(121,139));
+        pantryTableTypeB.add(environment.getPatch(121,148));
+        pantryTableTypeB.add(environment.getPatch(121,154));
+        pantryTableTypeB.add(environment.getPatch(121,160));
+        PantryTableMapper.draw(pantryTableTypeB, "TYPE_B");
+
+        // TYPE A CHAIRS
+        List<Patch> southPantryChairTypeA = new ArrayList<>();
+        southPantryChairTypeA.add(environment.getPatch(111,150));
+        southPantryChairTypeA.add(environment.getPatch(111,151));
+        southPantryChairTypeA.add(environment.getPatch(111,152));
+        southPantryChairTypeA.add(environment.getPatch(111,153));
+        southPantryChairTypeA.add(environment.getPatch(111,154));
+        ChairMapper.draw(southPantryChairTypeA, 0, "SOUTH", "PANTRY_TYPE_A", "NULL");
+
+        // TYPE B CHAIRS
+        List<Patch> southPantryChairTypeB = new ArrayList<>();
+        southPantryChairTypeB.add(environment.getPatch(111,145));
+        southPantryChairTypeB.add(environment.getPatch(111,146));
+        southPantryChairTypeB.add(environment.getPatch(111,147));
+        southPantryChairTypeB.add(environment.getPatch(111,148));
+        southPantryChairTypeB.add(environment.getPatch(111,149));
+        ChairMapper.draw(southPantryChairTypeB, 0, "SOUTH", "PANTRY_TYPE_B", "NULL");
+
+
+        /*** Director Table ***/
+
+        List<Patch> directorTable = new ArrayList<>();
+        directorTable.add(environment.getPatch(108,190));
+        DirectorTableMapper.draw(directorTable, "HORIZONTAL", true);
+
+
+        /* TABLE 2x2 */
+        List<Patch> table2x2 = new ArrayList<>();
+        table2x2.add(environment.getPatch(45,127));
+        Table2x2Mapper.draw(table2x2);
+
+
+        /*** Solo Table ***/
+
+        // TOP
+        List<Patch> topSoloTables = new ArrayList<>();
+        topSoloTables.add(environment.getPatch(71,48));
+        topSoloTables.add(environment.getPatch(71,85));
+        SoloTableMapper.draw(topSoloTables, "1x8", "TOP");
+
+        // BOTTOM
+        List<Patch> bottomSoloTables = new ArrayList<>();
+        bottomSoloTables.add(environment.getPatch(75,39));
+        bottomSoloTables.add(environment.getPatch(75,94));
+        SoloTableMapper.draw(bottomSoloTables, "1x8", "BOTTOM");
+
+        /*** Human Experience Table ***/
+        List<Patch> humanExpTable = new ArrayList<>();
+        humanExpTable.add(environment.getPatch(77,5));
+        HumanExpTableMapper.draw(humanExpTable, "5x1");
+
+        /*** Data Collection Table ***/
+        List<Patch> dataCollTable = new ArrayList<>();
+        dataCollTable.add(environment.getPatch(91,2));
+        DataCollTableMapper.draw(dataCollTable, "1x6");
+
+
+        /*** White Board ***/
+
+        // NORTH
+        List<Patch> NorthWhiteBoard = new ArrayList<>();
+        NorthWhiteBoard.add(environment.getPatch(95,31));
+        NorthWhiteBoard.add(environment.getPatch(95,53));
+        WhiteboardMapper.draw(NorthWhiteBoard, "NORTH", "2");
+
+        // SOUTH
+        List<Patch> SouthWhiteBoard = new ArrayList<>();
+        SouthWhiteBoard.add(environment.getPatch(23,25));
+        SouthWhiteBoard.add(environment.getPatch(23,35));
+        SouthWhiteBoard.add(environment.getPatch(23,47));
+        SouthWhiteBoard.add(environment.getPatch(23,56));
+        SouthWhiteBoard.add(environment.getPatch(23,68));
+        SouthWhiteBoard.add(environment.getPatch(23,77));
+        SouthWhiteBoard.add(environment.getPatch(23,89));
+        SouthWhiteBoard.add(environment.getPatch(23,98));
+        WhiteboardMapper.draw(SouthWhiteBoard, "SOUTH", "5");
+
+        // WEST
+        List<Patch> WestWhiteBoard = new ArrayList<>();
+        WestWhiteBoard.add(environment.getPatch(96,30));
+        WestWhiteBoard.add(environment.getPatch(96,52));
+        WhiteboardMapper.draw(WestWhiteBoard, "WEST", "4");
+
+        // EAST 4
+        List<Patch> East4WhiteBoard = new ArrayList<>();
+        East4WhiteBoard.add(environment.getPatch(96,33));
+        East4WhiteBoard.add(environment.getPatch(96,55));
+        WhiteboardMapper.draw(East4WhiteBoard, "EAST", "4");
+
+        // EAST 11
+        List<Patch> East11WhiteBoard = new ArrayList<>();
+        East11WhiteBoard.add(environment.getPatch(35,1));
+        WhiteboardMapper.draw(East11WhiteBoard, "EAST", "11");
+
+        /*** Elevator ***/
+        List<Patch> elevator = new ArrayList<>();
+        elevator.add(environment.getPatch(26,193));
+        elevator.add(environment.getPatch(37,193));
+        elevator.add(environment.getPatch(48,193));
+        ElevatorMapper.draw(elevator, Elevator.ElevatorMode.ENTRANCE_AND_EXIT,  "VERTICAL");
+
+        /*** Couch ***/
+        List<Patch> couch = new ArrayList<>();
+        couch.add(environment.getPatch(69,141));
+        CouchMapper.draw(couch, "WEST");
+
+        /*** Refrigerator ***/
+        List<Patch> refrigerator = new ArrayList<>();
+        refrigerator.add(environment.getPatch(110,141));
+        RefrigeratorMapper.draw(refrigerator);
+
+        /*** Water Dispenser ***/
+        List<Patch> waterDispenser = new ArrayList<>();
+        waterDispenser.add(environment.getPatch(110,140));
+        WaterDispenserMapper.draw(waterDispenser);
+
+        /*** Plant ***/
+        List<Patch> plants = new ArrayList<>();
+        plants.add(environment.getPatch(62,2));
+        plants.add(environment.getPatch(74,179));
+        plants.add(environment.getPatch(74,181));
+        plants.add(environment.getPatch(75,180));
+        plants.add(environment.getPatch(82,201));
+        plants.add(environment.getPatch(84,201));
+        plants.add(environment.getPatch(86,201));
+        PlantMapper.draw(plants);
+
+        /*** Trash Can ***/
+        List<Patch> trashCans = new ArrayList<>();
+        trashCans.add(environment.getPatch(80,199));
+        trashCans.add(environment.getPatch(113,135));
+        trashCans.add(environment.getPatch(107,201));
+        TrashCanMapper.draw(trashCans);
+
+        /*** Pantry Cabinet ***/
+        List<Patch> pantryCabinets = new ArrayList<>();
+        pantryCabinets.add(environment.getPatch(109,135));
+        pantryCabinets.add(environment.getPatch(109,136));
+        pantryCabinets.add(environment.getPatch(109,137));
+        pantryCabinets.add(environment.getPatch(109,138));
+        PantryCabinetMapper.draw(pantryCabinets);
+
+        /*** Office Toilet/Director Toilet ***/
+        List<Patch> southOfficeToilets = new ArrayList<>();
+        southOfficeToilets.add(environment.getPatch(79, 200));
+        ToiletMapper.draw(southOfficeToilets, "SOUTH", "OfficeToilet");
+
+        /*** Director Sink/ Office Sink ***/
+        List<Patch> southOfficeSinks = new ArrayList<>();
+        southOfficeSinks.add(environment.getPatch(80,197));
+        southOfficeSinks.add(environment.getPatch(111,136));
+        SinkMapper.draw(southOfficeSinks, "SOUTH", "OfficeSink");
+
+        /*** Sink ***/
+
+        // South
+        List<Patch> southSinks = new ArrayList<>();
+        southSinks.add(environment.getPatch(60,194));
+        southSinks.add(environment.getPatch(60,197));
+        southSinks.add(environment.getPatch(60,200));
+
+        SinkMapper.draw(southSinks, "SOUTH", "Sink");
+
+        // North
+        List<Patch> northSinks = new ArrayList<>();
+        northSinks.add(environment.getPatch(18,194));
+        northSinks.add(environment.getPatch(18,197));
+        northSinks.add(environment.getPatch(18,200));
+        SinkMapper.draw(northSinks, "NORTH", "Sink");
+
+        /*** Toilet ***/
+
+        // South
+        List<Patch> southToilets = new ArrayList<>();
+        southToilets.add(environment.getPatch(3,188));
+        southToilets.add(environment.getPatch(3,191));
+        southToilets.add(environment.getPatch(3,194));
+        southToilets.add(environment.getPatch(3,197));
+        southToilets.add(environment.getPatch(3,200));
+
+        ToiletMapper.draw(southToilets, "SOUTH", "Toilet");
+
+        // North
+        List<Patch> northToilets = new ArrayList<>();
+        northToilets.add(environment.getPatch(73,188));
+        northToilets.add(environment.getPatch(73,191));
+        northToilets.add(environment.getPatch(73,194));
+        northToilets.add(environment.getPatch(73,197));
+        northToilets.add(environment.getPatch(73,200));
+        ToiletMapper.draw(northToilets, "NORTH", "Toilet");
+
+        /*** Coffee Maker Bar ***/
+        List<Patch> coffeeMakerBar = new ArrayList<>();
+        coffeeMakerBar.add(environment.getPatch(110,137));
+        CoffeeMakerBarMapper.draw(coffeeMakerBar);
+
+        /*** Kettle Bar ***/
+        List<Patch> kettleBar = new ArrayList<>();
+        kettleBar.add(environment.getPatch(110,138));
+        KettleBarMapper.draw(kettleBar);
+
+        /*** Microwave Bar ***/
+        List<Patch> microwaveBar = new ArrayList<>();
+        microwaveBar.add(environment.getPatch(111,135));
+        MicrowaveBarMapper.draw(microwaveBar);
+
+        /*** Switches ***/
+
+        // South Light Switches
+        List<Patch> southLightSwitches = new ArrayList<>();
+        southLightSwitches.add(environment.getPatch(25,13));
+        southLightSwitches.add(environment.getPatch(69,12));
+        southLightSwitches.add(environment.getPatch(36,115));
+        southLightSwitches.add(environment.getPatch(89,117));
+        southLightSwitches.add(environment.getPatch(53,136));
+        southLightSwitches.add(environment.getPatch(91,133));
+        southLightSwitches.add(environment.getPatch(91,151));
+        southLightSwitches.add(environment.getPatch(58,174));
+        southLightSwitches.add(environment.getPatch(78,188));
+        southLightSwitches.add(environment.getPatch(90,188));
+        SwitchMapper.draw(southLightSwitches, "LIGHT", "SOUTH");
+
+        // South AC Switches
+        List<Patch> southACSwitches = new ArrayList<>();
+        southACSwitches.add(environment.getPatch(25,14));
+        southACSwitches.add(environment.getPatch(69,13));
+        southACSwitches.add(environment.getPatch(36,116));
+        southACSwitches.add(environment.getPatch(89,118));
+        southACSwitches.add(environment.getPatch(53,137));
+        southACSwitches.add(environment.getPatch(91,134));
+        southACSwitches.add(environment.getPatch(91,152));
+        southACSwitches.add(environment.getPatch(58,175));
+        southACSwitches.add(environment.getPatch(78,189));
+        southACSwitches.add(environment.getPatch(90,189));
+        southACSwitches.add(environment.getPatch(109,168));
+        SwitchMapper.draw(southACSwitches, "AC", "SOUTH");
+
+        // North Light Switches
+        List<Patch> northLightSwitches = new ArrayList<>();
+        northLightSwitches.add(environment.getPatch(95,4));
+        SwitchMapper.draw(northLightSwitches, "LIGHT", "NORTH");
+
+        // North AC Switches
+        List<Patch> northACSwitches = new ArrayList<>();
+        northACSwitches.add(environment.getPatch(95,5));
+        SwitchMapper.draw(northACSwitches, "AC", "NORTH");
+
+        // East Light Switches
+        List<Patch> eastLightSwitches = new ArrayList<>();
+        eastLightSwitches.add(environment.getPatch(53,23));
+        eastLightSwitches.add(environment.getPatch(72,39));
+        eastLightSwitches.add(environment.getPatch(74,85));
+        eastLightSwitches.add(environment.getPatch(56,147));
+        eastLightSwitches.add(environment.getPatch(87,195));
+        SwitchMapper.draw(eastLightSwitches, "LIGHT", "EAST");
+
+        // East AC Switches
+        List<Patch> eastACSwitches = new ArrayList<>();
+        eastACSwitches.add(environment.getPatch(54,23));
+        eastACSwitches.add(environment.getPatch(57,147));
+        SwitchMapper.draw(eastACSwitches, "AC", "EAST");
+
+        // West Light Switches
+        List<Patch> westLightSwitches = new ArrayList<>();
+        westLightSwitches.add(environment.getPatch(74,55));
+        westLightSwitches.add(environment.getPatch(72,101));
+        westLightSwitches.add(environment.getPatch(53,105));
+        westLightSwitches.add(environment.getPatch(103,82));
+        westLightSwitches.add(environment.getPatch(112,185));
+        SwitchMapper.draw(westLightSwitches, "LIGHT", "WEST");
+
+        // West AC Switches
+        List<Patch> westACSwitches = new ArrayList<>();
+        westACSwitches.add(environment.getPatch(54,105));
+        westACSwitches.add(environment.getPatch(104,82));
+        SwitchMapper.draw(westACSwitches, "AC", "WEST");
+
+        /*** Aircon ***/
+        List<Patch> aircons = new ArrayList<>();
+        aircons.add(environment.getPatch(40,7));
+        aircons.add(environment.getPatch(94,9));
+
+        // Research Center
+        aircons.add(environment.getPatch(92,34));
+        aircons.add(environment.getPatch(92,40));
+        aircons.add(environment.getPatch(97,71));
+        aircons.add(environment.getPatch(95,88));
+
+        // Faculty Room
+        aircons.add(environment.getPatch(95,101));
+        aircons.add(environment.getPatch(95,112));
+        aircons.add(environment.getPatch(100,122));
+
+        // Conference Room
+        aircons.add(environment.getPatch(94,149));
+        aircons.add(environment.getPatch(94,161));
+
+        aircons.add(environment.getPatch(119,151));
+        aircons.add(environment.getPatch(99,191));
+        aircons.add(environment.getPatch(82,189));
+        aircons.add(environment.getPatch(66,175));
+        aircons.add(environment.getPatch(39,132));
+        aircons.add(environment.getPatch(41,117));
+        aircons.add(environment.getPatch(50,117));
+        aircons.add(environment.getPatch(39,139));
+        aircons.add(environment.getPatch(27,99));
+        aircons.add(environment.getPatch(27,78));
+        aircons.add(environment.getPatch(47,70));
+        aircons.add(environment.getPatch(27,55));
+        aircons.add(environment.getPatch(50,48));
+        aircons.add(environment.getPatch(50,56));
+        aircons.add(environment.getPatch(28,35));
+        aircons.add(environment.getPatch(50,25));
+
+        aircons.add(environment.getPatch(72,21));
+        aircons.add(environment.getPatch(72,62));
+        aircons.add(environment.getPatch(72,99));
+        aircons.add(environment.getPatch(72,111));
+        aircons.add(environment.getPatch(72,125));
+        AirconMapper.draw(aircons);
+
+        /*** Lights ***/
+
+        // SINGLE_PENDANT_LIGHT
+        List<Patch> singlePendantLights = new ArrayList<>();
+
+        // Research Center
+        singlePendantLights.add(environment.getPatch(97,27));
+        singlePendantLights.add(environment.getPatch(103,27));
+        singlePendantLights.add(environment.getPatch(93,69));
+        singlePendantLights.add(environment.getPatch(93,76));
+        singlePendantLights.add(environment.getPatch(93,83));
+        singlePendantLights.add(environment.getPatch(93,90));
+
+        // Pantry
+        singlePendantLights.add(environment.getPatch(117,136));
+        singlePendantLights.add(environment.getPatch(120,136));
+        singlePendantLights.add(environment.getPatch(123,136));
+        singlePendantLights.add(environment.getPatch(114,184));
+        singlePendantLights.add(environment.getPatch(121,184));
+
+        // Director Room
+        singlePendantLights.add(environment.getPatch(98,198));
+
+        // Director Bathroom
+        singlePendantLights.add(environment.getPatch(82,197));
+        singlePendantLights.add(environment.getPatch(82,200));
+
+        // Hall
+        singlePendantLights.add(environment.getPatch(75,78));
+        singlePendantLights.add(environment.getPatch(75,106));
+
+        LightMapper.draw(singlePendantLights, "SINGLE_PENDANT_LIGHT", "");
+
+
+        //  HORIZONTAL LINEAR_PENDANT_LIGHT
+        List<Patch> horizontalLinearPendantLights = new ArrayList<>();
+
+        // Data Coll Room
+        horizontalLinearPendantLights.add(environment.getPatch(91,5));
+
+        // Faculty Room
+        horizontalLinearPendantLights.add(environment.getPatch(97,112));
+        horizontalLinearPendantLights.add(environment.getPatch(98,112));
+
+        // Conference Room
+        horizontalLinearPendantLights.add(environment.getPatch(99,153));
+        horizontalLinearPendantLights.add(environment.getPatch(99,155));
+        horizontalLinearPendantLights.add(environment.getPatch(99,157));
+
+        // Director Room
+        horizontalLinearPendantLights.add(environment.getPatch(107,191));
+
+        // MESA
+        horizontalLinearPendantLights.add(environment.getPatch(68,146));
+        horizontalLinearPendantLights.add(environment.getPatch(79,146));
+        horizontalLinearPendantLights.add(environment.getPatch(68,157));
+        horizontalLinearPendantLights.add(environment.getPatch(79,157));
+
+        // Hall
+        horizontalLinearPendantLights.add(environment.getPatch(75,62));
+        horizontalLinearPendantLights.add(environment.getPatch(75,118));
+
+
+
+        LightMapper.draw(horizontalLinearPendantLights, "LINEAR_PENDANT_LIGHT", "HORIZONTAL");
+
+        //  VERTICAL LINEAR_PENDANT_LIGHT
+        List<Patch> verticalLinearPendantLights = new ArrayList<>();
+
+        // Hall
+        verticalLinearPendantLights.add(environment.getPatch(73,33));
+        verticalLinearPendantLights.add(environment.getPatch(75,33));
+
+        // Research Center
+        verticalLinearPendantLights.add(environment.getPatch(99,36));
+        verticalLinearPendantLights.add(environment.getPatch(101,36));
+        verticalLinearPendantLights.add(environment.getPatch(99,44));
+        verticalLinearPendantLights.add(environment.getPatch(101,44));
+        verticalLinearPendantLights.add(environment.getPatch(99,58));
+        verticalLinearPendantLights.add(environment.getPatch(101,58));
+        verticalLinearPendantLights.add(environment.getPatch(99,66));
+        verticalLinearPendantLights.add(environment.getPatch(101,66));
+        verticalLinearPendantLights.add(environment.getPatch(99,74));
+        verticalLinearPendantLights.add(environment.getPatch(101,74));
+        verticalLinearPendantLights.add(environment.getPatch(99,88));
+        verticalLinearPendantLights.add(environment.getPatch(101,88));
+
+        LightMapper.draw(verticalLinearPendantLights, "LINEAR_PENDANT_LIGHT", "VERTICAL");
+
+        //  HORIZONTAL RECESSED_LINEAR_LIGHT
+        List<Patch> horizontalRecessedLinearLights = new ArrayList<>();
+
+        // Pantry
+        horizontalRecessedLinearLights.add(environment.getPatch(114,147));
+        horizontalRecessedLinearLights.add(environment.getPatch(114,158));
+        horizontalRecessedLinearLights.add(environment.getPatch(114,170));
+        horizontalRecessedLinearLights.add(environment.getPatch(123,161));
+        horizontalRecessedLinearLights.add(environment.getPatch(123,170));
+
+        // Hall
+        horizontalRecessedLinearLights.add(environment.getPatch(63,22));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,30));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,38));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,46));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,54));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,62));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,70));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,78));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,86));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,94));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,102));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,110));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,118));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,126));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,22));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,30));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,38));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,46));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,54));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,62));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,70));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,78));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,86));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,94));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,102));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,110));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,118));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,126));
+
+        LightMapper.draw(horizontalRecessedLinearLights, "RECESSED_LINEAR_LIGHT", "HORIZONTAL");
+
+
+        //  VERTICAL RECESSED_LINEAR_LIGHT
+        List<Patch> verticalRecessedLinearLights = new ArrayList<>();
+
+        // MeetingRoom
+        verticalRecessedLinearLights.add(environment.getPatch(31,8));
+        verticalRecessedLinearLights.add(environment.getPatch(46,8));
+
+        // HumanExpRoom
+        verticalRecessedLinearLights.add(environment.getPatch(78,6));
+        verticalRecessedLinearLights.add(environment.getPatch(78,10));
+
+        // Data Coll Room
+        verticalRecessedLinearLights.add(environment.getPatch(93,5));
+
+        // Research Center
+        verticalRecessedLinearLights.add(environment.getPatch(92,33));
+        verticalRecessedLinearLights.add(environment.getPatch(92,39));
+        verticalRecessedLinearLights.add(environment.getPatch(92,45));
+        verticalRecessedLinearLights.add(environment.getPatch(92,51));
+        verticalRecessedLinearLights.add(environment.getPatch(92,64));
+        verticalRecessedLinearLights.add(environment.getPatch(92,71));
+        verticalRecessedLinearLights.add(environment.getPatch(92,78));
+        verticalRecessedLinearLights.add(environment.getPatch(92,85));
+        verticalRecessedLinearLights.add(environment.getPatch(92,92));
+        verticalRecessedLinearLights.add(environment.getPatch(97,39));
+        verticalRecessedLinearLights.add(environment.getPatch(97,46));
+        verticalRecessedLinearLights.add(environment.getPatch(97,70));
+        verticalRecessedLinearLights.add(environment.getPatch(97,78));
+        verticalRecessedLinearLights.add(environment.getPatch(97,85));
+        verticalRecessedLinearLights.add(environment.getPatch(97,92));
+
+        // Faculty Room
+        verticalRecessedLinearLights.add(environment.getPatch(92,102));
+        verticalRecessedLinearLights.add(environment.getPatch(92,107));
+        verticalRecessedLinearLights.add(environment.getPatch(92,114));
+        verticalRecessedLinearLights.add(environment.getPatch(98,107));
+        verticalRecessedLinearLights.add(environment.getPatch(98,114));
+
+        // Storage Room
+        verticalRecessedLinearLights.add(environment.getPatch(95,134));
+        verticalRecessedLinearLights.add(environment.getPatch(103,134));
+
+        // Conference Room
+        verticalRecessedLinearLights.add(environment.getPatch(95,158));
+
+        // Director Room
+        verticalRecessedLinearLights.add(environment.getPatch(93,189));
+        verticalRecessedLinearLights.add(environment.getPatch(104,189));
+        verticalRecessedLinearLights.add(environment.getPatch(111,189));
+        verticalRecessedLinearLights.add(environment.getPatch(93,194));
+        verticalRecessedLinearLights.add(environment.getPatch(109,194));
+
+        // Clinic
+        verticalRecessedLinearLights.add(environment.getPatch(82,187));
+        verticalRecessedLinearLights.add(environment.getPatch(82,192));
+
+        // Reception
+        verticalRecessedLinearLights.add(environment.getPatch(62,172));
+        verticalRecessedLinearLights.add(environment.getPatch(71,172));
+        verticalRecessedLinearLights.add(environment.getPatch(62,179));
+        verticalRecessedLinearLights.add(environment.getPatch(71,179));
+
+        // Data Center
+        verticalRecessedLinearLights.add(environment.getPatch(39,129));
+        verticalRecessedLinearLights.add(environment.getPatch(39,136));
+        verticalRecessedLinearLights.add(environment.getPatch(39,143));
+
+        // Control Center
+        verticalRecessedLinearLights.add(environment.getPatch(39,109));
+        verticalRecessedLinearLights.add(environment.getPatch(52,109));
+        verticalRecessedLinearLights.add(environment.getPatch(39,116));
+        verticalRecessedLinearLights.add(environment.getPatch(39,123));
+        verticalRecessedLinearLights.add(environment.getPatch(52,123));
+
+        // Learning Space 1
+        verticalRecessedLinearLights.add(environment.getPatch(27,88));
+        verticalRecessedLinearLights.add(environment.getPatch(52,88));
+        verticalRecessedLinearLights.add(environment.getPatch(27,96));
+        verticalRecessedLinearLights.add(environment.getPatch(52,96));
+
+        // Learning Space 2
+        verticalRecessedLinearLights.add(environment.getPatch(27,67));
+        verticalRecessedLinearLights.add(environment.getPatch(52,67));
+        verticalRecessedLinearLights.add(environment.getPatch(27,75));
+        verticalRecessedLinearLights.add(environment.getPatch(52,75));
+
+        // Learning Space 3
+        verticalRecessedLinearLights.add(environment.getPatch(28,46));
+        verticalRecessedLinearLights.add(environment.getPatch(28,58));
+        verticalRecessedLinearLights.add(environment.getPatch(52,54));
+
+        // Learning Space 4
+        verticalRecessedLinearLights.add(environment.getPatch(28,25));
+        verticalRecessedLinearLights.add(environment.getPatch(28,40));
+        verticalRecessedLinearLights.add(environment.getPatch(50,33));
+
+        // Hall
+        verticalRecessedLinearLights.add(environment.getPatch(31,19));
+        verticalRecessedLinearLights.add(environment.getPatch(49,19));
+        verticalRecessedLinearLights.add(environment.getPatch(62,4));
+        verticalRecessedLinearLights.add(environment.getPatch(62,16));
+        verticalRecessedLinearLights.add(environment.getPatch(54,149));
+        verticalRecessedLinearLights.add(environment.getPatch(62,138));
+        verticalRecessedLinearLights.add(environment.getPatch(62,158));
+        verticalRecessedLinearLights.add(environment.getPatch(62,166));
+        verticalRecessedLinearLights.add(environment.getPatch(71,138));
+        verticalRecessedLinearLights.add(environment.getPatch(71,146));
+        verticalRecessedLinearLights.add(environment.getPatch(71,158));
+        verticalRecessedLinearLights.add(environment.getPatch(71,166));
+        verticalRecessedLinearLights.add(environment.getPatch(80,138));
+        verticalRecessedLinearLights.add(environment.getPatch(80,146));
+        verticalRecessedLinearLights.add(environment.getPatch(80,158));
+        verticalRecessedLinearLights.add(environment.getPatch(80,166));
+
+        LightMapper.draw(verticalRecessedLinearLights, "RECESSED_LINEAR_LIGHT", "VERTICAL");
+
+
+        //  HORIZONTAL TRACK_LIGHT
+        List<Patch> horizontalTrackLights = new ArrayList<>();
+
+        // Meeting Room
+        horizontalTrackLights.add(environment.getPatch(29,7));
+
+        // Research Center
+        horizontalTrackLights.add(environment.getPatch(95,34));
+        horizontalTrackLights.add(environment.getPatch(95,48));
+        horizontalTrackLights.add(environment.getPatch(95,59));
+        horizontalTrackLights.add(environment.getPatch(95,75));
+        horizontalTrackLights.add(environment.getPatch(95,91));
+
+        // Faculty Room
+        horizontalTrackLights.add(environment.getPatch(93,121));
+        horizontalTrackLights.add(environment.getPatch(102,111));
+        horizontalTrackLights.add(environment.getPatch(102,121));
+
+        // Pantry
+        horizontalTrackLights.add(environment.getPatch(118,151));
+        horizontalTrackLights.add(environment.getPatch(114,135));
+
+        // Director Room
+        horizontalTrackLights.add(environment.getPatch(112,190));
+
+        // Learning Space 1
+        horizontalTrackLights.add(environment.getPatch(27,90));
+        horizontalTrackLights.add(environment.getPatch(43,90));
+        horizontalTrackLights.add(environment.getPatch(43,98));
+        horizontalTrackLights.add(environment.getPatch(54,94));
+
+
+        // Learning Space 2
+        horizontalTrackLights.add(environment.getPatch(27,69));
+        horizontalTrackLights.add(environment.getPatch(43,69));
+        horizontalTrackLights.add(environment.getPatch(43,77));
+        horizontalTrackLights.add(environment.getPatch(54,73));
+
+
+        // Learning Space 3
+        horizontalTrackLights.add(environment.getPatch(27,49));
+        horizontalTrackLights.add(environment.getPatch(43,48));
+        horizontalTrackLights.add(environment.getPatch(54,52));
+
+        horizontalTrackLights.add(environment.getPatch(43,56));
+
+        // Learning Space 4
+        horizontalTrackLights.add(environment.getPatch(27,27));
+        horizontalTrackLights.add(environment.getPatch(43,27));
+        horizontalTrackLights.add(environment.getPatch(54,27));
+        horizontalTrackLights.add(environment.getPatch(43,35));
+
+
+        LightMapper.draw(horizontalTrackLights, "TRACK_LIGHT", "HORIZONTAL");
+
+
+
+        /* VERTICAL TRACK_LIGHT */
+
+        List<Patch> verticalTrackLights = new ArrayList<>();
+
+        // Conference Room
+        verticalTrackLights.add(environment.getPatch(96,144));
+        verticalTrackLights.add(environment.getPatch(96,167));
+
+        // Pantry
+        verticalTrackLights.add(environment.getPatch(116,149));
+        verticalTrackLights.add(environment.getPatch(116,155));
+        verticalTrackLights.add(environment.getPatch(116,167));
+        verticalTrackLights.add(environment.getPatch(116,178));
+
+        // Reception
+        verticalTrackLights.add(environment.getPatch(66,180));
+
+        LightMapper.draw(verticalTrackLights, "TRACK_LIGHT", "VERTICAL");
+
+
+        /* WINDOW + BLINDS */
+
+        List<Patch> glass = new ArrayList<>();
+        List<Patch> eastHallwayWindowBlinds = new ArrayList<>();
+        List<Patch> northSouthWindowBlinds = new ArrayList<>();
+        List<Patch> eastPantryWindowBlinds = new ArrayList<>();
+        List<Patch> westWindowBlinds = new ArrayList<>();
+        List<Patch> westDirectorWindowBlinds = new ArrayList<>();
+
+        // Hallway
+        eastHallwayWindowBlinds.add(environment.getPatch(61, 1));
+
+        // Data Collection Room
+        glass.add(environment.getPatch(88, 1));
+
+        for (int j = 8; j <= 21; j += 5) {
+            northSouthWindowBlinds.add(environment.getPatch(104, j));
+        }
+
+        // Research Center
+        for (int j = 24; j <= 97; j += 5) {
+            northSouthWindowBlinds.add(environment.getPatch(106, j));
+
+        }
+
+        // Faculty Room
+        for (int j = 100; j <= 127; j += 6) {
+            northSouthWindowBlinds.add(environment.getPatch(106, j));
+
+        }
+
+        // Pantry Room
+        eastPantryWindowBlinds.add(environment.getPatch(115, 135));
+
+
+        for (int j = 136; j <= 184; j += 5) {
+            northSouthWindowBlinds.add(environment.getPatch(124, j));
+        }
+
+        // Director Bathroom
+        for (int i = 81; i <= 86; i += 4) {
+            westDirectorWindowBlinds.add(environment.getPatch(i, 202));
+        }
+
+
+        // Director Room
+        for (int i = 93; i <= 106; i += 5) {
+            westWindowBlinds.add(environment.getPatch(i, 202));
+
+        }
+
+        for (int j = 188; j <= 201; j += 5) {
+            northSouthWindowBlinds.add(environment.getPatch(113, j));
+
+        }
+
+        WindowBlindsMapper.draw(glass, "GLASS", 7);
+        WindowBlindsMapper.draw(northSouthWindowBlinds, "CLOSED_NORTH_AND_SOUTH", 4);
+        WindowBlindsMapper.draw(eastPantryWindowBlinds, "CLOSED_EAST", 8);
+        WindowBlindsMapper.draw(eastHallwayWindowBlinds, "CLOSED_EAST", 5);
+        WindowBlindsMapper.draw(westWindowBlinds, "CLOSED_WEST", 4);
+        WindowBlindsMapper.draw(westDirectorWindowBlinds, "CLOSED_WEST", 2);
+
+
+        /* CABINETS & DRAWERS + STORAGE */
+
+        List<Patch> storage = new ArrayList<>();
+        List<Patch> southCabinet = new ArrayList<>();
+        List<Patch> southDrawers = new ArrayList<>();
+        List<Patch> northCabinet1x2 = new ArrayList<>();
+        List<Patch> eastDoubleDrawers = new ArrayList<>();
+        List<Patch> westDoubleDrawers = new ArrayList<>();
+
+        storage.add(environment.getPatch(85, 187));
+        StorageMapper.draw(storage, "DOUBLE_DRAWERS", "EAST");
+
+
+        southCabinet.add(environment.getPatch(52, 147));
+        CabinetDrawerMapper.draw(southCabinet, "CABINET", "SOUTH");
+
+        southDrawers.add(environment.getPatch(50, 151));
+        southDrawers.add(environment.getPatch(50, 152));
+        CabinetDrawerMapper.draw(southDrawers, "DRAWERS", "SOUTH");
+
+        northCabinet1x2.add(environment.getPatch(88, 129));
+        CabinetDrawerMapper.draw(northCabinet1x2, "CABINET_1x2", "NORTH");
+
+        eastDoubleDrawers.add(environment.getPatch(72, 162));
+        CabinetDrawerMapper.draw(eastDoubleDrawers, "DOUBLE_DRAWERS", "EAST");
+
+        westDoubleDrawers.add(environment.getPatch(72, 168));
+        CabinetDrawerMapper.draw(westDoubleDrawers, "DOUBLE_DRAWERS", "WEST");
+
+        /* SERVER */
+
+        List<Patch> serverTypeA = new ArrayList<>();
+        serverTypeA.add(environment.getPatch(43, 129));
+        ServerMapper.draw(serverTypeA, "TYPE_A");
+
+        List<Patch> serverTypeB = new ArrayList<>();
+        serverTypeB.add(environment.getPatch(47, 134));
+        serverTypeB.add(environment.getPatch(47, 135));
+        ServerMapper.draw(serverTypeB, "TYPE_B");
+
+    }
+
+
+
+    public void initializeLayoutB(Environment environment) {
+        GraphicsController.tileSize = backgroundCanvas.getHeight() / simulator.getEnvironment().getRows();
+        mapEnvironment();
+        simulator.spawnInitialAgents(environment);
+        drawInterface();
+    }
+
+    public void mapLayoutB() {
+        Environment environment = simulator.getEnvironment();
+
+        List<Patch> floorPatches = new ArrayList<>();
+
+        for (int i = 0; i < environment.getRows(); i++) {
+            for (int j = 0; j < environment.getColumns(); j++) {
+                floorPatches.add(environment.getPatch(i, j));
+            }
+        }
+
+
+        /*** FLOORS ***/
+        simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floorPatches, "floor"));
+
+
+
+        /****** OUTSIDE OFFICE ******/
+
+        /*** WALL TOPS OUTSIDE OFFICE ***/
+
+        List<Patch> wallTopsOutside = new ArrayList<>();
+
+        for (int j = 0; j <= 203; j++) {
+            wallTopsOutside.add(environment.getPatch(0, j));
+        }
+
+        for (int i = 1; i <= 13; i++) {
+            for (int j = 0; j <= 31; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 21; i++) {
+            for (int j = 32; j <= 126; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 33; i++) {
+            for (int j = 127; j <= 146; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 46; i++) {
+            for (int j = 147; j <= 153; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 55; i++) {
+            for (int j = 154; j <= 176; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 23; i++) {
+            for (int j = 177; j <= 184; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 1; i <= 9; i++) {
+            wallTopsOutside.add(environment.getPatch(i, 185));
+        }
+
+        for (int j = 185; j <= 191; j++) {
+            wallTopsOutside.add(environment.getPatch(10, j));
+        }
+
+        for (int i = 1; i <= 18; i++) {
+            wallTopsOutside.add(environment.getPatch(i, 203));
+        }
+
+        for (int j = 191; j <= 203; j++) {
+            wallTopsOutside.add(environment.getPatch(19, j));
+        }
+
+        for (int i = 20; i <= 22; i++) {
+            for (int j = 193; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 23; i <= 30; i++) {
+            for (int j = 194; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 31; i <= 33; i++) {
+            for (int j = 193; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 34; i <= 41; i++) {
+            for (int j = 194; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 42; i <= 44; i++) {
+            for (int j = 193; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 45; i <= 52; i++) {
+            for (int j = 194; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 53; i <= 55; i++) {
+            for (int j = 193; j <= 203; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int j = 191; j <= 203; j++) {
+            wallTopsOutside.add(environment.getPatch(56, j));
+        }
+
+        for (int i = 56; i <= 75; i++) {
+            for (int j = 184; j <= 185; j++) {
+                wallTopsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 56; i <= 65; i++) {
+            wallTopsOutside.add(environment.getPatch(i, 186));
+        }
+
+        for (int j = 187; j <= 191; j++) {
+            wallTopsOutside.add(environment.getPatch(65, j));
+        }
+
+        for (int j = 186; j <= 203; j++) {
+            wallTopsOutside.add(environment.getPatch(75, j));
+        }
+
+        for (int i = 57; i <= 74; i++) {
+            wallTopsOutside.add(environment.getPatch(i, 203));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsOutside, "officeNextDoor"));
+
+
+
+
+        /*** WALLS OUTSIDE OFFICE ***/
+
+        List<Patch> wallsOutside = new ArrayList<>();
+
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 186; j <= 202; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 11; i <= 13; i++) {
+            for (int j = 185; j <= 190; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 20; i <= 22; i++) {
+            for (int j = 191; j <= 192; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 24; i <= 26; i++) {
+            for (int j = 177; j <= 184; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 192; j <= 202; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 66; i <= 68; i++) {
+            for (int j = 186; j <= 191; j++) {
+                wallsOutside.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsOutside, "wallTop"));
+
+
+
+
+        /*** ENTRY POINT WALLS OUTSIDE OFFICE ***/
+
+        List<Patch> doorWallsOutside = new ArrayList<>();
+
+        for (int i = 11; i <= 13; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 191));
+        }
+
+        for (int i = 23; i <= 25; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 193));
+        }
+
+        for (int i = 34; i <= 36; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 193));
+        }
+
+        for (int i = 45; i <= 47; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 193));
+        }
+
+        for (int i = 57; i <= 59; i++) {
+            doorWallsOutside.add(environment.getPatch(i, 191));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsOutside, "doorPatch"));
+
+
+
+
+        /*** PATCHES OUTSIDE BUILDING ***/
+
+        List<Patch> patchesOutsideBuilding = new ArrayList<>();
+
+        for (int i = 109; i <= 128; i++) {
+            for (int j = 0; j <= 22; j++) {
+                patchesOutsideBuilding.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 111; i <= 128; i++) {
+            for (int j = 23; j <= 133; j++) {
+                patchesOutsideBuilding.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 118; i <= 128; i++) {
+            for (int j = 187; j <= 203; j++) {
+                patchesOutsideBuilding.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(patchesOutsideBuilding, "outsideBuilding"));
+
+
+
+
+        /*** MALE BATHROOM ***/
+
+        List<Patch> maleBathroom = new ArrayList<>();
+
+        for (int i = 4; i <= 9; i++) {
+            for (int j = 186; j <= 202; j++) {
+                maleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 10; i <= 13; i++) {
+            for (int j = 192; j <= 202; j++) {
+                maleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 14; i <= 18; i++) {
+            for (int j = 191; j <= 202; j++) {
+                maleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(maleBathroom, "maleBathroom"));
+
+
+
+
+        /*** FEMALE BATHROOM ***/
+
+        List<Patch> femaleBathroom = new ArrayList<>();
+
+        for (int i = 60; i <= 64; i++) {
+            for (int j = 191; j <= 202; j++) {
+                femaleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 65; i <= 68; i++) {
+            for (int j = 192; j <= 202; j++) {
+                femaleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 69; i <= 74; i++) {
+            for (int j = 186; j <= 202; j++) {
+                femaleBathroom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(femaleBathroom, "femaleBathroom"));
+
+
+        /****** INSIDE OFFICE ******/
+
+        /*** WALL TOPS FOR OFFICE OUTLINE ***/
+
+        List<Patch> wallTopsOfficeOutline = new ArrayList<>();
+
+        for (int i = 14; i <= 105; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 0));
+        }
+
+        for (int j = 1; j <= 30; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(14, j));
+        }
+
+        for (int i = 14; i <= 22; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 31));
+        }
+
+        for (int j = 32; j <= 125; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(22, j));
+        }
+
+        for (int i = 22; i <= 34; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 126));
+        }
+
+        for (int j = 127; j <= 145; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(34, j));
+        }
+
+        for (int i = 34; i <= 47; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 146));
+        }
+
+        for (int j = 147; j <= 152; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(47, j));
+        }
+
+        for (int i = 47; i <= 56; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 153));
+        }
+
+        for (int j = 154; j <= 176; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(56, j));
+        }
+
+        for (int j = 182; j <= 183; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(56, j));
+        }
+
+        for (int i = 57; i <= 76; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 183));
+        }
+
+        for (int j = 184; j <= 202; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(76, j));
+        }
+
+        for (int i = 76; i <= 114; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 203));
+        }
+
+        for (int j = 187; j <= 202; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(114, j));
+        }
+
+        for (int i = 114; i <= 125; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 186));
+        }
+
+        for (int j = 135; j <= 185; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(125, j));
+        }
+
+        for (int i = 107; i <= 125; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 134));
+        }
+
+        for (int j = 24; j <= 133; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(107, j));
+        }
+
+        for (int i = 105; i <= 107; i++) {
+            wallTopsOfficeOutline.add(environment.getPatch(i, 23));
+        }
+
+        for (int j = 0; j <= 22; j++) {
+            wallTopsOfficeOutline.add(environment.getPatch(105, j));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsOfficeOutline, "permanentWallTop"));
+
+
+
+        /*** WALLS FOR OFFICE OUTLINE ***/
+
+        List<Patch> wallOfficeOutline = new ArrayList<>();
+
+        for (int i = 15; i <= 17; i++) {
+            for (int j = 1; j <= 30; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 23; i <= 25; i++) {
+            for (int j = 31; j <= 125; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 35; i <= 37; i++) {
+            for (int j = 127; j <= 145; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 48; i <= 50; i++) {
+            for (int j = 147; j <= 152; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 153; j <= 176; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 77; i <= 79; i++) {
+            for (int j = 183; j <= 202; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 115; i <= 117; i++) {
+            for (int j = 187; j <= 203; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 126; i <= 128; i++) {
+            for (int j = 134; j <= 186; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 108; i <= 110; i++) {
+            for (int j = 23; j <= 133; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 106; i <= 108; i++) {
+            for (int j = 0; j <= 22; j++) {
+                wallOfficeOutline.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallOfficeOutline, "permanentWall"));
+
+
+
+
+        /*** RECEPTION AREA ***/
+
+        /** Reception Floor **/
+        List<Patch> floorReception = new ArrayList<>();
+
+        for (int i = 56; i <= 59; i++) {
+            for (int j = 177; j <= 181; j++) {
+                floorReception.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 60; i <= 66; i++) {
+            for (int j = 169; j <= 182; j++) {
+                floorReception.add(environment.getPatch(i, j));
+            }
+        }
+
+        for (int i = 67; i <= 75; i++) {
+            for (int j = 170; j <= 182; j++) {
+                floorReception.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(floorReception, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsReception = new ArrayList<>();
+
+        for (int i = 67; i <= 76; i++) {
+            wallTopsReception.add(environment.getPatch(i, 169));
+        }
+        for (int j = 170; j <= 182; j++) {
+            wallTopsReception.add(environment.getPatch(76, j));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsReception, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsReception = new ArrayList<>();
+
+        for (int i = 77; i <= 79; i++) {
+            for (int j = 169; j <= 182; j++) {
+                wallsReception.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsReception, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsReception = new ArrayList<>();
+
+        for (int i = 57; i <= 59; i++) {
+            doorWallsReception.add(environment.getPatch(i, 169));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsReception.add(environment.getPatch(i, 182));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsReception, "doorPatch"));
+
+
+
+        /*** STAFF AREA ***/
+
+        /** Staff Area Floor **/
+        List<Patch> floorStaffArea = new ArrayList<>();
+
+        for (int i = 67; i <= 71; i++) {
+            for (int j = 144; j <= 151; j++) {
+                floorStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 67; i <= 71; i++) {
+            for (int j = 153; j <= 160; j++) {
+                floorStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 76; i <= 80; i++) {
+            for (int j = 144; j <= 151; j++) {
+                floorStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 76; i <= 80; i++) {
+            for (int j = 153; j <= 160; j++) {
+                floorStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getStaffRooms().add(StaffArea.staffAreaFactory.create(floorStaffArea, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsStaffArea = new ArrayList<>();
+
+        for (int i = 67; i <= 80; i++) {
+            wallTopsStaffArea.add(environment.getPatch(i, 143));
+        }
+        for (int i = 67; i <= 80; i++) {
+            wallTopsStaffArea.add(environment.getPatch(i, 152));
+        }
+        for (int i = 67; i <= 80; i++) {
+            wallTopsStaffArea.add(environment.getPatch(i, 161));
+        }
+        for (int j = 144; j <= 151; j++) {
+            wallTopsStaffArea.add(environment.getPatch(72, j));
+        }
+        for (int j = 153; j <= 160; j++) {
+            wallTopsStaffArea.add(environment.getPatch(72, j));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsStaffArea, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsStaffArea = new ArrayList<>();
+
+        for (int i = 73; i <= 75; i++) {
+            for (int j = 144; j <= 151; j++) {
+                wallsStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 73; i <= 75; i++) {
+            for (int j = 153; j <= 160; j++) {
+                wallsStaffArea.add(environment.getPatch(i, j));
+            }
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsStaffArea, "wall"));
+
+
+
+
+        /*** SOLO ROOMS ***/
+
+        /** Solo Room 1 Floor **/
+        List<Patch> floorSR1 = new ArrayList<>();
+
+        for (int i = 67; i <= 70; i++) {
+            for (int j = 97; j <= 100; j++) {
+                floorSR1.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 71; i <= 75; i++) {
+            for (int j = 94; j <= 101; j++) {
+                floorSR1.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR1, "SR1"));
+
+        /** Solo Room 2 Floor **/
+        List<Patch> floorSR2 = new ArrayList<>();
+
+        for (int i = 71; i <= 75; i++) {
+            for (int j = 85; j <= 92; j++) {
+                floorSR2.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 76; i <= 79; i++) {
+            for (int j = 86; j <= 89; j++) {
+                floorSR2.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR2, "SR2"));
+
+        /** Solo Room 3 Floor **/
+        List<Patch> floorSR3 = new ArrayList<>();
+
+        for (int i = 71; i <= 75; i++) {
+            for (int j = 48; j <= 55; j++) {
+                floorSR3.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 76; i <= 79; i++) {
+            for (int j = 51; j <= 54; j++) {
+                floorSR3.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR3, "SR3"));
+
+        /** Solo Room 4 Floor **/
+        List<Patch> floorSR4 = new ArrayList<>();
+
+        for (int i = 67; i <= 70; i++) {
+            for (int j = 40; j <= 43; j++) {
+                floorSR4.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 71; i <= 75; i++) {
+            for (int j = 39; j <= 46; j++) {
+                floorSR4.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorSR4, "SR4"));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsSoloRoom = new ArrayList<>();
+
+        // Solo Rooms 1-2
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 84));
+        }
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 93));
+        }
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 102));
+        }
+        for (int j = 84; j <= 96; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(67, j));
+        }
+        for (int j = 101; j <= 102; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(67, j));
+        }
+        for (int j = 84; j <= 85; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(76, j));
+        }
+        for (int j = 90; j <= 102; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(76, j));
+        }
+
+        // Solo Rooms 3-4
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 38));
+        }
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 47));
+        }
+        for (int i = 68; i <= 75; i++) {
+            wallTopsSoloRoom.add(environment.getPatch(i, 56));
+        }
+        for (int j = 38; j <= 39; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(67, j));
+        }
+        for (int j = 44; j <= 56; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(67, j));
+        }
+        for (int j = 38; j <= 50; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(76, j));
+        }
+        for (int j = 55; j <= 56; j++) {
+            wallTopsSoloRoom.add(environment.getPatch(76, j));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsSoloRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsSoloRoom = new ArrayList<>();
+
+        // Solo Rooms 1-2
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 85; j <= 92; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 94; j <= 95; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 77; i <= 79; i++) {
+            wallsSoloRoom.add(environment.getPatch(i, 84));
+        }
+        for (int i = 77; i <= 79; i++) {
+            for (int j = 91; j <= 102; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        // Solo Rooms 3-4
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 45; j <= 46; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 48; j <= 55; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 77; i <= 79; i++) {
+            for (int j = 38; j <= 49; j++) {
+                wallsSoloRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 77; i <= 79; i++) {
+            wallsSoloRoom.add(environment.getPatch(i, 56));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsSoloRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsSoloRoom = new ArrayList<>();
+
+        // SR 1
+        for (int i = 68; i <= 70; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 96));
+        }
+        for (int i = 68; i <= 70; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 101));
+        }
+
+        // SR 2
+        for (int i = 77; i <= 79; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 85));
+        }
+        for (int i = 77; i <= 79; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 90));
+        }
+
+        // SR 3
+        for (int i = 77; i <= 79; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 50));
+        }
+        for (int i = 77; i <= 79; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 55));
+        }
+        // SR 4
+        for (int i = 68; i <= 70; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 39));
+        }
+        for (int i = 68; i <= 70; i++) {
+            doorWallsSoloRoom.add(environment.getPatch(i, 44));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsSoloRoom, "doorPatch"));
+
+
+
+
+        /*** DATA CENTER ***/
+
+        /** Data Center Floor **/
+        List<Patch> floorDataCenter = new ArrayList<>();
+
+        for (int i = 38; i <= 55; i++) {
+            for (int j = 127; j <= 145; j++) {
+                floorDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 56; i <= 59; i++) {
+            for (int j = 140; j <= 144; j++) {
+                floorDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(floorDataCenter, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsDataCenter = new ArrayList<>();
+
+        for (int i = 35; i <= 56; i++) {
+            wallTopsDataCenter.add(environment.getPatch(i, 126));
+        }
+        for (int j = 127; j <= 139; j++) {
+            wallTopsDataCenter.add(environment.getPatch(56, j));
+        }
+        for (int j = 145; j <= 146; j++) {
+            wallTopsDataCenter.add(environment.getPatch(56, j));
+        }
+        for (int i = 48; i <= 55; i++) {
+            wallTopsDataCenter.add(environment.getPatch(i, 146));
+        }
+        for (int i = 50; i <= 51; i++) {
+            for (int j = 136; j <= 137; j++) {
+                wallTopsDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDataCenter, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsDataCenter = new ArrayList<>();
+
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 126; j <= 138; j++) {
+                wallsDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            wallsDataCenter.add(environment.getPatch(i, 146));
+        }
+        for (int i = 52; i <= 54; i++) {
+            for (int j = 136; j <= 137; j++) {
+                wallsDataCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDataCenter, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsDataCenter = new ArrayList<>();
+
+        for (int i = 57; i <= 59; i++) {
+            doorWallsDataCenter.add(environment.getPatch(i, 139));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsDataCenter.add(environment.getPatch(i, 145));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDataCenter, "doorPatch"));
+
+
+
+
+        /*** CONTROL CENTER ***/
+
+        /** Control Center Floor **/
+        List<Patch> floorControlCenter = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 107; j <= 125; j++) {
+                floorControlCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(floorControlCenter, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsControlCenter = new ArrayList<>();
+
+        wallTopsControlCenter.add(environment.getPatch(34, 107));
+        for (int j = 113; j <= 125; j++) {
+            wallTopsControlCenter.add(environment.getPatch(34, j));
+        }
+        for (int j = 107; j <= 119; j++) {
+            wallTopsControlCenter.add(environment.getPatch(56, j));
+        }
+        wallTopsControlCenter.add(environment.getPatch(56, 125));
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsControlCenter, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsControlCenter = new ArrayList<>();
+
+        for (int i = 35; i <= 37; i++) {
+            for (int j = 114; j <= 125; j++) {
+                wallsControlCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 106; j <= 118; j++) {
+                wallsControlCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 52; i <= 54; i++) {
+            for (int j = 136; j <= 137; j++) {
+                wallsControlCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsControlCenter, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsControlCenter = new ArrayList<>();
+
+        for (int i = 35; i <= 37; i++) {
+            doorWallsControlCenter.add(environment.getPatch(i, 107));
+        }
+        for (int i = 35; i <= 37; i++) {
+            doorWallsControlCenter.add(environment.getPatch(i, 113));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsControlCenter.add(environment.getPatch(i, 119));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsControlCenter.add(environment.getPatch(i, 125));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsControlCenter, "doorPatch"));
+
+
+
+
+        /*** LEARNING SPACES ***/
+
+        /** Learning Space 1 Floor **/
+        List<Patch> floorLS1 = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 86; j <= 105; j++) {
+                floorLS1.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS1, "LS1"));
+
+        /** Learning Space 2 Floor **/
+        List<Patch> floorLS2 = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 65; j <= 84; j++) {
+                floorLS2.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS2, "LS2"));
+
+        /** Learning Space 3 Floor **/
+        List<Patch> floorLS3 = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 44; j <= 63; j++) {
+                floorLS3.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS3, "LS3"));
+
+        /** Learning Space 4 Floor **/
+        List<Patch> floorLS4 = new ArrayList<>();
+
+        for (int i = 26; i <= 59; i++) {
+            for (int j = 23; j <= 42; j++) {
+                floorLS4.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorLS4, "LS4"));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsLS = new ArrayList<>();
+
+
+        for (int j = 105; j <= 106; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 84; j <= 99; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 63; j <= 78; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 37; j <= 57; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 22; j <= 31; j++) {
+            wallTopsLS.add(environment.getPatch(56, j));
+        }
+        for (int j = 23; j <= 30; j++) {
+            wallTopsLS.add(environment.getPatch(22, j));
+        }
+
+        for (int i = 23; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 106));
+        }
+        for (int i = 23; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 85));
+        }
+        for (int i = 23; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 64));
+        }
+        for (int i = 23; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 43));
+        }
+        for (int i = 22; i <= 55; i++) {
+            wallTopsLS.add(environment.getPatch(i, 22));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsLS, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsLS = new ArrayList<>();
+
+        for (int i = 23; i <= 25; i++) {
+            for (int j = 23; j <= 30; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 22; j <= 30; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 38; j <= 56; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 64; j <= 77; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 85; j <= 98; j++) {
+                wallsLS.add(environment.getPatch(i, j));
+            }
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsLS, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsLS = new ArrayList<>();
+
+        // LS 1
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 105));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 99));
+        }
+
+        // LS 2
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 84));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 78));
+        }
+
+        // LS 3
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 63));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 57));
+        }
+
+        // LS 4
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 37));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsLS.add(environment.getPatch(i, 31));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsLS, "doorPatch"));
+
+
+
+
+        /*** BREAKER ROOM ***/
+
+        /** Breaker Room Floor **/
+        List<Patch> floorBreakerRoom = new ArrayList<>();
+
+        for (int i = 18; i <= 21; i++) {
+            for (int j = 22; j <= 30; j++) {
+                floorBreakerRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(floorBreakerRoom, ""));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsBreakerRoom = new ArrayList<>();
+
+        for (int i = 15; i <= 17; i++) {
+            doorWallsBreakerRoom.add(environment.getPatch(i, 22));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsBreakerRoom, "doorPatch"));
+
+
+
+
+        /*** MEETING ROOM ***/
+
+        /** Meeting Room Floor **/
+        List<Patch> floorMeetingRoom = new ArrayList<>();
+
+        for (int i = 27; i <= 59; i++) {
+            for (int j = 1; j <= 15; j++) {
+                floorMeetingRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(floorMeetingRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsMeetingRoom = new ArrayList<>();
+
+        for (int j = 1; j <= 16; j++) {
+            wallTopsMeetingRoom.add(environment.getPatch(23, j));
+        }
+        for (int i = 24; i <= 55; i++) {
+            wallTopsMeetingRoom.add(environment.getPatch(i, 16));
+        }
+        for (int j = 1; j <= 9; j++) {
+            wallTopsMeetingRoom.add(environment.getPatch(56, j));
+        }
+        for (int j = 15; j <= 16; j++) {
+            wallTopsMeetingRoom.add(environment.getPatch(56, j));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsMeetingRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsMeetingRoom = new ArrayList<>();
+
+        for (int i = 24; i <= 26; i++) {
+            for (int j = 1; j <= 15; j++) {
+                wallsMeetingRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            for (int j = 1; j <= 8; j++) {
+                wallsMeetingRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 57; i <= 59; i++) {
+            wallsMeetingRoom.add(environment.getPatch(i, 16));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsMeetingRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsMeetingRoom = new ArrayList<>();
+
+        for (int i = 57; i <= 59; i++) {
+            doorWallsMeetingRoom.add(environment.getPatch(i, 9));
+        }
+        for (int i = 57; i <= 59; i++) {
+            doorWallsMeetingRoom.add(environment.getPatch(i, 15));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsMeetingRoom, "doorPatch"));
+
+
+
+        /*** CONFERENCE ROOM ***/
+
+        /** Conference Room Floor **/
+        List<Patch> floorConferenceRoom = new ArrayList<>();
+
+        for (int i = 89; i <= 106; i++) {
+            for (int j = 143; j <= 168; j++) {
+                floorConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(floorConferenceRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsConferenceRoom = new ArrayList<>();
+
+        for (int j = 156; j <= 157; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(88, j));
+        }
+        for (int j = 142; j <= 143; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(89, j));
+        }
+        for (int j = 149; j <= 162; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(89, j));
+        }
+        for (int j = 168; j <= 169; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(89, j));
+        }
+        for (int j = 156; j <= 157; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(90, j));
+        }
+        for (int j = 143; j <= 144; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(104, j));
+        }
+        for (int j = 142; j <= 169; j++) {
+            wallTopsConferenceRoom.add(environment.getPatch(107, j));
+        }
+        for (int i = 90; i <= 106; i++) {
+            wallTopsConferenceRoom.add(environment.getPatch(i, 142));
+        }
+        for (int i = 90; i <= 106; i++) {
+            wallTopsConferenceRoom.add(environment.getPatch(i, 169));
+        }
+
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsConferenceRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsConferenceRoom = new ArrayList<>();
+
+        for (int i = 90; i <= 92; i++) {
+            for (int j = 150; j <= 155; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 90; i <= 92; i++) {
+            for (int j = 158; j <= 161; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 91; i <= 93; i++) {
+            for (int j = 156; j <= 157; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 105; i <= 106; i++) {
+            for (int j = 143; j <= 144; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 108; i <= 109; i++) {
+            for (int j = 143; j <= 144; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 108; i <= 110; i++) {
+            for (int j = 145; j <= 169; j++) {
+                wallsConferenceRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsConferenceRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsConferenceRoom = new ArrayList<>();
+
+        for (int i = 90; i <= 92; i++) {
+            doorWallsConferenceRoom.add(environment.getPatch(i, 143));
+        }
+        for (int i = 90; i <= 92; i++) {
+            doorWallsConferenceRoom.add(environment.getPatch(i, 149));
+        }
+        for (int i = 90; i <= 92; i++) {
+            doorWallsConferenceRoom.add(environment.getPatch(i, 162));
+        }
+        for (int i = 90; i <= 92; i++) {
+            doorWallsConferenceRoom.add(environment.getPatch(i, 168));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsConferenceRoom, "doorPatch"));
+
+
+
+        /*** STORAGE ROOM ***/
+
+        /** Storage Room Floor **/
+        List<Patch> floorStorageRoom = new ArrayList<>();
+
+        for (int i = 89; i <= 106; i++) {
+            for (int j = 130; j <= 141; j++) {
+                floorStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(floorStorageRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsStorageRoom = new ArrayList<>();
+
+        for (int j = 131; j <= 132; j++) {
+            wallTopsStorageRoom.add(environment.getPatch(88, j));
+        }
+        for (int j = 129; j <= 135; j++) {
+            wallTopsStorageRoom.add(environment.getPatch(89, j));
+        }
+        wallTopsStorageRoom.add(environment.getPatch(89, 141));
+        for (int j = 131; j <= 132; j++) {
+            wallTopsStorageRoom.add(environment.getPatch(90, j));
+        }
+        for (int j = 135; j <= 141; j++) {
+            wallTopsStorageRoom.add(environment.getPatch(107, j));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsStorageRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsStorageRoom = new ArrayList<>();
+
+        for (int i = 90; i <= 92; i++) {
+            for (int j = 129; j <= 130; j++) {
+                wallsStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 90; i <= 92; i++) {
+            for (int j = 133; j <= 134; j++) {
+                wallsStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 91; i <= 93; i++) {
+            for (int j = 131; j <= 132; j++) {
+                wallsStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 108; i <= 110; i++) {
+            for (int j = 135; j <= 141; j++) {
+                wallsStorageRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsStorageRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsStorageRoom = new ArrayList<>();
+
+        for (int i = 90; i <= 92; i++) {
+            doorWallsStorageRoom.add(environment.getPatch(i, 135));
+        }
+        for (int i = 90; i <= 92; i++) {
+            doorWallsStorageRoom.add(environment.getPatch(i, 141));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsStorageRoom, "doorPatch"));
+
+
+
+        /*** FACULTY ROOM ***/
+
+        /** Faculty Room Floor **/
+        List<Patch> floorFacultyRoom = new ArrayList<>();
+
+        for (int i = 87; i <= 106; i++) {
+            for (int j = 99; j <= 127; j++) {
+                floorFacultyRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(floorFacultyRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsFacultyRoom = new ArrayList<>();
+
+        for (int j = 99; j <= 120; j++) {
+            wallTopsFacultyRoom.add(environment.getPatch(87, j));
+        }
+        for (int j = 127; j <= 128; j++) {
+            wallTopsFacultyRoom.add(environment.getPatch(87, j));
+        }
+        for (int i = 101; i <= 102; i++) {
+            for (int j = 102; j <= 103; j++) {
+                wallTopsFacultyRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 98; i <= 106; i++) {
+            wallTopsFacultyRoom.add(environment.getPatch(i, 99));
+        }
+        for (int i = 88; i <= 106; i++) {
+            wallTopsFacultyRoom.add(environment.getPatch(i, 128));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsFacultyRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsFacultyRoom = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            for (int j = 100; j <= 119; j++) {
+                wallsFacultyRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 103; i <= 105; i++) {
+            for (int j = 102; j <= 103; j++) {
+                wallsFacultyRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsFacultyRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsFacultyRoom = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            doorWallsFacultyRoom.add(environment.getPatch(i, 99));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsFacultyRoom.add(environment.getPatch(i, 120));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsFacultyRoom.add(environment.getPatch(i, 127));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsFacultyRoom, "doorPatch"));
+
+
+
+
+        /*** RESEARCH CENTER ***/
+
+        /** Research Center Floor **/
+        List<Patch> floorResearchCenter = new ArrayList<>();
+
+        for (int i = 87; i <= 106; i++) {
+            for (int j = 24; j <= 98; j++) {
+                floorResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(floorResearchCenter, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsResearchCenter = new ArrayList<>();
+
+        wallTopsResearchCenter.add(environment.getPatch(87, 24));
+        for (int j = 30; j <= 98; j++) {
+            wallTopsResearchCenter.add(environment.getPatch(87, j));
+        }
+        for (int i = 98; i <= 106; i++) {
+            wallTopsResearchCenter.add(environment.getPatch(i, 98));
+        }
+        for (int i = 96; i <= 97; i++) {
+            for (int j = 31; j <= 32; j++) {
+                wallTopsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 96; i <= 97; i++) {
+            for (int j = 53; j <= 54; j++) {
+                wallTopsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 101; i <= 102; i++) {
+            for (int j = 83; j <= 84; j++) {
+                wallTopsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsResearchCenter, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsResearchCenter = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            for (int j = 31; j <= 97; j++) {
+                wallsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 103; i <= 105; i++) {
+            for (int j = 83; j <= 84; j++) {
+                wallsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 98; i <= 100; i++) {
+            for (int j = 53; j <= 54; j++) {
+                wallsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 98; i <= 100; i++) {
+            for (int j = 31; j <= 32; j++) {
+                wallsResearchCenter.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsResearchCenter, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsResearchCenter = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            doorWallsResearchCenter.add(environment.getPatch(i, 24));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsResearchCenter.add(environment.getPatch(i, 30));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsResearchCenter.add(environment.getPatch(i, 98));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsResearchCenter, "doorPatch"));
+
+
+
+
+        /*** DATA COLLECTION ROOM ***/
+
+        /** Data Collection Room Floor **/
+        List<Patch> floorDCRoom = new ArrayList<>();
+
+        for (int i = 87; i <= 104; i++) {
+            for (int j = 1; j <= 22; j++) {
+                floorDCRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(floorDCRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsDCRoom = new ArrayList<>();
+
+        for (int j = 1; j <= 8; j++) {
+            wallTopsDCRoom.add(environment.getPatch(87, j));
+        }
+        for (int j = 14; j <= 16; j++) {
+            wallTopsDCRoom.add(environment.getPatch(87, j));
+        }
+        for (int j = 22; j <= 23; j++) {
+            wallTopsDCRoom.add(environment.getPatch(87, j));
+        }
+        for (int j = 1; j <= 6; j++) {
+            wallTopsDCRoom.add(environment.getPatch(96, j));
+        }
+        wallTopsDCRoom.add(environment.getPatch(104, 6));
+        for (int i = 88; i <= 104; i++) {
+            wallTopsDCRoom.add(environment.getPatch(i, 23));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDCRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsDCRoom = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            for (int j = 1; j <= 7; j++) {
+                wallsDCRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 97; i <= 99; i++) {
+            for (int j = 1; j <= 5; j++) {
+                wallsDCRoom.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 88; i <= 90; i++) {
+            wallsDCRoom.add(environment.getPatch(i, 15));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDCRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsDCRoom = new ArrayList<>();
+
+        for (int i = 88; i <= 90; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 8));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 14));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 16));
+        }
+        for (int i = 88; i <= 90; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 22));
+        }
+        for (int i = 97; i <= 99; i++) {
+            doorWallsDCRoom.add(environment.getPatch(i, 6));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDCRoom, "doorPatch"));
+
+
+
+
+        /*** HUMAN EXPERIENCE ROOM ***/
+
+        /** Human Experience Room Floor **/
+        List<Patch> floorHERoom = new ArrayList<>();
+
+        for (int i = 71; i <= 86; i++) {
+            for (int j = 1; j <= 15; j++) {
+                floorHERoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(floorHERoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsHERoom = new ArrayList<>();
+
+        for (int j = 1; j <= 15; j++) {
+            wallTopsHERoom.add(environment.getPatch(67, j));
+        }
+        for (int i = 77; i <= 86; i++) {
+            wallTopsHERoom.add(environment.getPatch(i, 15));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsHERoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsHERoom = new ArrayList<>();
+
+        for (int i = 68; i <= 70; i++) {
+            for (int j = 1; j <= 14; j++) {
+                wallsHERoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsHERoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsHERoom = new ArrayList<>();
+
+        for (int i = 68; i <= 70; i++) {
+            doorWallsHERoom.add(environment.getPatch(i, 15));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsHERoom, "doorPatch"));
+
+
+
+
+        /*** CLINIC ***/
+
+        /** Clinic Floor **/
+        List<Patch> floorClinic = new ArrayList<>();
+
+        for (int i = 80; i <= 87; i++) {
+            for (int j = 186; j <= 193; j++) {
+                floorClinic.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(floorClinic, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsClinic = new ArrayList<>();
+
+        for (int j = 186; j <= 194; j++) {
+            wallTopsClinic.add(environment.getPatch(88, j));
+        }
+        for (int i = 85; i <= 87; i++) {
+            wallTopsClinic.add(environment.getPatch(i, 186));
+        }
+        for (int i = 77; i <= 87; i++) {
+            wallTopsClinic.add(environment.getPatch(i, 194));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsClinic, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsClinic = new ArrayList<>();
+
+        for (int i = 89; i <= 91; i++) {
+            for (int j = 187; j <= 194; j++) {
+                wallsClinic.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsClinic, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsClinic = new ArrayList<>();
+
+        for (int i = 77; i <= 79; i++) {
+            doorWallsHERoom.add(environment.getPatch(i, 186));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsHERoom, "doorPatch"));
+
+
+
+
+        /*** DIRECTOR'S BATHROOM ***/
+
+        /** Director's BathRoom Floor **/
+        List<Patch> floorDB = new ArrayList<>();
+
+        for (int i = 80; i <= 91; i++) {
+            for (int j = 195; j <= 202; j++) {
+                floorDB.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorDB, "directorBathroom"));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsDB = new ArrayList<>();
+
+        for (int j = 200; j <= 202; j++) {
+            wallTopsDB.add(environment.getPatch(88, j));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDB, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsDB = new ArrayList<>();
+
+        for (int i = 89; i <= 91; i++) {
+            for (int j = 201; j <= 202; j++) {
+                wallsDB.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDB, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsDB = new ArrayList<>();
+
+        for (int i = 89; i <= 91; i++) {
+            doorWallsDB.add(environment.getPatch(i, 194));
+        }
+        for (int i = 89; i <= 91; i++) {
+            doorWallsDB.add(environment.getPatch(i, 200));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDB, "doorPatch"));
+
+
+
+
+        /*** DIRECTOR'S ROOM ***/
+
+        /** Director's Room Floor **/
+        List<Patch> floorDRoom = new ArrayList<>();
+
+        for (int i = 92; i <= 113; i++) {
+            for (int j = 186; j <= 202; j++) {
+                floorDRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(floorDRoom, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsDRoom = new ArrayList<>();
+
+        for (int i = 97; i <= 113; i++) {
+            wallTopsDRoom.add(environment.getPatch(i, 186));
+        }
+        for (int i = 108; i <= 109; i++) {
+            for (int j = 201; j <= 202; j++) {
+                wallTopsDRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsDRoom, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsDRoom = new ArrayList<>();
+
+        for (int i = 110; i <= 112; i++) {
+            for (int j = 201; j <= 202; j++) {
+                wallsDRoom.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsDRoom, "wall"));
+
+        /** Walls that signify entry/exit points **/
+        List<Patch> doorWallsDRoom = new ArrayList<>();
+
+        for (int i = 89; i <= 91; i++) {
+            doorWallsDRoom.add(environment.getPatch(i, 186));
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(doorWallsDRoom, "doorPatch"));
+
+
+
+
+        /*** PANTRY ***/
+
+        /** Pantry Floor **/
+        List<Patch> floorPantry = new ArrayList<>();
+
+        for (int i = 111; i <= 124; i++) {
+            for (int j = 135; j <= 185; j++) {
+                floorPantry.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(floorPantry, ""));
+
+
+        /** Wall Tops **/
+        List<Patch> wallTopsPantry = new ArrayList<>();
+
+        for (int i = 108; i <= 110; i++) {
+            wallTopsPantry.add(environment.getPatch(i, 142));
+        }
+        for (int j = 143; j <= 144; j++) {
+            wallTopsPantry.add(environment.getPatch(110, j));
+        }
+        for (int i = 116; i <= 117; i++) {
+            for (int j = 144; j <= 145; j++) {
+                wallTopsPantry.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 116; i <= 117; i++) {
+            for (int j = 165; j <= 166; j++) {
+                wallTopsPantry.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallTopsPantry, "wallTop"));
+
+        /** Walls **/
+        List<Patch> wallsPantry = new ArrayList<>();
+
+        for (int i = 111; i <= 113; i++) {
+            for (int j = 142; j <= 144; j++) {
+                wallsPantry.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 118; i <= 120; i++) {
+            for (int j = 144; j <= 145; j++) {
+                wallsPantry.add(environment.getPatch(i, j));
+            }
+        }
+        for (int i = 118; i <= 120; i++) {
+            for (int j = 165; j <= 166; j++) {
+                wallsPantry.add(environment.getPatch(i, j));
+            }
+        }
+
+        simulator.getEnvironment().getWalls().add(Divider.wallFactory.create(wallsPantry, "wall"));
+
+
+
+
+
+        /*** AMENITIES ***/
+
+
+        /*** MESA Table and Chair Set ***/
+
+        // Table on North and West
+        List<Patch> NWMESATableChairSetPatches = new ArrayList<>();
+        NWMESATableChairSetPatches.add(environment.getPatch(67,153));
+        CubicleMapper.draw(NWMESATableChairSetPatches, "MESA", "", "NORTH_AND_WEST", false, 0);
+
+        // Table on North and East
+        List<Patch> NEMESATableChairSetPatches = new ArrayList<>();
+        NEMESATableChairSetPatches.add(environment.getPatch(67,148));
+        CubicleMapper.draw(NEMESATableChairSetPatches, "MESA", "", "NORTH_AND_EAST", false, 0);
+
+        // Table on South and West
+        List<Patch> SWMESATableChairSetPatches = new ArrayList<>();
+        SWMESATableChairSetPatches.add(environment.getPatch(76,153));
+        CubicleMapper.draw(SWMESATableChairSetPatches, "MESA", "", "SOUTH_AND_WEST", false, 0);
+
+        // Table on South and East
+        List<Patch> SEMESATableChairSetPatches = new ArrayList<>();
+        SEMESATableChairSetPatches.add(environment.getPatch(76,148));
+        CubicleMapper.draw(SEMESATableChairSetPatches, "MESA", "", "SOUTH_AND_EAST", false, 0);
+
+        /*** Cubicle Type A ***/
+
+        // Two Cubicles Back-to-Back (Vertical) with appliance
+        List<Patch> CubicleTypeA = new ArrayList<>();
+        CubicleTypeA.add(environment.getPatch(43,111));
+        CubicleMapper.draw(CubicleTypeA, "TYPE_A", "", "", true, 1);
+
+
+        /*** Cubicle Type B ***/
+
+        // FACING WEST
+        List<Patch> WCubicleTypeB = new ArrayList<>();
+        WCubicleTypeB.add(environment.getPatch(95,105));
+        WCubicleTypeB.add(environment.getPatch(95,115));
+        WCubicleTypeB.add(environment.getPatch(95,125));
+        WCubicleTypeB.add(environment.getPatch(99,105));
+        WCubicleTypeB.add(environment.getPatch(99,115));
+        WCubicleTypeB.add(environment.getPatch(99,125));
+        CubicleMapper.draw(WCubicleTypeB, "TYPE_B", "WEST", "", true, 2);
+
+        // FACING WEST
+        List<Patch> ECubicleTypeB = new ArrayList<>();
+        ECubicleTypeB.add(environment.getPatch(95,108));
+        ECubicleTypeB.add(environment.getPatch(95,118));
+        ECubicleTypeB.add(environment.getPatch(99,108));
+        ECubicleTypeB.add(environment.getPatch(99,118));
+        CubicleMapper.draw(ECubicleTypeB, "TYPE_B", "EAST", "", true, 2);
+
+
+        /*** Cubicle Type C ***/
+
+        // FACING WEST
+        List<Patch> WCubicleTypeC = new ArrayList<>();
+        WCubicleTypeC.add(environment.getPatch(41,120));
+        WCubicleTypeC.add(environment.getPatch(44,120));
+        WCubicleTypeC.add(environment.getPatch(47,120));
+        WCubicleTypeC.add(environment.getPatch(50,120));
+        CubicleMapper.draw(WCubicleTypeC, "TYPE_C", "WEST", "", false, 0);
+
+
+        /*** Reception Table ***/
+        List<Patch> ReceptionTable1x8 = new ArrayList<>();
+        ReceptionTable1x8.add(environment.getPatch(69,170)); // Reception Bar
+        ReceptionTableMapper.draw(ReceptionTable1x8, "1x8");
+
+        /*** Research Table ***/
+
+        // Facing West
+        List<Patch> westResearchTable = new ArrayList<>();
+        westResearchTable.add(environment.getPatch(99,46));
+        westResearchTable.add(environment.getPatch(99,68));
+        westResearchTable.add(environment.getPatch(99,76));
+        westResearchTable.add(environment.getPatch(99,38));
+        westResearchTable.add(environment.getPatch(99,60));
+        westResearchTable.add(environment.getPatch(99,90));
+        ResearchTableMapper.draw(westResearchTable, "WEST");
+
+        // Facing East
+        List<Patch> eastResearchTable = new ArrayList<>();
+        eastResearchTable.add(environment.getPatch(99,91));
+        eastResearchTable.add(environment.getPatch(99,39));
+        eastResearchTable.add(environment.getPatch(99,47));
+        eastResearchTable.add(environment.getPatch(99,61));
+        eastResearchTable.add(environment.getPatch(99,69));
+        eastResearchTable.add(environment.getPatch(99,77));
+        ResearchTableMapper.draw(eastResearchTable, "EAST");
+
+        /*** Meeting Table ***/
+
+        // VERTICAL LARGE
+        List<Patch> VerticalLargeTable = new ArrayList<>();
+        VerticalLargeTable.add(environment.getPatch(35,7));
+        MeetingTableMapper.draw(VerticalLargeTable, "VERTICAL", "LARGE", "");
+
+        // VERTICAL SMALL
+        List<Patch> VerticalSmallTable = new ArrayList<>();
+        VerticalSmallTable.add(environment.getPatch(97,198));
+        MeetingTableMapper.draw(VerticalSmallTable, "VERTICAL", "SMALL", "");
+
+        // HORIZONTAL LARGE
+        List<Patch> LeftHorizontalLargeTable = new ArrayList<>();
+        LeftHorizontalLargeTable.add(environment.getPatch(98,147));
+        MeetingTableMapper.draw(LeftHorizontalLargeTable, "HORIZONTAL", "LARGE", "LEFT");
+        List<Patch> RightHorizontalLargeTable = new ArrayList<>();
+        RightHorizontalLargeTable.add(environment.getPatch(98,156));
+        MeetingTableMapper.draw(RightHorizontalLargeTable, "HORIZONTAL", "LARGE", "RIGHT");
+
+
+
+        /*** Learning Table ***/
+        // HORIZONTAL
+        List<Patch> HorizontalLearningTable = new ArrayList<>();
+        HorizontalLearningTable.add(environment.getPatch(33,26));
+        HorizontalLearningTable.add(environment.getPatch(33,35));
+        HorizontalLearningTable.add(environment.getPatch(33,47));
+        HorizontalLearningTable.add(environment.getPatch(33,56));
+        HorizontalLearningTable.add(environment.getPatch(33,68));
+        HorizontalLearningTable.add(environment.getPatch(33,77));
+        HorizontalLearningTable.add(environment.getPatch(33,89));
+        HorizontalLearningTable.add(environment.getPatch(33,98));
+        HorizontalLearningTable.add(environment.getPatch(47,26));
+        HorizontalLearningTable.add(environment.getPatch(47,35));
+        HorizontalLearningTable.add(environment.getPatch(47,47));
+        HorizontalLearningTable.add(environment.getPatch(47,56));
+        HorizontalLearningTable.add(environment.getPatch(47,68));
+        HorizontalLearningTable.add(environment.getPatch(47,77));
+        HorizontalLearningTable.add(environment.getPatch(47,89));
+        HorizontalLearningTable.add(environment.getPatch(47,98));
+        LearningTableMapper.draw(HorizontalLearningTable, "HORIZONTAL");
+
+        /*** Pantry Table ***/
+
+        // TYPE A
+        List<Patch> pantryTableTypeA = new ArrayList<>();
+        pantryTableTypeA.add(environment.getPatch(117,180));
+        pantryTableTypeA.add(environment.getPatch(120,175));
+        PantryTableMapper.draw(pantryTableTypeA, "TYPE_A");
+
+        // TYPE B
+        List<Patch> pantryTableTypeB = new ArrayList<>();
+        pantryTableTypeB.add(environment.getPatch(117,169));
+        pantryTableTypeB.add(environment.getPatch(121,139));
+        pantryTableTypeB.add(environment.getPatch(121,148));
+        pantryTableTypeB.add(environment.getPatch(121,154));
+        pantryTableTypeB.add(environment.getPatch(121,160));
+        PantryTableMapper.draw(pantryTableTypeB, "TYPE_B");
+
+        // TYPE A CHAIRS
+        List<Patch> southPantryChairTypeA = new ArrayList<>();
+        southPantryChairTypeA.add(environment.getPatch(111,150));
+        southPantryChairTypeA.add(environment.getPatch(111,151));
+        southPantryChairTypeA.add(environment.getPatch(111,152));
+        southPantryChairTypeA.add(environment.getPatch(111,153));
+        southPantryChairTypeA.add(environment.getPatch(111,154));
+        ChairMapper.draw(southPantryChairTypeA, 0, "SOUTH", "PANTRY_TYPE_A", "NULL");
+
+        // TYPE B CHAIRS
+        List<Patch> southPantryChairTypeB = new ArrayList<>();
+        southPantryChairTypeB.add(environment.getPatch(111,145));
+        southPantryChairTypeB.add(environment.getPatch(111,146));
+        southPantryChairTypeB.add(environment.getPatch(111,147));
+        southPantryChairTypeB.add(environment.getPatch(111,148));
+        southPantryChairTypeB.add(environment.getPatch(111,149));
+        ChairMapper.draw(southPantryChairTypeB, 0, "SOUTH", "PANTRY_TYPE_B", "NULL");
+
+
+        /*** Director Table ***/
+
+        List<Patch> directorTable = new ArrayList<>();
+        directorTable.add(environment.getPatch(108,190));
+        DirectorTableMapper.draw(directorTable, "HORIZONTAL", true);
+
+
+        /* TABLE 2x2 */
+        List<Patch> table2x2 = new ArrayList<>();
+        table2x2.add(environment.getPatch(45,127));
+        Table2x2Mapper.draw(table2x2);
+
+
+        /*** Solo Table ***/
+
+        // TOP
+        List<Patch> topSoloTables = new ArrayList<>();
+        topSoloTables.add(environment.getPatch(71,48));
+        topSoloTables.add(environment.getPatch(71,85));
+        SoloTableMapper.draw(topSoloTables, "1x8", "TOP");
+
+        // BOTTOM
+        List<Patch> bottomSoloTables = new ArrayList<>();
+        bottomSoloTables.add(environment.getPatch(75,39));
+        bottomSoloTables.add(environment.getPatch(75,94));
+        SoloTableMapper.draw(bottomSoloTables, "1x8", "BOTTOM");
+
+        /*** Human Experience Table ***/
+        List<Patch> humanExpTable = new ArrayList<>();
+        humanExpTable.add(environment.getPatch(77,5));
+        HumanExpTableMapper.draw(humanExpTable, "5x1");
+
+        /*** Data Collection Table ***/
+        List<Patch> dataCollTable = new ArrayList<>();
+        dataCollTable.add(environment.getPatch(91,2));
+        DataCollTableMapper.draw(dataCollTable, "1x6");
+
+
+        /*** White Board ***/
+
+        // NORTH
+        List<Patch> NorthWhiteBoard = new ArrayList<>();
+        NorthWhiteBoard.add(environment.getPatch(95,31));
+        NorthWhiteBoard.add(environment.getPatch(95,53));
+        WhiteboardMapper.draw(NorthWhiteBoard, "NORTH", "2");
+
+        // SOUTH
+        List<Patch> SouthWhiteBoard = new ArrayList<>();
+        SouthWhiteBoard.add(environment.getPatch(23,25));
+        SouthWhiteBoard.add(environment.getPatch(23,35));
+        SouthWhiteBoard.add(environment.getPatch(23,47));
+        SouthWhiteBoard.add(environment.getPatch(23,56));
+        SouthWhiteBoard.add(environment.getPatch(23,68));
+        SouthWhiteBoard.add(environment.getPatch(23,77));
+        SouthWhiteBoard.add(environment.getPatch(23,89));
+        SouthWhiteBoard.add(environment.getPatch(23,98));
+        WhiteboardMapper.draw(SouthWhiteBoard, "SOUTH", "5");
+
+        // WEST
+        List<Patch> WestWhiteBoard = new ArrayList<>();
+        WestWhiteBoard.add(environment.getPatch(96,30));
+        WestWhiteBoard.add(environment.getPatch(96,52));
+        WhiteboardMapper.draw(WestWhiteBoard, "WEST", "4");
+
+        // EAST 4
+        List<Patch> East4WhiteBoard = new ArrayList<>();
+        East4WhiteBoard.add(environment.getPatch(96,33));
+        East4WhiteBoard.add(environment.getPatch(96,55));
+        WhiteboardMapper.draw(East4WhiteBoard, "EAST", "4");
+
+        // EAST 11
+        List<Patch> East11WhiteBoard = new ArrayList<>();
+        East11WhiteBoard.add(environment.getPatch(35,1));
+        WhiteboardMapper.draw(East11WhiteBoard, "EAST", "11");
+
+        /*** Elevator ***/
+        List<Patch> elevator = new ArrayList<>();
+        elevator.add(environment.getPatch(26,193));
+        elevator.add(environment.getPatch(37,193));
+        elevator.add(environment.getPatch(48,193));
+        ElevatorMapper.draw(elevator, Elevator.ElevatorMode.ENTRANCE_AND_EXIT,  "VERTICAL");
+
+        /*** Couch ***/
+        List<Patch> couch = new ArrayList<>();
+        couch.add(environment.getPatch(69,141));
+        CouchMapper.draw(couch, "WEST");
+
+        /*** Refrigerator ***/
+        List<Patch> refrigerator = new ArrayList<>();
+        refrigerator.add(environment.getPatch(110,141));
+        RefrigeratorMapper.draw(refrigerator);
+
+        /*** Water Dispenser ***/
+        List<Patch> waterDispenser = new ArrayList<>();
+        waterDispenser.add(environment.getPatch(110,140));
+        WaterDispenserMapper.draw(waterDispenser);
+
+        /*** Plant ***/
+        List<Patch> plants = new ArrayList<>();
+        plants.add(environment.getPatch(62,2));
+        plants.add(environment.getPatch(74,179));
+        plants.add(environment.getPatch(74,181));
+        plants.add(environment.getPatch(75,180));
+        plants.add(environment.getPatch(82,201));
+        plants.add(environment.getPatch(84,201));
+        plants.add(environment.getPatch(86,201));
+        PlantMapper.draw(plants);
+
+        /*** Trash Can ***/
+        List<Patch> trashCans = new ArrayList<>();
+        trashCans.add(environment.getPatch(80,199));
+        trashCans.add(environment.getPatch(113,135));
+        trashCans.add(environment.getPatch(107,201));
+        TrashCanMapper.draw(trashCans);
+
+        /*** Pantry Cabinet ***/
+        List<Patch> pantryCabinets = new ArrayList<>();
+        pantryCabinets.add(environment.getPatch(109,135));
+        pantryCabinets.add(environment.getPatch(109,136));
+        pantryCabinets.add(environment.getPatch(109,137));
+        pantryCabinets.add(environment.getPatch(109,138));
+        PantryCabinetMapper.draw(pantryCabinets);
+
+        /*** Office Toilet/Director Toilet ***/
+        List<Patch> southOfficeToilets = new ArrayList<>();
+        southOfficeToilets.add(environment.getPatch(79, 200));
+        ToiletMapper.draw(southOfficeToilets, "SOUTH", "OfficeToilet");
+
+        /*** Director Sink/ Office Sink ***/
+        List<Patch> southOfficeSinks = new ArrayList<>();
+        southOfficeSinks.add(environment.getPatch(80,197));
+        southOfficeSinks.add(environment.getPatch(111,136));
+        SinkMapper.draw(southOfficeSinks, "SOUTH", "OfficeSink");
+
+        /*** Sink ***/
+
+        // South
+        List<Patch> southSinks = new ArrayList<>();
+        southSinks.add(environment.getPatch(60,194));
+        southSinks.add(environment.getPatch(60,197));
+        southSinks.add(environment.getPatch(60,200));
+
+        SinkMapper.draw(southSinks, "SOUTH", "Sink");
+
+        // North
+        List<Patch> northSinks = new ArrayList<>();
+        northSinks.add(environment.getPatch(18,194));
+        northSinks.add(environment.getPatch(18,197));
+        northSinks.add(environment.getPatch(18,200));
+        SinkMapper.draw(northSinks, "NORTH", "Sink");
+
+        /*** Toilet ***/
+
+        // South
+        List<Patch> southToilets = new ArrayList<>();
+        southToilets.add(environment.getPatch(3,188));
+        southToilets.add(environment.getPatch(3,191));
+        southToilets.add(environment.getPatch(3,194));
+        southToilets.add(environment.getPatch(3,197));
+        southToilets.add(environment.getPatch(3,200));
+
+        ToiletMapper.draw(southToilets, "SOUTH", "Toilet");
+
+        // North
+        List<Patch> northToilets = new ArrayList<>();
+        northToilets.add(environment.getPatch(73,188));
+        northToilets.add(environment.getPatch(73,191));
+        northToilets.add(environment.getPatch(73,194));
+        northToilets.add(environment.getPatch(73,197));
+        northToilets.add(environment.getPatch(73,200));
+        ToiletMapper.draw(northToilets, "NORTH", "Toilet");
+
+        /*** Coffee Maker Bar ***/
+        List<Patch> coffeeMakerBar = new ArrayList<>();
+        coffeeMakerBar.add(environment.getPatch(110,137));
+        CoffeeMakerBarMapper.draw(coffeeMakerBar);
+
+        /*** Kettle Bar ***/
+        List<Patch> kettleBar = new ArrayList<>();
+        kettleBar.add(environment.getPatch(110,138));
+        KettleBarMapper.draw(kettleBar);
+
+        /*** Microwave Bar ***/
+        List<Patch> microwaveBar = new ArrayList<>();
+        microwaveBar.add(environment.getPatch(111,135));
+        MicrowaveBarMapper.draw(microwaveBar);
+
+        /*** Switches ***/
+
+        // South Light Switches
+        List<Patch> southLightSwitches = new ArrayList<>();
+        southLightSwitches.add(environment.getPatch(25,13));
+        southLightSwitches.add(environment.getPatch(69,12));
+        southLightSwitches.add(environment.getPatch(36,115));
+        southLightSwitches.add(environment.getPatch(89,117));
+        southLightSwitches.add(environment.getPatch(53,136));
+        southLightSwitches.add(environment.getPatch(91,133));
+        southLightSwitches.add(environment.getPatch(91,151));
+        southLightSwitches.add(environment.getPatch(58,174));
+        southLightSwitches.add(environment.getPatch(78,188));
+        southLightSwitches.add(environment.getPatch(90,188));
+        SwitchMapper.draw(southLightSwitches, "LIGHT", "SOUTH");
+
+        // South AC Switches
+        List<Patch> southACSwitches = new ArrayList<>();
+        southACSwitches.add(environment.getPatch(25,14));
+        southACSwitches.add(environment.getPatch(69,13));
+        southACSwitches.add(environment.getPatch(36,116));
+        southACSwitches.add(environment.getPatch(89,118));
+        southACSwitches.add(environment.getPatch(53,137));
+        southACSwitches.add(environment.getPatch(91,134));
+        southACSwitches.add(environment.getPatch(91,152));
+        southACSwitches.add(environment.getPatch(58,175));
+        southACSwitches.add(environment.getPatch(78,189));
+        southACSwitches.add(environment.getPatch(90,189));
+        southACSwitches.add(environment.getPatch(109,168));
+        SwitchMapper.draw(southACSwitches, "AC", "SOUTH");
+
+        // North Light Switches
+        List<Patch> northLightSwitches = new ArrayList<>();
+        northLightSwitches.add(environment.getPatch(95,4));
+        SwitchMapper.draw(northLightSwitches, "LIGHT", "NORTH");
+
+        // North AC Switches
+        List<Patch> northACSwitches = new ArrayList<>();
+        northACSwitches.add(environment.getPatch(95,5));
+        SwitchMapper.draw(northACSwitches, "AC", "NORTH");
+
+        // East Light Switches
+        List<Patch> eastLightSwitches = new ArrayList<>();
+        eastLightSwitches.add(environment.getPatch(53,23));
+        eastLightSwitches.add(environment.getPatch(72,39));
+        eastLightSwitches.add(environment.getPatch(74,85));
+        eastLightSwitches.add(environment.getPatch(56,147));
+        eastLightSwitches.add(environment.getPatch(87,195));
+        SwitchMapper.draw(eastLightSwitches, "LIGHT", "EAST");
+
+        // East AC Switches
+        List<Patch> eastACSwitches = new ArrayList<>();
+        eastACSwitches.add(environment.getPatch(54,23));
+        eastACSwitches.add(environment.getPatch(57,147));
+        SwitchMapper.draw(eastACSwitches, "AC", "EAST");
+
+        // West Light Switches
+        List<Patch> westLightSwitches = new ArrayList<>();
+        westLightSwitches.add(environment.getPatch(74,55));
+        westLightSwitches.add(environment.getPatch(72,101));
+        westLightSwitches.add(environment.getPatch(53,105));
+        westLightSwitches.add(environment.getPatch(103,82));
+        westLightSwitches.add(environment.getPatch(112,185));
+        SwitchMapper.draw(westLightSwitches, "LIGHT", "WEST");
+
+        // West AC Switches
+        List<Patch> westACSwitches = new ArrayList<>();
+        westACSwitches.add(environment.getPatch(54,105));
+        westACSwitches.add(environment.getPatch(104,82));
+        SwitchMapper.draw(westACSwitches, "AC", "WEST");
+
+        /*** Aircon ***/
+        List<Patch> aircons = new ArrayList<>();
+        aircons.add(environment.getPatch(40,7));
+        aircons.add(environment.getPatch(94,9));
+
+        // Research Center
+        aircons.add(environment.getPatch(92,34));
+        aircons.add(environment.getPatch(92,40));
+        aircons.add(environment.getPatch(97,71));
+        aircons.add(environment.getPatch(95,88));
+
+        // Faculty Room
+        aircons.add(environment.getPatch(95,101));
+        aircons.add(environment.getPatch(95,112));
+        aircons.add(environment.getPatch(100,122));
+
+        // Conference Room
+        aircons.add(environment.getPatch(94,149));
+        aircons.add(environment.getPatch(94,161));
+
+        aircons.add(environment.getPatch(119,151));
+        aircons.add(environment.getPatch(99,191));
+        aircons.add(environment.getPatch(82,189));
+        aircons.add(environment.getPatch(66,175));
+        aircons.add(environment.getPatch(39,132));
+        aircons.add(environment.getPatch(41,117));
+        aircons.add(environment.getPatch(50,117));
+        aircons.add(environment.getPatch(39,139));
+        aircons.add(environment.getPatch(27,99));
+        aircons.add(environment.getPatch(27,78));
+        aircons.add(environment.getPatch(47,70));
+        aircons.add(environment.getPatch(27,55));
+        aircons.add(environment.getPatch(50,48));
+        aircons.add(environment.getPatch(50,56));
+        aircons.add(environment.getPatch(28,35));
+        aircons.add(environment.getPatch(50,25));
+
+        aircons.add(environment.getPatch(72,21));
+        aircons.add(environment.getPatch(72,62));
+        aircons.add(environment.getPatch(72,99));
+        aircons.add(environment.getPatch(72,111));
+        aircons.add(environment.getPatch(72,125));
+        AirconMapper.draw(aircons);
+
+        /*** Lights ***/
+
+        // SINGLE_PENDANT_LIGHT
+        List<Patch> singlePendantLights = new ArrayList<>();
+
+        // Research Center
+        singlePendantLights.add(environment.getPatch(97,27));
+        singlePendantLights.add(environment.getPatch(103,27));
+        singlePendantLights.add(environment.getPatch(93,69));
+        singlePendantLights.add(environment.getPatch(93,76));
+        singlePendantLights.add(environment.getPatch(93,83));
+        singlePendantLights.add(environment.getPatch(93,90));
+
+        // Pantry
+        singlePendantLights.add(environment.getPatch(117,136));
+        singlePendantLights.add(environment.getPatch(120,136));
+        singlePendantLights.add(environment.getPatch(123,136));
+        singlePendantLights.add(environment.getPatch(114,184));
+        singlePendantLights.add(environment.getPatch(121,184));
+
+        // Director Room
+        singlePendantLights.add(environment.getPatch(98,198));
+
+        // Director Bathroom
+        singlePendantLights.add(environment.getPatch(82,197));
+        singlePendantLights.add(environment.getPatch(82,200));
+
+        // Hall
+        singlePendantLights.add(environment.getPatch(75,78));
+        singlePendantLights.add(environment.getPatch(75,106));
+
+        LightMapper.draw(singlePendantLights, "SINGLE_PENDANT_LIGHT", "");
+
+
+        //  HORIZONTAL LINEAR_PENDANT_LIGHT
+        List<Patch> horizontalLinearPendantLights = new ArrayList<>();
+
+        // Data Coll Room
+        horizontalLinearPendantLights.add(environment.getPatch(91,5));
+
+        // Faculty Room
+        horizontalLinearPendantLights.add(environment.getPatch(97,112));
+        horizontalLinearPendantLights.add(environment.getPatch(98,112));
+
+        // Conference Room
+        horizontalLinearPendantLights.add(environment.getPatch(99,153));
+        horizontalLinearPendantLights.add(environment.getPatch(99,155));
+        horizontalLinearPendantLights.add(environment.getPatch(99,157));
+
+        // Director Room
+        horizontalLinearPendantLights.add(environment.getPatch(107,191));
+
+        // MESA
+        horizontalLinearPendantLights.add(environment.getPatch(68,146));
+        horizontalLinearPendantLights.add(environment.getPatch(79,146));
+        horizontalLinearPendantLights.add(environment.getPatch(68,157));
+        horizontalLinearPendantLights.add(environment.getPatch(79,157));
+
+        // Hall
+        horizontalLinearPendantLights.add(environment.getPatch(75,62));
+        horizontalLinearPendantLights.add(environment.getPatch(75,118));
+
+
+
+        LightMapper.draw(horizontalLinearPendantLights, "LINEAR_PENDANT_LIGHT", "HORIZONTAL");
+
+        //  VERTICAL LINEAR_PENDANT_LIGHT
+        List<Patch> verticalLinearPendantLights = new ArrayList<>();
+
+        // Hall
+        verticalLinearPendantLights.add(environment.getPatch(73,33));
+        verticalLinearPendantLights.add(environment.getPatch(75,33));
+
+        // Research Center
+        verticalLinearPendantLights.add(environment.getPatch(99,36));
+        verticalLinearPendantLights.add(environment.getPatch(101,36));
+        verticalLinearPendantLights.add(environment.getPatch(99,44));
+        verticalLinearPendantLights.add(environment.getPatch(101,44));
+        verticalLinearPendantLights.add(environment.getPatch(99,58));
+        verticalLinearPendantLights.add(environment.getPatch(101,58));
+        verticalLinearPendantLights.add(environment.getPatch(99,66));
+        verticalLinearPendantLights.add(environment.getPatch(101,66));
+        verticalLinearPendantLights.add(environment.getPatch(99,74));
+        verticalLinearPendantLights.add(environment.getPatch(101,74));
+        verticalLinearPendantLights.add(environment.getPatch(99,88));
+        verticalLinearPendantLights.add(environment.getPatch(101,88));
+
+        LightMapper.draw(verticalLinearPendantLights, "LINEAR_PENDANT_LIGHT", "VERTICAL");
+
+        //  HORIZONTAL RECESSED_LINEAR_LIGHT
+        List<Patch> horizontalRecessedLinearLights = new ArrayList<>();
+
+        // Pantry
+        horizontalRecessedLinearLights.add(environment.getPatch(114,147));
+        horizontalRecessedLinearLights.add(environment.getPatch(114,158));
+        horizontalRecessedLinearLights.add(environment.getPatch(114,170));
+        horizontalRecessedLinearLights.add(environment.getPatch(123,161));
+        horizontalRecessedLinearLights.add(environment.getPatch(123,170));
+
+        // Hall
+        horizontalRecessedLinearLights.add(environment.getPatch(63,22));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,30));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,38));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,46));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,54));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,62));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,70));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,78));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,86));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,94));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,102));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,110));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,118));
+        horizontalRecessedLinearLights.add(environment.getPatch(63,126));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,22));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,30));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,38));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,46));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,54));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,62));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,70));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,78));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,86));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,94));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,102));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,110));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,118));
+        horizontalRecessedLinearLights.add(environment.getPatch(83,126));
+
+        LightMapper.draw(horizontalRecessedLinearLights, "RECESSED_LINEAR_LIGHT", "HORIZONTAL");
+
+
+        //  VERTICAL RECESSED_LINEAR_LIGHT
+        List<Patch> verticalRecessedLinearLights = new ArrayList<>();
+
+        // MeetingRoom
+        verticalRecessedLinearLights.add(environment.getPatch(31,8));
+        verticalRecessedLinearLights.add(environment.getPatch(46,8));
+
+        // HumanExpRoom
+        verticalRecessedLinearLights.add(environment.getPatch(78,6));
+        verticalRecessedLinearLights.add(environment.getPatch(78,10));
+
+        // Data Coll Room
+        verticalRecessedLinearLights.add(environment.getPatch(93,5));
+
+        // Research Center
+        verticalRecessedLinearLights.add(environment.getPatch(92,33));
+        verticalRecessedLinearLights.add(environment.getPatch(92,39));
+        verticalRecessedLinearLights.add(environment.getPatch(92,45));
+        verticalRecessedLinearLights.add(environment.getPatch(92,51));
+        verticalRecessedLinearLights.add(environment.getPatch(92,64));
+        verticalRecessedLinearLights.add(environment.getPatch(92,71));
+        verticalRecessedLinearLights.add(environment.getPatch(92,78));
+        verticalRecessedLinearLights.add(environment.getPatch(92,85));
+        verticalRecessedLinearLights.add(environment.getPatch(92,92));
+        verticalRecessedLinearLights.add(environment.getPatch(97,39));
+        verticalRecessedLinearLights.add(environment.getPatch(97,46));
+        verticalRecessedLinearLights.add(environment.getPatch(97,70));
+        verticalRecessedLinearLights.add(environment.getPatch(97,78));
+        verticalRecessedLinearLights.add(environment.getPatch(97,85));
+        verticalRecessedLinearLights.add(environment.getPatch(97,92));
+
+        // Faculty Room
+        verticalRecessedLinearLights.add(environment.getPatch(92,102));
+        verticalRecessedLinearLights.add(environment.getPatch(92,107));
+        verticalRecessedLinearLights.add(environment.getPatch(92,114));
+        verticalRecessedLinearLights.add(environment.getPatch(98,107));
+        verticalRecessedLinearLights.add(environment.getPatch(98,114));
+
+        // Storage Room
+        verticalRecessedLinearLights.add(environment.getPatch(95,134));
+        verticalRecessedLinearLights.add(environment.getPatch(103,134));
+
+        // Conference Room
+        verticalRecessedLinearLights.add(environment.getPatch(95,158));
+
+        // Director Room
+        verticalRecessedLinearLights.add(environment.getPatch(93,189));
+        verticalRecessedLinearLights.add(environment.getPatch(104,189));
+        verticalRecessedLinearLights.add(environment.getPatch(111,189));
+        verticalRecessedLinearLights.add(environment.getPatch(93,194));
+        verticalRecessedLinearLights.add(environment.getPatch(109,194));
+
+        // Clinic
+        verticalRecessedLinearLights.add(environment.getPatch(82,187));
+        verticalRecessedLinearLights.add(environment.getPatch(82,192));
+
+        // Reception
+        verticalRecessedLinearLights.add(environment.getPatch(62,172));
+        verticalRecessedLinearLights.add(environment.getPatch(71,172));
+        verticalRecessedLinearLights.add(environment.getPatch(62,179));
+        verticalRecessedLinearLights.add(environment.getPatch(71,179));
+
+        // Data Center
+        verticalRecessedLinearLights.add(environment.getPatch(39,129));
+        verticalRecessedLinearLights.add(environment.getPatch(39,136));
+        verticalRecessedLinearLights.add(environment.getPatch(39,143));
+
+        // Control Center
+        verticalRecessedLinearLights.add(environment.getPatch(39,109));
+        verticalRecessedLinearLights.add(environment.getPatch(52,109));
+        verticalRecessedLinearLights.add(environment.getPatch(39,116));
+        verticalRecessedLinearLights.add(environment.getPatch(39,123));
+        verticalRecessedLinearLights.add(environment.getPatch(52,123));
+
+        // Learning Space 1
+        verticalRecessedLinearLights.add(environment.getPatch(27,88));
+        verticalRecessedLinearLights.add(environment.getPatch(52,88));
+        verticalRecessedLinearLights.add(environment.getPatch(27,96));
+        verticalRecessedLinearLights.add(environment.getPatch(52,96));
+
+        // Learning Space 2
+        verticalRecessedLinearLights.add(environment.getPatch(27,67));
+        verticalRecessedLinearLights.add(environment.getPatch(52,67));
+        verticalRecessedLinearLights.add(environment.getPatch(27,75));
+        verticalRecessedLinearLights.add(environment.getPatch(52,75));
+
+        // Learning Space 3
+        verticalRecessedLinearLights.add(environment.getPatch(28,46));
+        verticalRecessedLinearLights.add(environment.getPatch(28,58));
+        verticalRecessedLinearLights.add(environment.getPatch(52,54));
+
+        // Learning Space 4
+        verticalRecessedLinearLights.add(environment.getPatch(28,25));
+        verticalRecessedLinearLights.add(environment.getPatch(28,40));
+        verticalRecessedLinearLights.add(environment.getPatch(50,33));
+
+        // Hall
+        verticalRecessedLinearLights.add(environment.getPatch(31,19));
+        verticalRecessedLinearLights.add(environment.getPatch(49,19));
+        verticalRecessedLinearLights.add(environment.getPatch(62,4));
+        verticalRecessedLinearLights.add(environment.getPatch(62,16));
+        verticalRecessedLinearLights.add(environment.getPatch(54,149));
+        verticalRecessedLinearLights.add(environment.getPatch(62,138));
+        verticalRecessedLinearLights.add(environment.getPatch(62,158));
+        verticalRecessedLinearLights.add(environment.getPatch(62,166));
+        verticalRecessedLinearLights.add(environment.getPatch(71,138));
+        verticalRecessedLinearLights.add(environment.getPatch(71,146));
+        verticalRecessedLinearLights.add(environment.getPatch(71,158));
+        verticalRecessedLinearLights.add(environment.getPatch(71,166));
+        verticalRecessedLinearLights.add(environment.getPatch(80,138));
+        verticalRecessedLinearLights.add(environment.getPatch(80,146));
+        verticalRecessedLinearLights.add(environment.getPatch(80,158));
+        verticalRecessedLinearLights.add(environment.getPatch(80,166));
+
+        LightMapper.draw(verticalRecessedLinearLights, "RECESSED_LINEAR_LIGHT", "VERTICAL");
+
+
+        //  HORIZONTAL TRACK_LIGHT
+        List<Patch> horizontalTrackLights = new ArrayList<>();
+
+        // Meeting Room
+        horizontalTrackLights.add(environment.getPatch(29,7));
+
+        // Research Center
+        horizontalTrackLights.add(environment.getPatch(95,34));
+        horizontalTrackLights.add(environment.getPatch(95,48));
+        horizontalTrackLights.add(environment.getPatch(95,59));
+        horizontalTrackLights.add(environment.getPatch(95,75));
+        horizontalTrackLights.add(environment.getPatch(95,91));
+
+        // Faculty Room
+        horizontalTrackLights.add(environment.getPatch(93,121));
+        horizontalTrackLights.add(environment.getPatch(102,111));
+        horizontalTrackLights.add(environment.getPatch(102,121));
+
+        // Pantry
+        horizontalTrackLights.add(environment.getPatch(118,151));
+        horizontalTrackLights.add(environment.getPatch(114,135));
+
+        // Director Room
+        horizontalTrackLights.add(environment.getPatch(112,190));
+
+        // Learning Space 1
+        horizontalTrackLights.add(environment.getPatch(27,90));
+        horizontalTrackLights.add(environment.getPatch(43,90));
+        horizontalTrackLights.add(environment.getPatch(43,98));
+        horizontalTrackLights.add(environment.getPatch(54,94));
+
+
+        // Learning Space 2
+        horizontalTrackLights.add(environment.getPatch(27,69));
+        horizontalTrackLights.add(environment.getPatch(43,69));
+        horizontalTrackLights.add(environment.getPatch(43,77));
+        horizontalTrackLights.add(environment.getPatch(54,73));
+
+
+        // Learning Space 3
+        horizontalTrackLights.add(environment.getPatch(27,49));
+        horizontalTrackLights.add(environment.getPatch(43,48));
+        horizontalTrackLights.add(environment.getPatch(54,52));
+
+        horizontalTrackLights.add(environment.getPatch(43,56));
+
+        // Learning Space 4
+        horizontalTrackLights.add(environment.getPatch(27,27));
+        horizontalTrackLights.add(environment.getPatch(43,27));
+        horizontalTrackLights.add(environment.getPatch(54,27));
+        horizontalTrackLights.add(environment.getPatch(43,35));
+
+
+        LightMapper.draw(horizontalTrackLights, "TRACK_LIGHT", "HORIZONTAL");
+
+
+
+        /* VERTICAL TRACK_LIGHT */
+
+        List<Patch> verticalTrackLights = new ArrayList<>();
+
+        // Conference Room
+        verticalTrackLights.add(environment.getPatch(96,144));
+        verticalTrackLights.add(environment.getPatch(96,167));
+
+        // Pantry
+        verticalTrackLights.add(environment.getPatch(116,149));
+        verticalTrackLights.add(environment.getPatch(116,155));
+        verticalTrackLights.add(environment.getPatch(116,167));
+        verticalTrackLights.add(environment.getPatch(116,178));
+
+        // Reception
+        verticalTrackLights.add(environment.getPatch(66,180));
+
+        LightMapper.draw(verticalTrackLights, "TRACK_LIGHT", "VERTICAL");
+
+
+        /* WINDOW + BLINDS */
+
+        List<Patch> glass = new ArrayList<>();
+        List<Patch> eastHallwayWindowBlinds = new ArrayList<>();
+        List<Patch> northSouthWindowBlinds = new ArrayList<>();
+        List<Patch> eastPantryWindowBlinds = new ArrayList<>();
+        List<Patch> westWindowBlinds = new ArrayList<>();
+        List<Patch> westDirectorWindowBlinds = new ArrayList<>();
+
+        // Hallway
+        eastHallwayWindowBlinds.add(environment.getPatch(61, 1));
+
+        // Data Collection Room
+        glass.add(environment.getPatch(88, 1));
+
+        for (int j = 8; j <= 21; j += 5) {
+            northSouthWindowBlinds.add(environment.getPatch(104, j));
+        }
+
+        // Research Center
+        for (int j = 24; j <= 97; j += 5) {
+            northSouthWindowBlinds.add(environment.getPatch(106, j));
+
+        }
+
+        // Faculty Room
+        for (int j = 100; j <= 127; j += 6) {
+            northSouthWindowBlinds.add(environment.getPatch(106, j));
+
+        }
+
+        // Pantry Room
+        eastPantryWindowBlinds.add(environment.getPatch(115, 135));
+
+
+        for (int j = 136; j <= 184; j += 5) {
+            northSouthWindowBlinds.add(environment.getPatch(124, j));
+        }
+
+        // Director Bathroom
+        for (int i = 81; i <= 86; i += 4) {
+            westDirectorWindowBlinds.add(environment.getPatch(i, 202));
+        }
+
+
+        // Director Room
+        for (int i = 93; i <= 106; i += 5) {
+            westWindowBlinds.add(environment.getPatch(i, 202));
+
+        }
+
+        for (int j = 188; j <= 201; j += 5) {
+            northSouthWindowBlinds.add(environment.getPatch(113, j));
+
+        }
+
+        WindowBlindsMapper.draw(glass, "GLASS", 7);
+        WindowBlindsMapper.draw(northSouthWindowBlinds, "CLOSED_NORTH_AND_SOUTH", 4);
+        WindowBlindsMapper.draw(eastPantryWindowBlinds, "CLOSED_EAST", 8);
+        WindowBlindsMapper.draw(eastHallwayWindowBlinds, "CLOSED_EAST", 5);
+        WindowBlindsMapper.draw(westWindowBlinds, "CLOSED_WEST", 4);
+        WindowBlindsMapper.draw(westDirectorWindowBlinds, "CLOSED_WEST", 2);
+
+
+        /* CABINETS & DRAWERS + STORAGE */
+
+        List<Patch> storage = new ArrayList<>();
+        List<Patch> southCabinet = new ArrayList<>();
+        List<Patch> southDrawers = new ArrayList<>();
+        List<Patch> northCabinet1x2 = new ArrayList<>();
+        List<Patch> eastDoubleDrawers = new ArrayList<>();
+        List<Patch> westDoubleDrawers = new ArrayList<>();
+
+        storage.add(environment.getPatch(85, 187));
+        StorageMapper.draw(storage, "DOUBLE_DRAWERS", "EAST");
+
+
+        southCabinet.add(environment.getPatch(52, 147));
+        CabinetDrawerMapper.draw(southCabinet, "CABINET", "SOUTH");
+
+        southDrawers.add(environment.getPatch(50, 151));
+        southDrawers.add(environment.getPatch(50, 152));
+        CabinetDrawerMapper.draw(southDrawers, "DRAWERS", "SOUTH");
+
+        northCabinet1x2.add(environment.getPatch(88, 129));
+        CabinetDrawerMapper.draw(northCabinet1x2, "CABINET_1x2", "NORTH");
+
+        eastDoubleDrawers.add(environment.getPatch(72, 162));
+        CabinetDrawerMapper.draw(eastDoubleDrawers, "DOUBLE_DRAWERS", "EAST");
+
+        westDoubleDrawers.add(environment.getPatch(72, 168));
+        CabinetDrawerMapper.draw(westDoubleDrawers, "DOUBLE_DRAWERS", "WEST");
+
+        /* SERVER */
+
+        List<Patch> serverTypeA = new ArrayList<>();
+        serverTypeA.add(environment.getPatch(43, 129));
+        ServerMapper.draw(serverTypeA, "TYPE_A");
+
+        List<Patch> serverTypeB = new ArrayList<>();
+        serverTypeB.add(environment.getPatch(47, 134));
+        serverTypeB.add(environment.getPatch(47, 135));
+        ServerMapper.draw(serverTypeB, "TYPE_B");
+
+    }
+
+
 
     private void drawInterface() {
         drawEnvironmentViewBackground(simulator.getEnvironment());
@@ -3343,7 +8930,52 @@ public class ScreenController extends Controller {
             simulator.replenishStaticVars();
             disableEdits();
         }
+    }
 
+    @FXML
+    public void initializeLayoutA() {
+
+
+        if (simulator.isRunning()) {
+            playAction();
+            playButton.setSelected(false);
+        }
+
+        if (validateParameters()) {
+            Environment environment = simulator.getEnvironment();
+            this.configureParameters(environment);
+            initializeLayoutA(environment);
+            environment.convertIOSToChances();
+            setElements();
+            playButton.setDisable(false);
+            exportToCSVButton.setDisable(true);
+            exportHeatMapButton.setDisable(true);
+            simulator.replenishStaticVars();
+            disableEdits();
+        }
+    }
+
+    @FXML
+    public void initializeLayoutB() {
+
+
+        if (simulator.isRunning()) {
+            playAction();
+            playButton.setSelected(false);
+        }
+
+        if (validateParameters()) {
+            Environment environment = simulator.getEnvironment();
+            this.configureParameters(environment);
+            initializeLayoutB(environment);
+            environment.convertIOSToChances();
+            setElements();
+            playButton.setDisable(false);
+            exportToCSVButton.setDisable(true);
+            exportHeatMapButton.setDisable(true);
+            simulator.replenishStaticVars();
+            disableEdits();
+        }
     }
 
     @FXML
