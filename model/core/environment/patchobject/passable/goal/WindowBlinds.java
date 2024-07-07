@@ -16,12 +16,14 @@ public class WindowBlinds extends Goal {
         windowBlindsFactory = new WindowBlindsFactory();
     }
     private boolean isOpened;
+    private int lightRange;
 
     /***** CONSTRUCTOR *****/
     protected WindowBlinds(List<AmenityBlock> amenityBlocks, boolean enabled, String state, boolean isOpened) {
         super(amenityBlocks, enabled);
         this.windowBlindsGraphic = new WindowBlindsGraphic(this, state);
         this.isOpened = isOpened;
+        this.lightRange = 25;
     }
 
     /***** GETTERS *****/
@@ -34,11 +36,14 @@ public class WindowBlinds extends Goal {
         return windowBlindsGraphic;
     }
 
+    public int getLightRange(){ return lightRange;}
+
     /***** SETTER *****/
     public void open(boolean opened) {
         isOpened = opened;
     }
 
+    public void setLightRange(int range){ lightRange = range;}
 
     /***** OVERRIDE *****/
     @Override

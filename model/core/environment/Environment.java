@@ -1024,16 +1024,15 @@ public class Environment extends BaseObject implements Serializable {
                 }
             }
 
-
             int coolingTicks = 0;
             //IF TEMP IS GOING HIGHER OR HEATING
 
             if(aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.isOn()){
                 if(closeAgentCount < 4){
-                    coolingTicks = 18;
+                    coolingTicks = 24;
                 }
                 else{
-                    coolingTicks = 42;
+                    coolingTicks = 20;
                 }
                 //THIS MEANS THAT 2 MINUTES OR GREATER HAS PASSED
                 if(coolingTimer(aircon, coolingTicks)){
@@ -1048,10 +1047,10 @@ public class Environment extends BaseObject implements Serializable {
             else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isOn()){
                 if(closeAgentCount < 4)
                 {
-                    coolingTicks = 24;
+                    coolingTicks = 20;
                 }
                 else{
-                    coolingTicks = 18;
+                    coolingTicks = 42;
                 }
                 //THIS MEANS THAT 1 MINUTES OR GREATER HAS PASSED
                 if(coolingTimer(aircon, coolingTicks)){

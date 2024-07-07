@@ -34,10 +34,10 @@ public class Agent extends PatchObject {
 
     private Agent.EnergyProfile energyProfile = null;
     private int tempPreference = 19;
+    private boolean isVisualComfortSatisfied = false;
 
     private final AgentGraphic agentGraphic;
     private AgentMovement agentMovement;
-
     public static final AgentFactory agentFactory;
 
     static {
@@ -232,6 +232,10 @@ public class Agent extends PatchObject {
         return tempPreference;
     }
 
+    public boolean isVisualComfortSatisfied() {
+        return isVisualComfortSatisfied;
+    }
+
     // SETTERS
     public void setAgentMovement(AgentMovement agentMovement) {
         this.agentMovement = agentMovement;
@@ -245,7 +249,9 @@ public class Agent extends PatchObject {
         this.timeOut = timeOut;
     }
 
-
+    public void setVisualComfortSatisfied(boolean visualComfortSatisfied) {
+        isVisualComfortSatisfied = visualComfortSatisfied;
+    }
 
 
     // OVERRIDE
@@ -267,9 +273,6 @@ public class Agent extends PatchObject {
     public String toString() {
         return String.valueOf(id);
     }
-
-
-
 
 
 

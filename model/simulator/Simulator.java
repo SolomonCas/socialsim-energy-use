@@ -564,6 +564,7 @@ public class Simulator {
                     //SET THE CHECKING OF THERMAL COMFORT BASED ON CHANCES
                     //COOLDOWN ARE SET WHENEVER INTERACTED WITH AIRCON SWITCH
                     double AIRCON_CHANCE = Simulator.roll();
+                    System.out.println("AIRCON CHANCE "+ AIRCON_CHANCE);
                     if(AIRCON_CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown()){
                         agentMovement.airconChecker();
                     }
@@ -2820,6 +2821,8 @@ public class Simulator {
         totalWattageCount+= ((lightWattage * activeLightCount * 5) / 3600);
 
         totalWattageCount+= ((monitorWattage * activeMonitorCount * 5) / 3600);
+
+        totalWattageCount+= ((airconWattage * activeAirConCount *5) / 3600);
     }
     public void replenishStaticVars() {
 

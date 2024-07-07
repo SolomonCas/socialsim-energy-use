@@ -18,12 +18,13 @@ public class Light extends Goal {
     }
 
     boolean isOn;
+    int lightRange;
 
     /***** CONSTRUCTOR *****/
     protected Light(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String orientation) {
         super(amenityBlocks, enabled);
         this.isOn = false;
-
+        this.lightRange = 25;
         this.lightGraphic = new LightGraphic(this, type, orientation);
     }
 
@@ -31,11 +32,13 @@ public class Light extends Goal {
     public boolean isOn() {
         return isOn;
     }
+    public int getLightRange(){ return lightRange;}
 
     /***** SETTER *****/
     public void setOn(boolean on) {
         isOn = on;
     }
+    public void setLightRange(int range){ lightRange = range;}
 
     /***** OVERRIDE *****/
     @Override
