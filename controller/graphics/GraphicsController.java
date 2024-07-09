@@ -216,7 +216,7 @@ public class GraphicsController extends Controller {
 
                     // Director bathroom
                     } else if (patchStrPair.getValue().equals("directorBathroom")) {
-                        patchColor = Color.rgb(160, 171, 146);
+                        patchColor = Color.rgb(196, 201, 203);
 
                     // else, throw error
                     } else {
@@ -258,6 +258,11 @@ public class GraphicsController extends Controller {
                 /* Data Center */
                 else if (patchPatchField.getClass() == DataCenter.class) {
                     patchColor = Color.rgb(234, 210, 213);
+
+                    // CCTV Area
+                    if (patchStrPair.getValue().equals("CCTV")) {
+                        patchColor = Color.rgb(229, 215, 236);
+                    }
                 }
 
                 /* Control Center */
@@ -321,6 +326,11 @@ public class GraphicsController extends Controller {
                     patchColor = Color.rgb(217, 198, 213);
                 }
 
+                /* MESA */
+                else if (patchPatchField.getClass() == MESA.class) {
+                    patchColor = Color.rgb(209, 191, 213);
+                }
+
                 /* Data Collection Room */
                 else if (patchPatchField.getClass() == DataCollectionRoom.class) {
                     patchColor = Color.rgb(232, 231, 244);
@@ -347,7 +357,7 @@ public class GraphicsController extends Controller {
                 }
 
                 backgroundGraphicsContext.setFill(patchColor);
-                backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
+                backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize * 1.0, tileSize * 1.0);
                 backgroundGraphicsContext.setStroke(patchColor);
                 backgroundGraphicsContext.setLineWidth(1);
                 backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);

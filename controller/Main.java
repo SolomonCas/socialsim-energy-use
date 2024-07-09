@@ -40,10 +40,28 @@ public class Main extends Application {
             if (welcomeScreenController.isClosedWithAction()) {
                 Main.hasMadeChoice = true;
 
-                mainScreenLoader = Controller.getLoader(getClass(), "/com/socialsim/view/OfficeScreen.fxml");
-                mainRoot = mainScreenLoader.load();
-                mainScreenController = (ScreenController) mainScreenLoader.getController();
-                mainTitle = "Office SocialSim";
+                if (WelcomeScreenController.environment.equals("Original Office Layout")) {
+                    mainScreenLoader = Controller.getLoader(getClass(), "/com/socialsim/view/OfficeScreen.fxml");
+                    mainRoot = mainScreenLoader.load();
+                    mainScreenController = (ScreenController) mainScreenLoader.getController();
+                    mainTitle = "Original Office Layout";
+                }
+
+                else if (WelcomeScreenController.environment.equals("Alternative Office Layout A")) {
+                    mainScreenLoader = Controller.getLoader(getClass(), "/com/socialsim/view/OfficeScreenLayoutA.fxml");
+                    mainRoot = mainScreenLoader.load();
+                    mainScreenController = (ScreenController) mainScreenLoader.getController();
+                    mainTitle = "Alternative Office Layout A";
+                }
+
+//                else if (WelcomeScreenController.environment.equals("Alternative Office Layout B")) {
+//                    mainScreenLoader = Controller.getLoader(getClass(), "/com/socialsim/view/OfficeScreenLayoutB.fxml");
+//                    mainRoot = mainScreenLoader.load();
+//                    mainScreenController = (ScreenController) mainScreenLoader.getController();
+//                    mainTitle = "Alternative Office Layout B";
+//                }
+
+
             }
             else if (!welcomeScreenController.isClosedWithAction()) {
                 break;

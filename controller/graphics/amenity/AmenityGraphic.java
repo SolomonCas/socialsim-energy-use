@@ -222,8 +222,9 @@ public class AmenityGraphic extends Graphic {
         /* WHITEBOARD */
 
         final List<AmenityGraphicLocation> WhiteboardGraphic = new ArrayList<>();
-        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 9)); // FACING NORTH
-        WhiteboardGraphic.add(new AmenityGraphicLocation(14, 6)); // FACING SOUTH
+        WhiteboardGraphic.add(new AmenityGraphicLocation(17, 9)); // FACING NORTH (2PX ROW SPAN)
+        WhiteboardGraphic.add(new AmenityGraphicLocation(15, 6)); // FACING NORTH (5PX ROW SPAN)
+        WhiteboardGraphic.add(new AmenityGraphicLocation(13, 6)); // FACING SOUTH
         WhiteboardGraphic.add(new AmenityGraphicLocation(17, 8)); // FACING WEST
         WhiteboardGraphic.add(new AmenityGraphicLocation(17, 7)); // FACING EAST (4PX ROW SPAN)
         WhiteboardGraphic.add(new AmenityGraphicLocation(17, 6)); // FACING EAST (11PX ROW SPAN)

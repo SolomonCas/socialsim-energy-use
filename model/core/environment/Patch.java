@@ -29,7 +29,7 @@ public class Patch extends BaseObject implements Comparable<Patch> {
     private final List<MatrixPosition> neighbor7x7Indices; // Denotes the positions of the neighbors of this patch within a 7x7 range
     private final List<MatrixPosition> neighbor3x3Indices; // Denotes the positions of the neighbors of this patch within a 7x7 range
     private int amenityBlocksAround; // Denotes the number of amenity blocks around this patch
-    private int wallsAround; // Denotes the number of amenity blocks around this patch
+    private int dividersAround; // Denotes the number of amenity blocks around this patch
     private int team;
 
 
@@ -50,7 +50,7 @@ public class Patch extends BaseObject implements Comparable<Patch> {
         this.neighbor7x7Indices = this.compute7x7Neighbors();
         this.neighbor3x3Indices = this.compute7x7Neighbors();
         this.amenityBlocksAround = 0;
-        this.wallsAround = 0;
+        this.dividersAround = 0;
         this.team = -1;
     }
 
@@ -188,16 +188,16 @@ public class Patch extends BaseObject implements Comparable<Patch> {
         return neighboringPatches;
     }
 
-    public void signalAddWall() { // Signal to this patch and to its neighbors that an amenity block was added here
-        this.incrementWallsAround();
+    public void signalAddDivider() { // Signal to this patch and to its neighbors that an amenity block was added here
+        this.incrementDividersAround();
 
         for (Patch neighbor : this.getNeighbors()) {
-            neighbor.incrementWallsAround();
+            neighbor.incrementDividersAround();
         }
     }
 
-    private void incrementWallsAround() {
-        this.wallsAround++;
+    private void incrementDividersAround() {
+        this.dividersAround++;
     }
 
 
@@ -256,8 +256,8 @@ public class Patch extends BaseObject implements Comparable<Patch> {
     public Pair<QueueingPatchField, String> getQueueingPatchField() {
         return queueingPatchField;
     }
-    public int getWallsAround() {
-        return wallsAround;
+    public int getDividersAround() {
+        return dividersAround;
     }
     public Amenity.AmenityBlock getAmenityBlock() {
         return amenityBlock;
@@ -282,8 +282,8 @@ public class Patch extends BaseObject implements Comparable<Patch> {
     public void setQueueingPatchField(Pair<QueueingPatchField, String> queueingPatchField) {
         this.queueingPatchField = queueingPatchField;
     }
-    public void setWallsAround(int wallsAround) {
-        this.wallsAround = wallsAround;
+    public void setDividersAround(int dividersAround) {
+        this.dividersAround = dividersAround;
     }
 
     public void setAmenityBlock(Amenity.AmenityBlock amenityBlock) {

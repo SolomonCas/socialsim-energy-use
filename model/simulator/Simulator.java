@@ -712,16 +712,16 @@ public class Simulator {
                                 agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
                                 agentMovement.getRoutePlan().setAtDesk(false);
                             }
-                            else if(CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown()){
-                                agentMovement.airconChecker();
-                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
-                                agentMovement.setCurrentState(agentMovement.getStateIndex());
-                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-                                agentMovement.setActionIndex(0); // JIC if needed
-                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.resetGoal();
-                                agentMovement.getRoutePlan().setAtDesk(false);
-                            }
+//                            else if(CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown()){
+//                                agentMovement.airconChecker();
+//                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
+//                                agentMovement.setCurrentState(agentMovement.getStateIndex());
+//                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+//                                agentMovement.setActionIndex(0); // JIC if needed
+//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+//                                agentMovement.resetGoal();
+//                                agentMovement.getRoutePlan().setAtDesk(false);
+//                            }
                             else if (CHANCE < RoutePlan.CHECK_VISUAL_COMFORT_CHANCE && agentMovement.changeVisualCoolDown() && !agentMovement.visualComfortChecker(time)) {
                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
                                 agentMovement.setCurrentState(agentMovement.getStateIndex());

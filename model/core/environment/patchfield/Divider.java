@@ -9,10 +9,10 @@ public class Divider extends PatchField {
 
 
     // VARIABLES
-    public static WallFactory wallFactory;
+    public static DividerFactory dividerFactory;
 
     static {
-        wallFactory = new WallFactory();
+        dividerFactory = new DividerFactory();
     }
 
 
@@ -23,14 +23,14 @@ public class Divider extends PatchField {
         Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
-            patch.signalAddWall();
+            patch.signalAddDivider();
         }
     }
 
 
 
     // INNER ABSTRACT CLASS
-    public static class WallFactory extends PatchFieldFactory {
+    public static class DividerFactory extends PatchFieldFactory {
         public Divider create(List<Patch> patches, String str) {
             return new Divider(patches, str);
         }

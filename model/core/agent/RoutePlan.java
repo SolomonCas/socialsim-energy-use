@@ -615,19 +615,19 @@ public class RoutePlan {
                 actions.add(new Action(Action.Name.TAKING_BREAK, 120, 240));
                 officeState = new State(State.Name.BREAK_TIME, this, agent, actions);
             }
-            case "FIX_THERMAL_COMFORT" -> {
-                actions = new ArrayList<>();
-                // TODO: Need to determine what action to do (e.g. set AC to cool or warm, or turn on or off AC)
-                if (agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isOn())
-                    actions.add(new Action(Action.Name.SET_AC_TO_COOL));
-                else if (!agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isOn())
-                    actions.add(new Action(Action.Name.SET_AC_TO_WARM));
-                else if  (!agent.getAgentMovement().getAirconToChange().isOn())
-                    actions.add(new Action(Action.Name.TURN_ON_AC));
-                else
-                    actions.add(new Action(Action.Name.TURN_OFF_AC));
-                officeState = new State(State.Name.FIXING_THERMAL_COMFORT, this, agent, actions);
-            }
+//            case "FIX_THERMAL_COMFORT" -> {
+//                actions = new ArrayList<>();
+//                // TODO: Need to determine what action to do (e.g. set AC to cool or warm, or turn on or off AC)
+//                if (agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isOn())
+//                    actions.add(new Action(Action.Name.SET_AC_TO_COOL));
+//                else if (!agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isOn())
+//                    actions.add(new Action(Action.Name.SET_AC_TO_WARM));
+//                else if  (!agent.getAgentMovement().getAirconToChange().isOn())
+//                    actions.add(new Action(Action.Name.TURN_ON_AC));
+//                else
+//                    actions.add(new Action(Action.Name.TURN_OFF_AC));
+//                officeState = new State(State.Name.FIXING_THERMAL_COMFORT, this, agent, actions);
+//            }
             case "FIX_VISUAL_COMFORT" -> {
                 actions = new ArrayList<>();
                 if (agent.getAgentMovement().getLightsToOpen() != null) {

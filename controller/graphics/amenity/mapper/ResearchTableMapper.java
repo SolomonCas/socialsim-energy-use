@@ -14,7 +14,7 @@ import java.util.Objects;
 public class ResearchTableMapper extends AmenityMapper {
 
     /***** METHOD *****/
-    public static void draw(List<Patch> patches, String facing) {
+    public static void draw(List<Patch> patches, String facing, boolean withAppliance) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
@@ -51,9 +51,11 @@ public class ResearchTableMapper extends AmenityMapper {
                 ChairMapper.draw(eastChairPatches, index, "EAST", "OFFICE", "ResearchTable");
 
                 // Set Monitor
-                List<Patch> researchMonitorWestPatches = new ArrayList<>();
-                researchMonitorWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
-                MonitorMapper.draw(researchMonitorWestPatches, index, "WEST", "ResearchTable");
+                if (withAppliance) {
+                    List<Patch> researchMonitorWestPatches = new ArrayList<>();
+                    researchMonitorWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
+                    MonitorMapper.draw(researchMonitorWestPatches, index, "WEST", "ResearchTable");
+                }
 
             }
             else if (Objects.equals(facing, "EAST")) {
@@ -64,9 +66,11 @@ public class ResearchTableMapper extends AmenityMapper {
                 ChairMapper.draw(eastChairPatches, index, "WEST", "OFFICE", "ResearchTable");
 
                 // Set Monitor
-                List<Patch> researchMonitorEastPatches = new ArrayList<>();
-                researchMonitorEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
-                MonitorMapper.draw(researchMonitorEastPatches, index, "EAST", "ResearchTable");
+                if (withAppliance) {
+                    List<Patch> researchMonitorEastPatches = new ArrayList<>();
+                    researchMonitorEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
+                    MonitorMapper.draw(researchMonitorEastPatches, index, "EAST", "ResearchTable");
+                }
             }
 
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));

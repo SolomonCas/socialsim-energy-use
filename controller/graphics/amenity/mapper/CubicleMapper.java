@@ -15,7 +15,7 @@ public class CubicleMapper extends AmenityMapper {
 
     /***** METHOD *****/
 
-    public static void draw(List<Patch> patches, String type, String facing, String tableOn, boolean withAppliance, int numberOfMonitor) {
+    public static void draw(List<Patch> patches, String type, String facing, String tableOn, boolean withAppliance, int numberOfMonitors) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
@@ -139,7 +139,8 @@ public class CubicleMapper extends AmenityMapper {
                     chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 6, origPatchCol + 3));
 
                     // Set Monitors
-                    monitorWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 4));
+                    if (withAppliance)
+                        monitorWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 4));
                 }
                 case "TYPE_B" -> {
                     if (facing.equals("WEST")) {
@@ -175,11 +176,13 @@ public class CubicleMapper extends AmenityMapper {
                         }
                         // Set chairs
                         chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
-                        chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
+                        chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
 
                         // Set Monitors
-                        monitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
-                        monitorNorthBehindCubiclePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 1));
+                        if (withAppliance) {
+                            monitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+                            monitorNorthBehindCubiclePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol));
+                        }
                     }
                     else if (facing.equals("EAST")) {
                         Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol);
@@ -216,11 +219,13 @@ public class CubicleMapper extends AmenityMapper {
 
                         // Set chairs
                         chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
-                        chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 1));
+                        chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + 2));
 
                         // Set Monitors
-                        monitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
-                        monitorNorthBehindCubiclePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 1));
+                        if (withAppliance) {
+                            monitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+                            monitorNorthBehindCubiclePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + 2));
+                        }
                     }
                 }
                 case "TYPE_C" -> {
@@ -246,7 +251,8 @@ public class CubicleMapper extends AmenityMapper {
                             chairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
 
                             // Set Monitors
-                            monitorNorthBehindCubiclePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                            if (withAppliance)
+                                monitorNorthBehindCubiclePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                         }
                         else if (facing.equals("SOUTH")) {
                             nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1);
@@ -258,7 +264,8 @@ public class CubicleMapper extends AmenityMapper {
                             chairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
 
                             // Set Monitors
-                            monitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+                            if (withAppliance)
+                                monitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
                         }
                     }
                     else if (facing.equals("WEST") || facing.equals("EAST")) {
@@ -283,7 +290,8 @@ public class CubicleMapper extends AmenityMapper {
                             chairEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
 
                             // Set Monitors
-                            monitorWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                            if (withAppliance)
+                                monitorWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
                         }
                         else if (facing.equals("EAST")) {
                             nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
@@ -295,7 +303,8 @@ public class CubicleMapper extends AmenityMapper {
                             chairWestPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
 
                             // Set Monitors
-                            monitorEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
+                            if (withAppliance)
+                                monitorEastPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol));
                         }
                     }
                 }
