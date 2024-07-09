@@ -9,9 +9,10 @@ import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.core.environment.position.Coordinates;
 import com.socialsim.model.core.environment.position.Vector;
+import com.socialsim.model.simulator.SimulationTime;
 import com.socialsim.model.simulator.Simulator;
 
-import java.awt.*;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,12 +27,15 @@ public class AgentMovement {
     public static int defaultExchangeMean = 24;
     public static int defaultExchangeStdDev = 6;
     public static int defaultFieldOfView = 30;
+
+
     public final int MAX_BATHROOM_COOL_DOWN_DURATION = 1440;
     public final int MAX_BREAK_COOL_DOWN_DURATION = 1440;
     public final int MAX_REFRIGERATOR_COOL_DOWN_DURATION = 1440;
     public final int MAX_DISPENSER_COOL_DOWN_DURATION = 1440;
     public final int MAX_INQUIRE_COOL_DOWN_DURATION = 1440;
     public final int MAX_AGENT_COOL_DOWN_DURATION = 1440;
+    public final int MAX_CHANGE_VISUAL_COOL_DOWN_DURATION = 1440;
 
     public int bathroomCoolDown = 0;
     public int breakCoolDown = 0;
@@ -39,6 +43,7 @@ public class AgentMovement {
     public int dispenserCoolDown = 0;
     public int inquireCoolDown = 0;
     public int agentCoolDown = 0;
+    public int changeVisualCoolDown = 0;
 
     private final Agent parent;
     private final Coordinates position;
@@ -83,7 +88,6 @@ public class AgentMovement {
     private boolean isSimultaneousInteractionAllowed;
     private int interactionDuration;
     private InteractionType interactionType;
-    private Patch collabTablePatch;
     private double previousHeading;
     private Agent agentToInquire = null;
     private double workingSeatHeading;
@@ -92,7 +96,9 @@ public class AgentMovement {
 
     private Aircon airconToChange = null;
 
-    WindowBlinds tempBlinds = null;
+    private WindowBlinds blindsToOpen = null;
+    private Light lightsToOpen = null;
+    private boolean openMultipleLights = false;
     public enum InteractionType {
         NON_VERBAL, COOPERATIVE, EXCHANGE
     }
@@ -156,7 +162,6 @@ public class AgentMovement {
 
         this.isInteracting = false;
 
-        this.collabTablePatch = null;
         this.free();
     }
 
@@ -473,14 +478,6 @@ public class AgentMovement {
         return index == 0;
     }
 
-
-    public void removeCollaborationTeam(){
-        if(this.collabTablePatch != null && this.collabTablePatch.getTeam() != -1){
-            this.collabTablePatch.setTeam(-1);
-            this.collabTablePatch = null;
-        }
-    }
-
     public boolean chooseGoal(Class<? extends Amenity> nextAmenityClass) {
         if (this.goalAmenity == null && this.environment.getAmenityList(nextAmenityClass) != null) {
             List<? extends Amenity> amenityListInFloor = this.environment.getAmenityList(nextAmenityClass);
@@ -536,6 +533,7 @@ public class AgentMovement {
         // THIS IS FOR STORING ALL AIRCONS IN HASHMAP
         if(environment.getAircons().size() == 0){
             //do nothing;
+            return;
         }
         for (Aircon amenity : environment.getAircons()) {
             for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
@@ -562,15 +560,16 @@ public class AgentMovement {
         }
 
         //TODO: REMOVE AIRCON WITH DISTANCE OF >= COOLING RANGE.
-//        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
-//            int coolingRange = ( (Aircon) distancesToAirconEntry.getKey().getParent()).getCoolingRange();
-//            if (distancesToAirconEntry.getValue() >= coolingRange){
-//                sortedDistances.remove(distancesToAirconEntry.getKey());
-//            }
-//        }
+        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
+            int coolingRange = ( (Aircon) distancesToAirconEntry.getKey().getParent()).getCoolingRange();
+            if (distancesToAirconEntry.getValue() <= coolingRange){
+                sortedDistances.remove(distancesToAirconEntry.getKey());
+            }
+        }
         // IF NO AIRCON FOUND WITHIN DISTANCE OF < COOLING RANGE
         if(sortedDistances.isEmpty()){
             //TODO:change seat or do nothing
+            return;
         }
         // for each attractor in aircon get it's Patchfield and compare to currentPatch of agent
         System.out.println("hello checking");
@@ -677,16 +676,15 @@ public class AgentMovement {
     }
 
 
-    public HashMap<Amenity.AmenityBlock, Double> getNearLights(){
+    private HashMap<Amenity.AmenityBlock, Double> getNearLights(){
         HashMap<Amenity.AmenityBlock, Double> distancesToLight = new HashMap<>();
         List<Map.Entry<Amenity.AmenityBlock, Double> > lightList = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >();
 
-        // TODO: get all lights within distance threshold near agent. sort it. Then remove the values that are
-        //  outside threshold.
+        // get all lights within distance threshold near agent. sort it. Then remove the values that are
+        // outside threshold.
 
-        //TODO: CHECK WHETHER THE light IS ON OR OFF
-        if(environment.getLights().size() == 0){
-            //do nothing;
+        if(environment.getLights().isEmpty()){
+            return null; // no lights
         }
         for (Light amenity : environment.getLights()) {
             for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
@@ -705,55 +703,22 @@ public class AgentMovement {
             }
         });
 
-        //STORE IT BACK TO HASH IN SORTED MODE
+
+        // get window blinds within threshold
         HashMap<Amenity.AmenityBlock, Double> sortedDistancesLight = new LinkedHashMap<Amenity.AmenityBlock, Double>();
         for (Map.Entry<Amenity.AmenityBlock, Double> aa : lightList) {
-            sortedDistancesLight.put(aa.getKey(), aa.getValue());
+            if (aa.getValue() < ( (Light) aa.getKey().getParent()).getLightRange())
+                sortedDistancesLight.put(aa.getKey(), aa.getValue());
         }
 
-        //TODO: REMOVE LIGHTS WITH DISTANCE OF >= LIGHT RANGE.
-
-        // IF NO LIGHT FOUND WITHIN DISTANCE OF LIGHT RANGE
-        if(sortedDistancesLight.isEmpty()){
-            //TODO:change seat or do nothing
-        }
         // for each attractor in LIGHTS get it's Patchfield and compare to currentPatch of agent
-        System.out.println("hello checkingLIGHTS");
         return sortedDistancesLight;
     }
-    public HashMap<Amenity.AmenityBlock, Double> getNearBlinds() {
-        List<WindowBlinds> temp = new ArrayList<>();
+    private HashMap<Amenity.AmenityBlock, Double> getNearBlinds() {
         HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
         List<Map.Entry<Amenity.AmenityBlock, Double> > list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >();
 
-        for (WindowBlinds amenity : this.environment.getWindowBlinds()) {
-            if (this.currentAction.getName() == Action.Name.CLOSE_BLINDS && amenity.isOpened()) {
-                int attractorCount = 0;
-                // This part checks for amenities with more than 1 attractor
-                for(int i = 0; i < amenity.getAttractors().size(); i++) {
-                    if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
-                        attractorCount++;
-                    }
-                }
-                if(attractorCount == 0) {
-                    temp.add(amenity);
-                }
-            }
-            else if (this.currentAction.getName() == Action.Name.OPEN_BLINDS && !amenity.isOpened()) {
-                int attractorCount = 0;
-                // This part checks for amenities with more than 1 attractor
-                for(int i = 0; i < amenity.getAttractors().size(); i++) {
-                    if (amenity.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
-                        attractorCount++;
-                    }
-                }
-                if(attractorCount == 0) {
-                    temp.add(amenity);
-                }
-            }
-        }
-
-        for (Amenity amenity : temp) {
+        for (Amenity amenity : this.environment.getWindowBlinds()) {
             for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
                 double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
                 distancesToAttractors.put(attractor, distanceToAttractor);
@@ -770,104 +735,76 @@ public class AgentMovement {
 
         HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
         for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
-            sortedDistances.put(aa.getKey(), aa.getValue());
+            if (aa.getValue() < ((WindowBlinds) aa.getKey().getParent()).getLightRange())
+                sortedDistances.put(aa.getKey(), aa.getValue());
         }
-
-        //for now, lets say the range of window blinds light is 30
-        //REMOVE THAT
-//        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
-//            if(distancesToAttractorEntry.getValue() < 30){
-//                //remove BLINDS
-//            }
-//        }
 
         return sortedDistances;
     }
-    //TODO: CHECK FOR VISUAL COMFORT AND MAKE IT SATISFIED
-    public void visualComfortChecker(){
-
+    //TODO: CHECK FOR VISUAL COMFORT, IF AGENT IS SATISFIED
+    public boolean visualComfortChecker(SimulationTime time){
+        System.out.println("@visualComfortChecker");
         HashMap<Amenity.AmenityBlock, Double> sortedDistancesLight = getNearLights();
 
         HashMap<Amenity.AmenityBlock, Double> sortedDistancesBlinds = getNearBlinds();
+
+        if (sortedDistancesBlinds.isEmpty() && sortedDistancesLight.isEmpty()) {
+            return true; // since there are no nearest blinds and light from agent do nothing
+        }
+
         //CHECK IF AGENT IS GREEN, NEUTRAL OR NONGREEN
         //IF GREEN, CHECK BLINDS FIRST THEN LIGHTS IF NO BLINDS WITHIN RANGE FOUND
         double neutralChance = Simulator.roll();
         //FOR GREEN OR NEUTRAL CHANCE
-        if(this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN || neutralChance < 0.5){
+        if((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN || neutralChance < 0.5) && !sortedDistancesBlinds.isEmpty()
+                && time.getTime().isBefore(LocalTime.of(16,0))) {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistancesBlinds.entrySet()) {
-                tempBlinds = ((WindowBlinds)distancesToAttractorEntry.getKey().getParent());
-                if(distancesToAttractorEntry.getValue() < 30){
-                    if(( (WindowBlinds) distancesToAttractorEntry.getKey().getParent()).isOpened()){
-                        this.getParent().setVisualComfortSatisfied(true);
-                        break;
+                PatchField patchField = distancesToAttractorEntry.getKey().getPatch().getPatchField().getKey();
+                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
+                    if (((WindowBlinds) distancesToAttractorEntry.getKey().getParent()).isOpened()) {
+                        return true;
                     }
-                    else{
-                        this.getParent().setVisualComfortSatisfied(false);
+                    else {
+                        blindsToOpen = ((WindowBlinds) distancesToAttractorEntry.getKey().getParent());
+                        return false;
                     }
                 }
-            }
-
-            //IF EVERYTHING IS CLOSED, GET THE NEAREST BLINDS AND OPEN IT(MAYBE CHANGE THE ACTION AND STATE TO OPENING BLINDS THEN USE THE BLINDS VALUE.
-            // TODO: BTW MAKE SURE TO OPEN ALL THE BLINDS WITHIN THE SAME PATCHFIELD(WE'RE JUST GONNA MAKE ALL THE BLINDS OPEN AND CLOSE TOGETHER IF THEY'RE ON THE SAME PATCHFIELD
-
-            if(!this.getParent().isVisualComfortSatisfied()){
-                //OPEN THE BLINDS
             }
         }
         //FOR NEUTRAL CHANCE OR NONGREEN
-        else if(neutralChance >= 0.5 || this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN || tempBlinds == null){
+        if(!sortedDistancesLight.isEmpty()){
+            // check first if there are lights near the agent that is within the same room
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToLightEntry : sortedDistancesLight.entrySet()) {
 
                 PatchField patchField = distancesToLightEntry.getKey().getPatch().getPatchField().getKey();
-                //range of light
-                int lightRange = ( (Light) distancesToLightEntry.getKey().getParent()).getLightRange();
 
                 //if same patchfield, check if within the light range to do visual comfort logic
                 if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
-                    //do thermal comfort logic
-                    if(distancesToLightEntry.getValue() < lightRange){
-
-                        if(( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
-                            this.getParent().setVisualComfortSatisfied(true);
-                            break;
-                        }
-                        else{
-                            this.getParent().setVisualComfortSatisfied(false);
-                        }
+                    if (( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
+                        return true;
+                    }
+                    else {
+                        lightsToOpen = ((Light) distancesToLightEntry.getKey().getParent());
+                        return false;
                     }
                 }
-                //IF NOT SAME PATCH FIELD BUT MAYBE CLOSEST TO THE AGENT
-                else if(distancesToLightEntry.getValue() < lightRange){
-                    //do thermal comfort logic
-                    if(distancesToLightEntry.getValue() < lightRange){
 
-                        if(( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
-                            this.getParent().setVisualComfortSatisfied(true);
-                            break;
-                        }
-                        else{
-                            this.getParent().setVisualComfortSatisfied(false);
-                        }
-                    }
-                }
 
             }
-
-            //IF EVERYTHING IS CLOSED, GET THE NEAREST LIGHT AND OPEN IT(MAYBE CHANGE THE ACTION AND STATE TO OPENING LIGHTS THEN USE THE  LIGHT VALUE.
-            // TODO: BTW MAKE SURE TO OPEN ALL THE LIGHTS WITHIN THE SAME PATCHFIELD(WE'RE JUST GONNA MAKE ALL THE LIGHTS OPEN AND CLOSE TOGETHER IF THEY'RE ON THE SAME PATCHFIELD
-            if(!this.getParent().isVisualComfortSatisfied()){
-                //OPEN THE BLINDS
+            // check maybe the light is outside the room (this is for the lights for Solo Rooms)
+            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToLightEntry : sortedDistancesLight.entrySet()) {
+                //range of light
+                //IF NOT SAME PATCH FIELD BUT MAYBE CLOSEST TO THE AGENT
+                if (( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
+                    return true;
+                }
+                else {
+                    lightsToOpen = ((Light) distancesToLightEntry.getKey().getParent());
+                    return false;
+                }
             }
         }
-
-
-
-        //IF NEUTRAL, CHECK BOTH BLINDS AND LIGHTS 50/50 CHANCE OF CHOOSING WHICH ONE FIRST
-        //IF NONGREEN, CHECK BOTH BLINDS AND LIGHTS, WHICHEVER NEAREST, GET THAT
-        //CHECK IF LIGHTS ARE ON WITHIN THE AGENT
-        //IF ON, CHANGE VISUAL COMFORT TO SATISFIED
-        //IF ALL WITHIN AGENT IS NOT ON, FIND THE NEAREST LIGHT SOURCE WITHIN THE RANGE OF AGENT AND OPEN IT(CAN BE BLINDS OR LIGHTS)
-
+        return true;
     }
 
     public boolean chooseAirConGoal () {
@@ -1006,22 +943,26 @@ public class AgentMovement {
 
             double minDistance = Double.MAX_VALUE;
             Light closestLight = null;
-            // get the nearest Aircon to the agent
 
-            // TODO: need to change whether agent will use lights or blinds
-            for (Light amenity : environment.getLights()) {
-                for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                    double distanceToAircon = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                    if(distanceToAircon < minDistance) {
-                        minDistance = distanceToAircon;
-                        closestLight = amenity;
+            if (lightsToOpen == null) {
+                // get the nearest Aircon to the agent
+                for (Light amenity : environment.getLights()) {
+                    for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+                        double distanceToAircon = Coordinates.distance(this.currentPatch, attractor.getPatch());
+                        if(distanceToAircon < minDistance) {
+                            minDistance = distanceToAircon;
+                            closestLight = amenity;
+                        }
                     }
                 }
-            }
 
-            if (closestLight == null) { // failed getting the nearest light for some reason
-                System.out.println("failed finding lights");
-                return false;
+                if (closestLight == null) { // failed getting the nearest light for some reason
+                    System.out.println("failed finding lights");
+                    return false;
+                }
+            }
+            else {
+                closestLight = this.lightsToOpen;
             }
 
             // for each attractor in light get it's Patchfield maybe the switch is in the same room as the light
@@ -1059,6 +1000,7 @@ public class AgentMovement {
                 for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
                     Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
                     if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
+                        this.openMultipleLights = true; // open lights in the same room
                         this.goalAmenity =  candidateAttractor.getParent();
                         this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
                         this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
@@ -1604,7 +1546,6 @@ public class AgentMovement {
                 for (Amenity amenity : amenityListInFloor) {
                     if(amenity.getAmenityBlocks().getFirst().getPatch().getTeam() == this.team){
                         table = count;
-                        this.collabTablePatch = amenity.getAmenityBlocks().getFirst().getPatch();
                         break;
                     }
                     count++;
@@ -1619,7 +1560,6 @@ public class AgentMovement {
                         count++;
                         if(amenity.getAmenityBlocks().getFirst().getPatch().getTeam() == -1){
                             table = count;
-                            this.collabTablePatch = amenity.getAmenityBlocks().getFirst().getPatch();
                             amenity.getAmenityBlocks().getFirst().getPatch().setTeam(this.team);
                             break;
                         }
@@ -1681,7 +1621,6 @@ public class AgentMovement {
         return false;
     }
 
-    // TODO: Make the logic for INQUIRE_MAINTENANCE
     public boolean chooseAgentAsGoal() {
         if (goalAmenity == null) {
             List<Agent> candidateAgents = new ArrayList<>();
@@ -2449,9 +2388,19 @@ public class AgentMovement {
     public boolean agentCoolDown() {
         System.out.println("agent_switch CoolDown: " + agentCoolDown);
         if (this.agentCoolDown <= 0) {
+            this.agentCoolDown = MAX_AGENT_COOL_DOWN_DURATION;
             return true;
         }
         this.agentCoolDown--;
+        return false;
+    }
+
+    public boolean changeVisualCoolDown() {
+        if (this.changeVisualCoolDown <= 0) {
+            this.changeVisualCoolDown = MAX_CHANGE_VISUAL_COOL_DOWN_DURATION;
+            return true;
+        }
+        this.changeVisualCoolDown--;
         return false;
     }
 
@@ -2635,6 +2584,22 @@ public class AgentMovement {
         return isLeader;
     }
 
+    public Aircon getAirconToChange() {
+        return airconToChange;
+    }
+
+    public WindowBlinds getBlindsToOpen() {
+        return blindsToOpen;
+    }
+
+    public Light getLightsToOpen() {
+        return lightsToOpen;
+    }
+
+    public boolean isOpenMultipleLights() {
+        return openMultipleLights;
+    }
+
     /***** SETTERS *****/
     public void setPosition(Coordinates coordinates) {
         final int timeElapsedExpiration = 10;
@@ -2741,5 +2706,21 @@ public class AgentMovement {
 
     public void setLeader(boolean leader) {
         isLeader = leader;
+    }
+
+    public void setAirconToChange(Aircon airconToChange) {
+        this.airconToChange = airconToChange;
+    }
+
+    public void setBlindsToOpen(WindowBlinds blindsToOpen) {
+        this.blindsToOpen = blindsToOpen;
+    }
+
+    public void setLightsToOpen(Light lightsToOpen) {
+        this.lightsToOpen = lightsToOpen;
+    }
+
+    public void setOpenMultipleLights(boolean openMultipleLights) {
+        this.openMultipleLights = openMultipleLights;
     }
 }
