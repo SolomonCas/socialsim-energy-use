@@ -197,11 +197,11 @@ public class ScreenController extends Controller {
         simulator.setWaterDispenserWattageActive(Float.parseFloat(waterDispenserWattageActive.getText()));
         //FRIDGE
         simulator.setFridgeWattage(Float.parseFloat(fridgeWattage.getText()));
-        simulator.setFridgeWattageInUse(Float.parseFloat(fridgeWattage.getText()));
-        simulator.setFridgeWattageActive(Float.parseFloat(fridgeWattage.getText()));
+        simulator.setFridgeWattageInUse(Float.parseFloat(fridgeWattageInUse.getText()));
+        simulator.setFridgeWattageActive(Float.parseFloat(fridgeWattageActive.getText()));
         //AIRCON
         simulator.setAirconWattage(Float.parseFloat(airconWattage.getText()));
-        simulator.setAirconWattageActive(Float.parseFloat(airconWattage.getText()));
+        simulator.setAirconWattageActive(Float.parseFloat(airconWattageActive.getText()));
         //LIGHT
         simulator.setLightWattage(Float.parseFloat(lightWattage.getText()));
         //MONITOR

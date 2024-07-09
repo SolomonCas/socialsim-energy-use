@@ -132,6 +132,9 @@ public class Environment extends BaseObject implements Serializable {
     private int exchangeStdDev;
     private int fieldOfView;
 
+    //TIMERS
+    private int activeCycleTimerRefrigerator = 0;
+    private int activeCycleTimerDispenser = 0;
 
     // Static
     public static final Factory officeFactory;
@@ -1074,6 +1077,25 @@ public class Environment extends BaseObject implements Serializable {
         return false;
     }
 
+    public boolean activeCycleTimerRefrigerator() {
+        System.out.println("ACTIVE CYCLE TIMER: "+ activeCycleTimerRefrigerator);
+        if (this.activeCycleTimerRefrigerator > 0) {
+            activeCycleTimerRefrigerator--;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean activeCycleTimerDispenser() {
+        System.out.println("ACTIVE CYCLE TIMER: "+ activeCycleTimerDispenser);
+        if (this.activeCycleTimerDispenser > 0) {
+            activeCycleTimerDispenser--;
+            return true;
+        }
+
+        return false;
+    }
+
     // GETTERS: GENERAL
     public int getRows() {
         return rows;
@@ -1469,7 +1491,14 @@ public class Environment extends BaseObject implements Serializable {
         this.fieldOfView = fieldOfView;
     }
 
+    //GETTERS: TIMERS
+    public int getActiveCycleTimerRefrigerator() {
+        return activeCycleTimerRefrigerator;
+    }
 
+    public int getActiveCycleTimerDispenser() {
+        return activeCycleTimerDispenser;
+    }
 
 
 
@@ -1480,7 +1509,13 @@ public class Environment extends BaseObject implements Serializable {
         this.IOSScales = IOSScales;
     }
 
-
+    // SETTERS: TIMERS
+    public void setActiveCycleTimerRefrigerator(int activeCycleTimerRefrigerator){
+        this.activeCycleTimerRefrigerator = activeCycleTimerRefrigerator;
+    }
+    public void setActiveCycleTimerDispenser(int activeCycleTimerDispenser){
+        this.activeCycleTimerDispenser = activeCycleTimerDispenser;
+    }
 
 
 

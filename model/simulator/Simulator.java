@@ -2799,25 +2799,48 @@ public class Simulator {
 
         System.out.println("activeMonitorCount: " + activeMonitorCount);
 
-        totalWattageCount+= ((fridgeWattage * fridgeCount * 5) / 3600) + ((waterDispenserWattage * waterDispenserCount * 5) / 3600);
+        if(!environment.activeCycleTimerDispenser()) {
+            totalWattageCount += ((waterDispenserWattage * waterDispenserCount * 5) / 3600);
+        }
+        if(!environment.activeCycleTimerRefrigerator()){
+            totalWattageCount+= ((fridgeWattage * fridgeCount * 5) / 3600);
+        }
 
-        if(currentTick % 60L == 0){
+        if(currentTick % 60L == 0 || environment.activeCycleTimerRefrigerator() || environment.activeCycleTimerDispenser()) {
             int CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
-            if(CHANCE < 10){
-                System.out.println("initial wattage: "+ totalWattageCount);
 
-                totalWattageCount+= ((fridgeWattageActive * fridgeCount * 5) / 3600);
+            //TIMER SET TO 1 HOUR
+            if (CHANCE < 10) {
+                if (!environment.activeCycleTimerRefrigerator()) {
+                    environment.setActiveCycleTimerRefrigerator(3600); // set active cycle duration
+                }
+            }
+
+            if (environment.activeCycleTimerRefrigerator()) {
+
+                System.out.println("ACTIVE CYCLE NI REF: " + environment.getActiveCycleTimerRefrigerator());
+                System.out.println("initial wattage: " + totalWattageCount);
+
+                totalWattageCount += ((fridgeWattageActive * fridgeCount * 5) / 3600);
                 System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
             }
 
             CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
-            if(CHANCE < 10){
-                System.out.println("initial wattage: "+ totalWattageCount);
-                totalWattageCount+= ((waterDispenserWattageActive * waterDispenserCount * 5) / 3600);
-                System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: "+ totalWattageCount);
+
+            //TIMER SET TO 1 HOUR
+            if (CHANCE < 10) {
+                if (!environment.activeCycleTimerDispenser()) {
+                    environment.setActiveCycleTimerDispenser(3600); // set active cycle duration
+                }
+            }
+            if (environment.activeCycleTimerDispenser()) {
+
+                System.out.println("ACTIVE CYCLE NI DISPENSER: " + environment.getActiveCycleTimerDispenser());
+                System.out.println("initial wattage: " + totalWattageCount);
+                totalWattageCount += ((waterDispenserWattageActive * waterDispenserCount * 5) / 3600);
+                System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
             }
         }
-
         totalWattageCount+= ((lightWattage * activeLightCount * 5) / 3600);
 
         totalWattageCount+= ((monitorWattage * activeMonitorCount * 5) / 3600);
