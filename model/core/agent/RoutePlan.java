@@ -53,7 +53,8 @@ public class RoutePlan {
                                 INQUIRE_STUDENT_CHANCE = 0.3,
                                 INQUIRE_MAINTENANCE_CHANCE = 0.3,
                                 INQUIRE_GUARD_CHANCE = 0.3,
-                                CHECK_TEMP_CHANCE = 0.15;
+                                CHECK_TEMP_CHANCE = 0.15,
+                                CHECK_VISUAL_COMFORT_CHANCE = 0.15;
     public static ArrayList<ArrayList<Long>> meetingTimes = new ArrayList<>();
 
     /***** CONSTRUCTOR *****/
@@ -487,15 +488,13 @@ public class RoutePlan {
             routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_STATION, 3));
+            actions.add(new Action(Action.Name.GO_TO_STATION));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-            routePlan.add(addUrgentRoute("FIX_VISUAL_COMFORT", agent, environment));
-
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GO_TO_LUNCH));
-//            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
-//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_LUNCH));
+            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
+            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
@@ -619,19 +618,24 @@ public class RoutePlan {
             case "FIX_THERMAL_COMFORT" -> {
                 actions = new ArrayList<>();
                 // TODO: Need to determine what action to do (e.g. set AC to cool or warm, or turn on or off AC)
-                actions.add(new Action(Action.Name.SET_AC_TO_COOL));
-                actions.add(new Action(Action.Name.SET_AC_TO_WARM));
-                actions.add(new Action(Action.Name.TURN_OFF_AC));
-                actions.add(new Action(Action.Name.TURN_OFF_AC));
+                if (agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isOn())
+                    actions.add(new Action(Action.Name.SET_AC_TO_COOL));
+                else if (!agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isOn())
+                    actions.add(new Action(Action.Name.SET_AC_TO_WARM));
+                else if  (!agent.getAgentMovement().getAirconToChange().isOn())
+                    actions.add(new Action(Action.Name.TURN_ON_AC));
+                else
+                    actions.add(new Action(Action.Name.TURN_OFF_AC));
                 officeState = new State(State.Name.FIXING_THERMAL_COMFORT, this, agent, actions);
             }
             case "FIX_VISUAL_COMFORT" -> {
                 actions = new ArrayList<>();
-                // TODO: Need to determine what action to do (e.g. open or close blinds, or turn on or off Lights)
-                actions.add(new Action(Action.Name.TURN_OFF_LIGHT));
-                actions.add(new Action(Action.Name.TURN_ON_LIGHT));
-                actions.add(new Action(Action.Name.OPEN_BLINDS));
-                actions.add(new Action(Action.Name.CLOSE_BLINDS));
+                if (agent.getAgentMovement().getLightsToOpen() != null) {
+                    actions.add(new Action(Action.Name.TURN_ON_LIGHT));
+                }
+                else if (agent.getAgentMovement().getBlindsToOpen() != null) {
+                    actions.add(new Action(Action.Name.OPEN_BLINDS));
+                }
                 officeState = new State(State.Name.FIXING_VISUAL_COMFORT, this, agent, actions);
             }
             case "EAT_OUTSIDE" -> {
