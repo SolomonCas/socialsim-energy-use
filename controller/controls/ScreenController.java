@@ -5,6 +5,7 @@ import com.socialsim.controller.graphics.amenity.mapper.*;
 import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
+import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.simulator.Simulator;
 
 import com.socialsim.model.core.environment.Patch;
@@ -196,11 +197,11 @@ public class ScreenController extends Controller {
         simulator.setWaterDispenserWattageActive(Float.parseFloat(waterDispenserWattageActive.getText()));
         //FRIDGE
         simulator.setFridgeWattage(Float.parseFloat(fridgeWattage.getText()));
-        simulator.setFridgeWattageInUse(Float.parseFloat(fridgeWattage.getText()));
-        simulator.setFridgeWattageActive(Float.parseFloat(fridgeWattage.getText()));
+        simulator.setFridgeWattageInUse(Float.parseFloat(fridgeWattageInUse.getText()));
+        simulator.setFridgeWattageActive(Float.parseFloat(fridgeWattageActive.getText()));
         //AIRCON
         simulator.setAirconWattage(Float.parseFloat(airconWattage.getText()));
-        simulator.setAirconWattageActive(Float.parseFloat(airconWattage.getText()));
+        simulator.setAirconWattageActive(Float.parseFloat(airconWattageActive.getText()));
         //LIGHT
         simulator.setLightWattage(Float.parseFloat(lightWattage.getText()));
         //MONITOR
@@ -3056,6 +3057,7 @@ public class ScreenController extends Controller {
             List<Patch> eastPantryWindowBlinds = new ArrayList<>();
             List<Patch> westWindowBlinds = new ArrayList<>();
             List<Patch> westDirectorWindowBlinds = new ArrayList<>();
+            List<Patch> facultyGlass = new ArrayList<>();
 
             // Hallway
             eastHallwayWindowBlinds.add(environment.getPatch(61, 1));
@@ -3075,7 +3077,7 @@ public class ScreenController extends Controller {
 
             // Faculty Room
             for (int j = 100; j <= 127; j += 6) {
-                northSouthWindowBlinds.add(environment.getPatch(106, j));
+                facultyGlass.add(environment.getPatch(108, j));
 
             }
 
@@ -3105,6 +3107,7 @@ public class ScreenController extends Controller {
             }
 
             WindowBlindsMapper.draw(glass, "GLASS", 7);
+            WindowBlindsMapper.draw(facultyGlass, "GLASS", 4);
             WindowBlindsMapper.draw(northSouthWindowBlinds, "OPENED_NORTH_AND_SOUTH", 4);
             WindowBlindsMapper.draw(eastPantryWindowBlinds, "OPENED_EAST", 8);
             WindowBlindsMapper.draw(eastHallwayWindowBlinds, "OPENED_EAST", 5);

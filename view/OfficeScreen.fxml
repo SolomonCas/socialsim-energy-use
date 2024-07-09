@@ -118,13 +118,13 @@
                                             </AnchorPane>
                                             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                 <children>
-                                                    <Label prefHeight="26.0" prefWidth="150.0" text="In Use Fridge Wattage" />
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="In Use Water Dispenser Wattage" />
                                                     <TextField fx:id="waterDispenserWattageInUse" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                                 </children>
                                             </AnchorPane>
                                             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                                 <children>
-                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Active Fridge Wattage" />
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Active Water Dispenser Wattage" />
                                                     <TextField fx:id="waterDispenserWattageActive" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                                 </children>
                                             </AnchorPane>

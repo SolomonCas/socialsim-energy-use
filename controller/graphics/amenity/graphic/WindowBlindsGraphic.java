@@ -59,6 +59,7 @@ public class WindowBlindsGraphic extends AmenityGraphic {
                     this.state = "OPENED_WEST";
                     this.graphicIndex = getGraphicIndex(this.state);
                 }
+                case "GLASS" -> this.graphicIndex = getGraphicIndex(this.state);
                 default -> throw new IllegalArgumentException("Unknown state: " + state);
             }
         }
@@ -88,6 +89,7 @@ public class WindowBlindsGraphic extends AmenityGraphic {
                     this.state = "CLOSED_WEST";
                     this.graphicIndex = getGraphicIndex(this.state);
                 }
+                case "GLASS" -> this.graphicIndex = getGraphicIndex(this.state);
                 default -> throw new IllegalArgumentException("Unknown state: " + state);
             }
         }
