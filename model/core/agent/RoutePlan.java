@@ -499,6 +499,8 @@ public class RoutePlan {
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
             actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.TURN_OFF_AC));
+            actions.add(new Action(Action.Name.TURN_OFF_LIGHT));
             actions.add(new Action(Action.Name.GO_TO_STATION, 2));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }

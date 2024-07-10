@@ -217,7 +217,7 @@ public class Simulator {
     public Simulator() {
         this.environment = null;
         this.running = new AtomicBoolean(false);
-        this.time = new SimulationTime(17, 0, 0);
+        this.time = new SimulationTime(7, 0, 0);
         this.playSemaphore = new Semaphore(0);
         this.start();
     }
@@ -588,7 +588,9 @@ public class Simulator {
 
                         agentMovement.setDuration(agentMovement.getDuration() - 1);
                         if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
-                            agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                            if (agentMovement.getCurrentState().getName() != State.Name.GOING_HOME) // This is used in GOING_HOME state for it needs the GO_TO_STATION action when agents will turn off the lights and/or air cons
+                                agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+
                             agentMovement.setActionIndex(0); // JIC if needed to set the new action
                             if(!agentMovement.getCurrentState().getActions().isEmpty()) {
                                 agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
@@ -743,8 +745,40 @@ public class Simulator {
         else if (action.getName() == Action.Name.LEAVE_OFFICE || action.getName() == Action.Name.EXIT_LUNCH) {
             agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
+
+                double neutralChance = Simulator.roll();
+                int agentCount = 0;
+                PatchField patchField = agentMovement.getCurrentPatch().getPatchField().getKey();
+                for (Agent agent1 : environmentInstance.getMovableAgents()) {
+                    if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
+                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                        agentCount++;
+                    }
+                }
+
+                if (agentMovement.getRoutePlan().isAtDesk() && (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN || (agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && neutralChance < 0.50))
+                    && agentMovement.getRoutePlan().findIndexAction(Action.Name.TURN_OFF_AC, agentMovement.getStateIndex()) != -1 && agentCount == 0) {
+
+                    int actionIndex = agentMovement.getRoutePlan().findIndexAction(Action.Name.TURN_OFF_AC, agentMovement.getStateIndex());
+                    if (actionIndex != -1) {
+                        agentMovement.setActionIndex(actionIndex);
+                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                        agentMovement.resetGoal();
+                    }
+                }
+                else if (agentMovement.getRoutePlan().isAtDesk() && (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN || (agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && neutralChance < 0.50))
+                        && agentMovement.getRoutePlan().findIndexAction(Action.Name.TURN_OFF_LIGHT, agentMovement.getStateIndex()) != -1 && agentCount == 0) {
+                    int actionIndex = agentMovement.getRoutePlan().findIndexAction(Action.Name.TURN_OFF_LIGHT, agentMovement.getStateIndex());
+                    if (actionIndex != -1) {
+                        agentMovement.setActionIndex(actionIndex);
+                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                        agentMovement.resetGoal();
+                    }
+                }
                 // check if the agent is in his/her work place before leaving
-                if(!agentMovement.getRoutePlan().isAtDesk()){
+                else if(!agentMovement.getRoutePlan().isAtDesk()){
                     // SET ACTION TO GO_TO_STATION WHICH SHOULD BE SET ON THE ROUTE PLAN
                     int actionIndex = agentMovement.getRoutePlan().findIndexAction(Action.Name.GO_TO_STATION, agentMovement.getStateIndex());
                     if (actionIndex != -1) {
@@ -753,13 +787,13 @@ public class Simulator {
                         agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                         agentMovement.resetGoal();
                     }
-                    else {
-                        System.out.println("BAdoy");
-                    }
+
                 }
-                else{ // Use destination in route plan
+                else{
+                    // Use destination in route plan
                     agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
                     agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+
                 }
             }
             else if (agentMovement.chooseNextPatchInPath()) {
