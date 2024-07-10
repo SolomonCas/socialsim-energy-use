@@ -1196,12 +1196,12 @@ public class AgentMovement {
                 for (Amenity amenity : environment.getAmenityList(nextAmenityClass)) {
 
                     if (parent.getGender() == Agent.Gender.MALE) {
-                        if (amenity.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("male")) {
+                        if (amenity.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("maleBathroom")) {
                             temp.add(amenity);
                         }
                     }
                     else if (parent.getGender() == Agent.Gender.FEMALE) {
-                        if (amenity.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("female")) {
+                        if (amenity.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("femaleBathroom")) {
                             temp.add(amenity);
                         }
                     }
