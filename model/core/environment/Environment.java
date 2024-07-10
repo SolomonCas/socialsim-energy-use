@@ -103,7 +103,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<Aircon> aircons;
     private final List<Light> lights;
     private final List<Switch> switches;
-
+    private final Set<Amenity> usedAmenities;
 
 
     // Agents
@@ -181,6 +181,8 @@ public class Environment extends BaseObject implements Serializable {
         this.waterDispenserQueues = Collections.synchronizedList(new ArrayList<>());
         this.refrigeratorQueues = Collections.synchronizedList(new ArrayList<>());
         this.bathroomQueues = Collections.synchronizedList(new ArrayList<>());
+
+        this.usedAmenities = Collections.synchronizedSet(new HashSet<>());
 
 
 
@@ -1080,7 +1082,7 @@ public class Environment extends BaseObject implements Serializable {
     }
 
     public boolean activeCycleTimerRefrigerator() {
-        System.out.println("ACTIVE CYCLE TIMER: "+ activeCycleTimerRefrigerator);
+//        System.out.println("ACTIVE CYCLE TIMER: "+ activeCycleTimerRefrigerator);
         if (this.activeCycleTimerRefrigerator > 0) {
             activeCycleTimerRefrigerator--;
             return true;
@@ -1089,7 +1091,7 @@ public class Environment extends BaseObject implements Serializable {
     }
 
     public boolean activeCycleTimerDispenser() {
-        System.out.println("ACTIVE CYCLE TIMER: "+ activeCycleTimerDispenser);
+//        System.out.println("ACTIVE CYCLE TIMER: "+ activeCycleTimerDispenser);
         if (this.activeCycleTimerDispenser > 0) {
             activeCycleTimerDispenser--;
             return true;
@@ -1410,9 +1412,9 @@ public class Environment extends BaseObject implements Serializable {
         }
     }
 
-
-
-
+    public Set<Amenity> getUsedAmenities() {
+        return usedAmenities;
+    }
 
     // GETTERS: AGENTS
     public CopyOnWriteArrayList<Agent> getAgents() {
