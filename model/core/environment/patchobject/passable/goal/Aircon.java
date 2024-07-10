@@ -30,12 +30,12 @@ public class Aircon extends Goal {
     /***** CONSTRUCTOR *****/
     protected Aircon(List<AmenityBlock> amenityBlocks, boolean enabled) {
         super(amenityBlocks, enabled);
-        this.isOn = true;
+        this.isOn = false;
         this.isInActiveCycle = false;
 
         this.roomTemp = 27;
         this.airconTemp = 19;
-        this.coolingTimeInTicks = 12;
+        this.coolingTimeInTicks = 0;
         this.coolingRange = 25;
 
         this.airconGraphic = new AirconGraphic(this);
