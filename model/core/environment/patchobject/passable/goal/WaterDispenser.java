@@ -21,6 +21,10 @@ public class WaterDispenser extends QueueableGoal implements Serializable {
         waterDispenserFactory = new WaterDispenserFactory();
     }
 
+    private double coolnessLevel = 50;
+    private boolean activeCycle = false;
+    private int duration = 0;
+
     /***** CONSTRUCTOR *****/
     protected WaterDispenser(List<AmenityBlock> amenityBlocks, boolean enabled, int waitingTime) {
         super(amenityBlocks, enabled, waitingTime);
@@ -42,6 +46,30 @@ public class WaterDispenser extends QueueableGoal implements Serializable {
     @Override
     public AmenityGraphicLocation getGraphicLocation() {
         return this.waterDispenserGraphic.getGraphicLocation();
+    }
+
+    public double getCoolnessLevel() {
+        return coolnessLevel;
+    }
+
+    public void setCoolnessLevel(double coolnessLevel) {
+        this.coolnessLevel = coolnessLevel;
+    }
+
+    public boolean isActiveCycle() {
+        return activeCycle;
+    }
+
+    public void setActiveCycle(boolean activeCycle) {
+        this.activeCycle = activeCycle;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
 

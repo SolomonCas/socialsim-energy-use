@@ -21,6 +21,9 @@ public class Refrigerator  extends QueueableGoal implements Serializable {
         refrigeratorFactory = new RefrigeratorFactory();
     }
 
+    private double coolnessLevel = 50;
+    private boolean activeCycle = false;
+    private int duration = 0;
     /***** CONSTRUCTOR *****/
     protected Refrigerator(List<AmenityBlock> amenityBlocks, boolean enabled, int waitingTime) {
         super(amenityBlocks, enabled, waitingTime);
@@ -42,6 +45,30 @@ public class Refrigerator  extends QueueableGoal implements Serializable {
     @Override
     public AmenityGraphicLocation getGraphicLocation() {
         return this.refrigeratorGraphic.getGraphicLocation();
+    }
+
+    public boolean isActiveCycle() {
+        return activeCycle;
+    }
+
+    public void setActiveCycle(boolean activeCycle) {
+        this.activeCycle = activeCycle;
+    }
+
+    public double getCoolnessLevel() {
+        return coolnessLevel;
+    }
+
+    public void setCoolnessLevel(double coolnessLevel) {
+        this.coolnessLevel = coolnessLevel;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
 
