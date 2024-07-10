@@ -106,7 +106,6 @@ public class AgentMovement {
         NON_VERBAL, COOPERATIVE, EXCHANGE
     }
 
-
     /***** CONSTRUCTOR *****/
     public AgentMovement(Patch spawnPatch, Agent parent, double baseWalkingDistance, Coordinates coordinates, int team, Chair assignedSeat) { // For inOnStart agents
         this.parent = parent;
@@ -1197,12 +1196,12 @@ public class AgentMovement {
                 for (Amenity amenity : environment.getAmenityList(nextAmenityClass)) {
 
                     if (parent.getGender() == Agent.Gender.MALE) {
-                        if (amenity.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("male")) {
+                        if (amenity.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("maleBathroom")) {
                             temp.add(amenity);
                         }
                     }
                     else if (parent.getGender() == Agent.Gender.FEMALE) {
-                        if (amenity.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("female")) {
+                        if (amenity.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("femaleBathroom")) {
                             temp.add(amenity);
                         }
                     }
@@ -2633,13 +2632,12 @@ public class AgentMovement {
         return openMultipleLights;
     }
 
-    //GETTER aircon
-    public boolean isToHeat() {
-        return isToHeat;
-    }
-
     public boolean isToCool() {
         return isToCool;
+    }
+
+    public boolean isToHeat() {
+        return isToHeat;
     }
 
     /***** SETTERS *****/

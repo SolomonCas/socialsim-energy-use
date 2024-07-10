@@ -371,8 +371,9 @@ public class Simulator {
         environment.createInitialAgentDemographics();
     }
 
-    public void updateEnvironment (Environment environment, long currrentTick, SimulationTime time) {
-
+    public void updateEnvironment (Environment environment, long currentTick, SimulationTime time) {
+        System.out.println("CURRENT TICK: "+currentTick);
+        System.out.println("Number of used amenities: " + environment.getUsedAmenities().size());
         // Change to night
         if (time.getTime().equals(LocalTime.of(16,0))) {
             for (WindowBlinds windowBlinds : environment.getWindowBlinds()) {
@@ -466,7 +467,7 @@ public class Simulator {
 
                 // Before going Maintenance and Guard to go home in their timeOut schedule, they will inspect every room
                 if ((agent.getType() == Agent.Type.MAINTENANCE || agent.getType() == Agent.Type.GUARD) &&
-                        time.getTime().equals(agent.getTimeOut().minusMinutes(30))) {
+                        time.getTime().equals(agent.getTimeOut().minusMinutes(60))) {
                     int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.INSPECT_ROOMS);
                     if (index != -1) {
                         agent.getAgentMovement().getRoutePlan().setTakingLunch(true);
@@ -588,7 +589,9 @@ public class Simulator {
 
                         agentMovement.setDuration(agentMovement.getDuration() - 1);
                         if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
-                            agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                            if (agentMovement.getCurrentState().getName() != State.Name.GOING_HOME) // This is used in GOING_HOME state for it needs the GO_TO_STATION action when agents will turn off the lights and/or air cons
+                                agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+
                             agentMovement.setActionIndex(0); // JIC if needed to set the new action
                             if(!agentMovement.getCurrentState().getActions().isEmpty()) {
                                 agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
@@ -637,83 +640,82 @@ public class Simulator {
                         agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
                         if (agentMovement.getRoutePlan().getCanUrgent()) {
                             double CHANCE = Simulator.roll();
-//                            if (CHANCE < RoutePlan.INQUIRE_FACULTY_CHANCE && currentFacultyCount > 0 && agentMovement.inquireCoolDown()){
-//                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_FACULTY", agent, environmentInstance));
-//                                agentMovement.setCurrentState(0);
-//                                agentMovement.setStateIndex(0);
-//                                agentMovement.setActionIndex(0);
-//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                agentMovement.resetGoal();
-//                                agentMovement.getRoutePlan().setAtDesk(false);
-//                            }
-//                            else if (CHANCE < RoutePlan.INQUIRE_STUDENT_CHANCE && currentStudentCount > 0 && agentMovement.inquireCoolDown()){
-//                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_STUDENT", agent, environmentInstance));
-//                                agentMovement.setCurrentState(0);
-//                                agentMovement.setStateIndex(0);
-//                                agentMovement.setActionIndex(0);
-//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                agentMovement.resetGoal();
-//                                agentMovement.getRoutePlan().setAtDesk(false);
-//                            }
-//                            else if (CHANCE < RoutePlan.INQUIRE_GUARD_CHANCE && currentGuardCount > 0 && agentMovement.inquireCoolDown()){
-//                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_GUARD", agent, environmentInstance));
-//                                agentMovement.setCurrentState(0);
-//                                agentMovement.setStateIndex(0);
-//                                agentMovement.setActionIndex(0);
-//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                agentMovement.resetGoal();
-//                                agentMovement.getRoutePlan().setAtDesk(false);
-//                            }
-//                            else if (CHANCE < RoutePlan.INQUIRE_MAINTENANCE_CHANCE && currentMaintenanceCount > 0 && agentMovement.inquireCoolDown()){
-//                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_GUARD", agent, environmentInstance));
-//                                agentMovement.setCurrentState(0);
-//                                agentMovement.setStateIndex(0);
-//                                agentMovement.setActionIndex(0);
-//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                agentMovement.resetGoal();
-//                                agentMovement.getRoutePlan().setAtDesk(false);
-//                            }
-//                            else if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
-//                                if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
-//                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
-//                                    agentMovement.setCurrentState(agentMovement.getStateIndex());
-//                                    agentMovement.setStateIndex(agentMovement.getStateIndex());
-//                                    agentMovement.setActionIndex(0);
-//                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                    agentMovement.resetGoal();
-//                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                    agentMovement.getRoutePlan().setBATH_AM(1);
-//                                    agentMovement.getRoutePlan().setAtDesk(false);
-//                                }
-//                                else if (agentMovement.getRoutePlan().isBathPM() && agentMovement.getRoutePlan().getBATH_PM() > 0) {
-//                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
-//                                    agentMovement.setCurrentState(agentMovement.getStateIndex());
-//                                    agentMovement.setStateIndex(agentMovement.getStateIndex());
-//                                    agentMovement.setActionIndex(0);
-//                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                    agentMovement.resetGoal();
-//                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                    agentMovement.getRoutePlan().setBATH_PM(1);
-//                                    agentMovement.getRoutePlan().setAtDesk(false);
-//                                }
-//
-//                            }
-//                            else if (CHANCE < RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.breakCoolDown()) {
-//                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent, environmentInstance)); // add the break state
-//                                agentMovement.setCurrentState(agentMovement.getStateIndex()); // set the new current state into the go to the break state
-//                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-//                                agentMovement.setActionIndex(0); // JIC if needed
-//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex())); // also set the current action to go to break
-//                                agentMovement.resetGoal();
-//                                agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
-//                                agentMovement.getRoutePlan().setAtDesk(false);
-//                            }
-                            if(/*CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown() &&*/ agentMovement.airconChecker()){
+                            if (CHANCE < RoutePlan.INQUIRE_FACULTY_CHANCE && currentFacultyCount > 0 && agentMovement.inquireCoolDown()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_FACULTY", agent, environmentInstance));
+                                agentMovement.setCurrentState(0);
+                                agentMovement.setStateIndex(0);
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false);
+                            }
+                            else if (CHANCE < RoutePlan.INQUIRE_STUDENT_CHANCE && currentStudentCount > 0 && agentMovement.inquireCoolDown()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_STUDENT", agent, environmentInstance));
+                                agentMovement.setCurrentState(0);
+                                agentMovement.setStateIndex(0);
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false);
+                            }
+                            else if (CHANCE < RoutePlan.INQUIRE_GUARD_CHANCE && currentGuardCount > 0 && agentMovement.inquireCoolDown()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_GUARD", agent, environmentInstance));
+                                agentMovement.setCurrentState(0);
+                                agentMovement.setStateIndex(0);
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false);
+                            }
+                            else if (CHANCE < RoutePlan.INQUIRE_MAINTENANCE_CHANCE && currentMaintenanceCount > 0 && agentMovement.inquireCoolDown()){
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_GUARD", agent, environmentInstance));
+                                agentMovement.setCurrentState(0);
+                                agentMovement.setStateIndex(0);
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false);
+                            }
+                            else if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
+                                if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
+                                    agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                    agentMovement.setStateIndex(agentMovement.getStateIndex());
+                                    agentMovement.setActionIndex(0);
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                    agentMovement.getRoutePlan().setBATH_AM(1);
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                }
+                                else if (agentMovement.getRoutePlan().isBathPM() && agentMovement.getRoutePlan().getBATH_PM() > 0) {
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
+                                    agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                    agentMovement.setStateIndex(agentMovement.getStateIndex());
+                                    agentMovement.setActionIndex(0);
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                    agentMovement.getRoutePlan().setBATH_PM(1);
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                }
 
+                            }
+                            else if (CHANCE < RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.breakCoolDown()) {
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent, environmentInstance)); // add the break state
+                                agentMovement.setCurrentState(agentMovement.getStateIndex()); // set the new current state into the go to the break state
+                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
+                                agentMovement.getRoutePlan().setAtDesk(false);
+                            }
+                            else if (CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown() && !agentMovement.airconChecker()) {
                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
                                 agentMovement.setCurrentState(agentMovement.getStateIndex());
                                 agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
@@ -722,15 +724,15 @@ public class Simulator {
                                 agentMovement.resetGoal();
                                 agentMovement.getRoutePlan().setAtDesk(false);
                             }
-//                            else if (CHANCE < RoutePlan.CHECK_VISUAL_COMFORT_CHANCE && agentMovement.changeVisualCoolDown() && !agentMovement.visualComfortChecker(time)) {
-//                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
-//                                agentMovement.setCurrentState(agentMovement.getStateIndex());
-//                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-//                                agentMovement.setActionIndex(0); // JIC if needed
-//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                agentMovement.resetGoal();
-//                                agentMovement.getRoutePlan().setAtDesk(false);
-//                            }
+                            else if (CHANCE < RoutePlan.CHECK_VISUAL_COMFORT_CHANCE && agentMovement.changeVisualCoolDown() && !agentMovement.visualComfortChecker(time)) {
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
+                                agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false);
+                            }
 
 
                         }
@@ -743,8 +745,41 @@ public class Simulator {
         else if (action.getName() == Action.Name.LEAVE_OFFICE || action.getName() == Action.Name.EXIT_LUNCH) {
             agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
+
+                double neutralChance = Simulator.roll();
+                int agentCount = 0;
+                PatchField patchField = agentMovement.getCurrentPatch().getPatchField().getKey();
+                for (Agent agent1 : environmentInstance.getMovableAgents()) {
+                    if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
+                            && agent1.getAgentMovement().getRoutePlan().isAtDesk()
+                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                        agentCount++;
+                    }
+                }
+
+                if (agentMovement.getRoutePlan().isAtDesk() && (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN || (agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && neutralChance < 0.50))
+                    && agentMovement.getRoutePlan().findIndexAction(Action.Name.TURN_OFF_AC, agentMovement.getStateIndex()) != -1 && agentCount == 0) {
+
+                    int actionIndex = agentMovement.getRoutePlan().findIndexAction(Action.Name.TURN_OFF_AC, agentMovement.getStateIndex());
+                    if (actionIndex != -1) {
+                        agentMovement.setActionIndex(actionIndex);
+                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                        agentMovement.resetGoal();
+                    }
+                }
+                else if (agentMovement.getRoutePlan().isAtDesk() && (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN || (agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && neutralChance < 0.50))
+                        && agentMovement.getRoutePlan().findIndexAction(Action.Name.TURN_OFF_LIGHT, agentMovement.getStateIndex()) != -1 && agentCount == 0) {
+                    int actionIndex = agentMovement.getRoutePlan().findIndexAction(Action.Name.TURN_OFF_LIGHT, agentMovement.getStateIndex());
+                    if (actionIndex != -1) {
+                        agentMovement.setActionIndex(actionIndex);
+                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                        agentMovement.resetGoal();
+                    }
+                }
                 // check if the agent is in his/her work place before leaving
-                if(!agentMovement.getRoutePlan().isAtDesk()){
+                else if(!agentMovement.getRoutePlan().isAtDesk()){
                     // SET ACTION TO GO_TO_STATION WHICH SHOULD BE SET ON THE ROUTE PLAN
                     int actionIndex = agentMovement.getRoutePlan().findIndexAction(Action.Name.GO_TO_STATION, agentMovement.getStateIndex());
                     if (actionIndex != -1) {
@@ -753,11 +788,10 @@ public class Simulator {
                         agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                         agentMovement.resetGoal();
                     }
-                    else {
-                        System.out.println("BAdoy");
-                    }
+
                 }
-                else{ // Use destination in route plan
+                else{
+                    // Use destination in route plan
                     agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
                     agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
                 }
@@ -800,7 +834,6 @@ public class Simulator {
                     agentMovement.resetGoal();
                 }
                 if (agentMovement.getCurrentState().getActions().isEmpty()){
-                    System.out.println("GO_TO_STATION");
                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                     agentMovement.setStateIndex(0); // JIC if needed
@@ -856,7 +889,7 @@ public class Simulator {
         }
         else if (action.getName() == Action.Name.GOING_TO_RECEPTION_QUEUE || action.getName() == Action.Name.GO_TO_WAIT_AREA) {
             agentMovement.setSimultaneousInteractionAllowed(false);
-            if (agentMovement.getGoalQueueingPatchField() == null) {
+            if (agentMovement.getGoalQueueingPatchField() == null || agentMovement.getGoalAmenity() == null) {
                 if (state.getName() == State.Name.GOING_TO_RECEPTION) {
                     // Go to the end of the ReceptionQueue
                     agentMovement.chooseReceptionQueue();
@@ -1254,6 +1287,7 @@ public class Simulator {
                         agentMovement.reachPatchInPath();
                         if (agentMovement.isCloseToFinalPatchInPath()) {
                             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                            environmentInstance.getUsedAmenities().add(agentMovement.getCurrentAmenity());
                         }
                     }
                 }
@@ -1330,6 +1364,8 @@ public class Simulator {
                         agentMovement.reachPatchInPath();
                         if (agentMovement.isCloseToFinalPatchInPath()) {
                             agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                            environmentInstance.getUsedAmenities().add(agentMovement.getCurrentAmenity());
+
                         }
                     }
                 }
@@ -1729,7 +1765,8 @@ public class Simulator {
                     if (agentMovement.hasReachedNextPatchInPath()) {
                         agentMovement.reachPatchInPath();
                         if (agentMovement.isCloseToFinalPatchInPath()) {
-                            agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                            agentMovement.setCurrentAmenity(agentMovement.getLightsToOpen());
+                            environmentInstance.getUsedAmenities().add(agentMovement.getCurrentAmenity());
                         }
                     }
                 }
@@ -1771,6 +1808,7 @@ public class Simulator {
 
                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
                         agentMovement.setLightsToOpen(null);
+                        agentMovement.setOpenMultipleLights(false);
                         agentMovement.getGoalAttractor().setIsReserved(false);
                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
                         agentMovement.setActionIndex(0); // JIC needed
@@ -1795,11 +1833,6 @@ public class Simulator {
                 }
             }
         }
-        /**
-         * TODO: Turning off and on and setting AC to cool and warm isn't really implemented yet.
-         * TODO: Determine if thermal comfort is satisfied or not
-         * TODO: AC AOE needs to be implemented
-         * **/
         else if (action.getName() == Action.Name.TURN_OFF_AC || action.getName() == Action.Name.TURN_ON_AC ||
                 action.getName() == Action.Name.SET_AC_TO_COOL || action.getName() == Action.Name.SET_AC_TO_WARM) {
             agentMovement.setSimultaneousInteractionAllowed(true);
@@ -1845,7 +1878,8 @@ public class Simulator {
                     if (agentMovement.hasReachedNextPatchInPath()) {
                         agentMovement.reachPatchInPath();
                         if (agentMovement.isCloseToFinalPatchInPath()) {
-                            agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                            agentMovement.setCurrentAmenity(agentMovement.getAirconToChange());
+                            environmentInstance.getUsedAmenities().add(agentMovement.getCurrentAmenity());
                         }
                     }
                 }
@@ -1972,6 +2006,15 @@ public class Simulator {
                                         agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
                                         agentMovement.getRoutePlan().setAtDesk(false);
                                     }
+                                    else if (CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown() && !agentMovement.airconChecker()) {
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
+                                        agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                        agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false);
+                                    }
                                     else if (CHANCE < RoutePlan.CHECK_VISUAL_COMFORT_CHANCE && agentMovement.changeVisualCoolDown() && !agentMovement.visualComfortChecker(time)) {
                                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
                                         agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -2024,6 +2067,195 @@ public class Simulator {
                                     agentMovement.setActionIndex(0); // JIC if needed
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                     agentMovement.resetGoal();
+                                }
+                            }
+                        }
+                        else if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
+                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                if (agentMovement.chooseLightGoal()) {
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                }
+                                else {
+                                    isFull = true;
+                                    // Skip this action
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+                                }
+
+                            }
+                            if (isFull) {
+                                isFull = false;
+                            }
+                            else {
+                                if (agentMovement.chooseNextPatchInPath()) {
+                                    agentMovement.faceNextPosition();
+                                    agentMovement.moveSocialForce();
+
+                                    if (agentMovement.hasReachedNextPatchInPath()) {
+                                        agentMovement.reachPatchInPath();
+                                        if (agentMovement.isCloseToFinalPatchInPath()) {
+                                            agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                        }
+                                    }
+                                }
+                                else {
+                                    if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
+                                        if (agentMovement.isOpenMultipleLights()) {
+                                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
+                                            for (Light light : environmentInstance.getLights()) {
+                                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                                        light.setOn(false);
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            agentMovement.getLightsToOpen().setOn(false);
+                                        }
+                                    }
+
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.setLightsToOpen(null);
+                                        agentMovement.getGoalAttractor().setIsReserved(false);
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+                                }
+                            }
+                        }
+                        /**
+                         * TODO: Turning off and on and setting AC to cool and warm isn't really implemented yet.
+                         * TODO: Determine if thermal comfort is satisfied or not
+                         * TODO: AC AOE needs to be implemented
+                         * **/
+                        else if (action.getName() == Action.Name.TURN_OFF_AC) {
+                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                if (agentMovement.chooseAirConGoal()) {
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                }
+                                else {
+                                    isFull = true;
+                                    // skip
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+                                }
+
+                            }
+                            if (isFull) {
+                                isFull = false;
+                            }
+                            else {
+                                if (agentMovement.chooseNextPatchInPath()) {
+                                    agentMovement.faceNextPosition();
+                                    agentMovement.moveSocialForce();
+
+                                    if (agentMovement.hasReachedNextPatchInPath()) {
+                                        agentMovement.reachPatchInPath();
+                                        if (agentMovement.isCloseToFinalPatchInPath()) {
+                                            agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                        }
+                                    }
+                                }
+                                else {
+//                                    if (action.getName() == Action.Name.TURN_OFF_AC) {
+//                                        if (agentMovement.isOpenMultipleLights()) {
+//                                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
+//                                            for (Light light : environmentInstance.getLights()) {
+//                                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+//                                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+//                                                        light.setOn(false);
+//                                                        break;
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                        else {
+//                                            agentMovement.getLightsToOpen().setOn(false);
+//                                        }
+//                                    }
+
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.setLightsToOpen(null);
+                                        agentMovement.getGoalAttractor().setIsReserved(false);
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
                                 }
                             }
                         }
@@ -2217,6 +2449,195 @@ public class Simulator {
                                     agentMovement.setActionIndex(0); // JIC if needed
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                                     agentMovement.resetGoal();
+                                }
+                            }
+                        }
+                        else if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
+                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                if (agentMovement.chooseLightGoal()) {
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                }
+                                else {
+                                    isFull = true;
+                                    // Skip this action
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+                                }
+
+                            }
+                            if (isFull) {
+                                isFull = false;
+                            }
+                            else {
+                                if (agentMovement.chooseNextPatchInPath()) {
+                                    agentMovement.faceNextPosition();
+                                    agentMovement.moveSocialForce();
+
+                                    if (agentMovement.hasReachedNextPatchInPath()) {
+                                        agentMovement.reachPatchInPath();
+                                        if (agentMovement.isCloseToFinalPatchInPath()) {
+                                            agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                        }
+                                    }
+                                }
+                                else {
+                                    if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
+                                        if (agentMovement.isOpenMultipleLights()) {
+                                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
+                                            for (Light light : environmentInstance.getLights()) {
+                                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                                        light.setOn(false);
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            agentMovement.getLightsToOpen().setOn(false);
+                                        }
+                                    }
+
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.setLightsToOpen(null);
+                                        agentMovement.getGoalAttractor().setIsReserved(false);
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+                                }
+                            }
+                        }
+                        /**
+                         * TODO: Turning off and on and setting AC to cool and warm isn't really implemented yet.
+                         * TODO: Determine if thermal comfort is satisfied or not
+                         * TODO: AC AOE needs to be implemented
+                         * **/
+                        else if (action.getName() == Action.Name.TURN_OFF_AC) {
+                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            if (agentMovement.getGoalAmenity() == null) {
+                                if (agentMovement.chooseAirConGoal()) {
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                }
+                                else {
+                                    isFull = true;
+                                    // skip
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+                                }
+
+                            }
+                            if (isFull) {
+                                isFull = false;
+                            }
+                            else {
+                                if (agentMovement.chooseNextPatchInPath()) {
+                                    agentMovement.faceNextPosition();
+                                    agentMovement.moveSocialForce();
+
+                                    if (agentMovement.hasReachedNextPatchInPath()) {
+                                        agentMovement.reachPatchInPath();
+                                        if (agentMovement.isCloseToFinalPatchInPath()) {
+                                            agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
+                                        }
+                                    }
+                                }
+                                else {
+//                                    if (action.getName() == Action.Name.TURN_OFF_AC) {
+//                                        if (agentMovement.isOpenMultipleLights()) {
+//                                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
+//                                            for (Light light : environmentInstance.getLights()) {
+//                                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+//                                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+//                                                        light.setOn(false);
+//                                                        break;
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                        else {
+//                                            agentMovement.getLightsToOpen().setOn(false);
+//                                        }
+//                                    }
+
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.setLightsToOpen(null);
+                                        agentMovement.getGoalAttractor().setIsReserved(false);
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
+
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()){
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                                    }
                                 }
                             }
                         }
@@ -3036,7 +3457,7 @@ public class Simulator {
             }
         }
 
-        System.out.println("activeMonitorCount: " + activeMonitorCount);
+//        System.out.println("activeMonitorCount: " + activeMonitorCount);
 
         if(!environment.activeCycleTimerDispenser()) {
             totalWattageCount += ((waterDispenserWattage * waterDispenserCount * 5) / 3600);
