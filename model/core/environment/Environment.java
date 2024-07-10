@@ -310,35 +310,31 @@ public class Environment extends BaseObject implements Serializable {
     public void createInitialAgentDemographics(){
         int offset = 30; // equivalent to 30 mins
 
+        // TODO: RANDOMIZE TIMEIN AND TIMEOUT
         for (int i = 0; i < 1; i++) {
-            Agent agent = AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(9, 0, i), LocalTime.of(15, 0));
+            Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(7, 0, i), LocalTime.of(18, 0));
             this.getAgents().add(agent);
         }
 
-//        for (int i = 0; i < 1; i++) {
-//            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,30, i), LocalTime.of(22,0));
-//            this.getAgents().add(agent);
-//        }
-
-//        for (int i = 0; i < 1; i++) {
-//            Agent agent = AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30, i), LocalTime.of(22,0));
-//            this.getAgents().add(agent);
-//        }
-
-//        for (int i = 0; i < 4; i++) {
-//            Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(8,0, i), LocalTime.of(18,0));
-//            this.getAgents().add(agent);
-//        }
-//
-//        for (int i = 0; i < 1; i++) {
-//            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(9,0, i), LocalTime.of(10,0));
-//            this.getAgents().add(agent);
-//        }
-//
-        for (int i = 0; i < 2; i++) {
-            Agent agent = AgentFactory.create(Type.FACULTY, true, 1, LocalTime.of(9,0, i), LocalTime.of(14,30));
+        for (int i = 0; i < 1; i++) {
+            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(22,0));
             this.getAgents().add(agent);
         }
+
+        for (int i = 0; i < 1; i++) {
+            Agent agent = AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0));
+            this.getAgents().add(agent);
+        }
+//
+//        for (int i = 0; i < 1; i++) {
+//            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(7,30, i), LocalTime.of(11,0));
+//            this.getAgents().add(agent);
+//        }
+//
+//        for (int i = 0; i < 2; i++) {
+//            Agent agent = AgentFactory.create(Type.FACULTY, true, 1, LocalTime.of(9,0, i), LocalTime.of(14,30));
+//            this.getAgents().add(agent);
+//        }
 
     }
 
@@ -1034,7 +1030,7 @@ public class Environment extends BaseObject implements Serializable {
                 }
             }
 
-            System.out.println("close agent count: "+closeAgentCount);
+//            System.out.println("close agent count: "+closeAgentCount);
             int coolingTicks = 0;
             //IF TEMP IS GOING HIGHER OR HEATING
 

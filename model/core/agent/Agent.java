@@ -113,8 +113,10 @@ public class Agent extends PatchObject {
                 this.personaActionGroup = PersonaActionGroup.EXT_STUDENT;
             }
             this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
-            energyProfilePicker();
+            this.energyProfile = EnergyProfile.GREEN;
+//            energyProfilePicker();
         }
+
 
 
 

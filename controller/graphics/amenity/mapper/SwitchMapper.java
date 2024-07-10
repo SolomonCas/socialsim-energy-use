@@ -24,7 +24,7 @@ public class SwitchMapper extends AmenityMapper {
             patch.setAmenityBlock(amenityBlock);
 
             if (facing.equals("SOUTH")) {
-                Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
+                Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol);
                 Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
                 amenityBlocks.add(nextAmenityBlock);
                 nextPatch.setAmenityBlock(nextAmenityBlock);

@@ -30,6 +30,9 @@ public class Simulator {
     private final SimulationTime time;
     private final Semaphore playSemaphore;
 
+    // Maximum Time of the simulation
+    // Developer Note: The model won't stop on this tick.
+    private final static int MAX_CURRENT_TICKS = 17280;
 
     public static final Random RANDOM_NUMBER_GENERATOR;
 
@@ -77,10 +80,10 @@ public class Simulator {
     public static float totalWattageCount = 0;
 
     //Aircon
-    public static float airconWattage = 50.0F;
-    public static float airconWattageActive = 100.0F;
+    public static float airconWattage = 40.0F;
+    public static float airconWattageActive = 60.0F;
     //Light
-    public static float lightWattage = 20.0F;
+    public static float lightWattage = 3.0F;
 
     //Fridge
     public static float fridgeWattage = 0.6F;
@@ -470,15 +473,14 @@ public class Simulator {
                 // Before going Maintenance and Guard to go home in their timeOut schedule, they will inspect every room
                 if ((agent.getType() == Agent.Type.MAINTENANCE || agent.getType() == Agent.Type.GUARD) &&
                         time.getTime().equals(agent.getTimeOut().minusMinutes(60))) {
-                    int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.INSPECT_ROOMS);
-                    if (index != -1) {
-                        agent.getAgentMovement().getRoutePlan().setTakingLunch(true);
-                        agent.getAgentMovement().setCurrentState(index);
-                        agent.getAgentMovement().setStateIndex(index);
-                        agent.getAgentMovement().setActionIndex(0);
-                        agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
-                        agent.getAgentMovement().resetGoal();
-                    }
+                    agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(0, agent.getAgentMovement().getRoutePlan().addUrgentRoute("INSPECT", agent, environment));
+                    agent.getAgentMovement().setCurrentState(0);
+                    agent.getAgentMovement().setStateIndex(0);
+                    agent.getAgentMovement().setActionIndex(0);
+                    agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                    agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration()); // setting the new duration of the action
+                    agent.getAgentMovement().resetGoal();
+                    agent.getAgentMovement().getRoutePlan().setAtDesk(false); // JIC needed
                 }
 
 
@@ -535,6 +537,9 @@ public class Simulator {
     private static void doCommonAction(AgentMovement agentMovement, State state, Action action, Agent agent, Agent.Type type,
                           Agent.Persona persona, Environment environmentInstance, long currentTick, SimulationTime time) {
         boolean isFull = false;
+        // is this where isAtDesk is set to true
+        // Mainly used by Director, Faculty, and Student agents
+        // where urgent task happen for Director, Faculty, and Student agents
         if (action.getName() == Action.Name.GO_TO_STATION) {
             agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
@@ -642,7 +647,25 @@ public class Simulator {
                         agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
                         if (agentMovement.getRoutePlan().getCanUrgent()) {
                             double CHANCE = Simulator.roll();
-                            if (CHANCE < RoutePlan.INQUIRE_FACULTY_CHANCE && currentFacultyCount > 0 && agentMovement.inquireCoolDown()){
+                            if (agentMovement.airconChecker() && agentMovement.agentCoolDown()) {
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
+                                agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false);
+                            }
+                            else if (!agentMovement.visualComfortChecker(time) && agentMovement.changeVisualCoolDown()) {
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
+                                agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false);
+                            }
+                            else if (CHANCE < RoutePlan.INQUIRE_FACULTY_CHANCE && currentFacultyCount > 0 && agentMovement.inquireCoolDown()){
                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_FACULTY", agent, environmentInstance));
                                 agentMovement.setCurrentState(0);
                                 agentMovement.setStateIndex(0);
@@ -717,26 +740,6 @@ public class Simulator {
                                 agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
                                 agentMovement.getRoutePlan().setAtDesk(false);
                             }
-                            else if (CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown() && agentMovement.airconChecker()) {
-                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
-                                agentMovement.setCurrentState(agentMovement.getStateIndex());
-                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-                                agentMovement.setActionIndex(0); // JIC if needed
-                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.resetGoal();
-                                agentMovement.getRoutePlan().setAtDesk(false);
-                            }
-                            else if (CHANCE < RoutePlan.CHECK_VISUAL_COMFORT_CHANCE && agentMovement.changeVisualCoolDown() && !agentMovement.visualComfortChecker(time)) {
-                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
-                                agentMovement.setCurrentState(agentMovement.getStateIndex());
-                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-                                agentMovement.setActionIndex(0); // JIC if needed
-                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.resetGoal();
-                                agentMovement.getRoutePlan().setAtDesk(false);
-                            }
-
-
                         }
                     }
                 }
@@ -744,6 +747,7 @@ public class Simulator {
 
 
         }
+
         else if (action.getName() == Action.Name.LEAVE_OFFICE || action.getName() == Action.Name.EXIT_LUNCH) {
             agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
@@ -753,12 +757,11 @@ public class Simulator {
                 PatchField patchField = agentMovement.getCurrentPatch().getPatchField().getKey();
                 for (Agent agent1 : environmentInstance.getMovableAgents()) {
                     if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
-                            && agent1.getAgentMovement().getRoutePlan().isAtDesk()
                             && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
                         agentCount++;
                     }
                 }
-
+                System.out.println("AGENT COUNT: " + agentCount);
                 if (agentMovement.getRoutePlan().isAtDesk() && (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN || (agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && neutralChance < 0.50))
                     && agentMovement.getRoutePlan().findIndexAction(Action.Name.TURN_OFF_AC, agentMovement.getStateIndex()) != -1 && agentCount == 0) {
 
@@ -848,6 +851,7 @@ public class Simulator {
 
 
         }
+
         // Used for waiting for group mates to eat outside
         else if (action.getName() == Action.Name.WAIT_FOR_COLLEAGUE) {
             agentMovement.setSimultaneousInteractionAllowed(true);
@@ -889,6 +893,7 @@ public class Simulator {
                 agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
             }
         }
+
         else if (action.getName() == Action.Name.GOING_TO_RECEPTION_QUEUE || action.getName() == Action.Name.GO_TO_WAIT_AREA) {
             agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalQueueingPatchField() == null || agentMovement.getGoalAmenity() == null) {
@@ -1197,7 +1202,7 @@ public class Simulator {
             if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
                 System.out.println("getting water initial wattage: "+ totalWattageCount);
                 if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof WaterDispenser) {
-                    ((WaterDispenser) agentMovement.getCurrentAmenity()).setWaterLevel(((WaterDispenser) agentMovement.getCurrentAmenity()).getWaterLevel() - 1);
+                    ((WaterDispenser) agentMovement.getCurrentAmenity()).setWaterLevel(((WaterDispenser) agentMovement.getCurrentAmenity()).getWaterLevel() - 5);
                 }
                 totalWattageCount+= ((waterDispenserWattageInUse * 5) / 3600);
                 System.out.println("getting water wattage: "+ totalWattageCount);
@@ -1206,7 +1211,7 @@ public class Simulator {
                 //1.3 per second so 1.3x5?
                 System.out.println("getting fridge initial wattage: "+ totalWattageCount);
                 if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Refrigerator) {
-                    ((Refrigerator) agentMovement.getCurrentAmenity()).setCoolnessLevel(((Refrigerator) agentMovement.getCurrentAmenity()).getCoolnessLevel() - 1);
+                    ((Refrigerator) agentMovement.getCurrentAmenity()).setCoolnessLevel(((Refrigerator) agentMovement.getCurrentAmenity()).getCoolnessLevel() - 5);
                 }
                 totalWattageCount += ((fridgeWattageInUse * 5) / 3600);
                 System.out.println("getting fridge wattage: "+ totalWattageCount);
@@ -1636,11 +1641,6 @@ public class Simulator {
 
         }
 
-        /**
-         * TODO: Turning off and on of lights and opening and closing of blinds isn't really implemented yet.
-         * TODO: Determine if visual comfort is satisfied or not
-         * TODO: Windows not implemented yet
-         * **/
         else if (action.getName() == Action.Name.CLOSE_BLINDS || action.getName() == Action.Name.OPEN_BLINDS) {
             agentMovement.setSimultaneousInteractionAllowed(true);
             if (agentMovement.getGoalAmenity() == null) {
@@ -1737,6 +1737,9 @@ public class Simulator {
                 }
                 else {
                     isFull = true;
+                    if (agentMovement.getLightsToOpen() != null) {
+                        agentMovement.setLightsToOpen(null);
+                    }
                     // Skip this action
                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
@@ -1850,6 +1853,9 @@ public class Simulator {
                 }
                 else {
                     isFull = true;
+                    if (agentMovement.getAirconToChange() != null) {
+                        agentMovement.setAirconToChange(null);
+                    }
                     // skip
                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
@@ -1885,7 +1891,7 @@ public class Simulator {
 
                     if (agentMovement.hasReachedNextPatchInPath()) {
                         agentMovement.reachPatchInPath();
-                        if (agentMovement.isCloseToFinalPatchInPath()) {
+                        if (agentMovement.hasAgentReachedFinalPatchInPath()) {
                             agentMovement.setCurrentAmenity(agentMovement.getAirconToChange());
                             environmentInstance.getUsedAmenities().add(agentMovement.getCurrentAmenity());
                         }
@@ -1952,6 +1958,8 @@ public class Simulator {
         if (!agentMovement.isInteracting() || agentMovement.isSimultaneousInteractionAllowed()) {
             switch (type) {
                 case GUARD:
+                    // is this where isAtDesk is set to true
+                    // where urgent task happen for GUARD
                     if (state.getName() == State.Name.GUARD) {
                         if (action.getName() == Action.Name.GUARD_STAY_PUT) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
@@ -1979,7 +1987,25 @@ public class Simulator {
                                 agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
                                 if (agentMovement.getRoutePlan().getCanUrgent()) {
                                     double CHANCE = Simulator.roll();
-                                    if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
+                                    if (agentMovement.airconChecker() && agentMovement.agentCoolDown()) {
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
+                                        agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                        agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false);
+                                    }
+                                    else if (!agentMovement.visualComfortChecker(time) && agentMovement.changeVisualCoolDown()) {
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
+                                        agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                        agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false);
+                                    }
+                                    else if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
                                         if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                             agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
                                             agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -2014,39 +2040,55 @@ public class Simulator {
                                         agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
                                         agentMovement.getRoutePlan().setAtDesk(false);
                                     }
-                                    else if (CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown() && !agentMovement.airconChecker()) {
-                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
-                                        agentMovement.setCurrentState(agentMovement.getStateIndex());
-                                        agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-                                        agentMovement.setActionIndex(0); // JIC if needed
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                        agentMovement.resetGoal();
-                                        agentMovement.getRoutePlan().setAtDesk(false);
-                                    }
-                                    else if (CHANCE < RoutePlan.CHECK_VISUAL_COMFORT_CHANCE && agentMovement.changeVisualCoolDown() && !agentMovement.visualComfortChecker(time)) {
-                                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
-                                        agentMovement.setCurrentState(agentMovement.getStateIndex());
-                                        agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-                                        agentMovement.setActionIndex(0); // JIC if needed
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                        agentMovement.resetGoal();
-                                        agentMovement.getRoutePlan().setAtDesk(false);
-                                    }
 
                                 }
                             }
                         }
                     }
+
+
                     else if (state.getName() == State.Name.INSPECT_ROOMS) {
                         if (action.getName() == Action.Name.INSPECTING_ROOM) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
-                                agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
-                                agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
-                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
-                            }
 
-                            if (agentMovement.chooseNextPatchInPath()) {
+                                int agentCount = 0;
+                                PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                // checking if there is an agent present in the room
+                                for (Agent agent1 : environmentInstance.getMovableAgents()) {
+                                    if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                        agentCount++;
+                                    }
+                                }
+
+                                if (agentCount == 0) {
+                                    agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                    agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                                }
+                                else {
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.getGoalAttractor().setIsReserved(false);
+                                        agentMovement.resetGoal();
+
+                                    }
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.resetGoal();
+                                    }
+                                }
+                            }
+                            else if (agentMovement.chooseNextPatchInPath()) {
                                 agentMovement.faceNextPosition();
                                 agentMovement.moveSocialForce();
                                 if (agentMovement.hasReachedNextPatchInPath()) {
@@ -2055,8 +2097,7 @@ public class Simulator {
                                         agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
                                     }
                                 }
-                            }
-                            else{
+                            }else{
                                 agentMovement.setCurrentAmenity(agentMovement.getGoalAmenity());
                                 agentMovement.setDuration(agentMovement.getDuration() - 1);
                                 if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -2081,11 +2122,24 @@ public class Simulator {
                         else if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
                             agentMovement.setSimultaneousInteractionAllowed(true);
                             if (agentMovement.getGoalAmenity() == null) {
-                                if (agentMovement.chooseLightGoal()) {
-                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                int agentCount = 0;
+                                PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                // checking if there is an agent present in the room
+                                for (Agent agent1 : environmentInstance.getMovableAgents()) {
+                                    if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                        agentCount++;
+                                    }
+                                }
+
+                                if (agentMovement.chooseLightGoal() && agentCount == 0) {
+                                    agentMovement.getRoutePlan().setAtDesk(false); // wala lang
                                 }
                                 else {
                                     isFull = true;
+                                    if (agentMovement.getLightsToOpen() != null) {
+                                        agentMovement.setLightsToOpen(null);
+                                    }
                                     // Skip this action
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
                                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
@@ -2170,19 +2224,28 @@ public class Simulator {
                                 }
                             }
                         }
-                        /**
-                         * TODO: Turning off and on and setting AC to cool and warm isn't really implemented yet.
-                         * TODO: Determine if thermal comfort is satisfied or not
-                         * TODO: AC AOE needs to be implemented
-                         * **/
+
                         else if (action.getName() == Action.Name.TURN_OFF_AC) {
                             agentMovement.setSimultaneousInteractionAllowed(true);
                             if (agentMovement.getGoalAmenity() == null) {
-                                if (agentMovement.chooseAirConGoal()) {
+                                int agentCount = 0;
+                                PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                // checking if there is an agent present in the room
+                                for (Agent agent1 : environmentInstance.getMovableAgents()) {
+                                    if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                        agentCount++;
+                                    }
+                                }
+
+                                if (agentMovement.chooseAirConGoal() && agentCount == 0) {
                                     agentMovement.getRoutePlan().setAtDesk(false);
                                 }
                                 else {
                                     isFull = true;
+                                    if (agentMovement.getAirconToChange() != null) {
+                                        agentMovement.setAirconToChange(null);
+                                    }
                                     // skip
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
                                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
@@ -2224,25 +2287,12 @@ public class Simulator {
                                     }
                                 }
                                 else {
-//                                    if (action.getName() == Action.Name.TURN_OFF_AC) {
-//                                        if (agentMovement.isOpenMultipleLights()) {
-//                                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
-//                                            for (Light light : environmentInstance.getLights()) {
-//                                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-//                                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
-//                                                        light.setOn(false);
-//                                                        break;
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
-//                                        else {
-//                                            agentMovement.getLightsToOpen().setOn(false);
-//                                        }
-//                                    }
+                                    if (action.getName() == Action.Name.TURN_OFF_AC) {
+                                        agentMovement.getAirconToChange().setOn(false);
+                                    }
 
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setLightsToOpen(null);
+                                        agentMovement.setAirconToChange(null);
                                         agentMovement.getGoalAttractor().setIsReserved(false);
                                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
                                         agentMovement.setActionIndex(0); // JIC needed
@@ -2424,12 +2474,42 @@ public class Simulator {
                         if (action.getName() == Action.Name.INSPECTING_ROOM) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
-                                agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
-                                agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
-                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
-                            }
 
-                            if (agentMovement.chooseNextPatchInPath()) {
+                                int agentCount = 0;
+                                PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                // checking if there is an agent present in the room
+                                for (Agent agent1 : environmentInstance.getMovableAgents()) {
+                                    if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                        agentCount++;
+                                    }
+                                }
+
+                                if (agentCount == 0) {
+                                    agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                    agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration());
+                                }
+                                else {
+                                    if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                                        agentMovement.setActionIndex(0); // JIC needed
+                                        if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        }
+                                        agentMovement.resetGoal();
+                                    }
+
+                                    if (agentMovement.getCurrentState().getActions().isEmpty()) {
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    }
+                                }
+                            }
+                            else if (agentMovement.chooseNextPatchInPath()) {
                                 agentMovement.faceNextPosition();
                                 agentMovement.moveSocialForce();
                                 if (agentMovement.hasReachedNextPatchInPath()) {
@@ -2463,11 +2543,24 @@ public class Simulator {
                         else if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
                             agentMovement.setSimultaneousInteractionAllowed(true);
                             if (agentMovement.getGoalAmenity() == null) {
-                                if (agentMovement.chooseLightGoal()) {
-                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                int agentCount = 0;
+                                PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                // checking if there is an agent present in the room
+                                for (Agent agent1 : environmentInstance.getMovableAgents()) {
+                                    if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                        agentCount++;
+                                    }
+                                }
+
+                                if (agentMovement.chooseLightGoal() && agentCount == 0) {
+                                    agentMovement.getRoutePlan().setAtDesk(false); // wala lang
                                 }
                                 else {
                                     isFull = true;
+                                    if (agentMovement.getLightsToOpen() != null) {
+                                        agentMovement.setLightsToOpen(null);
+                                    }
                                     // Skip this action
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
                                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
@@ -2552,19 +2645,28 @@ public class Simulator {
                                 }
                             }
                         }
-                        /**
-                         * TODO: Turning off and on and setting AC to cool and warm isn't really implemented yet.
-                         * TODO: Determine if thermal comfort is satisfied or not
-                         * TODO: AC AOE needs to be implemented
-                         * **/
+
                         else if (action.getName() == Action.Name.TURN_OFF_AC) {
                             agentMovement.setSimultaneousInteractionAllowed(true);
                             if (agentMovement.getGoalAmenity() == null) {
-                                if (agentMovement.chooseAirConGoal()) {
+                                int agentCount = 0;
+                                PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                // checking if there is an agent present in the room
+                                for (Agent agent1 : environmentInstance.getMovableAgents()) {
+                                    if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                        agentCount++;
+                                    }
+                                }
+
+                                if (agentMovement.chooseAirConGoal() && agentCount == 0) {
                                     agentMovement.getRoutePlan().setAtDesk(false);
                                 }
                                 else {
                                     isFull = true;
+                                    if (agentMovement.getAirconToChange() != null) {
+                                        agentMovement.setAirconToChange(null);
+                                    }
                                     // skip
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
                                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
@@ -2606,25 +2708,12 @@ public class Simulator {
                                     }
                                 }
                                 else {
-//                                    if (action.getName() == Action.Name.TURN_OFF_AC) {
-//                                        if (agentMovement.isOpenMultipleLights()) {
-//                                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
-//                                            for (Light light : environmentInstance.getLights()) {
-//                                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-//                                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
-//                                                        light.setOn(false);
-//                                                        break;
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
-//                                        else {
-//                                            agentMovement.getLightsToOpen().setOn(false);
-//                                        }
-//                                    }
+                                    if (action.getName() == Action.Name.TURN_OFF_AC) {
+                                        agentMovement.getAirconToChange().setOn(false);
+                                    }
 
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setLightsToOpen(null);
+                                        agentMovement.setAirconToChange(null);
                                         agentMovement.getGoalAttractor().setIsReserved(false);
                                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
                                         agentMovement.setActionIndex(0); // JIC needed
@@ -2719,6 +2808,8 @@ public class Simulator {
 
                         }
                     }
+                    // is this where isAtDesk is set to true
+                    // where urgent task happen for MAINTENANCE
                     else if (state.getName() == State.Name.WAIT_FOR_ACTIVITY) {
                         if (action.getName() == Action.Name.GO_TO_WAIT_AREA) {
                             agentMovement.setSimultaneousInteractionAllowed(true);
@@ -2749,65 +2840,65 @@ public class Simulator {
 
                                     if (agentMovement.getRoutePlan().getCanUrgent()) {
                                         double CHANCE = Simulator.roll();
-//                                        if (CHANCE < RoutePlan.INQUIRE_GUARD_CHANCE && currentGuardCount > 0 && agentMovement.inquireCoolDown()){
-//                                            agentMovement.getGoalAttractor().setIsReserved(false);
-//                                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_GUARD", agent, environmentInstance));
-//                                            agentMovement.setCurrentState(0);
-//                                            agentMovement.setStateIndex(0);
-//                                            agentMovement.setActionIndex(0);
-//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                            agentMovement.resetGoal();
-//                                            agentMovement.getRoutePlan().setAtDesk(false);
-//                                        }
-//                                        else if (CHANCE < RoutePlan.INQUIRE_MAINTENANCE_CHANCE && currentMaintenanceCount > 0 && agentMovement.inquireCoolDown()){
-//                                            agentMovement.getGoalAttractor().setIsReserved(false);
-//                                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_GUARD", agent, environmentInstance));
-//                                            agentMovement.setCurrentState(0);
-//                                            agentMovement.setStateIndex(0);
-//                                            agentMovement.setActionIndex(0);
-//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                            agentMovement.resetGoal();
-//                                            agentMovement.getRoutePlan().setAtDesk(false);
-//                                        }
-//                                        else if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
-//                                            if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
-//                                                agentMovement.getGoalAttractor().setIsReserved(false);
-//                                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
-//                                                agentMovement.setCurrentState(agentMovement.getStateIndex());
-//                                                agentMovement.setStateIndex(agentMovement.getStateIndex());
-//                                                agentMovement.setActionIndex(0);
-//                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                                agentMovement.resetGoal();
-//                                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                                agentMovement.getRoutePlan().setBATH_AM(1);
-//                                                agentMovement.getRoutePlan().setAtDesk(false);
-//                                            }
-//                                            else if (agentMovement.getRoutePlan().isBathPM() && agentMovement.getRoutePlan().getBATH_PM() > 0) {
-//                                                agentMovement.getGoalAttractor().setIsReserved(false);
-//                                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
-//                                                agentMovement.setCurrentState(agentMovement.getStateIndex());
-//                                                agentMovement.setStateIndex(agentMovement.getStateIndex());
-//                                                agentMovement.setActionIndex(0);
-//                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                                agentMovement.resetGoal();
-//                                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                                agentMovement.getRoutePlan().setBATH_PM(1);
-//                                                agentMovement.getRoutePlan().setAtDesk(false);
-//                                            }
-//
-//                                        }
-//                                        else if (CHANCE < RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.breakCoolDown()) {
-//                                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent, environmentInstance)); // add the break state
-//                                            agentMovement.setCurrentState(agentMovement.getStateIndex()); // set the new current state into the go to the break state
-//                                            agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-//                                            agentMovement.setActionIndex(0); // JIC if needed
-//                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex())); // also set the current action to go to break
-//                                            agentMovement.resetGoal();
-//                                            agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
-//                                            agentMovement.getRoutePlan().setAtDesk(false);
-//                                        }
+                                        if (CHANCE < RoutePlan.INQUIRE_GUARD_CHANCE && currentGuardCount > 0 && agentMovement.inquireCoolDown()){
+                                            agentMovement.getGoalAttractor().setIsReserved(false);
+                                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_GUARD", agent, environmentInstance));
+                                            agentMovement.setCurrentState(0);
+                                            agentMovement.setStateIndex(0);
+                                            agentMovement.setActionIndex(0);
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                            agentMovement.resetGoal();
+                                            agentMovement.getRoutePlan().setAtDesk(false);
+                                        }
+                                        else if (CHANCE < RoutePlan.INQUIRE_MAINTENANCE_CHANCE && currentMaintenanceCount > 0 && agentMovement.inquireCoolDown()){
+                                            agentMovement.getGoalAttractor().setIsReserved(false);
+                                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("INQUIRE_GUARD", agent, environmentInstance));
+                                            agentMovement.setCurrentState(0);
+                                            agentMovement.setStateIndex(0);
+                                            agentMovement.setActionIndex(0);
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                            agentMovement.resetGoal();
+                                            agentMovement.getRoutePlan().setAtDesk(false);
+                                        }
+                                        else if (CHANCE < RoutePlan.BATH_CHANCE && agentMovement.bathRoomCoolDown()) {
+                                            if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
+                                                agentMovement.getGoalAttractor().setIsReserved(false);
+                                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
+                                                agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                                agentMovement.setStateIndex(agentMovement.getStateIndex());
+                                                agentMovement.setActionIndex(0);
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                                agentMovement.resetGoal();
+                                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                                agentMovement.getRoutePlan().setBATH_AM(1);
+                                                agentMovement.getRoutePlan().setAtDesk(false);
+                                            }
+                                            else if (agentMovement.getRoutePlan().isBathPM() && agentMovement.getRoutePlan().getBATH_PM() > 0) {
+                                                agentMovement.getGoalAttractor().setIsReserved(false);
+                                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
+                                                agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                                agentMovement.setStateIndex(agentMovement.getStateIndex());
+                                                agentMovement.setActionIndex(0);
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                                agentMovement.resetGoal();
+                                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                                agentMovement.getRoutePlan().setBATH_PM(1);
+                                                agentMovement.getRoutePlan().setAtDesk(false);
+                                            }
+
+                                        }
+                                        else if (CHANCE < RoutePlan.BREAK_CHANCE && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.breakCoolDown()) {
+                                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent, environmentInstance)); // add the break state
+                                            agentMovement.setCurrentState(agentMovement.getStateIndex()); // set the new current state into the go to the break state
+                                            agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                            agentMovement.setActionIndex(0); // JIC if needed
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex())); // also set the current action to go to break
+                                            agentMovement.resetGoal();
+                                            agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
+                                            agentMovement.getRoutePlan().setAtDesk(false);
+                                        }
 
 
                                     }
@@ -2817,6 +2908,8 @@ public class Simulator {
 
                         }
                     }
+
+                    // Going to storage cabinet
                     else if (state.getName() == State.Name.GOING_TO_WORK) {
                         if (action.getName() == Action.Name.GO_TO_STATION) {
                             agentMovement.setSimultaneousInteractionAllowed(false);
@@ -3447,11 +3540,20 @@ public class Simulator {
             }
         }
 
+        int count = 0;
+        for (Aircon aircon : environment.getAircons()) {
+            if (aircon.isOn()) {
+                count++;
+            }
+        }
+        System.out.println("Number of Aircon: " + count);
+
         for (Light light : environment.getLights()) {
             if (light.isOn()) {
                 activeLightCount++;
             }
         }
+        System.out.println("Number of Lights: " + activeLightCount);
 
         // Check Monitor in Cubicle
         for (Cubicle cubicle : environment.getCubicles()) {
@@ -3478,141 +3580,106 @@ public class Simulator {
             }
         }
 
-        System.out.println("activeMonitorCount: " + activeMonitorCount);
+        System.out.println("Number of Monitor: " + activeMonitorCount);
 
         //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
         //ACTIVE CYCLE FOR EVERY REFRIGERATOR
-        for(Refrigerator ref : environment.getRefrigerators()){
-            //IF REF IS IN ACTIVE CYCLE
-            if(ref.isActiveCycle()){
-                //increase coolness level
-                ref.setCoolnessLevel((ref.getCoolnessLevel() + 1));
-                if(ref.getDuration() > 0){
-                    System.out.println("initial wattage: " + totalWattageCount);
-
-                    totalWattageCount += (((fridgeWattageActive + rand.nextFloat(101))* 5) / 3600);
-                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
-                    ref.setDuration((ref.getDuration() - 1));
-                }
-                else{
-                    ref.setActiveCycle(false);
-                }
-            }//IF REF IS NOT IN ACTIVE CYCLE
-            else{
-                //decrease coolness level by decay rate
-                ref.setCoolnessLevel((ref.getCoolnessLevel() - environment.getDecayRateRef()));
-                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
-
-                if(currentTick % 60L == 0){
-                    double activeCycleChance = max(0,(100 - ref.getCoolnessLevel()) / 100);
-                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
-                    double CHANCE = Simulator.roll();
-                    if(CHANCE < activeCycleChance){
-                        ref.setActiveCycle(true);
-                        ref.setDuration(240 + rand.nextInt(-5, 36));
-                    }
-                }
-            }
-        }
+//        for(Refrigerator ref : environment.getRefrigerators()){
+//            //IF REF IS IN ACTIVE CYCLE
+//            if(ref.isActiveCycle()){
+//                //increase coolness level
+//                ref.setCoolnessLevel((ref.getCoolnessLevel() + 1));
+//                if(ref.getDuration() > 0){
+//                    System.out.println("initial wattage: " + totalWattageCount);
+//
+//                    totalWattageCount += (((fridgeWattageActive + rand.nextFloat(101))* 5) / 3600);
+//                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
+//                    ref.setDuration((ref.getDuration() - 1));
+//                }
+//                else{
+//                    ref.setActiveCycle(false);
+//                }
+//            }//IF REF IS NOT IN ACTIVE CYCLE
+//            else{
+//                //decrease coolness level by decay rate
+//                ref.setCoolnessLevel((ref.getCoolnessLevel() - environment.getDecayRateRef()));
+//                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
+//
+//                if(currentTick % 60L == 0){
+//                    double activeCycleChance = max(0,(100 - ref.getCoolnessLevel()) / 100);
+//                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+//                    double CHANCE = Simulator.roll();
+//                    if(CHANCE < activeCycleChance){
+//                        ref.setActiveCycle(true);
+//                        ref.setDuration(240 + rand.nextInt( 61) - 5);
+//                    }
+//                }
+//            }
+//        }
 
         //TODO: SET ACTIVE CYCLE TO TRUE WHEN WATER LEVEL IS LOW
         // BUT WITHIN 20-30 SECONDS, ACTIVE WATTAGE IS 732
         // AFTER 20-30 SECONDS, ACTIVE WATTAGE IS BACK TO NORMAL
         //ACTIVE CYCLE FOR EVERY WATER DISPENSER
-        for(WaterDispenser dispenser : environment.getWaterDispensers()){
-            //IF DISPENSER IS IN ACTIVE CYCLE
-            if(dispenser.isActiveCycle()){
-                //increase coolness level
-                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() + 1));
-                if(dispenser.getDuration() > 0){
-                    System.out.println("initial wattage: " + totalWattageCount);
-
-                    // Check if in high wattage active cycle
-                    if(dispenser.isHighActiveCycle()){
-                        totalWattageCount += ((732.7F * 5) / 3600);
-                        dispenser.setWaterLevel(dispenser.getWaterLevel() + 1);
-                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
-                    } else {
-                        totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
-                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
-                    }
-                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
-                    dispenser.setDuration((dispenser.getDuration() - 1));
-                }
-                else if(dispenser.getDuration() <= 0 && dispenser.isHighActiveCycle()){
-                    dispenser.setHighActiveCycle(false);
-                    dispenser.setDuration((240 + rand.nextInt(11) - 5));
-                }
-                else{
-                    dispenser.setActiveCycle(false);
-                    dispenser.setHighActiveCycle(false);
-                }
-            }//IF dispenser IS NOT IN ACTIVE CYCLE
-            else{
-                //decrease coolness level by decay rate
-                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() - environment.getDecayRateDispenser()));
-                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
-
-                if(currentTick % 60L == 0){
-                    double activeCycleChance = max(0,(100 - dispenser.getCoolnessLevel()) / 100);
-                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
-                    double CHANCE = Simulator.roll();
-                    double lowWater_Threshold = 50;
-                    // Check if water level is low to trigger high wattage active cycle
-                    if(dispenser.getWaterLevel() < lowWater_Threshold){
-                        double highActiveCycleChance = (lowWater_Threshold - dispenser.getWaterLevel()) / lowWater_Threshold;
-                        System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
-
-                        if(CHANCE < highActiveCycleChance){
-                            dispenser.setActiveCycle(true);
-                            dispenser.setHighActiveCycle(true); // Set high wattage cycle flag
-                            dispenser.setDuration(4 + rand.nextInt(2)); // Duration 4 to 6 ticks
-                        }
-                    }
-
-                    if(CHANCE < activeCycleChance && !dispenser.isHighActiveCycle()){
-                        dispenser.setActiveCycle(true);
-                        dispenser.setDuration(240 + rand.nextInt(11) - 5); // Duration 235 to 245 ticks
-                    }
-                }
-            }
-        }
-
-//        if(currentTick % 60L == 0 || environment.activeCycleTimerRefrigerator() || environment.activeCycleTimerDispenser()) {
-//            int CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
+//        for(WaterDispenser dispenser : environment.getWaterDispensers()){
+//            //IF DISPENSER IS IN ACTIVE CYCLE
+//            if(dispenser.isActiveCycle()){
+//                //increase coolness level
+//                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() + 1));
+//                if(dispenser.getDuration() > 0){
+//                    System.out.println("initial wattage: " + totalWattageCount);
 //
-//            //TIMER SET TO 1 HOUR
-//            if (CHANCE < 10) {
-//                if (!environment.activeCycleTimerRefrigerator()) {
-//                    environment.setActiveCycleTimerRefrigerator(240); // set active cycle duration
+//                    // Check if in high wattage active cycle
+//                    if(dispenser.isHighActiveCycle()){
+//                        totalWattageCount += ((732.7F * 5) / 3600);
+//                        dispenser.setWaterLevel(dispenser.getWaterLevel() + 10);
+//                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
+//                    } else {
+//                        totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
+//                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
+//                    }
+//                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
+//                    dispenser.setDuration((dispenser.getDuration() - 1));
 //                }
-//            }
-//
-//            if (environment.activeCycleTimerRefrigerator()) {
-//
-//                System.out.println("ACTIVE CYCLE NI REF: " + environment.getActiveCycleTimerRefrigerator());
-//                System.out.println("initial wattage: " + totalWattageCount);
-//
-//                totalWattageCount += ((fridgeWattageActive * fridgeCount * 5) / 3600);
-//                System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
-//            }
-
-//            CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
-//
-//            //TIMER SET TO 1 HOUR
-//            if (CHANCE < 10) {
-//                if (!environment.activeCycleTimerDispenser()) {
-//                    environment.setActiveCycleTimerDispenser(3600); // set active cycle duration
+//                else if(dispenser.getDuration() <= 0 && dispenser.isHighActiveCycle()){
+//                    dispenser.setHighActiveCycle(false);
+//                    dispenser.setDuration((240 + rand.nextInt(61) - 5));
 //                }
-//            }
-//            if (environment.activeCycleTimerDispenser()) {
+//                else{
+//                    dispenser.setActiveCycle(false);
+//                    dispenser.setHighActiveCycle(false);
+//                }
+//            }//IF dispenser IS NOT IN ACTIVE CYCLE
+//            else{
+//                //decrease coolness level by decay rate
+//                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() - environment.getDecayRateDispenser()));
+//                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
 //
-//                System.out.println("ACTIVE CYCLE NI DISPENSER: " + environment.getActiveCycleTimerDispenser());
-//                System.out.println("initial wattage: " + totalWattageCount);
-//                totalWattageCount += ((waterDispenserWattageActive * waterDispenserCount * 5) / 3600);
-//                System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
+//                if(currentTick % 60L == 0){
+//                    double activeCycleChance = max(0,(100 - dispenser.getCoolnessLevel()) / 100);
+//                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+//                    double CHANCE = Simulator.roll();
+//                    double lowWater_Threshold = 50;
+//                    // Check if water level is low to trigger high wattage active cycle
+//                    if(dispenser.getWaterLevel() < lowWater_Threshold){
+//                        double highActiveCycleChance = (lowWater_Threshold - dispenser.getWaterLevel()) / lowWater_Threshold;
+//                        System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
+//
+//                        if(CHANCE < highActiveCycleChance){
+//                            dispenser.setActiveCycle(true);
+//                            dispenser.setHighActiveCycle(true); // Set high wattage cycle flag
+//                            dispenser.setDuration(4 + rand.nextInt(2)); // Duration 4 to 6 ticks
+//                        }
+//                    }
+//
+//                    if(CHANCE < activeCycleChance && !dispenser.isHighActiveCycle()){
+//                        dispenser.setActiveCycle(true);
+//                        dispenser.setDuration(240 + rand.nextInt(61) - 5); // Duration 235 to 245 ticks
+//                    }
+//                }
 //            }
 //        }
+
         //System.out.println("aircon wattage= "+airconWattage);
         totalWattageCount+= ((lightWattage * activeLightCount * 5) / 3600);
 
@@ -3685,66 +3752,66 @@ public class Simulator {
         /** COMPILED **/
 
         // Current Agent Count Per Type
-        compiledCurrentDirectorCount = new int[11160];
-        compiledCurrentFacultyCount = new int[11160];
-        compiledCurrentStudentCount = new int[11160];
-        compiledCurrentMaintenanceCount = new int[11160];
-        compiledCurrentGuardCount = new int[11160];
+        compiledCurrentDirectorCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentFacultyCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentStudentCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentMaintenanceCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentGuardCount = new int[MAX_CURRENT_TICKS];
 
         // Current Interaction Count
-        compiledCurrentNonverbalCount = new int[11160];
-        compiledCurrentCooperativeCount = new int[11160];
-        compiledCurrentExchangeCount = new int[11160];
+        compiledCurrentNonverbalCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentCooperativeCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentExchangeCount = new int[MAX_CURRENT_TICKS];
 
         // Current Power Consumption Interaction Count
-        compiledCurrentAirconInteractionCount = new int[11160];
-        compiledCurrentLightInteractionCount = new int[11160];
-        compiledCurrentFridgeInteractionCount = new int[11160];
-        compiledCurrentWaterDispenserInteractionCount = new int[11160];
+        compiledCurrentAirconInteractionCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentLightInteractionCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentFridgeInteractionCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentWaterDispenserInteractionCount = new int[MAX_CURRENT_TICKS];
 
 
 
 
         // Average Interaction Duration
-        compiledAverageNonverbalDuration = new float[11160];
-        compiledAverageCooperativeDuration = new float[11160];
-        compiledAverageExchangeDuration = new float[11160];
+        compiledAverageNonverbalDuration = new float[MAX_CURRENT_TICKS];
+        compiledAverageCooperativeDuration = new float[MAX_CURRENT_TICKS];
+        compiledAverageExchangeDuration = new float[MAX_CURRENT_TICKS];
 
 
         // Current Team Count
-        compiledCurrentTeam1Count = new int[11160];
-        compiledCurrentTeam2Count = new int[11160];
-        compiledCurrentTeam3Count = new int[11160];
-        compiledCurrentTeam4Count = new int[11160];
+        compiledCurrentTeam1Count = new int[MAX_CURRENT_TICKS];
+        compiledCurrentTeam2Count = new int[MAX_CURRENT_TICKS];
+        compiledCurrentTeam3Count = new int[MAX_CURRENT_TICKS];
+        compiledCurrentTeam4Count = new int[MAX_CURRENT_TICKS];
 
 
         // Current Director to ____ Interaction Count
-        compiledCurrentDirectorFacultyCount = new int[11160];
-        compiledCurrentDirectorStudentCount = new int[11160];
-        compiledCurrentDirectorMaintenanceCount = new int[11160];
-        compiledCurrentDirectorGuardCount = new int[11160];
+        compiledCurrentDirectorFacultyCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentDirectorStudentCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentDirectorMaintenanceCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentDirectorGuardCount = new int[MAX_CURRENT_TICKS];
 
 
         // Current Faculty to ____ Interaction Count
-        compiledCurrentFacultyFacultyCount = new int[11160];
-        compiledCurrentFacultyStudentCount = new int[11160];
-        compiledCurrentFacultyMaintenanceCount = new int[11160];
-        compiledCurrentFacultyGuardCount = new int[11160];
+        compiledCurrentFacultyFacultyCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentFacultyStudentCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentFacultyMaintenanceCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentFacultyGuardCount = new int[MAX_CURRENT_TICKS];
 
 
         // Current Student to ____ Interaction Count
-        compiledCurrentStudentStudentCount = new int[11160];
-        compiledCurrentStudentMaintenanceCount = new int[11160];
-        compiledCurrentStudentGuardCount = new int[11160];
+        compiledCurrentStudentStudentCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentStudentMaintenanceCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentStudentGuardCount = new int[MAX_CURRENT_TICKS];
 
 
         // Current Maintenance to ____ Interaction Count
-        compiledCurrentMaintenanceMaintenanceCount = new int[11160];
-        compiledCurrentMaintenanceGuardCount = new int[11160];
+        compiledCurrentMaintenanceMaintenanceCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentMaintenanceGuardCount = new int[MAX_CURRENT_TICKS];
 
 
         // Current Guard to Guard Interaction Count
-        compiledCurrentGuardGuardCount = new int[11160];
+        compiledCurrentGuardGuardCount = new int[MAX_CURRENT_TICKS];
 
 
         /** Patch Count **/
@@ -3822,7 +3889,7 @@ public class Simulator {
         sb.append(",");
         sb.append("Current Guard Guard Count");;
         sb.append("\n");
-        for (int i = 0; i < 11160; i++){
+        for (int i = 0; i < MAX_CURRENT_TICKS; i++){
             sb.append(compiledCurrentDirectorCount[i]);
             sb.append(",");
             sb.append(compiledCurrentFacultyCount[i]);
