@@ -24,6 +24,8 @@ public class WaterDispenser extends QueueableGoal implements Serializable {
     private double coolnessLevel = 50;
     private boolean activeCycle = false;
     private int duration = 0;
+    private double waterLevel = 100;
+    private boolean highActiveCycle = false;
 
     /***** CONSTRUCTOR *****/
     protected WaterDispenser(List<AmenityBlock> amenityBlocks, boolean enabled, int waitingTime) {
@@ -70,6 +72,22 @@ public class WaterDispenser extends QueueableGoal implements Serializable {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public double getWaterLevel() {
+        return waterLevel;
+    }
+
+    public void setWaterLevel(double waterLevel) {
+        this.waterLevel = waterLevel;
+    }
+
+    public boolean isHighActiveCycle() {
+        return highActiveCycle;
+    }
+
+    public void setHighActiveCycle(boolean highActiveCycle) {
+        this.highActiveCycle = highActiveCycle;
     }
 
 

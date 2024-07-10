@@ -1196,12 +1196,18 @@ public class Simulator {
             // This is to confirm if the agent is interacting with the electric appliance
             if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
                 System.out.println("getting water initial wattage: "+ totalWattageCount);
+                if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof WaterDispenser) {
+                    ((WaterDispenser) agentMovement.getCurrentAmenity()).setWaterLevel(((WaterDispenser) agentMovement.getCurrentAmenity()).getWaterLevel() - 1);
+                }
                 totalWattageCount+= ((waterDispenserWattageInUse * 5) / 3600);
                 System.out.println("getting water wattage: "+ totalWattageCount);
             }
             else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
                 //1.3 per second so 1.3x5?
                 System.out.println("getting fridge initial wattage: "+ totalWattageCount);
+                if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Refrigerator) {
+                    ((Refrigerator) agentMovement.getCurrentAmenity()).setCoolnessLevel(((Refrigerator) agentMovement.getCurrentAmenity()).getCoolnessLevel() - 1);
+                }
                 totalWattageCount += ((fridgeWattageInUse * 5) / 3600);
                 System.out.println("getting fridge wattage: "+ totalWattageCount);
             }
@@ -3474,7 +3480,7 @@ public class Simulator {
 
         System.out.println("activeMonitorCount: " + activeMonitorCount);
 
-
+        //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
         //ACTIVE CYCLE FOR EVERY REFRIGERATOR
         for(Refrigerator ref : environment.getRefrigerators()){
             //IF REF IS IN ACTIVE CYCLE
@@ -3484,7 +3490,7 @@ public class Simulator {
                 if(ref.getDuration() > 0){
                     System.out.println("initial wattage: " + totalWattageCount);
 
-                    totalWattageCount += ((fridgeWattageActive * 5) / 3600);
+                    totalWattageCount += (((fridgeWattageActive + rand.nextFloat(101))* 5) / 3600);
                     System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
                     ref.setDuration((ref.getDuration() - 1));
                 }
@@ -3503,12 +3509,15 @@ public class Simulator {
                     double CHANCE = Simulator.roll();
                     if(CHANCE < activeCycleChance){
                         ref.setActiveCycle(true);
-                        ref.setDuration(240 + rand.nextInt(-5, 11));
+                        ref.setDuration(240 + rand.nextInt(-5, 36));
                     }
                 }
             }
         }
 
+        //TODO: SET ACTIVE CYCLE TO TRUE WHEN WATER LEVEL IS LOW
+        // BUT WITHIN 20-30 SECONDS, ACTIVE WATTAGE IS 732
+        // AFTER 20-30 SECONDS, ACTIVE WATTAGE IS BACK TO NORMAL
         //ACTIVE CYCLE FOR EVERY WATER DISPENSER
         for(WaterDispenser dispenser : environment.getWaterDispensers()){
             //IF DISPENSER IS IN ACTIVE CYCLE
@@ -3516,14 +3525,27 @@ public class Simulator {
                 //increase coolness level
                 dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() + 1));
                 if(dispenser.getDuration() > 0){
-                    System.out.println("ACTIVE CYCLE NI DISPENSER: " + environment.getActiveCycleTimerDispenser());
                     System.out.println("initial wattage: " + totalWattageCount);
-                    totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
+
+                    // Check if in high wattage active cycle
+                    if(dispenser.isHighActiveCycle()){
+                        totalWattageCount += ((732.7F * 5) / 3600);
+                        dispenser.setWaterLevel(dispenser.getWaterLevel() + 1);
+                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
+                    } else {
+                        totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
+                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
+                    }
                     System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
                     dispenser.setDuration((dispenser.getDuration() - 1));
                 }
+                else if(dispenser.getDuration() <= 0 && dispenser.isHighActiveCycle()){
+                    dispenser.setHighActiveCycle(false);
+                    dispenser.setDuration((240 + rand.nextInt(11) - 5));
+                }
                 else{
                     dispenser.setActiveCycle(false);
+                    dispenser.setHighActiveCycle(false);
                 }
             }//IF dispenser IS NOT IN ACTIVE CYCLE
             else{
@@ -3535,10 +3557,22 @@ public class Simulator {
                     double activeCycleChance = max(0,(100 - dispenser.getCoolnessLevel()) / 100);
                     System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
                     double CHANCE = Simulator.roll();
+                    double lowWater_Threshold = 50;
+                    // Check if water level is low to trigger high wattage active cycle
+                    if(dispenser.getWaterLevel() < lowWater_Threshold){
+                        double highActiveCycleChance = (lowWater_Threshold - dispenser.getWaterLevel()) / lowWater_Threshold;
+                        System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
 
-                    if(CHANCE < activeCycleChance){
+                        if(CHANCE < highActiveCycleChance){
+                            dispenser.setActiveCycle(true);
+                            dispenser.setHighActiveCycle(true); // Set high wattage cycle flag
+                            dispenser.setDuration(4 + rand.nextInt(2)); // Duration 4 to 6 ticks
+                        }
+                    }
+
+                    if(CHANCE < activeCycleChance && !dispenser.isHighActiveCycle()){
                         dispenser.setActiveCycle(true);
-                        dispenser.setDuration(240 + rand.nextInt(-5, 6));
+                        dispenser.setDuration(240 + rand.nextInt(11) - 5); // Duration 235 to 245 ticks
                     }
                 }
             }
