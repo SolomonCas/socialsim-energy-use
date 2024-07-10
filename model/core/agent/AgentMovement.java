@@ -2632,6 +2632,14 @@ public class AgentMovement {
         return openMultipleLights;
     }
 
+    public boolean isToCool() {
+        return isToCool;
+    }
+
+    public boolean isToHeat() {
+        return isToHeat;
+    }
+
     /***** SETTERS *****/
     public void setPosition(Coordinates coordinates) {
         final int timeElapsedExpiration = 10;
