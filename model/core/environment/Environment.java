@@ -133,9 +133,11 @@ public class Environment extends BaseObject implements Serializable {
     private int exchangeStdDev;
     private int fieldOfView;
 
-    //TIMERS
+    //ACTIVE CYCLE RELATED
     private int activeCycleTimerRefrigerator = 0;
     private int activeCycleTimerDispenser = 0;
+    private double decayRateRef = 0.5;
+    private double decayRateDispenser = 0.5;
 
     // Static
     public static final Factory officeFactory;
@@ -308,15 +310,15 @@ public class Environment extends BaseObject implements Serializable {
     public void createInitialAgentDemographics(){
         int offset = 30; // equivalent to 30 mins
 
-//        for (int i = 0; i < 8; i++) {
-//            Agent agent = AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(9, 0, i), LocalTime.of(15, 0));
-//            this.getAgents().add(agent);
-//        }
-
         for (int i = 0; i < 1; i++) {
-            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,30, i), LocalTime.of(22,0));
+            Agent agent = AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(9, 0, i), LocalTime.of(15, 0));
             this.getAgents().add(agent);
         }
+
+//        for (int i = 0; i < 1; i++) {
+//            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,30, i), LocalTime.of(22,0));
+//            this.getAgents().add(agent);
+//        }
 
 //        for (int i = 0; i < 1; i++) {
 //            Agent agent = AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,30, i), LocalTime.of(22,0));
@@ -1018,29 +1020,34 @@ public class Environment extends BaseObject implements Serializable {
 
     //TODO: coolingtime will differ based on whether there are nearby groups of people minimum of 4
     public void tempChanger(){
-        int closeAgentCount = 0;
         for(Aircon aircon : this.getAircons()) {
-            for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
-                for(Agent agent : this.getMovableAgents()){
+            int closeAgentCount = 0;
+            for(Agent agent : this.getMovableAgents()){
+                for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
                     if (agent.getAgentMovement() != null && agent.getAgentMovement().getRoutePlan().isAtDesk()) {
                         double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
                         if(distanceToAircon < aircon.getCoolingRange()){
                             closeAgentCount++;
+                            break;
                         }
                     }
                 }
             }
 
+            System.out.println("close agent count: "+closeAgentCount);
             int coolingTicks = 0;
             //IF TEMP IS GOING HIGHER OR HEATING
 
             if(aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.isOn()){
                 if(closeAgentCount < 4){
+                    aircon.setInActiveCycle(false);
                     coolingTicks = 24;
                 }
                 else{
+                    aircon.setInActiveCycle(true);
                     coolingTicks = 20;
                 }
+                System.out.println("is aircon active cycle: "+ aircon.isInActiveCycle());
                 //THIS MEANS THAT 2 MINUTES OR GREATER HAS PASSED
                 if(coolingTimer(aircon, coolingTicks)){
                     System.out.println("HEATING");
@@ -1054,11 +1061,14 @@ public class Environment extends BaseObject implements Serializable {
             else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isOn()){
                 if(closeAgentCount < 4)
                 {
+                    aircon.setInActiveCycle(false);
                     coolingTicks = 20;
                 }
                 else{
+                    aircon.setInActiveCycle(true);
                     coolingTicks = 42;
                 }
+                System.out.println("is aircon active cycle: "+ aircon.isInActiveCycle());
                 //THIS MEANS THAT 1 MINUTES OR GREATER HAS PASSED
                 if(coolingTimer(aircon, coolingTicks)){
                     System.out.println("COOLING ");
@@ -1076,6 +1086,9 @@ public class Environment extends BaseObject implements Serializable {
         if (aircon.getCoolingTimeInTicks() <= 0) {
             aircon.setCoolingTimeInTicks(duration); // set cool down duration
             return true;
+        }
+        if(aircon.isInActiveCycle()){
+            Simulator.setTotalWattageCount(Simulator.getAirconWattageActive());
         }
         aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - 1);
         return false;
@@ -1507,7 +1520,13 @@ public class Environment extends BaseObject implements Serializable {
         return activeCycleTimerDispenser;
     }
 
+    public double getDecayRateRef() {
+        return decayRateRef;
+    }
 
+    public double getDecayRateDispenser() {
+        return decayRateDispenser;
+    }
 
 
 
@@ -1524,7 +1543,13 @@ public class Environment extends BaseObject implements Serializable {
         this.activeCycleTimerDispenser = activeCycleTimerDispenser;
     }
 
+    public void setDecayRateRef(double decayRateRef) {
+        this.decayRateRef = decayRateRef;
+    }
 
+    public void setDecayRateDispenser(double decayRateDispenser) {
+        this.decayRateDispenser = decayRateDispenser;
+    }
 
 
 

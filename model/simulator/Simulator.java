@@ -19,6 +19,8 @@ import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevat
 import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.core.environment.position.Coordinates;
 
+import static java.lang.Math.max;
+
 public class Simulator {
 
 
@@ -715,7 +717,7 @@ public class Simulator {
                                 agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
                                 agentMovement.getRoutePlan().setAtDesk(false);
                             }
-                            else if (CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown() && !agentMovement.airconChecker()) {
+                            else if (CHANCE < RoutePlan.CHECK_TEMP_CHANCE && agentMovement.agentCoolDown() && agentMovement.airconChecker()) {
                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
                                 agentMovement.setCurrentState(agentMovement.getStateIndex());
                                 agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
@@ -3410,18 +3412,31 @@ public class Simulator {
     }
 
     public void runWattageCount(long currentTick){
+        Random rand = new Random();
         System.out.println("CURRENT TICK: "+currentTick);
         //PUT RANDOM TIMES OF FLUCTUATION
         //multiplied to 5 since 5 seconds per tick?
         //APPLIANCES
-        int waterDispenserCount = environment.getWaterDispensers().size();
-        int fridgeCount = environment.getRefrigerators().size();
+        // int waterDispenserCount = environment.getWaterDispensers().size();
+        //int fridgeCount = environment.getRefrigerators().size();
         int activeLightCount = 0; //check how many lights are on
         int activeMonitorCount = 0; //check how many monitors are on;
         int activeAirConCount = 0; //check how many airCon are on;
 
+
+        for(WaterDispenser dispenser : environment.getWaterDispensers()){
+            if(!dispenser.isActiveCycle()){
+                totalWattageCount += ((waterDispenserWattage * 5) / 3600);
+            }
+        }
+        for(Refrigerator refrigerator : environment.getRefrigerators()){
+            if(!refrigerator.isActiveCycle()){
+                totalWattageCount += ((fridgeWattage * 5) / 3600);
+            }
+        }
+
         for (Aircon aircon : environment.getAircons()) {
-            if (aircon.isOn()) {
+            if (aircon.isOn() && !aircon.isInActiveCycle()) {
                 activeAirConCount++;
             }
         }
@@ -3457,13 +3472,76 @@ public class Simulator {
             }
         }
 
-//        System.out.println("activeMonitorCount: " + activeMonitorCount);
+        System.out.println("activeMonitorCount: " + activeMonitorCount);
 
-        if(!environment.activeCycleTimerDispenser()) {
-            totalWattageCount += ((waterDispenserWattage * waterDispenserCount * 5) / 3600);
+
+        //ACTIVE CYCLE FOR EVERY REFRIGERATOR
+        for(Refrigerator ref : environment.getRefrigerators()){
+            //IF REF IS IN ACTIVE CYCLE
+            if(ref.isActiveCycle()){
+                //increase coolness level
+                ref.setCoolnessLevel((ref.getCoolnessLevel() + 1));
+                if(ref.getDuration() > 0){
+                    System.out.println("initial wattage: " + totalWattageCount);
+
+                    totalWattageCount += ((fridgeWattageActive * 5) / 3600);
+                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
+                    ref.setDuration((ref.getDuration() - 1));
+                }
+                else{
+                    ref.setActiveCycle(false);
+                }
+            }//IF REF IS NOT IN ACTIVE CYCLE
+            else{
+                //decrease coolness level by decay rate
+                ref.setCoolnessLevel((ref.getCoolnessLevel() - environment.getDecayRateRef()));
+                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
+
+                if(currentTick % 60L == 0){
+                    double activeCycleChance = max(0,(100 - ref.getCoolnessLevel()) / 100);
+                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+                    double CHANCE = Simulator.roll();
+                    if(CHANCE < activeCycleChance){
+                        ref.setActiveCycle(true);
+                        ref.setDuration(240 + rand.nextInt(-5, 11));
+                    }
+                }
+            }
         }
-        if(!environment.activeCycleTimerRefrigerator()){
-            totalWattageCount+= ((fridgeWattage * fridgeCount * 5) / 3600);
+
+        //ACTIVE CYCLE FOR EVERY WATER DISPENSER
+        for(WaterDispenser dispenser : environment.getWaterDispensers()){
+            //IF DISPENSER IS IN ACTIVE CYCLE
+            if(dispenser.isActiveCycle()){
+                //increase coolness level
+                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() + 1));
+                if(dispenser.getDuration() > 0){
+                    System.out.println("ACTIVE CYCLE NI DISPENSER: " + environment.getActiveCycleTimerDispenser());
+                    System.out.println("initial wattage: " + totalWattageCount);
+                    totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
+                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
+                    dispenser.setDuration((dispenser.getDuration() - 1));
+                }
+                else{
+                    dispenser.setActiveCycle(false);
+                }
+            }//IF dispenser IS NOT IN ACTIVE CYCLE
+            else{
+                //decrease coolness level by decay rate
+                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() - environment.getDecayRateDispenser()));
+                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
+
+                if(currentTick % 60L == 0){
+                    double activeCycleChance = max(0,(100 - dispenser.getCoolnessLevel()) / 100);
+                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+                    double CHANCE = Simulator.roll();
+
+                    if(CHANCE < activeCycleChance){
+                        dispenser.setActiveCycle(true);
+                        dispenser.setDuration(240 + rand.nextInt(-5, 6));
+                    }
+                }
+            }
         }
 
 //        if(currentTick % 60L == 0 || environment.activeCycleTimerRefrigerator() || environment.activeCycleTimerDispenser()) {
@@ -3484,22 +3562,22 @@ public class Simulator {
 //                totalWattageCount += ((fridgeWattageActive * fridgeCount * 5) / 3600);
 //                System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
 //            }
+
+//            CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
 //
-////            CHANCE = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(100);
-////
-////            //TIMER SET TO 1 HOUR
-////            if (CHANCE < 10) {
-////                if (!environment.activeCycleTimerDispenser()) {
-////                    environment.setActiveCycleTimerDispenser(3600); // set active cycle duration
-////                }
-////            }
-////            if (environment.activeCycleTimerDispenser()) {
-////
-////                System.out.println("ACTIVE CYCLE NI DISPENSER: " + environment.getActiveCycleTimerDispenser());
-////                System.out.println("initial wattage: " + totalWattageCount);
-////                totalWattageCount += ((waterDispenserWattageActive * waterDispenserCount * 5) / 3600);
-////                System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
-////            }
+//            //TIMER SET TO 1 HOUR
+//            if (CHANCE < 10) {
+//                if (!environment.activeCycleTimerDispenser()) {
+//                    environment.setActiveCycleTimerDispenser(3600); // set active cycle duration
+//                }
+//            }
+//            if (environment.activeCycleTimerDispenser()) {
+//
+//                System.out.println("ACTIVE CYCLE NI DISPENSER: " + environment.getActiveCycleTimerDispenser());
+//                System.out.println("initial wattage: " + totalWattageCount);
+//                totalWattageCount += ((waterDispenserWattageActive * waterDispenserCount * 5) / 3600);
+//                System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
+//            }
 //        }
         //System.out.println("aircon wattage= "+airconWattage);
         totalWattageCount+= ((lightWattage * activeLightCount * 5) / 3600);
@@ -3862,6 +3940,10 @@ public class Simulator {
         return monitorWattage;
     }
 
+    public static float getTotalWattageCount(){
+        return totalWattageCount;
+    }
+
     /***** SETTERS ******/
     public void setEnvironment(Environment environment) {
         this.environment = environment;
@@ -3911,4 +3993,7 @@ public class Simulator {
         Simulator.monitorWattage = monitorWattage;
     }
 
+    public static void setTotalWattageCount(float totalWattageCount){
+        Simulator.totalWattageCount = totalWattageCount;
+    }
 }
