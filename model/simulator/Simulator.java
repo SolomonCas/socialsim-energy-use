@@ -2155,7 +2155,7 @@ public class Simulator {
                                     System.out.println("CHANCE: " + CHANCE);
 
                                     if (CHANCE >= agentMovement.getRoutePlan().getWORKING_CHANCE()) {
-                                        if (1.0 - CHANCE < agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.bathRoomCoolDown()) {
+                                        if (agentMovement.bathRoomCoolDown() && 1.0 - CHANCE < agentMovement.getRoutePlan().getBATHROOM_CHANCE()) {
                                             if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
                                                 agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -2180,7 +2180,7 @@ public class Simulator {
                                             }
 
                                         }
-                                        else if (1.0 - CHANCE < agentMovement.getRoutePlan().getBREAK_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.getRoutePlan().isBathPM() && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.breakCoolDown()) {
+                                        else if (agentMovement.breakCoolDown() && 1.0 - CHANCE < agentMovement.getRoutePlan().getBREAK_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.getRoutePlan().isBathPM() && agentMovement.getRoutePlan().getBREAK_COUNT() > 0) {
                                             agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent, environmentInstance)); // add the break state
                                             agentMovement.setCurrentState(agentMovement.getStateIndex()); // set the new current state into the go to the break state
                                             agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed

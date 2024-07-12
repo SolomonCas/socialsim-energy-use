@@ -114,6 +114,16 @@ public class AgentMovement {
         this.position = new Coordinates(coordinates.getX(), coordinates.getY());
         this.team = team;
         this.assignedSeat = assignedSeat;
+
+        bathroomCoolDown = Simulator.rollIntIN(MAX_BATHROOM_COOL_DOWN_DURATION);
+        breakCoolDown = Simulator.rollIntIN(MAX_BREAK_COOL_DOWN_DURATION);
+        refrigeratorCoolDown = Simulator.rollIntIN(MAX_REFRIGERATOR_COOL_DOWN_DURATION);
+        dispenserCoolDown = Simulator.rollIntIN(MAX_DISPENSER_COOL_DOWN_DURATION);
+        inquireCoolDown = Simulator.rollIntIN(MAX_INQUIRE_COOL_DOWN_DURATION);
+        agentCoolDown = 0;
+        changeVisualCoolDown = 0;
+        coffeeCoolDown = Simulator.rollIntIN(MAX_CHANGE_COFFEE_COOL_DOWN_DURATION);
+
         if (assignedSeat != null) {
             switch (assignedSeat.getFacing()) {
                 case "NORTH" -> this.workingSeatHeading = Math.toRadians(90.0);
@@ -2476,7 +2486,7 @@ public class AgentMovement {
     public boolean dispenserCoolDown() {
         System.out.println("Dispenser CoolDown: " + dispenserCoolDown);
         if (this.dispenserCoolDown <= 0) {
-            this.dispenserCoolDown = MAX_DISPENSER_COOL_DOWN_DURATION; // set cool down duration
+            this.dispenserCoolDown = Simulator.rollIntIN(MAX_DISPENSER_COOL_DOWN_DURATION); // set cool down duration
             return true;
         }
         this.dispenserCoolDown--;
@@ -2486,7 +2496,7 @@ public class AgentMovement {
     public boolean inquireCoolDown() {
         System.out.println("Inquire CoolDown: " + inquireCoolDown);
         if (this.inquireCoolDown <= 0) {
-            this.inquireCoolDown = MAX_INQUIRE_COOL_DOWN_DURATION; // set cool down duration
+            this.inquireCoolDown = Simulator.rollIntIN(MAX_INQUIRE_COOL_DOWN_DURATION); // set cool down duration
             return true;
         }
         this.inquireCoolDown--;
@@ -2516,7 +2526,7 @@ public class AgentMovement {
     public boolean coffeeCoolDown() {
         System.out.println("coffee CoolDown: " + coffeeCoolDown);
         if (this.coffeeCoolDown <= 0) {
-            this.coffeeCoolDown = MAX_CHANGE_COFFEE_COOL_DOWN_DURATION;
+            this.coffeeCoolDown = Simulator.rollIntIN(MAX_CHANGE_COFFEE_COOL_DOWN_DURATION);
             return true;
         }
         this.changeVisualCoolDown--;
