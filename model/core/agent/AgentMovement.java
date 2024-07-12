@@ -36,6 +36,7 @@ public class AgentMovement {
     public final int MAX_INQUIRE_COOL_DOWN_DURATION = 1440;
     public final int MAX_AGENT_COOL_DOWN_DURATION = 1440;
     public final int MAX_CHANGE_VISUAL_COOL_DOWN_DURATION = 1440;
+    public final int MAX_CHANGE_COFFEE_COOL_DOWN_DURATION = 4320;
 
     public int bathroomCoolDown = 0;
     public int breakCoolDown = 0;
@@ -44,6 +45,7 @@ public class AgentMovement {
     public int inquireCoolDown = 0;
     public int agentCoolDown = 0;
     public int changeVisualCoolDown = 0;
+    public int coffeeCoolDown = 0;
 
     private final Agent parent;
     private final Coordinates position;
@@ -451,6 +453,14 @@ public class AgentMovement {
         this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed //JIC if needed
     }
 
+    public void chooseCoffeeQueue(){
+        int random = Simulator.rollIntIN(environment.getReceptionQueues().size());
+        goalQueueingPatchField = environment.getCoffeeQueues().get(random);
+        this.goalNearestQueueingPatch = goalQueueingPatchField.getAssociatedPatches().getLast();
+        this.goalAmenity = environment.getCoffeeMakerBars().get(random);
+        this.goalAttractor = getGoalAmenity().getAttractors().getFirst(); // Needed in chooseNextInPath
+        this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed //JIC if needed
+    }
 
     public void chooseWaterDispenserQueue(){
         int random = Simulator.rollIntIN(environment.getWaterDispenserQueues().size());
@@ -524,6 +534,119 @@ public class AgentMovement {
         return false;
     }
 
+    // Only gets AC that is on (used for turning off ACs)
+    public boolean closestAircon() {
+        HashMap<Amenity.AmenityBlock, Double> distancesToAircon = new HashMap<>();
+        List<Map.Entry<Amenity.AmenityBlock, Double> > list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >();
+
+        if(environment.getAircons().isEmpty()){
+            //do nothing;
+            return false;
+        }
+        for (Aircon amenity : environment.getAircons()) {
+            for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
+                double distanceToAircon = Coordinates.distance(this.currentPatch, attractor.getPatch());
+                distancesToAircon.put(attractor, distanceToAircon);
+            }
+        }
+
+
+        //THIS IS FOR SORTING ALL AIRCONS TO NEAREST TO FARTHEST
+        list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(distancesToAircon.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<Amenity.AmenityBlock, Double> >() {
+            public int compare(Map.Entry<Amenity.AmenityBlock, Double> o1, Map.Entry<Amenity.AmenityBlock, Double> o2) {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        //STORE IT BACK TO HASH IN SORTED MODE
+        HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+        Set<Aircon> uniqueAircons = new HashSet<>();
+
+        for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
+            Aircon airconParent = (Aircon) aa.getKey().getParent();
+            if (aa.getValue() <= airconParent.getCoolingRange() && uniqueAircons.add(airconParent)) {
+                sortedDistances.put(aa.getKey(), aa.getValue());
+            }
+        }
+
+        // IF NO AIRCON FOUND WITHIN DISTANCE OF < COOLING RANGE
+        if(sortedDistances.isEmpty()){
+            return false;
+        }
+
+        // for each attractor in aircon get it's Patchfield and compare to currentPatch of agent
+        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
+            // check if ac is in the same room
+            PatchField patchField = distancesToAirconEntry.getKey().getPatch().getPatchField().getKey();
+            if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
+                // check if ac is on
+                if(((Aircon) distancesToAirconEntry.getKey().getParent()).isOn()){
+                    airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
+                    return true;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        //if not in same field, find the closest to the agent within the aircon cooling range and do the thermal comfort logic
+        // for each attractor get the aircon near the agent
+        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
+            if(((Aircon) distancesToAirconEntry.getKey().getParent()).isOn()){
+                airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
+                return true;
+            }
+            else {
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    // Only gets Lights that is on (used for turning off Lights)
+    public boolean closestLight() {
+        HashMap<Amenity.AmenityBlock, Double> sortedDistancesLight = getNearLights();
+
+        if (sortedDistancesLight.isEmpty()) {
+            return false;
+        }
+
+        // check first if there are lights near the agent that is within the same room
+        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToLightEntry : sortedDistancesLight.entrySet()) {
+
+            PatchField patchField = distancesToLightEntry.getKey().getPatch().getPatchField().getKey();
+
+            //if same patchfield, check if within the light range to do visual comfort logic
+            if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
+                if (((Light) distancesToLightEntry.getKey().getParent()).isOn()) {
+                    lightsToOpen = ((Light) distancesToLightEntry.getKey().getParent());
+                    return true;
+                }
+                else {
+                    break;
+                }
+            }
+
+        }
+        // check maybe the light is outside the room (this is for the lights for Solo Rooms)
+//        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToLightEntry : sortedDistancesLight.entrySet()) {
+//            //range of light
+//            //IF NOT SAME PATCH FIELD BUT MAYBE CLOSEST TO THE AGENT
+//            if (( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
+//                lightsToOpen = ((Light) distancesToLightEntry.getKey().getParent());
+//                return true;
+//            }
+//            else {
+//                break;
+//            }
+//        }
+
+        return false;
+    }
+
     public boolean airconChecker(){
         System.out.println("@airconChecker");
         HashMap<Amenity.AmenityBlock, Double> distancesToAircon = new HashMap<>();
@@ -554,10 +677,11 @@ public class AgentMovement {
 
         //STORE IT BACK TO HASH IN SORTED MODE
         HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+        Set<Aircon> uniqueAircons = new HashSet<>();
 
         for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
             Aircon airconParent = (Aircon) aa.getKey().getParent();
-            if (aa.getValue() <= airconParent.getCoolingRange()) {
+            if (aa.getValue() <= airconParent.getCoolingRange() && uniqueAircons.add(airconParent)) {
                 sortedDistances.put(aa.getKey(), aa.getValue());
             }
         }
@@ -623,7 +747,7 @@ public class AgentMovement {
         //if not in same field, find the closest to the agent within the aircon cooling range and do the thermal comfort logic
         // for each attractor get the aircon near the agent
         for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
-            System.out.println("hello preference: "+ this.parent.getTempPreference() + " hello room temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() + "hello aircon temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp());
+//            System.out.println("hello preference: "+ this.parent.getTempPreference() + " hello room temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() + "hello aircon temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp());
 
             if(((Aircon) distancesToAirconEntry.getKey().getParent()).isOn()){
                 //SETS TEMP PREFERENCE RANGE TO COMPROMISE WITH OTHER AGENTS TEMP PREFERENCE
@@ -674,7 +798,7 @@ public class AgentMovement {
             //if same, check if within the cooling range then do the thermal comfort logic
             if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
                 if(!((Aircon) distancesToAirconEntry.getKey().getParent()).isOn()){
-                    System.out.println("turn on ac");
+//                    System.out.println("turn on ac");
                     airconToChange = ( (Aircon) distancesToAirconEntry.getKey().getParent());
                     return true;
                 }
@@ -693,7 +817,7 @@ public class AgentMovement {
         }
         //RETURN TRUE IF AIRCON IS FOUND BUT NOT WITHIN SAME PATCHFIELD
         if(airconToChange != null){
-            System.out.println("turn on ac, but outside patchfield");
+//            System.out.println("turn on ac, but outside patchfield");
             return true;
         }
         return false;
@@ -765,7 +889,8 @@ public class AgentMovement {
 
         return sortedDistances;
     }
-    //TODO: CHECK FOR VISUAL COMFORT, IF AGENT IS SATISFIED
+
+
     public boolean visualComfortChecker(SimulationTime time){
         System.out.println("@visualComfortChecker");
         HashMap<Amenity.AmenityBlock, Double> sortedDistancesLight = getNearLights();
@@ -780,7 +905,7 @@ public class AgentMovement {
         //IF GREEN, CHECK BLINDS FIRST THEN LIGHTS IF NO BLINDS WITHIN RANGE FOUND
         double neutralChance = Simulator.roll();
         //FOR GREEN OR NEUTRAL CHANCE
-        if((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN || neutralChance < 0.5) && !sortedDistancesBlinds.isEmpty()
+        if((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && neutralChance < 0.5)) && !sortedDistancesBlinds.isEmpty()
                 && time.getTime().isBefore(LocalTime.of(16,0))) {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistancesBlinds.entrySet()) {
                 PatchField patchField = distancesToAttractorEntry.getKey().getPatch().getPatchField().getKey();
@@ -815,18 +940,6 @@ public class AgentMovement {
 
 
             }
-            // check maybe the light is outside the room (this is for the lights for Solo Rooms)
-            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToLightEntry : sortedDistancesLight.entrySet()) {
-                //range of light
-                //IF NOT SAME PATCH FIELD BUT MAYBE CLOSEST TO THE AGENT
-                if (( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
-                    return true;
-                }
-                else {
-                    lightsToOpen = ((Light) distancesToLightEntry.getKey().getParent());
-                    return false;
-                }
-            }
         }
         return true;
     }
@@ -836,30 +949,12 @@ public class AgentMovement {
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
             List<Map.Entry<Amenity.AmenityBlock, Double> > list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >();
 
-            double minDistance = Double.MAX_VALUE;
-            Aircon closestAircon = null;
+            Aircon closestAircon = airconToChange;
             // get the nearest Aircon to the agent
 
-            if (airconToChange == null) {
-                // TODO: Maybe instead of getting the nearest aircon, use the AOE of the aircon to determine which aircon to use
-                for (Aircon amenity : environment.getAircons()) {
-                    for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                        double distanceToAircon = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                        if(distanceToAircon < minDistance) {
-                            minDistance = distanceToAircon;
-                            closestAircon = amenity;
-                        }
-                    }
-                }
-
-                if (closestAircon == null) { // failed getting the nearest aircon for some reason
-                    System.out.println("failed finding aircon");
-                    return false;
-                }
-                airconToChange = closestAircon;
-            }
-            else {
-                closestAircon = airconToChange;
+            if (closestAircon == null) { // failed getting the nearest aircon for some reason
+                System.out.println("failed finding aircon");
+                return false;
             }
 
             // for each attractor in aircon get it's Patchfield maybe the switch is in the same room as the aircon
@@ -973,29 +1068,11 @@ public class AgentMovement {
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
             List<Map.Entry<Amenity.AmenityBlock, Double> > list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >();
 
-            double minDistance = Double.MAX_VALUE;
-            Light closestLight = null;
+            Light closestLight = lightsToOpen;
 
-            if (lightsToOpen == null) {
-                // get the nearest Aircon to the agent
-                for (Light amenity : environment.getLights()) {
-                    for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
-                        double distanceToAircon = Coordinates.distance(this.currentPatch, attractor.getPatch());
-                        if(distanceToAircon < minDistance) {
-                            minDistance = distanceToAircon;
-                            closestLight = amenity;
-                        }
-                    }
-                }
-
-                if (closestLight == null) { // failed getting the nearest light for some reason
-                    System.out.println("failed finding lights");
-                    return false;
-                }
-                this.lightsToOpen = closestLight;
-            }
-            else {
-                closestLight = this.lightsToOpen;
+            if (closestLight == null) { // failed getting the nearest light for some reason
+                System.out.println("failed finding lights");
+                return false;
             }
 
             // for each attractor in light get it's Patchfield maybe the switch is in the same room as the light
@@ -1428,20 +1505,7 @@ public class AgentMovement {
                     }
                 }
 
-                for (SoloTable amenity : environment.getSoloTables()) {
-                    for (Chair soloChair : amenity.getSoloChairs()) {
-                        int attractorCount = 0;
-                        // This part checks for amenities with more than 1 attractors
-                        for(int i = 0; i < soloChair.getAttractors().size(); i++) {
-                            if (soloChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
-                                attractorCount++;
-                            }
-                        }
-                        if(attractorCount == 0) {
-                            temp.add(soloChair);
-                        }
-                    }
-                }
+
             }
             else if (Agent.Type.STUDENT == this.parent.getType()) {
                 for(ResearchTable researchTable: environment.getResearchTables()) {
@@ -1566,7 +1630,7 @@ public class AgentMovement {
     }
 
     public boolean chooseCollaborationChair() {
-
+        System.out.println("@chooseCollab");
         if (this.goalAmenity == null) {
             List<Chair> temp = new ArrayList<>();
             HashMap<Amenity.AmenityBlock, Double> distancesToAttractors = new HashMap<>();
@@ -1645,8 +1709,8 @@ public class AgentMovement {
                             if (this.assignedSeat == null) {
                                 this.setAssignedSeat(amenity);
                                 this.getRoutePlan().setAgentSeat(this.assignedSeat);
+                                getGoalAttractor().setIsReserved(true);
                             }
-                            getGoalAttractor().setIsReserved(true);
                             return true;
                         }
                     }
@@ -1693,11 +1757,14 @@ public class AgentMovement {
                 Collections.shuffle(candidateAgents);
             }
             else if (this.currentState.getName() == State.Name.INQUIRE_STUDENT) {
-                for (Agent agent : environment.getMovableAgents()) {
-                    if (agent != this.parent && agent.getAgentMovement().getRoutePlan().isAtDesk() && agent.getType() == Agent.Type.STUDENT) {
-                        candidateAgents.add(agent);
+                if (this.parent.getTeam() == 0) {
+                    for (Agent agent : environment.getMovableAgents()) {
+                        if (agent != this.parent && agent.getAgentMovement().getRoutePlan().isAtDesk() && agent.getType() == Agent.Type.STUDENT) {
+                            candidateAgents.add(agent);
+                        }
                     }
                 }
+
                 Collections.shuffle(candidateAgents);
             }
             else if (this.currentState.getName() == State.Name.INQUIRE_MAINTENANCE) {
@@ -1777,10 +1844,9 @@ public class AgentMovement {
     }
 
     public void moveSocialForce() {
-        final int noNewPatchesSeenTicksThreshold = 5;
-        final int noMovementTicksThreshold = 5;
+        final int noNewPatchesSeenTicksThreshold = 2;
         final double noMovementThreshold = 0.01 * this.preferredWalkingDistance;
-        final double noNewPatchesSeenThreshold = 5;
+        final double noNewPatchesSeenThreshold = 2;
         final double slowdownStartDistance = 2.0;
         int numberOfObstacles = 0;
         final double minimumAgentStopDistance = 0.6;
@@ -1836,26 +1902,28 @@ public class AgentMovement {
                 }
             }
 
-            for (Agent otherAgent : patch.getAgents()) {
-                if (agentsProcessed == agentsProcessedLimit) {
-                    break;
-                }
+            if (this.currentState.getName() != State.Name.GOING_TO_RECEPTION && this.currentAction.getName() != Action.Name.GOING_TO_RECEPTION_QUEUE && this.currentAction.getName() != Action.Name.GO_TO_WAIT_AREA) {
+                for (Agent otherAgent : patch.getAgents()) {
+                    if (agentsProcessed == agentsProcessedLimit) {
+                        break;
+                    }
 
-                if (!otherAgent.equals(this.getParent())) {
-                    double distanceToOtherAgent = Coordinates.distance(this.position, otherAgent.getAgentMovement().getPosition());
+                    if (!otherAgent.equals(this.getParent())) {
+                        double distanceToOtherAgent = Coordinates.distance(this.position, otherAgent.getAgentMovement().getPosition());
 
-                    if (distanceToOtherAgent <= slowdownStartDistance) {
-                        final int maximumAgentCountTolerated = 5;
-                        final int minimumAgentCount = 1;
-                        final double maximumDistance = 2.0;
-                        final int maximumAgentCount = 5;
-                        final double minimumDistance = 0.7;
+                        if (distanceToOtherAgent <= slowdownStartDistance) {
+                            final int maximumAgentCountTolerated = 5;
+                            final int minimumAgentCount = 1;
+                            final double maximumDistance = 2.0;
+                            final int maximumAgentCount = 5;
+                            final double minimumDistance = 0.7;
 
-                        double computedMaximumDistance = computeMaximumRepulsionDistance(numberOfObstacles, maximumAgentCountTolerated, minimumAgentCount, maximumDistance, maximumAgentCount, minimumDistance);
-                        Vector agentRepulsiveForce = computeSocialForceFromAgent(otherAgent, distanceToOtherAgent, computedMaximumDistance, minimumAgentStopDistance, this.preferredWalkingDistance);
-                        this.repulsiveForceFromAgents.add(agentRepulsiveForce);
+                            double computedMaximumDistance = computeMaximumRepulsionDistance(numberOfObstacles, maximumAgentCountTolerated, minimumAgentCount, maximumDistance, maximumAgentCount, minimumDistance);
+                            Vector agentRepulsiveForce = computeSocialForceFromAgent(otherAgent, distanceToOtherAgent, computedMaximumDistance, minimumAgentStopDistance, this.preferredWalkingDistance);
+                            this.repulsiveForceFromAgents.add(agentRepulsiveForce);
 
-                        agentsProcessed++;
+                            agentsProcessed++;
+                        }
                     }
                 }
             }
@@ -2272,7 +2340,8 @@ public class AgentMovement {
                 patch.getAmenityBlock().getParent().getClass() != Toilet.class &&
                 patch.getAmenityBlock().getParent().getClass() != Couch.class &&
                 patch.getAmenityBlock().getParent().getClass() != TrashCan.class &&
-                patch.getAmenityBlock().getParent().getClass() != Whiteboard.class
+                patch.getAmenityBlock().getParent().getClass() != Whiteboard.class &&
+                patch.getAmenityBlock().getParent().getClass() != ReceptionTable.class
         )) || (patch.getPatchField() != null && patch.getPatchField().getKey().getClass() == Divider.class)) {
             return true;
         }
@@ -2377,7 +2446,7 @@ public class AgentMovement {
     public boolean bathRoomCoolDown() {
         System.out.println("Bathroom Cooldown: " + bathroomCoolDown);
         if (this.bathroomCoolDown <= 0) {
-            this.bathroomCoolDown = MAX_BATHROOM_COOL_DOWN_DURATION; // set cool down duration
+            this.bathroomCoolDown = Simulator.rollIntIN(MAX_BATHROOM_COOL_DOWN_DURATION); // set cool down duration
             return true;
         }
         this.bathroomCoolDown--;
@@ -2387,7 +2456,7 @@ public class AgentMovement {
     public boolean breakCoolDown() {
         System.out.println("Break CoolDown: " + breakCoolDown);
         if (this.breakCoolDown <= 0) {
-            this.breakCoolDown = MAX_BREAK_COOL_DOWN_DURATION; // set cool down duration
+            this.breakCoolDown = Simulator.rollIntIN(MAX_BREAK_COOL_DOWN_DURATION); // set cool down duration
             return true;
         }
         this.breakCoolDown--;
@@ -2397,7 +2466,7 @@ public class AgentMovement {
     public boolean refrigeratorCoolDown() {
         System.out.println("Refrigerator CoolDown: " + refrigeratorCoolDown);
         if (this.refrigeratorCoolDown <= 0) {
-            this.refrigeratorCoolDown = MAX_REFRIGERATOR_COOL_DOWN_DURATION; // set cool down duration
+            this.refrigeratorCoolDown = Simulator.rollIntIN(MAX_REFRIGERATOR_COOL_DOWN_DURATION); // set cool down duration
             return true;
         }
         this.refrigeratorCoolDown--;
@@ -2438,6 +2507,16 @@ public class AgentMovement {
         System.out.println("visual CoolDown: " + changeVisualCoolDown);
         if (this.changeVisualCoolDown <= 0) {
             this.changeVisualCoolDown = MAX_CHANGE_VISUAL_COOL_DOWN_DURATION;
+            return true;
+        }
+        this.changeVisualCoolDown--;
+        return false;
+    }
+
+    public boolean coffeeCoolDown() {
+        System.out.println("coffee CoolDown: " + coffeeCoolDown);
+        if (this.coffeeCoolDown <= 0) {
+            this.coffeeCoolDown = MAX_CHANGE_COFFEE_COOL_DOWN_DURATION;
             return true;
         }
         this.changeVisualCoolDown--;
@@ -2688,7 +2767,7 @@ public class AgentMovement {
         this.actionIndex = actionIndex;
     }
     public void setCurrentState(int i) {
-        this.currentState = this.currentState.getRoutePlan().setState(i);
+        this.currentState = this.getRoutePlan().setState(i);
     }
     public void setNextState(int i) {
         this.currentState = this.currentState.getRoutePlan().setNextState(i);

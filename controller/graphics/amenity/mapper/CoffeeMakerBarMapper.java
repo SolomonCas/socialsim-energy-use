@@ -3,6 +3,7 @@ package com.socialsim.controller.graphics.amenity.mapper;
 import com.socialsim.controller.Main;
 import com.socialsim.controller.graphics.amenity.AmenityMapper;
 import com.socialsim.model.core.environment.Patch;
+import com.socialsim.model.core.environment.patchfield.CoffeeQueue;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.CoffeeMakerBar;
 
@@ -33,6 +34,13 @@ public class CoffeeMakerBarMapper extends AmenityMapper {
             CoffeeMakerBar coffeeMakerBarToAdd;
             coffeeMakerBarToAdd = CoffeeMakerBar.CoffeeMakerBarFactory.create(amenityBlocks, true);
             coffeeMakerBars.add(coffeeMakerBarToAdd);
+
+            amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
+
+            // QUEUE POSITION
+            List<Patch> coffeeQueuePatches = new ArrayList<>();
+            coffeeQueuePatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol));
+            Main.simulator.getEnvironment().getCoffeeQueues().add(CoffeeQueue.coffeeQueueFactory.create(coffeeQueuePatches, coffeeMakerBarToAdd, "coffeeQueue"));
 
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }

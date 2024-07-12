@@ -75,7 +75,8 @@ public class Agent extends PatchObject {
             this.persona = Persona.DIRECTOR;
             this.personaActionGroup = PersonaActionGroup.DIRECTOR;
             this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
-            energyProfilePicker();
+//            energyProfilePicker();
+            this.energyProfile = EnergyProfile.NONGREEN;
         }
 
 
@@ -83,7 +84,7 @@ public class Agent extends PatchObject {
         // Faculty
         else if (this.type == Type.FACULTY) {
             this.ageGroup = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? Agent.AgeGroup.FROM_25_TO_54 : Agent.AgeGroup.FROM_55_TO_64;
-
+            this.gender = Gender.MALE;
             boolean isStrict = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
             if (isStrict) {
                 this.persona = Persona.STRICT_FACULTY;
@@ -113,8 +114,8 @@ public class Agent extends PatchObject {
                 this.personaActionGroup = PersonaActionGroup.EXT_STUDENT;
             }
             this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
-            this.energyProfile = EnergyProfile.GREEN;
-//            energyProfilePicker();
+//            this.energyProfile = EnergyProfile.GREEN;
+            energyProfilePicker();
         }
 
 

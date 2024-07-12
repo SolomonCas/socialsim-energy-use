@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Window;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -1211,23 +1212,23 @@ public class ScreenController extends Controller {
         pantryTableTypeB.add(environment.getPatch(121,160));
         PantryTableMapper.draw(pantryTableTypeB, "TYPE_B");
 
-        // TYPE A CHAIRS
-        List<Patch> southPantryChairTypeA = new ArrayList<>();
-        southPantryChairTypeA.add(environment.getPatch(111,150));
-        southPantryChairTypeA.add(environment.getPatch(111,151));
-        southPantryChairTypeA.add(environment.getPatch(111,152));
-        southPantryChairTypeA.add(environment.getPatch(111,153));
-        southPantryChairTypeA.add(environment.getPatch(111,154));
-        ChairMapper.draw(southPantryChairTypeA, 0, "SOUTH", "PANTRY_TYPE_A", "NULL");
-
-        // TYPE B CHAIRS
-        List<Patch> southPantryChairTypeB = new ArrayList<>();
-        southPantryChairTypeB.add(environment.getPatch(111,145));
-        southPantryChairTypeB.add(environment.getPatch(111,146));
-        southPantryChairTypeB.add(environment.getPatch(111,147));
-        southPantryChairTypeB.add(environment.getPatch(111,148));
-        southPantryChairTypeB.add(environment.getPatch(111,149));
-        ChairMapper.draw(southPantryChairTypeB, 0, "SOUTH", "PANTRY_TYPE_B", "NULL");
+//        // TYPE A CHAIRS
+//        List<Patch> southPantryChairTypeA = new ArrayList<>();
+//        southPantryChairTypeA.add(environment.getPatch(111,150));
+//        southPantryChairTypeA.add(environment.getPatch(111,151));
+//        southPantryChairTypeA.add(environment.getPatch(111,152));
+//        southPantryChairTypeA.add(environment.getPatch(111,153));
+//        southPantryChairTypeA.add(environment.getPatch(111,154));
+//        ChairMapper.draw(southPantryChairTypeA, 0, "SOUTH", "PANTRY_TYPE_A", "NULL");
+//
+//        // TYPE B CHAIRS
+//        List<Patch> southPantryChairTypeB = new ArrayList<>();
+//        southPantryChairTypeB.add(environment.getPatch(111,145));
+//        southPantryChairTypeB.add(environment.getPatch(111,146));
+//        southPantryChairTypeB.add(environment.getPatch(111,147));
+//        southPantryChairTypeB.add(environment.getPatch(111,148));
+//        southPantryChairTypeB.add(environment.getPatch(111,149));
+//        ChairMapper.draw(southPantryChairTypeB, 0, "SOUTH", "PANTRY_TYPE_B", "NULL");
 
 
         /* Director Table */
@@ -1861,6 +1862,7 @@ public class ScreenController extends Controller {
         /* WINDOW + BLINDS */
 
         List<Patch> glass = new ArrayList<>();
+        List<Patch> facultyGlass = new ArrayList<>();
         List<Patch> eastHallwayWindowBlinds = new ArrayList<>();
         List<Patch> northSouthWindowBlinds = new ArrayList<>();
         List<Patch> eastPantryWindowBlinds = new ArrayList<>();
@@ -1885,7 +1887,7 @@ public class ScreenController extends Controller {
 
         // Faculty Room
         for (int j = 100; j <= 127; j += 6) {
-            northSouthWindowBlinds.add(environment.getPatch(106, j));
+            facultyGlass.add(environment.getPatch(109, j));
 
         }
 
@@ -1915,6 +1917,7 @@ public class ScreenController extends Controller {
         }
 
         WindowBlindsMapper.draw(glass, "GLASS", 7);
+        WindowBlindsMapper.draw(facultyGlass, "GLASS", 4);
         WindowBlindsMapper.draw(northSouthWindowBlinds, "OPENED_NORTH_AND_SOUTH", 4);
         WindowBlindsMapper.draw(eastPantryWindowBlinds, "OPENED_EAST", 8);
         WindowBlindsMapper.draw(eastHallwayWindowBlinds, "OPENED_EAST", 5);

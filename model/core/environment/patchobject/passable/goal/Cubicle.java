@@ -18,12 +18,14 @@ public class Cubicle extends Goal {
     static {
         cubicleFactory = new CubicleFactory();
     }
-    private List<Monitor> monitors;
-    private List<Chair> chairs;
+    private final List<Monitor> monitors;
+    private final List<Chair> chairs;
+    private final String type;
 
     /***** CONSTRUCTOR *****/
     protected Cubicle(List<AmenityBlock> amenityBlocks, boolean enabled, String type, String facing, String tableOn) {
         super(amenityBlocks, enabled);
+        this.type = type;
         this.cubicleGraphic = new CubicleGraphic(this, type, facing, tableOn);
         this.monitors = Collections.synchronizedList(new ArrayList<>());
         this.chairs = Collections.synchronizedList(new ArrayList<>());
@@ -35,6 +37,10 @@ public class Cubicle extends Goal {
     }
     public List<Monitor> getMonitors() {
         return monitors;
+    }
+
+    public String getType() {
+        return type;
     }
 
     /***** OVERRIDE *****/

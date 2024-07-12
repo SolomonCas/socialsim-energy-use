@@ -30,29 +30,27 @@ public class RoutePlan {
 
     State LUNCH_INSTANCE = null;
 
-    public static final double DIRECTOR_LUNCH = 0.7;
-    public static final double EAT_OUTSIDE = 0.9;
-    public static final double INT_LUNCH = 0.3;
-    public static final double EXT_LUNCH = 1.0;
-    public static final double STRICT_FACULTY_COOPERATE = 0.6;
-    public static final double APP_FACULTY_COOPERATE = 0.9;
-    public static final double INT_STUDENT_COOPERATE = 0.6;
-    public static final double EXT_STUDENT_COOPERATE = 0.9;
+    
 
     /*** Responsible for doing Urgent Task ***/
     private boolean canUrgent = true;
-    private int BATH_AM = 2, BATH_PM = 2, BATH_LUNCH = 1;
-    private int BREAK_COUNT = 2;
-    private int DISPENSER_LUNCH = 1, DISPENSER_PM = 1;
-    private int REFRIGERATOR_LUNCH = 1, REFRIGERATOR_PM = 1;
-    public static final double  BATH_CHANCE = 0.15,
-                                DISPENSER_CHANCE = 0.25,
-                                REFRIGERATOR_CHANCE = 0.3,
-                                BREAK_CHANCE = 0.5,
-                                INQUIRE_FACULTY_CHANCE = 0.3,
-                                INQUIRE_STUDENT_CHANCE = 0.3,
-                                INQUIRE_MAINTENANCE_CHANCE = 0.3,
-                                INQUIRE_GUARD_CHANCE = 0.3;
+    private int BATH_AM = 1, BATH_PM = 1, BATH_LUNCH = 1;
+    private int BREAK_COUNT = 2, COFFEE_COUNT = 1;
+    private int DISPENSER_LUNCH = 1, DISPENSER = 1;
+    private int REFRIGERATOR_LUNCH = 1, REFRIGERATOR = 1;
+    private double  BATHROOM_CHANCE,
+            WORKING_CHANCE,
+            DISPENSER_CHANCE,
+            REFRIGERATOR_CHANCE,
+            BREAK_CHANCE,
+            COFFEE_CHANCE,
+            EAT_OUTSIDE_CHANCE,
+            EAT_FROM_WORKPLACE,
+            INQUIRE_STUDENT_CHANCE,
+            INQUIRE_FACULTY_CHANCE,
+            INQUIRE_DIRECTOR_CHANCE,
+            INQUIRE_GUARD_CHANCE,
+            INQUIRE_MAINTENANCE_CHANCE;
     public static ArrayList<ArrayList<Long>> meetingTimes = new ArrayList<>();
 
     /***** CONSTRUCTOR *****/
@@ -62,14 +60,29 @@ public class RoutePlan {
         ArrayList<Action> actions;
 
         if (agent.getPersona() == Agent.Persona.GUARD) {
+            WORKING_CHANCE = 0.8;
+            INQUIRE_STUDENT_CHANCE = 0.0;
+            INQUIRE_FACULTY_CHANCE = 0.0;
+            INQUIRE_DIRECTOR_CHANCE = 0.0;
+            INQUIRE_GUARD_CHANCE = 0.0;
+            INQUIRE_MAINTENANCE_CHANCE = 0.0;
+            BATHROOM_CHANCE = 0.15;
+            BREAK_CHANCE = 0.05;
+            COFFEE_CHANCE = 0.0;
+
+            DISPENSER_CHANCE = 0.02;
+            REFRIGERATOR_CHANCE = 0.03;
+
+            EAT_OUTSIDE_CHANCE = 0.0;
+            EAT_FROM_WORKPLACE = 1.0;
+
+
+
             setBathAM(false);
             setBathPM(false);
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
-            routePlan.add(new State(State.Name.GOING_TO_WORK, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GUARD_STAY_PUT, assignedSeat.getAttractors().getFirst().getPatch()));
@@ -80,20 +93,36 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.EAT_LUNCH, 360));
             routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
-            actions = new ArrayList<>();
-            // Developer Note: The thesis does not need to implement elevator behavior, where agents will wait for an elevator to leave
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
-            // This is for when the agent isn't in his station or is a behavior of getting he/she's belongings before going home
-            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
-            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
+//            actions = new ArrayList<>();
+//            // Developer Note: The thesis does not need to implement elevator behavior, where agents will wait for an elevator to leave
+//            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+//            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
+//            // This is for when the agent isn't in his station or is a behavior of getting he/she's belongings before going home
+//            actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch(), 3));
+//            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
 
         }
         else if (agent.getPersona() == Agent.Persona.MAINTENANCE) {
-            setBathAM(true);
-            setBathPM(true);
+            setBathAM(false);
+            setBathPM(false);
             setAtDesk(false);
             setAgentSeat(assignedSeat);
+
+            WORKING_CHANCE = 0.8;
+            INQUIRE_STUDENT_CHANCE = 0.0;
+            INQUIRE_FACULTY_CHANCE = 0.0;
+            INQUIRE_DIRECTOR_CHANCE = 0.0;
+            INQUIRE_GUARD_CHANCE = 0.02;
+            INQUIRE_MAINTENANCE_CHANCE = 0.02;
+            BATHROOM_CHANCE = 0.15;
+            BREAK_CHANCE = 0.01;
+            COFFEE_CHANCE = 0.0;
+
+            DISPENSER_CHANCE = 0.02;
+            REFRIGERATOR_CHANCE = 0.03;
+
+            EAT_OUTSIDE_CHANCE = 0.0;
+            EAT_FROM_WORKPLACE = 1.0;
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
@@ -205,11 +234,22 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
-            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+            WORKING_CHANCE = 0.8;
+            INQUIRE_STUDENT_CHANCE = 0.0;
+            INQUIRE_FACULTY_CHANCE = 0.0;
+            INQUIRE_DIRECTOR_CHANCE = 0.0;
+            INQUIRE_GUARD_CHANCE = 0.0;
+            INQUIRE_MAINTENANCE_CHANCE = 0.0;
+            BATHROOM_CHANCE = 0.15;
+            BREAK_CHANCE = 0.01;
+            COFFEE_CHANCE = 0.04;
+
+            DISPENSER_CHANCE = 0.02;
+            REFRIGERATOR_CHANCE = 0.03;
+
+            EAT_OUTSIDE_CHANCE = 0.5;
+            EAT_FROM_WORKPLACE = 0.4;
+
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION, assignedSeat.getAttractors().getFirst().getPatch()));
@@ -234,11 +274,32 @@ public class RoutePlan {
             setAtDesk(false);
             setAgentSeat(assignedSeat);
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
-            actions.add(new Action(Action.Name.FILL_UP_NAME, 3));
-            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+            WORKING_CHANCE = 0.8;
+            BATHROOM_CHANCE = 0.15;
+            BREAK_CHANCE = 0.02;
+            COFFEE_CHANCE = 0.02;
+
+            DISPENSER_CHANCE = 0.13;
+            REFRIGERATOR_CHANCE = 0.1;
+
+            EAT_OUTSIDE_CHANCE = 0.8;
+            EAT_FROM_WORKPLACE = 0.1;
+
+            if (agent.getPersona() == Agent.Persona.STRICT_FACULTY) {
+                INQUIRE_STUDENT_CHANCE = 0.0;
+                INQUIRE_FACULTY_CHANCE = 0.0;
+                INQUIRE_DIRECTOR_CHANCE = 0.0;
+                INQUIRE_GUARD_CHANCE = 0.0;
+                INQUIRE_MAINTENANCE_CHANCE = 0.0;
+            }
+            else if (agent.getPersona() == Agent.Persona.APP_FACULTY) {
+                INQUIRE_STUDENT_CHANCE = 0.1;
+                INQUIRE_FACULTY_CHANCE = 0.1;
+                INQUIRE_DIRECTOR_CHANCE = 0.0;
+                INQUIRE_GUARD_CHANCE = 0.0;
+                INQUIRE_MAINTENANCE_CHANCE = 0.0;
+            }
+
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION));
@@ -263,6 +324,32 @@ public class RoutePlan {
             setBathPM(false);
             setAtDesk(false);
             setAgentSeat(assignedSeat);
+
+            WORKING_CHANCE = 0.8;
+            BATHROOM_CHANCE = 0.15;
+            BREAK_CHANCE = 0.03;
+            COFFEE_CHANCE = 0.0;
+
+            DISPENSER_CHANCE = 0.25;
+            REFRIGERATOR_CHANCE = 0.1;
+
+            EAT_OUTSIDE_CHANCE = 0.8;
+            EAT_FROM_WORKPLACE = 0.1;
+
+            if (agent.getPersona() == Agent.Persona.INT_STUDENT) {
+                INQUIRE_STUDENT_CHANCE = 0.0;
+                INQUIRE_FACULTY_CHANCE = 0.0;
+                INQUIRE_DIRECTOR_CHANCE = 0.0;
+                INQUIRE_GUARD_CHANCE = 0.0;
+                INQUIRE_MAINTENANCE_CHANCE = 0.0;
+            }
+            else if (agent.getPersona() == Agent.Persona.EXT_STUDENT) {
+                INQUIRE_STUDENT_CHANCE = 0.1;
+                INQUIRE_FACULTY_CHANCE = 0.1;
+                INQUIRE_DIRECTOR_CHANCE = 0.0;
+                INQUIRE_GUARD_CHANCE = 0.0;
+                INQUIRE_MAINTENANCE_CHANCE = 0.0;
+            }
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
@@ -357,14 +444,7 @@ public class RoutePlan {
         return -1;
     }
 
-    public int findIndexAction(Action.Name name, int stateIndex) {
-        for (int i = 0; i < this.routePlan.get(stateIndex).getActions().size(); i++) {
-            if (this.routePlan.get(stateIndex).getActions().get(i).getName()  == name) {
-                return i;
-            }
-        }
-        return -1;
-    }
+
 
     public State addUrgentRoute(String s, Agent agent, Environment environment) {
         ArrayList<Action> actions;
@@ -391,6 +471,14 @@ public class RoutePlan {
                 actions.add(new Action(Action.Name.GETTING_WATER, 1, 4));
                 officeState = new State(State.Name.DISPENSER, this, agent, actions);
             }
+            case "COFFEE" -> {
+                actions = new ArrayList<>();
+                actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
+                actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+                actions.add(new Action(Action.Name.GOING_COFFEEMAKER));
+                actions.add(new Action(Action.Name.MAKE_COFFEE, 70));
+                officeState = new State(State.Name.COFFEE, this, agent, actions);
+            }
             case "REFRIGERATOR" -> {
                 actions = new ArrayList<>();
                 actions.add(new Action(Action.Name.GO_TO_WAIT_AREA));
@@ -411,14 +499,12 @@ public class RoutePlan {
             case "FIX_THERMAL_COMFORT" -> {
                 // TODO: MAINTENANCE THERMAL COMFORT
                 actions = new ArrayList<>();
-                if (agent.getType() != Agent.Type.MAINTENANCE) {
-                    if  (!agent.getAgentMovement().getAirconToChange().isOn())
-                        actions.add(new Action(Action.Name.TURN_ON_AC));
-                    else if (agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isOn())
-                        actions.add(new Action(Action.Name.SET_AC_TO_COOL));
-                    else if (agent.getAgentMovement().isToHeat() && agent.getAgentMovement().getAirconToChange().isOn())
-                        actions.add(new Action(Action.Name.SET_AC_TO_WARM));
-                }
+                if  (!agent.getAgentMovement().getAirconToChange().isOn())
+                    actions.add(new Action(Action.Name.TURN_ON_AC));
+                else if (agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isOn())
+                    actions.add(new Action(Action.Name.SET_AC_TO_COOL));
+                else if (agent.getAgentMovement().isToHeat() && agent.getAgentMovement().getAirconToChange().isOn())
+                    actions.add(new Action(Action.Name.SET_AC_TO_WARM));
 
                 officeState = new State(State.Name.FIXING_THERMAL_COMFORT, this, agent, actions);
             }
@@ -539,12 +625,12 @@ public class RoutePlan {
         double chance = 0;
 
         switch (persona){
-            case EXT_STUDENT -> chance = EXT_STUDENT_COOPERATE;
+            case EXT_STUDENT -> chance = 0.5;
             case DIRECTOR -> chance = 1.0;
-            case INT_STUDENT -> chance = INT_STUDENT_COOPERATE;
-            case STRICT_FACULTY -> chance = STRICT_FACULTY_COOPERATE;
-            case APP_FACULTY -> chance = APP_FACULTY_COOPERATE;
-            default -> chance = 0;
+            case INT_STUDENT -> chance = Double.MIN_VALUE;
+            case STRICT_FACULTY -> chance = Double.MIN_VALUE;
+            case APP_FACULTY -> chance = 0.5;
+            default -> chance = 0.5;
         }
 
         return chance;
@@ -572,7 +658,7 @@ public class RoutePlan {
         return BATH_LUNCH;
     }
     public int getDISPENSER_LUNCH(){return this.DISPENSER_LUNCH;}
-    public int getDISPENSER_PM(){return this.DISPENSER_PM;}
+    public int getDISPENSER(){return this.DISPENSER;}
     public boolean isBathPM() {
         return bathPM;
     }
@@ -583,7 +669,7 @@ public class RoutePlan {
     public boolean getCanUrgent() {
         return canUrgent;
     }
-    public int getREFRIGERATOR_PM(){return this.REFRIGERATOR_PM;}
+    public int getREFRIGERATOR(){return this.REFRIGERATOR;}
     public int getLastDuration() {
         return lastDuration;
     }
@@ -617,6 +703,62 @@ public class RoutePlan {
 
     public boolean isTakingLunch() {
         return isTakingLunch;
+    }
+
+    public double getBATHROOM_CHANCE() {
+        return BATHROOM_CHANCE;
+    }
+
+    public double getBREAK_CHANCE() {
+        return BREAK_CHANCE;
+    }
+
+    public double getDISPENSER_CHANCE() {
+        return DISPENSER_CHANCE;
+    }
+
+    public double getEAT_FROM_WORKPLACE() {
+        return EAT_FROM_WORKPLACE;
+    }
+
+    public double getEAT_OUTSIDE_CHANCE() {
+        return EAT_OUTSIDE_CHANCE;
+    }
+
+    public double getINQUIRE_DIRECTOR_CHANCE() {
+        return INQUIRE_DIRECTOR_CHANCE;
+    }
+
+    public double getINQUIRE_FACULTY_CHANCE() {
+        return INQUIRE_FACULTY_CHANCE;
+    }
+
+    public double getINQUIRE_GUARD_CHANCE() {
+        return INQUIRE_GUARD_CHANCE;
+    }
+
+    public double getINQUIRE_MAINTENANCE_CHANCE() {
+        return INQUIRE_MAINTENANCE_CHANCE;
+    }
+
+    public double getINQUIRE_STUDENT_CHANCE() {
+        return INQUIRE_STUDENT_CHANCE;
+    }
+
+    public double getREFRIGERATOR_CHANCE() {
+        return REFRIGERATOR_CHANCE;
+    }
+
+    public int getCOFFEE_COUNT() {
+        return COFFEE_COUNT;
+    }
+
+    public double getCOFFEE_CHANCE() {
+        return COFFEE_CHANCE;
+    }
+
+    public double getWORKING_CHANCE() {
+        return WORKING_CHANCE;
     }
 
     /***** SETTERS *****/
@@ -653,14 +795,17 @@ public class RoutePlan {
     public void setDISPENSER_LUNCH(int DISPENSER_LUNCH) {
         this.DISPENSER_LUNCH -= DISPENSER_LUNCH;
     }
-    public void setDISPENSER_PM(int DISPENSER_PM) {
-        this.DISPENSER_PM -= DISPENSER_PM;
+    public void setDISPENSER(int DISPENSER) {
+        this.DISPENSER -= DISPENSER;
     }
     public void setREFRIGERATOR_LUNCH(int REFRIGERATOR_LUNCH) {
         this.REFRIGERATOR_LUNCH -= REFRIGERATOR_LUNCH;
     }
-    public void setREFRIGERATOR_PM(int REFRIGERATOR_PM) {
-        this.REFRIGERATOR_PM -= REFRIGERATOR_PM;
+    public void setREFRIGERATOR(int REFRIGERATOR) {
+        this.REFRIGERATOR -= REFRIGERATOR;
+    }
+    public void setCOFFEE_COUNT(int COFFEE_COUNT) {
+        this.COFFEE_COUNT -= COFFEE_COUNT;
     }
     public void setLastDuration(int lastDuration) {
         this.lastDuration = lastDuration;

@@ -25,6 +25,15 @@ public class State {
         actions.add(a);
     }
 
+    public int findIndexAction(Action.Name name) {
+        for (int i = 0; i < actions.size(); i++) {
+            if (this.actions.get(i).getName()  == name) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
 
 
@@ -78,6 +87,7 @@ public class State {
         MAINTENANCE_BATHROOM, MAINTENANCE_PLANT,
         INQUIRE_DIRECTOR, INQUIRE_FACULTY, INQUIRE_STUDENT, INQUIRE_GUARD, INQUIRE_MAINTENANCE, DISPENSER,
         REFRIGERATOR, BREAK_TIME,
+        COFFEE,
         WAIT_FOR_ACTIVITY,
         GOING_TO_EAT_OUTSIDE
     }

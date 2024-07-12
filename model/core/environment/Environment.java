@@ -55,6 +55,7 @@ public class Environment extends BaseObject implements Serializable {
     private final List<ReceptionQueue> receptionQueues;
     private final List<WaterDispenserQueue> waterDispenserQueues;
     private final List<RefrigeratorQueue> refrigeratorQueues;
+    private final List<CoffeeQueue> coffeeQueues;
     private final List<BathroomQueue> bathroomQueues;
 
 
@@ -183,6 +184,7 @@ public class Environment extends BaseObject implements Serializable {
         this.waterDispenserQueues = Collections.synchronizedList(new ArrayList<>());
         this.refrigeratorQueues = Collections.synchronizedList(new ArrayList<>());
         this.bathroomQueues = Collections.synchronizedList(new ArrayList<>());
+        this.coffeeQueues = Collections.synchronizedList(new ArrayList<>());
 
         this.usedAmenities = Collections.synchronizedSet(new HashSet<>());
 
@@ -311,10 +313,20 @@ public class Environment extends BaseObject implements Serializable {
         int offset = 30; // equivalent to 30 mins
 
         // TODO: RANDOMIZE TIMEIN AND TIMEOUT
-        for (int i = 0; i < 1; i++) {
-            Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(7, 0, i), LocalTime.of(18, 0));
+        for (int i = 0; i < 8; i++) {
+            Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(9, 30, i), LocalTime.of(18, 0));
             this.getAgents().add(agent);
         }
+//
+//        for (int i = 0; i < 8; i++) {
+//            Agent agent = AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(10, 0, i), LocalTime.of(18, 0));
+//            this.getAgents().add(agent);
+//        }
+
+//        for (int i = 0; i < 4; i++) {
+//            Agent agent = AgentFactory.create(Type.STUDENT, true, 2, LocalTime.of(10, 0, i), LocalTime.of(18, 0));
+//            this.getAgents().add(agent);
+//        }
 
         for (int i = 0; i < 1; i++) {
             Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(22,0));
@@ -330,11 +342,11 @@ public class Environment extends BaseObject implements Serializable {
 //            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(7,30, i), LocalTime.of(11,0));
 //            this.getAgents().add(agent);
 //        }
-//
-//        for (int i = 0; i < 2; i++) {
-//            Agent agent = AgentFactory.create(Type.FACULTY, true, 1, LocalTime.of(9,0, i), LocalTime.of(14,30));
-//            this.getAgents().add(agent);
-//        }
+
+        for (int i = 0; i < 1; i++) {
+            Agent agent = AgentFactory.create(Type.FACULTY, true, 1, LocalTime.of(9,0, i), LocalTime.of(22,0));
+            this.getAgents().add(agent);
+        }
 
     }
 
@@ -619,10 +631,10 @@ public class Environment extends BaseObject implements Serializable {
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case ASK_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case GOING_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case GOING_COFFEEMAKER -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case USE_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case GOING_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 40)));
+                            case GOING_COFFEEMAKER -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 40)));
+                            case USE_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 40)));
+                            case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 40)));
                         }
                     }
                     case STRICT_FACULTY -> {
@@ -638,14 +650,14 @@ public class Environment extends BaseObject implements Serializable {
                             case MAINTENANCE_CLEAN_TOILET -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_CLEAN_SINK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_WATER_PLANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case TURN_OFF_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case TURN_OFF_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case SET_AC_TO_COOL -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case SET_AC_TO_WARM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case OPEN_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case CLOSE_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case TURN_OFF_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case TURN_OFF_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case SET_AC_TO_COOL -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case SET_AC_TO_WARM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 50, 60)));
+                            case OPEN_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case CLOSE_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 50, 50)));
                             case GO_TO_STATION -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GO_TO_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case ASK_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -674,12 +686,12 @@ public class Environment extends BaseObject implements Serializable {
                             case WAIT_FOR_VACANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case WAIT_FOR_COLLEAGUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case GO_TO_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case ASK_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case GOING_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case GOING_COFFEEMAKER -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case USE_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case GO_TO_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
+                            case ASK_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 20, 70)));
+                            case GOING_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 60)));
+                            case GOING_COFFEEMAKER -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 60)));
+                            case USE_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 40, 40)));
+                            case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 60)));
                         }
                     }
                     case APP_FACULTY -> {
@@ -695,19 +707,19 @@ public class Environment extends BaseObject implements Serializable {
                             case MAINTENANCE_CLEAN_TOILET -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_CLEAN_SINK -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case MAINTENANCE_WATER_PLANT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case TURN_OFF_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case TURN_OFF_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case SET_AC_TO_COOL -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case SET_AC_TO_WARM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case OPEN_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case CLOSE_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case TURN_ON_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case TURN_ON_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case TURN_OFF_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
+                            case TURN_OFF_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 50, 40)));
+                            case SET_AC_TO_COOL -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 50, 40)));
+                            case SET_AC_TO_WARM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 50, 40)));
+                            case OPEN_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 50, 40)));
+                            case CLOSE_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 50, 40)));
                             case GO_TO_STATION -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GO_TO_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 50, 50)));
                             case ASK_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 50, 50)));
-                            case GO_TO_GUARD -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case ASK_GUARD -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case GO_TO_GUARD -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
+                            case ASK_GUARD -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 50, 50)));
                             case GO_TO_STUDENT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GO_TO_FACULTY -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case ASK_STUDENT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
@@ -732,11 +744,11 @@ public class Environment extends BaseObject implements Serializable {
                             case WAIT_FOR_COLLEAGUE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case ASK_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case GOING_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case GOING_COFFEEMAKER -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case USE_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
-                            case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
+                            case ASK_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 50, 50)));
+                            case GOING_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 40)));
+                            case GOING_COFFEEMAKER -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 40)));
+                            case USE_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 40)));
+                            case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 40)));
                         }
                     }
                     case INT_STUDENT -> {
@@ -1210,7 +1222,9 @@ public class Environment extends BaseObject implements Serializable {
         return bathroomQueues;
     }
 
-
+    public List<CoffeeQueue> getCoffeeQueues() {
+        return coffeeQueues;
+    }
 
     // GETTERS: AMENITIES
     public SortedSet<Patch> getAmenityPatchSet() {
