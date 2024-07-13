@@ -432,21 +432,114 @@ public class ScreenController extends Controller {
 
     public void mapEnvironment() {
         Environment environment = simulator.getEnvironment();
-        int maxRows = environment.getRows();
-        int maxColumns = environment.getColumns();
 
-        /* Floor */
+        /* Floors (for each zone inside office) */
 
-        List<Patch> floor = new ArrayList<>();
+        List<Patch>
+                // consistent across all layouts
+                hallway = new ArrayList<>(), elevatorLobby = new ArrayList<>(),
+                maleBathroom = new ArrayList<>(), femaleBathroom = new ArrayList<>(),
+                reception = new ArrayList<>(), breakerRoom = new ArrayList<>(), pantry = new ArrayList<>(),
 
-        for (int i = 0; i < maxRows; i++) {
-            for (int j = 0; j < maxColumns; j++) {
-                floor.add(environment.getPatch(i, j));
+                // small to big changes in other layouts
+                directorRoom = new ArrayList<>(), directorBathroom = new ArrayList<>(),
+                conferenceRoom = new ArrayList<>(), meetingRoom = new ArrayList<>(),
+                dataCenter = new ArrayList<>(), dataCenterCCTV = new ArrayList<>(),
+                controlCenter = new ArrayList<>(), mesa = new ArrayList<>(),
+                SR1 = new ArrayList<>(), SR2 = new ArrayList<>(),  SR3 = new ArrayList<>(), SR4 = new ArrayList<>(),
+                LS1 = new ArrayList<>(), LS2 = new ArrayList<>(),  LS3 = new ArrayList<>(), LS4 = new ArrayList<>(),
+                researchCenter = new ArrayList<>(), facultyRoom = new ArrayList<>(),
+                humanExpRoom = new ArrayList<>(), dataCollectionRoom = new ArrayList<>(),
+                storageRoom = new ArrayList<>(), clinic = new ArrayList<>();
+
+
+
+        Object[][] floorRanges =  {
+
+                // consistent across all layouts
+                {elevatorLobby, "", 14, 64, 177, 192},
+                {hallway, "dimHallway", 18, 21, 1, 21}, {hallway, "dimHallway", 22, 59, 17, 21}, {hallway, "dimHallway", 51, 59, 147, 152},
+                {hallway, "dimHallway", 60, 66, 1, 168}, {hallway, "dimHallway", 67, 79, 16, 37}, {hallway, "dimHallway", 67, 79, 57, 83},
+                {hallway, "dimHallway", 67, 79, 103, 142}, {hallway, "dimHallway", 67, 79, 162, 168},
+                {hallway, "dimHallway", 80, 86, 16, 128}, {hallway, "dimHallway", 80, 87, 129, 132}, {hallway, "dimHallway", 80, 88, 133, 142},
+                {hallway, "dimHallway", 81, 88, 143, 161}, {hallway, "dimHallway", 80, 88, 162, 185}, {hallway, "dimHallway", 89, 110, 170, 185},
+                {maleBathroom, "maleBathroom", 4, 13, 186, 202}, {maleBathroom, "maleBathroom", 14, 18, 191, 202},
+                {femaleBathroom, "femaleBathroom", 65, 74, 186, 202}, {femaleBathroom, "femaleBathroom", 60, 64, 191, 202},
+                {reception, "dimReception", 56, 75, 169, 183}, {breakerRoom, "dimBreakerRoom", 18, 21, 22, 30}, {pantry, "dimPantry", 111, 124, 135, 185},
+
+
+                // small to big changes in other layouts
+                {directorRoom, "dimDirectorRoom", 92, 113, 186, 202}, {directorBathroom, "dimDirectorBathroom", 80, 91, 195, 202},
+                {conferenceRoom, "dimConferenceRoom", 89, 106, 143, 168}, {meetingRoom, "dimMeetingRoom", 22, 59, 1, 16},
+                {dataCenter, "dimDataCenter", 38, 59, 107, 125}, {dataCenterCCTV, "dimCCTV", 26, 37, 107, 125},
+                {controlCenter, "dimControlCenter", 38, 59, 127, 145}, {mesa, "dimMESA", 67, 80, 144, 160},
+                {SR1, "dimSR1", 67, 79, 94, 101}, {SR2, "dimSR2", 67, 79, 85, 92}, {SR3, "dimSR3", 67, 79, 48, 55}, {SR4, "dimSR4", 67, 79, 39, 46},
+                {LS1, "dimLS1", 26, 59, 86, 105}, {LS2, "dimLS2", 26, 59, 65, 84}, {LS3, "dimLS3", 26, 59, 44, 63}, {LS4, "dimLS4", 26, 59, 22, 42},
+                {researchCenter, "dimResearchCenter", 87, 106, 24, 98}, {facultyRoom, "dimFacultyRoom", 87, 106, 99, 127},
+                {humanExpRoom, "dimHumExpRoom", 67, 86, 1, 15}, {dataCollectionRoom, "dimDataCollRoom", 87, 104, 1, 22},
+                {storageRoom, "dimStorageRoom", 89, 106, 129, 141}, {clinic, "dimClinic", 80, 91, 186, 193}
+
+        };
+
+
+        for (Object[] range : floorRanges) {
+            List<Patch> floorPatches =  (List<Patch>) range[0];
+            String str = (String) range[1];
+            int startRow = (int) range[2];
+            int endRow = (int) range[3];
+            int startColumn = (int) range[4];
+            int endColumn = (int) range[5];
+
+            for (int i = startRow; i <= endRow; i ++) {
+                for (int j = startColumn; j <= endColumn; j ++) {
+                    floorPatches.add(environment.getPatch(i, j));
+                }
+            }
+
+            switch (floorPatches) {
+                case List<Patch> list when list == elevatorLobby ->
+                        simulator.getEnvironment().getElevatorLobbies().add(ElevatorLobby.elevatorLobbyFactory.create(floorPatches, str));
+                case List<Patch> list when list == hallway ->
+                        simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floorPatches, str));
+                case List<Patch> list when list == maleBathroom || list == femaleBathroom || list == directorBathroom ->
+                    simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorPatches, str));
+                case List<Patch> list when list == breakerRoom ->
+                    simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(floorPatches, str));
+                case List<Patch> list when list == reception ->
+                    simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(floorPatches, str));
+                case List<Patch> list when list == directorRoom ->
+                    simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(floorPatches, str));
+                case List<Patch> list when list == conferenceRoom ->
+                    simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(floorPatches, str));
+                case List<Patch> list when list == meetingRoom ->
+                    simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(floorPatches, str));
+                case List<Patch> list when list == dataCenter || list == dataCenterCCTV->
+                    simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(floorPatches, str));
+                case List<Patch> list when list == controlCenter ->
+                    simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(floorPatches, str));
+                case List<Patch> list when list == SR1 || list == SR2 || list == SR3 || list == SR4 ->
+                    simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorPatches, str));
+                case List<Patch> list when list == LS1 || list == LS2 || list == LS3 || list == LS4 ->
+                    simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorPatches, str));
+                case List<Patch> list when list == researchCenter ->
+                    simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(floorPatches, str));
+                case List<Patch> list when list == facultyRoom ->
+                    simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(floorPatches, str));
+                case List<Patch> list when list == humanExpRoom ->
+                    simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(floorPatches, str));
+                case List<Patch> list when list == dataCollectionRoom ->
+                    simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(floorPatches, str));
+                case List<Patch> list when list == storageRoom ->
+                    simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(floorPatches, str));
+                case List<Patch> list when list == clinic ->
+                    simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(floorPatches, str));
+                case List<Patch> list when list == mesa ->
+                    simulator.getEnvironment().getMESAs().add(MESA.MESAFactory.create(floorPatches, str));
+                case List<Patch> list when list == pantry ->
+                    simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(floorPatches, str));
+                default -> throw new IllegalStateException("Unexpected value: " + floorPatches);
             }
         }
-
-        simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floor, "dimFloor"));
-
 
         /* Office Next Door */
 
@@ -502,108 +595,6 @@ public class ScreenController extends Controller {
         }
 
         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(parkingLot, "parkingLot"));
-
-
-        /* Floors (for each zone inside office) */
-
-        List<Patch>
-                // consistent across all layouts
-                maleBathroom = new ArrayList<>(), femaleBathroom = new ArrayList<>(),
-                elevatorLobby = new ArrayList<>(), reception = new ArrayList<>(),
-                breakerRoom = new ArrayList<>(), pantry = new ArrayList<>(),
-
-                // small to big changes in other layouts
-                directorRoom = new ArrayList<>(), directorBathroom = new ArrayList<>(),
-                conferenceRoom = new ArrayList<>(), meetingRoom = new ArrayList<>(),
-                dataCenter = new ArrayList<>(), dataCenterCCTV = new ArrayList<>(),
-                controlCenter = new ArrayList<>(), mesa = new ArrayList<>(),
-                SR1 = new ArrayList<>(), SR2 = new ArrayList<>(),  SR3 = new ArrayList<>(), SR4 = new ArrayList<>(),
-                LS1 = new ArrayList<>(), LS2 = new ArrayList<>(),  LS3 = new ArrayList<>(), LS4 = new ArrayList<>(),
-                researchCenter = new ArrayList<>(), facultyRoom = new ArrayList<>(),
-                humanExpRoom = new ArrayList<>(), dataCollectionRoom = new ArrayList<>(),
-                storageRoom = new ArrayList<>(), clinic = new ArrayList<>();
-
-
-
-        Object[][] floorRanges =  {
-
-                // consistent across all layouts
-                {elevatorLobby, "", 14, 64, 177, 192},
-                {maleBathroom, "maleBathroom", 4, 13, 186, 202}, {maleBathroom, "maleBathroom", 14, 18, 191, 202},
-                {femaleBathroom, "femaleBathroom", 65, 74, 186, 202}, {femaleBathroom, "femaleBathroom", 60, 64, 191, 202},
-                {reception, "dimReception", 56, 75, 169, 183}, {breakerRoom, "dimBreakerRoom", 18, 21, 22, 30}, {pantry, "dimPantry", 111, 124, 135, 185},
-
-
-                // small to big changes in other layouts
-                {directorRoom, "dimDirectorRoom", 92, 113, 186, 202}, {directorBathroom, "dimDirectorBathroom", 80, 91, 195, 202},
-                {conferenceRoom, "dimConferenceRoom", 89, 106, 143, 168}, {meetingRoom, "dimMeetingRoom", 22, 59, 1, 16},
-                {dataCenter, "dimDataCenter", 38, 59, 107, 125}, {dataCenterCCTV, "dimCCTV", 26, 37, 107, 125},
-                {controlCenter, "dimControlCenter", 38, 59, 127, 145}, {mesa, "dimMESA", 67, 80, 144, 160},
-                {SR1, "dimSR1", 67, 79, 94, 101}, {SR2, "dimSR2", 67, 79, 85, 92}, {SR3, "dimSR3", 67, 79, 48, 55}, {SR4, "dimSR4", 67, 79, 39, 46},
-                {LS1, "dimLS1", 26, 59, 86, 105}, {LS2, "dimLS2", 26, 59, 65, 84}, {LS3, "dimLS3", 26, 59, 44, 63}, {LS4, "dimLS4", 26, 59, 22, 42},
-                {researchCenter, "dimResearchCenter", 87, 106, 24, 98}, {facultyRoom, "dimFacultyRoom", 87, 106, 99, 127},
-                {humanExpRoom, "dimHumExpRoom", 67, 86, 1, 14}, {dataCollectionRoom, "dimDataCollRoom", 87, 104, 1, 22},
-                {storageRoom, "dimStorageRoom", 89, 106, 129, 141}, {clinic, "dimClinic", 80, 91, 186, 193}
-
-        };
-
-
-        for (Object[] range : floorRanges) {
-            List<Patch> floorPatches =  (List<Patch>) range[0];
-            String str = (String) range[1];
-            int startRow = (int) range[2];
-            int endRow = (int) range[3];
-            int startColumn = (int) range[4];
-            int endColumn = (int) range[5];
-
-            for (int i = startRow; i <= endRow; i ++) {
-                for (int j = startColumn; j <= endColumn; j ++) {
-                    floorPatches.add(environment.getPatch(i, j));
-                }
-            }
-
-            switch (floorPatches) {
-                case List<Patch> list when list == elevatorLobby ->
-                        simulator.getEnvironment().getElevatorLobbies().add(ElevatorLobby.elevatorLobbyFactory.create(floorPatches, str));
-                case List<Patch> list when list == maleBathroom || list == femaleBathroom || list == directorBathroom ->
-                    simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorPatches, str));
-                case List<Patch> list when list == breakerRoom ->
-                    simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == reception ->
-                    simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(floorPatches, str));
-                case List<Patch> list when list == directorRoom ->
-                    simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == conferenceRoom ->
-                    simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == meetingRoom ->
-                    simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == dataCenter || list == dataCenterCCTV->
-                    simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(floorPatches, str));
-                case List<Patch> list when list == controlCenter ->
-                    simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(floorPatches, str));
-                case List<Patch> list when list == SR1 || list == SR2 || list == SR3 || list == SR4 ->
-                    simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == LS1 || list == LS2 || list == LS3 || list == LS4 ->
-                    simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorPatches, str));
-                case List<Patch> list when list == researchCenter ->
-                    simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(floorPatches, str));
-                case List<Patch> list when list == facultyRoom ->
-                    simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == humanExpRoom ->
-                    simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == dataCollectionRoom ->
-                    simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == storageRoom ->
-                    simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == clinic ->
-                    simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(floorPatches, str));
-                case List<Patch> list when list == mesa ->
-                    simulator.getEnvironment().getMESAs().add(MESA.MESAFactory.create(floorPatches, str));
-                case List<Patch> list when list == pantry ->
-                    simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(floorPatches, str));
-                default -> throw new IllegalStateException("Unexpected value: " + floorPatches);
-            }
-        }
 
         /* Permanent Wall */
 

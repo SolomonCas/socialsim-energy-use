@@ -177,7 +177,7 @@ public class GraphicsController extends Controller {
                     }
 
                     // Dim
-                    else if (patchStrPair.getValue().equals("dimFloor")){
+                    else if (patchStrPair.getValue().equals("dimHallway")){
                         patchColor = Color.rgb(110,110,110);
                     }
 
