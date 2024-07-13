@@ -21,6 +21,7 @@ import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.core.environment.position.Coordinates;
 
 import static java.lang.Math.max;
+import static java.lang.Math.random;
 
 public class Simulator {
 
@@ -508,7 +509,9 @@ public class Simulator {
 
 
                 // Lunch Time for Anyone except for Maintenance
-                if (time.getTime().equals(LocalTime.NOON) && agent.getType() != Agent.Type.MAINTENANCE) {
+                int randomHour = RANDOM_NUMBER_GENERATOR.nextInt(11, 14);
+                int randomMinute = RANDOM_NUMBER_GENERATOR.nextInt(0, 59);
+                if (time.getTime().equals(LocalTime.of(randomHour, randomMinute)) && agent.getType() != Agent.Type.MAINTENANCE) {
                     int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.EATING_LUNCH);
                     if (index != -1) {
                         agent.getAgentMovement().getRoutePlan().setTakingLunch(true);
@@ -521,7 +524,8 @@ public class Simulator {
                 }
 
                 // Lunch Time for Maintenance
-                if (time.getTime().equals(LocalTime.of(11,0)) && agent.getType() == Agent.Type.MAINTENANCE) {
+                randomMinute = RANDOM_NUMBER_GENERATOR.nextInt(0, 16);
+                if (time.getTime().equals(LocalTime.of(11,randomMinute)) && agent.getType() == Agent.Type.MAINTENANCE) {
                     int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.EATING_LUNCH);
                     if (index != -1) {
                         if (agent.getAgentMovement().getGoalAttractor() != null) {
@@ -1621,8 +1625,9 @@ public class Simulator {
                         // eat outside
                         System.out.println("Eat on outside");
                         if(agent.getTeam() != 0 && type == Agent.Type.STUDENT) {
+                            int randomDurationTicks = RANDOM_NUMBER_GENERATOR.nextInt(180, 360);
                             agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("EAT_OUTSIDE", agent, environmentInstance));
+                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("EAT_OUTSIDE", agent, environmentInstance, randomDurationTicks));
                             agentMovement.setCurrentState(agentMovement.getStateIndex()); // JIC if needed to setting the next current state based on the agent's route plan
                             agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
                             agentMovement.setActionIndex(0); // JIC if needed
@@ -1640,7 +1645,7 @@ public class Simulator {
                                         agent1.getAgentMovement().setStateIndex(index); // Set the index to EATING_LUNCH
                                         agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan()
                                                 .remove(agentMovement.getStateIndex()); // removing finished state
-                                        agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("EAT_OUTSIDE", agent, environmentInstance));
+                                        agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("EAT_OUTSIDE", agent, environmentInstance, randomDurationTicks));
                                         agent1.getAgentMovement().setCurrentState(agentMovement.getStateIndex()); // Set to EAT_OUTSIDE
                                         agent1.getAgentMovement().setActionIndex(0); // JIC if needed
                                         agent1.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));

@@ -444,9 +444,11 @@ public class RoutePlan {
         return -1;
     }
 
-
-
     public State addUrgentRoute(String s, Agent agent, Environment environment) {
+        return addUrgentRoute(s, agent, environment, 0);
+    }
+
+    public State addUrgentRoute(String s, Agent agent, Environment environment, int randomDuration) {
         ArrayList<Action> actions;
         State officeState = null;
 
@@ -524,7 +526,13 @@ public class RoutePlan {
                         .getAmenityBlocks().getFirst().getPatch();
                 actions.add(new Action(Action.Name.GO_TO_STATION, 3));
                 actions.add(new Action(Action.Name.WAIT_FOR_COLLEAGUE));
-                actions.add(new Action(Action.Name.EXIT_LUNCH, randomExit, 180, 360));
+                if(agent.getTeam() != 0 && agent.getType() == Agent.Type.STUDENT){
+                    actions.add(new Action(Action.Name.EXIT_LUNCH, randomExit, randomDuration));
+
+                }
+                else{
+                    actions.add(new Action(Action.Name.EXIT_LUNCH, randomExit, 180, 360));
+                }
                 officeState = new State(State.Name.GOING_TO_EAT_OUTSIDE, this, agent, actions);
             }
             case "INQUIRE_FACULTY" -> {
