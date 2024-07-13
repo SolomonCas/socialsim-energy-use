@@ -158,7 +158,7 @@ public class ScreenController extends Controller {
     // Buttons: Parameters
     @FXML private Button configureIOSButton;    // Configure IOS Levels (Under Parameters)
     @FXML private Button editInteractionButton; // Edit Interaction Type Chances (Under Parameters)
-//    @FXML private Button resetToDefaultButton;
+    @FXML private Button resetToDefaultButton;
 
 
     // Buttons: Simulate
@@ -323,7 +323,7 @@ public class ScreenController extends Controller {
         exchangeMean.setDisable(true);
         exchangeStdDev.setDisable(true);
         fieldOfView.setDisable(true);
-//        resetToDefaultButton.setDisable(true);
+        resetToDefaultButton.setDisable(true);
         configureIOSButton.setDisable(true);
         editInteractionButton.setDisable(true);
         //WATTAGE
