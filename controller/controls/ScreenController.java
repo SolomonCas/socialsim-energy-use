@@ -81,6 +81,16 @@ public class ScreenController extends Controller {
     //MONITOR
     @FXML private TextField monitorWattage;
 
+    //Agent Chances
+    @FXML private TextField greenChance;
+    @FXML private TextField nonGreenChance;
+    @FXML private TextField neutralChance;
+
+    @FXML private TextField studentNum;
+    @FXML private TextField facultyNum;
+    @FXML private TextField teamNum;
+
+
     // Label: Current Agent Count
     @FXML private Label currentDirectorCount;
     @FXML private Label currentFacultyCount;
@@ -114,10 +124,6 @@ public class ScreenController extends Controller {
 
 
     // Label: Current Team Count
-    @FXML private Label currentTeam1Count;
-    @FXML private Label currentTeam2Count;
-    @FXML private Label currentTeam3Count;
-    @FXML private Label currentTeam4Count;
 
 
     // Label: Current Director to ____ Interaction Count
@@ -245,11 +251,6 @@ public class ScreenController extends Controller {
         currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
 
-        currentTeam1Count.setText(String.valueOf(Simulator.currentTeam1Count));
-        currentTeam2Count.setText(String.valueOf(Simulator.currentTeam2Count));
-        currentTeam3Count.setText(String.valueOf(Simulator.currentTeam3Count));
-        currentTeam4Count.setText(String.valueOf(Simulator.currentTeam4Count));
-
 
 
         currentDirectorFacultyCount.setText(String.valueOf(Simulator.currentDirectorFacultyCount));
@@ -279,16 +280,28 @@ public class ScreenController extends Controller {
 
         currentGuardGuardCount.setText(String.valueOf(Simulator.currentGuardGuardCount));
 
+        //AGENT CHANCES
+        Simulator.setGreenChance(Double.parseDouble(greenChance.getText()));
+        Simulator.setNonGreenChance(Double.parseDouble(nonGreenChance.getText()));
+        Simulator.setNeutralChance(Double.parseDouble(neutralChance.getText()));
+
+        Simulator.setStudentNum(Integer.parseInt(studentNum.getText()));
+        Simulator.setFacultyNum(Integer.parseInt(facultyNum.getText()));
+        Simulator.setTeamNum(Integer.parseInt(teamNum.getText()));
+
     }
 
     public boolean validateParameters() {
         boolean validParameters = Integer.parseInt(nonverbalMean.getText()) >= 0 && Integer.parseInt(nonverbalMean.getText()) >= 0
                 && Integer.parseInt(cooperativeMean.getText()) >= 0 && Integer.parseInt(cooperativeStdDev.getText()) >= 0
                 && Integer.parseInt(exchangeMean.getText()) >= 0 && Integer.parseInt(exchangeStdDev.getText()) >= 0
-                && Integer.parseInt(fieldOfView.getText()) >= 0 && Integer.parseInt(fieldOfView.getText()) <= 360;
+                && Integer.parseInt(fieldOfView.getText()) >= 0 && Integer.parseInt(fieldOfView.getText()) <= 360
+                && Integer.parseInt(studentNum.getText()) >= 0 && Integer.parseInt(facultyNum.getText()) >= 0
+                && Integer.parseInt(teamNum.getText()) >= 0 && ((Double.parseDouble(greenChance.getText()) +
+                Double.parseDouble(nonGreenChance.getText()) + Double.parseDouble(neutralChance.getText())) == 1.00);
         if (!validParameters) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "", ButtonType.OK);
-            Label label = new Label("Failed to initialize. Please make sure all values are greater than 0, and field of view is not greater than 360 degrees");
+            Label label = new Label("Failed to initialize. Please make sure all values are greater than 0, field of view is not greater than 360 degrees, and total energy profile chances equate to 1.");
             label.setWrapText(true);
             alert.getDialogPane().setContent(label);
             alert.showAndWait();
@@ -296,9 +309,9 @@ public class ScreenController extends Controller {
                 alert.close();
             }
         }
+
         return validParameters;
     }
-
 
 
     public void disableEdits() {
@@ -326,6 +339,14 @@ public class ScreenController extends Controller {
         waterDispenserWattage.setDisable(true);
         waterDispenserWattageActive.setDisable(true);
         waterDispenserWattageInUse.setDisable(true);
+        //AGENT CHANCES
+        greenChance.setDisable(true);
+        nonGreenChance.setDisable(true);
+        neutralChance.setDisable(true);
+
+        studentNum.setDisable(true);
+        facultyNum.setDisable(true);
+        teamNum.setDisable(true);
     }
 
     public void resetToDefault() {
@@ -350,6 +371,16 @@ public class ScreenController extends Controller {
 
         lightWattage.setText(Float.toString(Simulator.getLightWattage()));
         monitorWattage.setText(Float.toString(Simulator.getMonitorWattage()));
+
+        //AGENT CHANCES
+        greenChance.setText(Double.toString(Simulator.getGreenChance()));
+        nonGreenChance.setText(Double.toString(Simulator.getNonGreenChance()));
+        neutralChance.setText(Double.toString(Simulator.getNeutralChance()));
+
+        studentNum.setText(Integer.toString(Simulator.getStudentNum()));
+        facultyNum.setText(Integer.toString(Simulator.getFacultyNum()));
+        teamNum.setText(Integer.toString(Simulator.getTeamNum()));
+
     }
 
     public void openIOSLevels() {
@@ -1268,7 +1299,7 @@ public class ScreenController extends Controller {
 
         List<Patch> directorTable = new ArrayList<>();
         directorTable.add(environment.getPatch(108,190));
-        DirectorTableMapper.draw(directorTable, "HORIZONTAL", true);
+        DirectorTableMapper.draw(directorTable, "HORIZONTAL", "SOUTH", true);
 
 
         /* TABLE 2x2 */
@@ -2535,10 +2566,6 @@ public class ScreenController extends Controller {
 
 
         // Current Team Count
-        currentTeam1Count.setText(String.valueOf(Simulator.currentTeam1Count));
-        currentTeam2Count.setText(String.valueOf(Simulator.currentTeam2Count));
-        currentTeam3Count.setText(String.valueOf(Simulator.currentTeam3Count));
-        currentTeam4Count.setText(String.valueOf(Simulator.currentTeam4Count));
 
 
         // Current Director to ____ Interaction Count
@@ -2583,6 +2610,7 @@ public class ScreenController extends Controller {
 
         // WATTAGE
         totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " Wh");
+
     }
 
 
@@ -2813,7 +2841,9 @@ public class ScreenController extends Controller {
             } else {
                 pane.setPrefHeight(0);
             }
-            vbox.layout(); // Refresh the layout of the VBox to reflect changes
+            if(vbox != null){
+                vbox.layout(); // Refresh the layout of the VBox to reflect changes
+            }
         });
     }
 }

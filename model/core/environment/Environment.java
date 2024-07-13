@@ -312,35 +312,54 @@ public class Environment extends BaseObject implements Serializable {
     public void createInitialAgentDemographics(double green, double nonGreen, double neutral, int numOfStudent, int numOfFaculty, int numOfTeams){
         int offset = 30; // equivalent to 30 mins
         // Calculate the number of students per team
-        int studentsPerTeam = Math.min(numOfStudent / numOfTeams, 4);
-        int remainingStudents = numOfStudent % numOfTeams;
+        int studentsPerTeam = 4;
 
+        if(numOfTeams > 0){
+            for (int team = 1; team <= numOfTeams; team++) {
+                int studentsInThisTeam = Math.min(numOfStudent, studentsPerTeam);
+                //System.out.println("team "+ team);
+                for (int i = 0; i < studentsInThisTeam; i++) {
 
-        for (int team = 0; team < numOfTeams; team++) {
-            int studentsInThisTeam = studentsPerTeam + (remainingStudents > 0 ? 1 : 0);
-            remainingStudents--;
-
-            for (int i = 0; i < studentsInThisTeam; i++) {
-                Agent agent = AgentFactory.create(Type.STUDENT, true, team, LocalTime.of(7, 0), LocalTime.of(20, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
-                this.getAgents().add(agent);
+                    Agent agent = AgentFactory.create(Type.STUDENT, true, team, LocalTime.of(7, 0), LocalTime.of(20, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+                    this.getAgents().add(agent);
+                    numOfStudent--;
+                }
             }
+
+        }
+        for(int i = 0; i < numOfStudent; i++){
+            Agent agent = AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(7, 0), LocalTime.of(20, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
         }
 
-//        for (int i = 0; i < numOfFaculty; i++) {
-//            Agent agent = AgentFactory.create(Type.FACULTY, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
-//            this.getAgents().add(agent);
-//        }
-//
-//
-//        for (int i = 0; i < 1; i++) {
-//            Agent agent = AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
-//            this.getAgents().add(agent);
-//        }
-//
-//        for (int i = 0; i < 1; i++) {
-//            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
-//            this.getAgents().add(agent);
-//        }
+        if(numOfTeams > 0){
+            for (int team = 1; team <= numOfTeams; team++) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(9, 11),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(21, 23), 0);
+                //System.out.println("team "+ team);
+                Agent agent = AgentFactory.create(Type.FACULTY, true, team, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+                numOfFaculty--;
+            }
+        }
+        for (int i = 0; i < numOfFaculty; i++) {
+            LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(9, 11),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+            LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(21, 23), 0);
+            Agent agent = AgentFactory.create(Type.FACULTY, true, 0, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
+
+
+        for (int i = 0; i < 1; i++) {
+            LocalTime randomizeTimeIn = LocalTime.of(7,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 16));
+            Agent agent = AgentFactory.create(Type.MAINTENANCE, true, 0, randomizeTimeIn, LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
+
+        for (int i = 0; i < 1; i++) {
+            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
 
     }
 

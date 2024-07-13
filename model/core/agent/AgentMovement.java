@@ -2132,13 +2132,7 @@ public class AgentMovement {
                 case MAINTENANCE -> Simulator.currentMaintenanceCount--;
                 case GUARD -> Simulator.currentGuardCount--;
             }
-
-            switch (this.getParent().getTeam()) {
-                case 1 -> Simulator.currentTeam1Count--;
-                case 2 -> Simulator.currentTeam2Count--;
-                case 3 -> Simulator.currentTeam3Count--;
-                case 4 -> Simulator.currentTeam4Count--;
-            }
+            
         }
     }
     public void faceNextPosition() {

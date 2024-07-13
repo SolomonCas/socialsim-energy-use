@@ -114,10 +114,6 @@ public class Simulator {
 
 
     // Current Team Count
-    public static int currentTeam1Count = 0;
-    public static int currentTeam2Count = 0;
-    public static int currentTeam3Count = 0;
-    public static int currentTeam4Count = 0;
 
 
     // Current Director to ____ Interaction Count
@@ -148,7 +144,14 @@ public class Simulator {
     // Current Guard to Guard Interaction Count
     public static int currentGuardGuardCount = 0;
     
-    
+    // AGENT CHANCES
+    public static double greenChance = 0.74;
+    public static double nonGreenChance = 0.11;
+    public static double neutralChance = 0.15;
+
+    public static int studentNum = 6;
+    public static int facultyNum = 2;
+    public static int teamNum = 1;
     /** COMPILED **/
 
     // Current Agent Count Per Type
@@ -179,7 +182,6 @@ public class Simulator {
 
     // WATTAGE COUNT
 
-    public static float[] compiledCurrentWattageCount;
     public static float[] compiledTotalWattageCount;
 
     // Average Interaction Duration
@@ -189,10 +191,6 @@ public class Simulator {
 
 
     // Current Team Count
-    public static int[] compiledCurrentTeam1Count;
-    public static int[] compiledCurrentTeam2Count;
-    public static int[] compiledCurrentTeam3Count;
-    public static int[] compiledCurrentTeam4Count;
 
 
     // Current Director to ____ Interaction Count
@@ -448,10 +446,6 @@ public class Simulator {
 
 
         // Current Team Count
-        compiledCurrentTeam1Count[(int) currentTick] = currentTeam1Count;
-        compiledCurrentTeam2Count[(int) currentTick] = currentTeam2Count;
-        compiledCurrentTeam3Count[(int) currentTick] = currentTeam3Count;
-        compiledCurrentTeam4Count[(int) currentTick] = currentTeam4Count;
 
 
         // Current Director to ____ Interaction Count
@@ -4395,10 +4389,6 @@ public class Simulator {
 
 
         // Current Team Count
-        currentTeam1Count = 0;
-        currentTeam2Count = 0;
-        currentTeam3Count = 0;
-        currentTeam4Count = 0;
 
 
         // Current Director to ____ Interaction Count
@@ -4467,10 +4457,6 @@ public class Simulator {
 
 
         // Current Team Count
-        compiledCurrentTeam1Count = new int[MAX_CURRENT_TICKS];
-        compiledCurrentTeam2Count = new int[MAX_CURRENT_TICKS];
-        compiledCurrentTeam3Count = new int[MAX_CURRENT_TICKS];
-        compiledCurrentTeam4Count = new int[MAX_CURRENT_TICKS];
 
 
         // Current Director to ____ Interaction Count
@@ -4618,14 +4604,6 @@ public class Simulator {
             sb.append(",");
             sb.append(compiledAverageExchangeDuration[i]);
             sb.append(",");
-            sb.append(compiledCurrentTeam1Count[i]);
-            sb.append(",");
-            sb.append(compiledCurrentTeam2Count[i]);
-            sb.append(",");
-            sb.append(compiledCurrentTeam3Count[i]);
-            sb.append(",");
-            sb.append(compiledCurrentTeam4Count[i]);
-            sb.append(",");
             sb.append(compiledCurrentDirectorFacultyCount[i]);
             sb.append(",");
             sb.append(compiledCurrentDirectorStudentCount[i]);
@@ -4743,6 +4721,29 @@ public class Simulator {
         return totalWattageCount;
     }
 
+    public static double getGreenChance() {
+        return greenChance;
+    }
+
+    public static double getNonGreenChance() {
+        return nonGreenChance;
+    }
+
+    public static double getNeutralChance() {
+        return neutralChance;
+    }
+
+    public static int getStudentNum(){
+        return studentNum;
+    }
+
+    public static int getFacultyNum(){
+        return facultyNum;
+    }
+
+    public static int getTeamNum(){
+        return teamNum;
+    }
     /***** SETTERS ******/
     public void setEnvironment(Environment environment) {
         this.environment = environment;
@@ -4794,5 +4795,29 @@ public class Simulator {
 
     public static void setTotalWattageCount(float totalWattageCount){
         Simulator.totalWattageCount = totalWattageCount;
+    }
+
+    public static void setGreenChance(double greenChance) {
+        Simulator.greenChance = greenChance;
+    }
+
+    public static void setNonGreenChance(double nonGreenChance) {
+        Simulator.nonGreenChance = nonGreenChance;
+    }
+
+    public static void setNeutralChance(double neutralChance) {
+        Simulator.neutralChance = neutralChance;
+    }
+
+    public static void setStudentNum(int studentNum){
+        Simulator.studentNum = studentNum;
+    }
+
+    public static void setFacultyNum(int facultyNum){
+        Simulator.facultyNum = facultyNum;
+    }
+
+    public static void setTeamNum(int teamNum){
+        Simulator.teamNum = teamNum;
     }
 }
