@@ -508,8 +508,9 @@ public class ScreenController extends Controller {
 
         List<Patch>
                 // consistent across all layouts
-                maleBathroom = new ArrayList<>(),femaleBathroom = new ArrayList<>(),
-                breakerRoom = new ArrayList<>(), reception = new ArrayList<>(), pantry = new ArrayList<>(),
+                maleBathroom = new ArrayList<>(), femaleBathroom = new ArrayList<>(),
+                elevatorLobby = new ArrayList<>(), reception = new ArrayList<>(),
+                breakerRoom = new ArrayList<>(), pantry = new ArrayList<>(),
 
                 // small to big changes in other layouts
                 directorRoom = new ArrayList<>(), directorBathroom = new ArrayList<>(),
@@ -527,9 +528,11 @@ public class ScreenController extends Controller {
         Object[][] floorRanges =  {
 
                 // consistent across all layouts
+                {elevatorLobby, "", 14, 64, 177, 192},
                 {maleBathroom, "maleBathroom", 4, 13, 186, 202}, {maleBathroom, "maleBathroom", 14, 18, 191, 202},
                 {femaleBathroom, "femaleBathroom", 65, 74, 186, 202}, {femaleBathroom, "femaleBathroom", 60, 64, 191, 202},
-                {breakerRoom, "dimBreakerRoom", 18, 21, 22, 30}, {reception, "dimReception", 56, 75, 169, 183}, {pantry, "dimPantry", 111, 124, 135, 185},
+                {reception, "dimReception", 56, 75, 169, 183}, {breakerRoom, "dimBreakerRoom", 18, 21, 22, 30}, {pantry, "dimPantry", 111, 124, 135, 185},
+
 
                 // small to big changes in other layouts
                 {directorRoom, "dimDirectorRoom", 92, 113, 186, 202}, {directorBathroom, "dimDirectorBathroom", 80, 91, 195, 202},
@@ -560,6 +563,8 @@ public class ScreenController extends Controller {
             }
 
             switch (floorPatches) {
+                case List<Patch> list when list == elevatorLobby ->
+                        simulator.getEnvironment().getElevatorLobbies().add(ElevatorLobby.elevatorLobbyFactory.create(floorPatches, str));
                 case List<Patch> list when list == maleBathroom || list == femaleBathroom || list == directorBathroom ->
                     simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorPatches, str));
                 case List<Patch> list when list == breakerRoom ->

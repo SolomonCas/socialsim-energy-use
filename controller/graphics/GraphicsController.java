@@ -173,12 +173,26 @@ public class GraphicsController extends Controller {
 
                     // Floor
                     if (patchStrPair.getValue().isEmpty()) {
-                        patchColor = Color.rgb(117,110,115);
+                        patchColor = Color.rgb(132, 132, 132);
                     }
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimFloor")){
-                        patchColor = Color.rgb(75, 70, 75);
+                        patchColor = Color.rgb(110,110,110);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
+
+                }
+
+                /* Elevator Lobby */
+                else if (patchPatchField.getClass() == ElevatorLobby.class) {
+
+                    // Elevator Lobby
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(104, 104, 104);
                     }
 
                     else {
