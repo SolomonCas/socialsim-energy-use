@@ -178,7 +178,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimFloor")){
-                        patchColor = Color.rgb(55, 50, 55);
+                        patchColor = Color.rgb(75, 70, 75);
                     }
 
                     else {
@@ -234,7 +234,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     } else if (patchStrPair.getValue().equals("dimDirectorBathroom")){
-                            patchColor = Color.rgb(110, 100, 120);
+                            patchColor = Color.rgb(119, 114, 119);
 
                     // else, throw error
                     } else {
@@ -252,7 +252,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimReception")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(108, 103, 118);
                     }
 
                     else {
@@ -267,29 +267,35 @@ public class GraphicsController extends Controller {
                     if (patchStrPair.getValue().equals("SR1")) {
                         patchColor = Color.rgb(220, 212, 233);
 
+                    // DIM Solo Room 1
+                    } else if (patchStrPair.getValue().equals("dimSR1")) {
+                        patchColor = Color.rgb(127, 122, 136);
 
                     // Solo Room 2
                     } else if (patchStrPair.getValue().equals("SR2")) {
-                        patchColor = Color.rgb(173, 201, 203);
+                        patchColor = Color.rgb(133, 161, 163);
+
+                    // DIM Solo Room 2
+                    } else if (patchStrPair.getValue().equals("dimSR2")) {
+                        patchColor = Color.rgb(98, 115, 117);
 
                     // Solo Room 3
                     } else if (patchStrPair.getValue().equals("SR3")) {
                         patchColor = Color.rgb(190, 196, 217);
 
+                    // DIM Solo Room 3
+                    } else if (patchStrPair.getValue().equals("dimSR3")) {
+                        patchColor = Color.rgb(109, 112, 126);
+
                     // Solo Room 4
                     } else if (patchStrPair.getValue().equals("SR4")) {
                         patchColor = Color.rgb(223, 196, 217);
-                    }
 
-                    // Dim
-                    else if (patchStrPair.getValue().equals("dimSR1") ||
-                            patchStrPair.getValue().equals("dimSR2") ||
-                            patchStrPair.getValue().equals("dimSR3") ||
-                            patchStrPair.getValue().equals("dimSR4") ) {
-                        patchColor = Color.rgb(110, 100, 120);
-                    }
+                    // DIM Solo Room 4
+                    } else if (patchStrPair.getValue().equals("dimSR4")) {
+                        patchColor = Color.rgb(129, 112, 126);
 
-                    else {
+                    } else {
                         throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
                     }
                 }
@@ -302,15 +308,19 @@ public class GraphicsController extends Controller {
                         patchColor = Color.rgb(234, 210, 213);
                     }
 
+                    // Dim Data Center
+                    else if (patchStrPair.getValue().equals("dimDataCenter")) {
+                        patchColor = Color.rgb(137, 121, 123);
+                    }
+
                     // CCTV Area
                     else if (patchStrPair.getValue().equals("CCTV")) {
                         patchColor = Color.rgb(229, 215, 236);
                     }
 
-                    // Dim
-                    else if (patchStrPair.getValue().equals("dimDataCenter") ||
-                             patchStrPair.getValue().equals("dimCCTV")){
-                        patchColor = Color.rgb(110, 100, 120);
+                    // Dim CCTV Area
+                    else if (patchStrPair.getValue().equals("dimCCTV")) {
+                        patchColor = Color.rgb(139, 124, 137);
                     }
 
                     else {
@@ -328,7 +338,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimControlCenter")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(88, 91, 92);
                     }
 
                     else {
@@ -343,28 +353,35 @@ public class GraphicsController extends Controller {
                     if (patchStrPair.getValue().equals("LS1")) {
                         patchColor = Color.rgb(214, 224, 232);
 
+                    // DIM Learning Space 1
+                    } else if (patchStrPair.getValue().equals("dimLS1")) {
+                        patchColor = Color.rgb(120, 130, 135);
+
                     // Learning Space 2
                     } else if (patchStrPair.getValue().equals("LS2")) {
                         patchColor = Color.rgb(234, 219, 239);
+
+                    // DIM Learning Space 2
+                    } else if (patchStrPair.getValue().equals("dimLS2")) {
+                        patchColor = Color.rgb(136, 127, 140);
 
                     // Learning Space 3
                     } else if (patchStrPair.getValue().equals("LS3")) {
                         patchColor = Color.rgb(229, 218, 229);
 
+                    // DIM Learning Space 3
+                    } else if (patchStrPair.getValue().equals("dimLS3")) {
+                        patchColor = Color.rgb(133, 126, 133);
+
                     // Learning Space 4
                     } else if (patchStrPair.getValue().equals("LS4")) {
                         patchColor = Color.rgb(208, 214, 220);
-                    }
 
-                    // Dim
-                    else if (patchStrPair.getValue().equals("dimLS1") ||
-                            patchStrPair.getValue().equals("dimLS2") ||
-                            patchStrPair.getValue().equals("dimLS3") ||
-                            patchStrPair.getValue().equals("dimLS4") ) {
-                        patchColor = Color.rgb(110, 100, 120);
-                    }
+                    // DIM Learning Space 4
+                    } else if (patchStrPair.getValue().equals("dimLS4")) {
+                        patchColor = Color.rgb(120, 123, 128);
 
-                    else {
+                    } else {
                         throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
                     }
                 }
@@ -379,7 +396,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimBreakerRoom")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(99, 127, 134);
                     }
 
                     else {
@@ -397,7 +414,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimMeetingRoom")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(136, 122, 128);
                     }
 
                     else {
@@ -415,7 +432,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimConferenceRoom")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(137, 134, 147);
                     }
 
                     else {
@@ -433,7 +450,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimStorageRoom")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(127, 116, 128);
                     }
 
                     else {
@@ -451,7 +468,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimClinic")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(102, 114, 128);
                     }
 
                     else {
@@ -469,7 +486,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimFacultyRoom")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(130, 139, 136);
                     }
 
                     else {
@@ -487,7 +504,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimResearchCenter")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(126, 113, 113);
                     }
 
                     else {
@@ -505,7 +522,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimMESA")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(121, 109, 123);
                     }
 
                     else {
@@ -523,7 +540,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimDataCollRoom")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(135, 134, 143);
                     }
 
                     else {
@@ -541,7 +558,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimHumExpRoom")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(101, 89, 110);
                     }
 
                     else {
@@ -559,7 +576,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimDirectorRoom")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(119, 113, 119);
                     }
 
                     else {
@@ -577,7 +594,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimPantry")){
-                        patchColor = Color.rgb(110, 100, 120);
+                        patchColor = Color.rgb(127, 125, 120);
                     }
 
                     else {
