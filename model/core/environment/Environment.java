@@ -309,44 +309,38 @@ public class Environment extends BaseObject implements Serializable {
 
     // Developer Note: The timeIn and timeOut of janitors and guard are set this way for this is based on our interview
     // where they specifically indicate what time they enter and exit the office
-    public void createInitialAgentDemographics(){
+    public void createInitialAgentDemographics(double green, double nonGreen, double neutral, int numOfStudent, int numOfFaculty, int numOfTeams){
         int offset = 30; // equivalent to 30 mins
+        // Calculate the number of students per team
+        int studentsPerTeam = Math.min(numOfStudent / numOfTeams, 4);
+        int remainingStudents = numOfStudent % numOfTeams;
 
-        // TODO: RANDOMIZE TIMEIN AND TIMEOUT
-        for (int i = 0; i < 4; i++) {
-            Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(9, 30, i), LocalTime.of(18, 0));
-            this.getAgents().add(agent);
+
+        for (int team = 0; team < numOfTeams; team++) {
+            int studentsInThisTeam = studentsPerTeam + (remainingStudents > 0 ? 1 : 0);
+            remainingStudents--;
+
+            for (int i = 0; i < studentsInThisTeam; i++) {
+                Agent agent = AgentFactory.create(Type.STUDENT, true, team, LocalTime.of(7, 0), LocalTime.of(20, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
         }
 
-        for (int i = 0; i < 2; i++) {
-            Agent agent = AgentFactory.create(Type.STUDENT, true, 0, LocalTime.of(10, 0, i), LocalTime.of(14, 0));
-            this.getAgents().add(agent);
-        }
-
-//        for (int i = 0; i < 4; i++) {
-//            Agent agent = AgentFactory.create(Type.STUDENT, true, 2, LocalTime.of(10, 0, i), LocalTime.of(18, 0));
+//        for (int i = 0; i < numOfFaculty; i++) {
+//            Agent agent = AgentFactory.create(Type.FACULTY, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
 //            this.getAgents().add(agent);
 //        }
-
-        for (int i = 0; i < 1; i++) {
-            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(22,0));
-            this.getAgents().add(agent);
-        }
-
-        for (int i = 0; i < 1; i++) {
-            Agent agent = AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0));
-            this.getAgents().add(agent);
-        }
+//
 //
 //        for (int i = 0; i < 1; i++) {
-//            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(7,30, i), LocalTime.of(11,0));
+//            Agent agent = AgentFactory.create(Type.MAINTENANCE, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
 //            this.getAgents().add(agent);
 //        }
-
-        for (int i = 0; i < 1; i++) {
-            Agent agent = AgentFactory.create(Type.FACULTY, true, 1, LocalTime.of(9,0, i), LocalTime.of(22,0));
-            this.getAgents().add(agent);
-        }
+//
+//        for (int i = 0; i < 1; i++) {
+//            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
+//            this.getAgents().add(agent);
+//        }
 
     }
 

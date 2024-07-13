@@ -29,23 +29,20 @@ public class AgentMovement {
     public static int defaultFieldOfView = 30;
 
 
-    public final int MAX_BATHROOM_COOL_DOWN_DURATION = 1440;
-    public final int MAX_BREAK_COOL_DOWN_DURATION = 1440;
-    public final int MAX_REFRIGERATOR_COOL_DOWN_DURATION = 1440;
-    public final int MAX_DISPENSER_COOL_DOWN_DURATION = 1440;
-    public final int MAX_INQUIRE_COOL_DOWN_DURATION = 1440;
-    public final int MAX_AGENT_COOL_DOWN_DURATION = 1440;
-    public final int MAX_CHANGE_VISUAL_COOL_DOWN_DURATION = 1440;
-    public final int MAX_CHANGE_COFFEE_COOL_DOWN_DURATION = 4320;
+    public static final int MAX_COOL_DOWN_DURATION = 1440;
+    public static final int MAX_BATHROOM_COOL_DOWN_DURATION = 1440;
+    public static final int MAX_BREAK_COOL_DOWN_DURATION = 1440;
+    public static final int MAX_REFRIGERATOR_COOL_DOWN_DURATION = 1440;
+    public static final int MAX_DISPENSER_COOL_DOWN_DURATION = 1440;
+    public static final int MAX_INQUIRE_COOL_DOWN_DURATION = 1440;
+    public static final int MAX_AGENT_COOL_DOWN_DURATION = 1440;
+    public static final int MAX_CHANGE_THERMAL_COOL_DOWN_DURATION = 1440;
+    public static final int MAX_CHANGE_VISUAL_COOL_DOWN_DURATION = 1440;
+    public static final int MAX_COFFEE_COOL_DOWN_DURATION = 4320;
 
-    public int bathroomCoolDown = 0;
-    public int breakCoolDown = 0;
-    public int refrigeratorCoolDown = 0;
-    public int dispenserCoolDown = 0;
-    public int inquireCoolDown = 0;
-    public int agentCoolDown = 0;
+    public int coolDown = 0;
+    public int changeThermalCoolDown = 0;
     public int changeVisualCoolDown = 0;
-    public int coffeeCoolDown = 0;
 
     private final Agent parent;
     private final Coordinates position;
@@ -115,14 +112,9 @@ public class AgentMovement {
         this.team = team;
         this.assignedSeat = assignedSeat;
 
-        bathroomCoolDown = Simulator.rollIntIN(MAX_BATHROOM_COOL_DOWN_DURATION);
-        breakCoolDown = Simulator.rollIntIN(MAX_BREAK_COOL_DOWN_DURATION);
-        refrigeratorCoolDown = Simulator.rollIntIN(MAX_REFRIGERATOR_COOL_DOWN_DURATION);
-        dispenserCoolDown = Simulator.rollIntIN(MAX_DISPENSER_COOL_DOWN_DURATION);
-        inquireCoolDown = Simulator.rollIntIN(MAX_INQUIRE_COOL_DOWN_DURATION);
-        agentCoolDown = 0;
+        this.coolDown(MAX_COOL_DOWN_DURATION);
+        changeThermalCoolDown = 0;
         changeVisualCoolDown = 0;
-        coffeeCoolDown = Simulator.rollIntIN(MAX_CHANGE_COFFEE_COOL_DOWN_DURATION);
 
         if (assignedSeat != null) {
             switch (assignedSeat.getFacing()) {
@@ -701,29 +693,86 @@ public class AgentMovement {
             return false;
         }
 
-        // for each attractor in aircon get it's Patchfield and compare to currentPatch of agent
-        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
-            System.out.println("hello preference: "+ this.parent.getTempPreference() + " hello room temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() + "hello aircon temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp());
+        double CHANCE = Simulator.roll();
+        System.out.println("CHANCE: " + CHANCE);
 
-            // check if ac is in the same room
-            PatchField patchField = distancesToAirconEntry.getKey().getPatch().getPatchField().getKey();
-            if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
-                // check if ac is on
+        if ((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN && CHANCE < 0.01)
+                || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && CHANCE < 0.5) || this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN) {
+            // for each attractor in aircon get it's Patchfield and compare to currentPatch of agent
+            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
+                System.out.println("hello preference: "+ this.parent.getTempPreference() + " hello room temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() + "hello aircon temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp());
+
+                // check if ac is in the same room
+                PatchField patchField = distancesToAirconEntry.getKey().getPatch().getPatchField().getKey();
+                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
+                    // check if ac is on
+                    if(((Aircon) distancesToAirconEntry.getKey().getParent()).isOn()){
+                        //SETS TEMP PREFERENCE RANGE TO COMPROMISE WITH OTHER AGENTS TEMP PREFERENCE
+                        boolean withinRange = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) <= 2;
+                        boolean withinRangeWithACTemp = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()) <= 2;
+
+                        // if same, check if within the cooling range then do the thermal comfort logic
+                        // do thermal comfort logic
+                        // CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE (+2)
+                        if(this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange) {
+                            //IF ROOM TEMP IS LOWER, COMPARE TEMP PREFERENCE TO AIRCON TEMP
+                            if(this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp() && !withinRangeWithACTemp){
+                                //IF ITS NOT THE SAME, LOWER THE AIRCON TEMP
+                                //TODO: PASS THE CHOSEN AIRCON TO AIRCON VARIABLE //DONE
+                                airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
+                                isToCool = true;
+                                System.out.println("GUSTO KO BABAAN");
+                                return true;
+                            }
+                            else{
+                                //IF IT'S THE SAME, DO NOTHING
+                                return false;
+                            }
+                        }
+                        //CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE (-2)
+                        if (this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange){
+                            //IF ROOM TEMP IS LOWER, COMPARE TEMP PREFERENCE TO AIRCON TEMP
+                            if(this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp() && !withinRangeWithACTemp){
+                                //IF ITS NOT THE SAME, HIGHER THE AIRCON TEMP
+                                //TODO: PASS THE CHOSEN AIRCON TO AIRCON VARIABLE //DONE
+                                airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
+                                isToHeat = true;
+                                System.out.println("GUSTO KO TAASAN");
+                                return true;
+                            }
+                            else{
+                                //IF IT'S THE SAME, DO NOTHING
+                                return false;
+                            }
+                        }
+                        System.out.println("hello me chekcing aircon1");
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+            //if not in same field, find the closest to the agent within the aircon cooling range and do the thermal comfort logic
+            // for each attractor get the aircon near the agent
+            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
+//            System.out.println("hello preference: "+ this.parent.getTempPreference() + " hello room temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() + "hello aircon temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp());
+
                 if(((Aircon) distancesToAirconEntry.getKey().getParent()).isOn()){
                     //SETS TEMP PREFERENCE RANGE TO COMPROMISE WITH OTHER AGENTS TEMP PREFERENCE
                     boolean withinRange = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) <= 2;
+                    boolean withinRangeWithACTemp = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()) <= 2;
 
-                    // if same, check if within the cooling range then do the thermal comfort logic
-                    // do thermal comfort logic
-                    // CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE (+2)
+                    //do thermal comfort logic
+
+                    //CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE (+2)
                     if(this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange) {
                         //IF ROOM TEMP IS LOWER, COMPARE TEMP PREFERENCE TO AIRCON TEMP
-                        if(this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()){
+                        if(this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp() && !withinRangeWithACTemp){
                             //IF ITS NOT THE SAME, LOWER THE AIRCON TEMP
-                            //TODO: PASS THE CHOSEN AIRCON TO AIRCON VARIABLE //DONE
                             airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
                             isToCool = true;
                             System.out.println("GUSTO KO BABAAN");
+
                             return true;
                         }
                         else{
@@ -732,11 +781,10 @@ public class AgentMovement {
                         }
                     }
                     //CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE (-2)
-                    if (this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange){
+                    else if(this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange){
                         //IF ROOM TEMP IS LOWER, COMPARE TEMP PREFERENCE TO AIRCON TEMP
-                        if(this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()){
+                        if(this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp() && !withinRangeWithACTemp){
                             //IF ITS NOT THE SAME, HIGHER THE AIRCON TEMP
-                            //TODO: PASS THE CHOSEN AIRCON TO AIRCON VARIABLE //DONE
                             airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
                             isToHeat = true;
                             System.out.println("GUSTO KO TAASAN");
@@ -747,60 +795,14 @@ public class AgentMovement {
                             return false;
                         }
                     }
-                    System.out.println("hello me chekcing aircon1");
                 }
                 else {
                     break;
                 }
             }
         }
-        //if not in same field, find the closest to the agent within the aircon cooling range and do the thermal comfort logic
-        // for each attractor get the aircon near the agent
-        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
-//            System.out.println("hello preference: "+ this.parent.getTempPreference() + " hello room temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() + "hello aircon temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp());
 
-            if(((Aircon) distancesToAirconEntry.getKey().getParent()).isOn()){
-                //SETS TEMP PREFERENCE RANGE TO COMPROMISE WITH OTHER AGENTS TEMP PREFERENCE
-                boolean withinRange = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) <= 2;
 
-                //do thermal comfort logic
-
-                //CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE (+2)
-                if(this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange) {
-                    //IF ROOM TEMP IS LOWER, COMPARE TEMP PREFERENCE TO AIRCON TEMP
-                    if(this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()){
-                        //IF ITS NOT THE SAME, LOWER THE AIRCON TEMP
-                        airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
-                        isToCool = true;
-                        System.out.println("GUSTO KO BABAAN");
-
-                        return true;
-                    }
-                    else{
-                        //IF IT'S THE SAME, DO NOTHING
-                        return false;
-                    }
-                }
-                //CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE (-2)
-                else if(this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange){
-                    //IF ROOM TEMP IS LOWER, COMPARE TEMP PREFERENCE TO AIRCON TEMP
-                    if(this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()){
-                        //IF ITS NOT THE SAME, HIGHER THE AIRCON TEMP
-                        airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
-                        isToHeat = true;
-                        System.out.println("GUSTO KO TAASAN");
-                        return true;
-                    }
-                    else{
-                        //IF IT'S THE SAME, DO NOTHING
-                        return false;
-                    }
-                }
-            }
-            else {
-                break;
-            }
-        }
 
         // maybe the aircon is not on at all
         for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
@@ -1008,9 +1010,6 @@ public class AgentMovement {
                             this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
                             getGoalAttractor().setIsReserved(true);
 
-                            //SETS COOLDOWN OF AGENT SWITCH INTERACTION
-                            this.agentCoolDown = MAX_AGENT_COOL_DOWN_DURATION; // set cool down duration
-
                             return true;
                         }
                     }
@@ -1057,9 +1056,6 @@ public class AgentMovement {
                     this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
                     this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
                     getGoalAttractor().setIsReserved(true);
-
-                    //SETS COOLDOWN OF AGENT SWITCH INTERACTION
-                    this.agentCoolDown = MAX_AGENT_COOL_DOWN_DURATION; // set cool down duration
 
                     return true;
                 }
@@ -2453,80 +2449,30 @@ public class AgentMovement {
         this.currentPath = null;
     }
 
-    public boolean bathRoomCoolDown() {
-        System.out.println("Bathroom Cooldown: " + bathroomCoolDown);
-        if (this.bathroomCoolDown <= 0) {
-            this.bathroomCoolDown = Simulator.rollIntIN(MAX_BATHROOM_COOL_DOWN_DURATION); // set cool down duration
+    public boolean coolDown(int maxCoolDown) {
+        System.out.println("Cooldown: " + coolDown);
+        if (this.coolDown <= 0) {
+            this.coolDown = Simulator.rollIntIN(maxCoolDown); // set cool down duration
             return true;
         }
-        this.bathroomCoolDown--;
+        this.coolDown--;
         return false;
     }
 
-    public boolean breakCoolDown() {
-        System.out.println("Break CoolDown: " + breakCoolDown);
-        if (this.breakCoolDown <= 0) {
-            this.breakCoolDown = Simulator.rollIntIN(MAX_BREAK_COOL_DOWN_DURATION); // set cool down duration
+    public boolean thermalComfortCoolDown() {
+        System.out.println("Thermal Cooldown: " + this.changeThermalCoolDown);
+        if (this.changeThermalCoolDown <= 0) {
+            this.changeThermalCoolDown = Simulator.rollIntIN(MAX_CHANGE_THERMAL_COOL_DOWN_DURATION); // set cool down duration
             return true;
         }
-        this.breakCoolDown--;
+        this.changeThermalCoolDown--;
         return false;
     }
 
-    public boolean refrigeratorCoolDown() {
-        System.out.println("Refrigerator CoolDown: " + refrigeratorCoolDown);
-        if (this.refrigeratorCoolDown <= 0) {
-            this.refrigeratorCoolDown = Simulator.rollIntIN(MAX_REFRIGERATOR_COOL_DOWN_DURATION); // set cool down duration
-            return true;
-        }
-        this.refrigeratorCoolDown--;
-        return false;
-    }
-
-    public boolean dispenserCoolDown() {
-        System.out.println("Dispenser CoolDown: " + dispenserCoolDown);
-        if (this.dispenserCoolDown <= 0) {
-            this.dispenserCoolDown = Simulator.rollIntIN(MAX_DISPENSER_COOL_DOWN_DURATION); // set cool down duration
-            return true;
-        }
-        this.dispenserCoolDown--;
-        return false;
-    }
-
-    public boolean inquireCoolDown() {
-        System.out.println("Inquire CoolDown: " + inquireCoolDown);
-        if (this.inquireCoolDown <= 0) {
-            this.inquireCoolDown = Simulator.rollIntIN(MAX_INQUIRE_COOL_DOWN_DURATION); // set cool down duration
-            return true;
-        }
-        this.inquireCoolDown--;
-        return false;
-    }
-
-    public boolean agentCoolDown() {
-        System.out.println("agent_switch CoolDown: " + agentCoolDown);
-        if (this.agentCoolDown <= 0) {
-            this.agentCoolDown = MAX_AGENT_COOL_DOWN_DURATION;
-            return true;
-        }
-        this.agentCoolDown--;
-        return false;
-    }
-
-    public boolean changeVisualCoolDown() {
-        System.out.println("visual CoolDown: " + changeVisualCoolDown);
+    public boolean visualComfortCoolDown() {
+        System.out.println("Thermal Cooldown: " + this.changeVisualCoolDown);
         if (this.changeVisualCoolDown <= 0) {
-            this.changeVisualCoolDown = MAX_CHANGE_VISUAL_COOL_DOWN_DURATION;
-            return true;
-        }
-        this.changeVisualCoolDown--;
-        return false;
-    }
-
-    public boolean coffeeCoolDown() {
-        System.out.println("coffee CoolDown: " + coffeeCoolDown);
-        if (this.coffeeCoolDown <= 0) {
-            this.coffeeCoolDown = Simulator.rollIntIN(MAX_CHANGE_COFFEE_COOL_DOWN_DURATION);
+            this.changeVisualCoolDown = Simulator.rollIntIN(MAX_CHANGE_VISUAL_COOL_DOWN_DURATION); // set cool down duration
             return true;
         }
         this.changeVisualCoolDown--;

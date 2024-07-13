@@ -58,7 +58,7 @@ public class Agent extends PatchObject {
 
 
     // CONSTRUCTOR
-    private Agent(Agent.Type type, boolean inOnStart, int team, LocalTime timeIn, LocalTime timeOut) {
+    private Agent(Agent.Type type, boolean inOnStart, int team, LocalTime timeIn, LocalTime timeOut, EnergyProfile energyProfile) {
         this.id = idCtr++;
         this.type = type;
         this.team = team;
@@ -75,8 +75,7 @@ public class Agent extends PatchObject {
             this.persona = Persona.DIRECTOR;
             this.personaActionGroup = PersonaActionGroup.DIRECTOR;
             this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
-//            energyProfilePicker();
-            this.energyProfile = EnergyProfile.NONGREEN;
+            this.energyProfile = energyProfile;
         }
 
 
@@ -95,7 +94,7 @@ public class Agent extends PatchObject {
                 this.personaActionGroup = PersonaActionGroup.APP_FACULTY;
             }
             this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
-            energyProfilePicker();
+            this.energyProfile = energyProfile;
         }
 
 
@@ -114,8 +113,7 @@ public class Agent extends PatchObject {
                 this.personaActionGroup = PersonaActionGroup.EXT_STUDENT;
             }
             this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
-//            this.energyProfile = EnergyProfile.GREEN;
-            energyProfilePicker();
+            this.energyProfile = energyProfile;
         }
 
 
@@ -149,18 +147,23 @@ public class Agent extends PatchObject {
 
 
 
-    private void energyProfilePicker(){
-        int energyProfileChance = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(3);
-        switch (energyProfileChance) {
-            case 0:
-                this.energyProfile = EnergyProfile.GREEN;
-                break;
-            case 1:
-                this.energyProfile = EnergyProfile.NONGREEN;
-                break;
-            case 2:
-                this.energyProfile = EnergyProfile.NEUTRAL;
-                break;
+    public static EnergyProfile energyProfilePicker(double greenProb, double nonGreenProb, double neutralProb) {
+        // Normalize probabilities
+        double totalProb = greenProb + nonGreenProb + neutralProb;
+        greenProb /= totalProb;
+        nonGreenProb /= totalProb;
+        neutralProb /= totalProb;
+
+        // Generate a random number between 0 and 1
+        double randomValue = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble();
+
+        // Assign energy profile based on the random value and probabilities
+        if (randomValue < greenProb) {
+            return EnergyProfile.GREEN;
+        } else if (randomValue < greenProb + nonGreenProb) {
+            return EnergyProfile.NONGREEN;
+        } else {
+            return EnergyProfile.NEUTRAL;
         }
     }
 
@@ -342,8 +345,8 @@ public class Agent extends PatchObject {
 
     // INNER STATIC CLASS
     public static class AgentFactory extends ObjectFactory {
-        public static Agent create(Agent.Type type, boolean inOnStart, int team, LocalTime timeIn, LocalTime timeOut) {
-            return new Agent(type, inOnStart, team, timeIn, timeOut);
+        public static Agent create(Agent.Type type, boolean inOnStart, int team, LocalTime timeIn, LocalTime timeOut, EnergyProfile energyProfile) {
+            return new Agent(type, inOnStart, team, timeIn, timeOut, energyProfile);
         }
     }
 

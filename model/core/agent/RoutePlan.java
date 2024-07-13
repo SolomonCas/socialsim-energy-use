@@ -112,9 +112,9 @@ public class RoutePlan {
             INQUIRE_STUDENT_CHANCE = 0.0;
             INQUIRE_FACULTY_CHANCE = 0.0;
             INQUIRE_DIRECTOR_CHANCE = 0.0;
-            INQUIRE_GUARD_CHANCE = 0.02;
+            INQUIRE_GUARD_CHANCE = 0.07;
             INQUIRE_MAINTENANCE_CHANCE = 0.02;
-            BATHROOM_CHANCE = 0.15;
+            BATHROOM_CHANCE = 0.10;
             BREAK_CHANCE = 0.01;
             COFFEE_CHANCE = 0.0;
 
@@ -617,23 +617,6 @@ public class RoutePlan {
             }
         }
         return officeState;
-    }
-
-
-    public double getCooperate(Agent.Persona persona){
-
-        double chance = 0;
-
-        switch (persona){
-            case EXT_STUDENT -> chance = 0.5;
-            case DIRECTOR -> chance = 1.0;
-            case INT_STUDENT -> chance = Double.MIN_VALUE;
-            case STRICT_FACULTY -> chance = Double.MIN_VALUE;
-            case APP_FACULTY -> chance = 0.5;
-            default -> chance = 0.5;
-        }
-
-        return chance;
     }
 
     /***** GETTERS *****/
