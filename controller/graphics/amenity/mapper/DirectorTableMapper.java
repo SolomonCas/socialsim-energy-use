@@ -5,8 +5,6 @@ import com.socialsim.controller.graphics.amenity.AmenityMapper;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.DirectorTable;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Monitor;
-import com.socialsim.model.core.environment.patchobject.passable.goal.PantryTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.List;
 public class DirectorTableMapper extends AmenityMapper {
 
 
-    public static void draw(List<Patch> patches, String orientation, boolean withAppliance) {
+    public static void draw(List<Patch> patches, String orientation, String facing, boolean withAppliance) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
@@ -44,15 +42,29 @@ public class DirectorTableMapper extends AmenityMapper {
                 directorTables.add(directorTableToAdd);
                 index = directorTables.indexOf(directorTableToAdd);
 
-                // NORTH CHAIR(S)
-                List<Patch> directorChairNorthPatches = new ArrayList<>();
-                directorChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
-                ChairMapper.draw(directorChairNorthPatches, index, "NORTH", "OFFICE", "DirectorTable");
+                if (facing.equals("SOUTH")) {
+                    // NORTH CHAIR(S)
+                    List<Patch> directorChairNorthPatches = new ArrayList<>();
+                    directorChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                    ChairMapper.draw(directorChairNorthPatches, index, "NORTH", "OFFICE", "DirectorTable");
 
-                // Set Monitor
-                List<Patch> directorMonitorSouthPatches = new ArrayList<>();
-                directorMonitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
-                MonitorMapper.draw(directorMonitorSouthPatches, index, "SOUTH", "DirectorTable");
+                    // Set Monitor
+                    List<Patch> directorMonitorSouthPatches = new ArrayList<>();
+                    directorMonitorSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+                    MonitorMapper.draw(directorMonitorSouthPatches, index, "SOUTH", "DirectorTable");
+                }
+
+                else if (facing.equals("NORTH")) {
+                    // NORTH CHAIR(S)
+                    List<Patch> directorChairSouthPatches = new ArrayList<>();
+                    directorChairSouthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 1));
+                    ChairMapper.draw(directorChairSouthPatches, index, "SOUTH", "OFFICE", "DirectorTable");
+
+                    // Set Monitor
+                    List<Patch> directorMonitorNorthPatches = new ArrayList<>();
+                    directorMonitorNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + 1));
+                    MonitorMapper.draw(directorMonitorNorthPatches, index, "NORTH", "DirectorTable");
+                }
 
             }
 

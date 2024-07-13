@@ -125,7 +125,7 @@ public class MeetingTableMapper extends AmenityMapper {
                                 j++;
                             }
                             Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + i, origPatchCol + j);
-                            Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                            Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
                             amenityBlocks.add(nextAmenityBlock);
                             nextPatch.setAmenityBlock(nextAmenityBlock);
                         }
@@ -154,23 +154,23 @@ public class MeetingTableMapper extends AmenityMapper {
 
                     // EAST
                     List<Patch> eastMeetingChairLHPatches = new ArrayList<>();
+                    List<Patch> westMeetingChairLHPatches = new ArrayList<>();
+
                     eastMeetingChairLHPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol - 1));
-                    if (position.equals("LEFT")) {
-                        ChairMapper.draw(eastMeetingChairLHPatches, index, "EAST", "OFFICE", "MeetingTable");
-                    } else {
+                    westMeetingChairLHPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 9));
+
+                    if (position.equals("RIGHT")) {
                         eastMeetingChairLHPatches.clear();
                     }
-
-                    // WEST
-                    List<Patch> westMeetingChairLHPatches = new ArrayList<>();
-                    westMeetingChairLHPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 9));
-                    if (position.equals("RIGHT")) {
-                        ChairMapper.draw(westMeetingChairLHPatches, index, "WEST", "OFFICE", "MeetingTable");
-                    } else {
+                    else if (position.equals("LEFT")) {
                         westMeetingChairLHPatches.clear();
                     }
 
+                    ChairMapper.draw(eastMeetingChairLHPatches, index, "EAST", "OFFICE", "MeetingTable");
+                    ChairMapper.draw(westMeetingChairLHPatches, index, "WEST", "OFFICE", "MeetingTable");
+
                 }
+
                 else if (size.equals("SMALL")) {
                     for (int j = 1; j <= 6; j++) {
                         Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + j);
