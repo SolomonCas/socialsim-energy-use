@@ -68,8 +68,17 @@ public class Simulator {
     public static int currentExchangeCount = 0;
 
     // Current Power Consumption Interaction Count
-    public static int currentAirconInteractionCount = 0;
-    public static int currentLightInteractionCount = 0;
+    //FOR AIRCONS, LIGHTS, AND MONITORS, COUNT THE NUMBER OF TURNED ON APPLIANCES
+    public static int currentAirconCount = 0;
+    public static int currentLightCount = 0;
+    public static int currentMonitorCount = 0;
+
+    public static int currentAirconTurnOnCount = 0;
+    public static int currentAirconTurnOffCount = 0;
+
+    public static int currentLightTurnOnCount = 0;
+    public static int currentLightTurnOffCount = 0;
+
     public static int currentFridgeInteractionCount = 0;
     public static int currentWaterDispenserInteractionCount = 0;
 
@@ -155,8 +164,16 @@ public class Simulator {
     public static int[] compiledCurrentExchangeCount;
 
     // Current Power Consumption Interaction Count
-    public static int[] compiledCurrentAirconInteractionCount;
-    public static int[] compiledCurrentLightInteractionCount;
+    public static int[] compiledCurrentAirconCount;
+    public static int[] compiledCurrentLightCount;
+    public static int[] compiledCurrentMonitorCount;
+
+
+    public static int[] compiledCurrentAirconTurnOnCount;
+    public static int[] compiledCurrentAirconTurnOffCount;
+    public static int[] compiledCurrentLightTurnOnCount;
+    public static int[] compiledCurrentLightTurnOffCount;
+
     public static int[] compiledCurrentFridgeInteractionCount;
     public static int[] compiledCurrentWaterDispenserInteractionCount;
 
@@ -407,8 +424,16 @@ public class Simulator {
         compiledCurrentExchangeCount[(int) currentTick] = currentExchangeCount;
 
         // Current Power Consumption Interaction Count
-        compiledCurrentAirconInteractionCount[(int) currentTick] = currentAirconInteractionCount;
-        compiledCurrentLightInteractionCount[(int) currentTick] = currentLightInteractionCount;
+        compiledCurrentAirconCount[(int) currentTick] = currentAirconCount;
+        compiledCurrentLightCount[(int) currentTick] = currentLightCount;
+        compiledCurrentMonitorCount[(int) currentTick] = currentMonitorCount;
+
+        compiledCurrentAirconTurnOnCount[(int) currentTick] = currentAirconTurnOnCount;
+        compiledCurrentAirconTurnOffCount[(int) currentTick] = currentAirconTurnOffCount;
+
+        compiledCurrentLightTurnOnCount[(int) currentTick] = currentLightTurnOnCount;
+        compiledCurrentLightTurnOffCount[(int) currentTick] = currentLightTurnOffCount;
+
         compiledCurrentFridgeInteractionCount[(int) currentTick] = currentFridgeInteractionCount;
         compiledCurrentWaterDispenserInteractionCount[(int) currentTick] = currentWaterDispenserInteractionCount;
 
@@ -1963,6 +1988,7 @@ public class Simulator {
                         else {
                             agentMovement.getLightsToOpen().setOn(false);
                         }
+                        currentLightTurnOffCount++;
                     }
                     else if (action.getName() == Action.Name.TURN_ON_LIGHT) {
 
@@ -1980,7 +2006,7 @@ public class Simulator {
                         else {
                             agentMovement.getLightsToOpen().setOn(true);
                         }
-
+                        currentLightTurnOnCount++;
                     }
 
                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -2066,10 +2092,14 @@ public class Simulator {
                 else {
                     if (action.getName() == Action.Name.TURN_OFF_AC) {
                         agentMovement.getAirconToChange().setOn(false);
+                        currentAirconTurnOffCount++;
+                        currentAirconCount--;
                     }
                     else if (action.getName() == Action.Name.TURN_ON_AC) {
                         agentMovement.getAirconToChange().setOn(true);
                         agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
+                        currentAirconTurnOnCount++;
+                        currentAirconCount++;
                     }
                     else if(action.getName() == Action.Name.SET_AC_TO_COOL || action.getName() == Action.Name.SET_AC_TO_WARM){
                         agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
@@ -4180,6 +4210,7 @@ public class Simulator {
                 activeLightCount++;
             }
         }
+        currentLightCount = activeLightCount;
         System.out.println("Number of Lights: " + activeLightCount);
 
         // Check Monitor in Cubicle
@@ -4207,6 +4238,7 @@ public class Simulator {
             }
         }
 
+        currentMonitorCount = activeMonitorCount;
         System.out.println("Number of Monitor: " + activeMonitorCount);
 
         //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
@@ -4330,8 +4362,15 @@ public class Simulator {
         currentExchangeCount = 0;
 
         // Current Power Consumption Interaction Count
-        currentAirconInteractionCount = 0;
-        currentLightInteractionCount = 0;
+        //FOR AIRCONS, LIGHTS, AND MONITORS, COUNT THE NUMBER OF TURNED ON APPLIANCES
+        currentAirconCount = 0;
+        currentLightCount = 0;
+        currentMonitorCount = 0;
+
+        currentAirconTurnOnCount = 0;
+        currentAirconTurnOffCount = 0;
+        currentLightTurnOnCount = 0;
+        currentLightTurnOffCount = 0;
         currentFridgeInteractionCount = 0;
         currentWaterDispenserInteractionCount = 0;
 
@@ -4391,8 +4430,16 @@ public class Simulator {
         compiledCurrentExchangeCount = new int[MAX_CURRENT_TICKS];
 
         // Current Power Consumption Interaction Count
-        compiledCurrentAirconInteractionCount = new int[MAX_CURRENT_TICKS];
-        compiledCurrentLightInteractionCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentAirconCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentLightCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentMonitorCount = new int[MAX_CURRENT_TICKS];
+
+        compiledCurrentAirconTurnOnCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentAirconTurnOffCount = new int[MAX_CURRENT_TICKS];
+
+        compiledCurrentLightTurnOnCount = new int[MAX_CURRENT_TICKS];
+        compiledCurrentLightTurnOffCount = new int[MAX_CURRENT_TICKS];
+
         compiledCurrentFridgeInteractionCount = new int[MAX_CURRENT_TICKS];
         compiledCurrentWaterDispenserInteractionCount = new int[MAX_CURRENT_TICKS];
 
@@ -4533,9 +4580,19 @@ public class Simulator {
             sb.append(",");
             sb.append(compiledCurrentExchangeCount[i]);
             sb.append(",");
-            sb.append(compiledCurrentAirconInteractionCount[i]);
+            sb.append(compiledCurrentAirconCount[i]);
             sb.append(",");
-            sb.append(compiledCurrentLightInteractionCount[i]);
+            sb.append(compiledCurrentLightCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentMonitorCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentAirconTurnOnCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentAirconTurnOffCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentLightTurnOnCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentLightTurnOffCount[i]);
             sb.append(",");
             sb.append(compiledCurrentFridgeInteractionCount[i]);
             sb.append(",");

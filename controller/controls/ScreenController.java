@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -88,10 +89,18 @@ public class ScreenController extends Controller {
     @FXML private Label currentGuardCount;
 
     // Current Interaction With Appliance Count
-    @FXML private Label currentAirconInteractionCount;
-    @FXML private Label currentLightInteractionCount;
+    @FXML private Label currentAirconCount;
+    @FXML private Label currentLightCount;
     @FXML private Label currentFridgeInteractionCount;
     @FXML private Label currentWaterDispenserInteractionCount;
+    @FXML private Label currentMonitorCount;
+
+    //AIRCON and LIGHT SWITCH INTERACTIONS
+    @FXML private Label currentAirconTurnOnCount;
+    @FXML private Label currentAirconTurnOffCount;
+
+    @FXML private Label currentLightTurnOnCount;
+    @FXML private Label currentLightTurnOffCount;
 
     // Label: Current Interaction Count
     @FXML private Label currentNonverbalCount;
@@ -161,8 +170,14 @@ public class ScreenController extends Controller {
     private double translateAnchorX;
     private double translateAnchorY;
 
+    @FXML
+    private TitledPane energyConsumptionPane;
 
+    @FXML
+    private TitledPane socialInteractionPane;
 
+    @FXML
+    private VBox vbox;
 
     // CONSTRUCTOR
     public ScreenController() {
@@ -185,7 +200,7 @@ public class ScreenController extends Controller {
 
         //Wattage
 
-        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " W");
+        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " Wh");
         //WATER DISPENSER
         simulator.setWaterDispenserWattage(Float.parseFloat(waterDispenserWattage.getText()));
         simulator.setWaterDispenserWattageInUse(Float.parseFloat(waterDispenserWattageInUse.getText()));
@@ -217,8 +232,16 @@ public class ScreenController extends Controller {
         averageExchangeDuration.setText(String.valueOf(Simulator.averageExchangeDuration));
 
         // Current Appliance Interaction Count
-        currentAirconInteractionCount.setText(String.valueOf(Simulator.currentAirconInteractionCount));
-        currentLightInteractionCount.setText(String.valueOf(Simulator.currentLightInteractionCount));
+        currentAirconCount.setText(String.valueOf(Simulator.currentAirconCount));
+        currentLightCount.setText(String.valueOf(Simulator.currentLightCount));
+        currentMonitorCount.setText(String.valueOf(Simulator.currentMonitorCount));
+
+        currentAirconTurnOnCount.setText(String.valueOf(Simulator.currentAirconTurnOnCount));
+        currentAirconTurnOffCount.setText(String.valueOf(Simulator.currentAirconTurnOffCount));
+
+        currentLightTurnOnCount.setText(String.valueOf(Simulator.currentLightTurnOnCount));
+        currentLightTurnOffCount.setText(String.valueOf(Simulator.currentLightTurnOffCount));
+
         currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
 
@@ -290,9 +313,19 @@ public class ScreenController extends Controller {
         configureIOSButton.setDisable(true);
         editInteractionButton.setDisable(true);
         //WATTAGE
-//        waterDispenserWattage.setDisable(true);
-//        waterDispenserWattageActive.setDisable(true);
+        airconWattage.setDisable(true);
+        airconWattageActive.setDisable(true);
 
+        lightWattage.setDisable(true);
+        monitorWattage.setDisable(true);
+
+        fridgeWattage.setDisable(true);
+        fridgeWattageActive.setDisable(true);
+        fridgeWattageInUse.setDisable(true);
+
+        waterDispenserWattage.setDisable(true);
+        waterDispenserWattageActive.setDisable(true);
+        waterDispenserWattageInUse.setDisable(true);
     }
 
     public void resetToDefault() {
@@ -2535,13 +2568,21 @@ public class ScreenController extends Controller {
         currentGuardGuardCount.setText(String.valueOf(Simulator.currentGuardGuardCount));
 
         // Current Appliance Interaction Count
-        currentAirconInteractionCount.setText(String.valueOf(Simulator.currentAirconInteractionCount));
-        currentLightInteractionCount.setText(String.valueOf(Simulator.currentLightInteractionCount));
+        currentAirconCount.setText(String.valueOf(Simulator.currentAirconCount));
+        currentLightCount.setText(String.valueOf(Simulator.currentLightCount));
+        currentMonitorCount.setText(String.valueOf(Simulator.currentMonitorCount));
+
+        currentAirconTurnOnCount.setText(String.valueOf(Simulator.currentAirconTurnOnCount));
+        currentAirconTurnOffCount.setText(String.valueOf(Simulator.currentAirconTurnOffCount));
+
+        currentLightTurnOnCount.setText(String.valueOf(Simulator.currentLightTurnOnCount));
+        currentLightTurnOffCount.setText(String.valueOf(Simulator.currentLightTurnOffCount));
+
         currentFridgeInteractionCount.setText(String.valueOf(Simulator.currentFridgeInteractionCount));
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
 
         // WATTAGE
-        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " W");
+        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " Wh");
     }
 
 
@@ -2614,6 +2655,8 @@ public class ScreenController extends Controller {
 
         // Set up zooming and panning
         setupZoomAndPan();
+        adjustTitledPaneHeight(energyConsumptionPane, 400.0);
+        adjustTitledPaneHeight(socialInteractionPane, 400.0);
     }
 
     @FXML
@@ -2761,5 +2804,16 @@ public class ScreenController extends Controller {
 
     private void handleMouseReleased(MouseEvent event) {
         stackPane.setCursor(Cursor.DEFAULT);
+    }
+
+    private void adjustTitledPaneHeight(TitledPane pane, double expandedHeight) {
+        pane.expandedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                pane.setPrefHeight(expandedHeight);
+            } else {
+                pane.setPrefHeight(0);
+            }
+            vbox.layout(); // Refresh the layout of the VBox to reflect changes
+        });
     }
 }
