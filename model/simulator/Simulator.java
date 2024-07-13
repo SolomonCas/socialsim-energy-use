@@ -376,14 +376,16 @@ public class Simulator {
         environment.createInitialAgentDemographics();
     }
 
-    public void updateEnvironment (Environment environment, long currentTick, SimulationTime time) {
+    public static void updateEnvironment (Environment environment, long currentTick, SimulationTime time) {
         System.out.println("CURRENT TICK: "+currentTick);
         System.out.println("Number of used amenities: " + environment.getUsedAmenities().size());
         // Change to night
-        if (time.getTime().equals(LocalTime.of(16,0))) {
+        if (time.getTime().isAfter(LocalTime.of(16,30))) {
             for (WindowBlinds windowBlinds : environment.getWindowBlinds()) {
-                windowBlinds.open(false);
-                windowBlinds.getWindowBlindsGraphic().change();
+                if (windowBlinds.isOpened()) {
+                    windowBlinds.open(false);
+                    windowBlinds.getWindowBlindsGraphic().change();
+                }
             }
         }
     }
