@@ -9,18 +9,22 @@ import java.util.List;
 public class BreakerRoom extends PatchField{
 
     // VARIABLES
+    public List<Patch> area;
+
+    public String variation;
+
+
     public static BreakerRoom.BreakerRoomFactory breakerRoomFactory;
 
     static {
         breakerRoomFactory = new BreakerRoom.BreakerRoomFactory();
     }
 
-
-
-
     // CONSTRUCTOR
     protected BreakerRoom(List<Patch> patches, String str) {
         super(patches);
+        this.area = patches;
+        this.variation = str;
 
         Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
@@ -29,7 +33,22 @@ public class BreakerRoom extends PatchField{
     }
 
 
+    /* Getter & Setter */
 
+    public List<Patch> getArea() {
+        return area;
+    }
+
+    public void setArea(List<Patch> patches) {
+        area = patches;
+    }
+    public String getVariation() {
+        return variation;
+    }
+
+    public void setVariation(String str) {
+        variation = str;
+    }
 
     // INNER CLASS
     public static class BreakerRoomFactory extends PatchFieldFactory {

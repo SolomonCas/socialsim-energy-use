@@ -33,6 +33,7 @@ public class SwitchMapper extends AmenityMapper {
             List<Switch> switches = Main.simulator.getEnvironment().getSwitches();
             Switch switchToAdd;
             switchToAdd = Switch.SwitchFactory.create(amenityBlocks, true, type, facing);
+//            switchToAdd = Switch.SwitchFactory.create(amenityBlocks, true, type, facing, scope, isTurnedOn);
             switches.add(switchToAdd);
 
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));

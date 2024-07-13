@@ -8,18 +8,22 @@ import java.util.List;
 public class Clinic extends PatchField {
 
     // VARIABLES
+
+    public List<Patch> area;
+    public String variation;
+
     public static Clinic.ClinicFactory clinicFactory;
 
     static {
         clinicFactory = new Clinic.ClinicFactory();
     }
 
-
-
-
     // CONSTRUCTOR
     protected Clinic(List<Patch> patches, String str) {
         super(patches);
+
+        this.area = patches;
+        this.variation = str;
 
         Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
@@ -27,6 +31,24 @@ public class Clinic extends PatchField {
         }
     }
 
+
+    /* Getter & Setter */
+
+    public List<Patch> getArea() {
+        return area;
+    }
+
+    public void setArea(List<Patch> patches) {
+        area = patches;
+    }
+
+    public String getVariation() {
+        return variation;
+    }
+
+    public void setVariation(String str) {
+        variation = str;
+    }
 
 
     // INNER CLASS

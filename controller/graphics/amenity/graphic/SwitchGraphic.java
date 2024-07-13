@@ -1,7 +1,12 @@
 package com.socialsim.controller.graphics.amenity.graphic;
 
 import com.socialsim.controller.graphics.amenity.AmenityGraphic;
+import com.socialsim.model.core.environment.Patch;
+import com.socialsim.model.core.environment.patchfield.PatchField;
 import com.socialsim.model.core.environment.patchobject.passable.goal.Switch;
+import com.socialsim.model.core.environment.patchobject.passable.goal.WindowBlinds;
+
+import java.util.List;
 
 public class SwitchGraphic extends AmenityGraphic {
 
@@ -12,12 +17,19 @@ public class SwitchGraphic extends AmenityGraphic {
     private static final int NORMAL_ROW_OFFSET = 0;
     private static final int NORMAL_COLUMN_OFFSET = 0;
 
+    List<PatchField> area;
+    private String type;
+    private boolean isTurnedOn;
 
 
     /***** CONSTRUCTOR *****/
-
+    // Switch aSwitch, List<PatchField> area, String type, String facing, List<Patch> scope, boolean isTurnedOn
     public SwitchGraphic(Switch aSwitch, String type, String facing) {
         super(aSwitch, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
+
+        this.area = area;
+        this.type = type;
+        this.isTurnedOn = isTurnedOn;
 
         switch (type) {
             case "LIGHT":
@@ -38,5 +50,13 @@ public class SwitchGraphic extends AmenityGraphic {
                 break;
         }
     }
+
+//    public void dimRoom() {
+//        if (!isTurnedOn)
+//        if(type.equals("LIGHT")) {
+//
+//        }
+//    }
+
 
 }

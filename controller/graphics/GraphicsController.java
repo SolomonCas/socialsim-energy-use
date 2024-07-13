@@ -170,7 +170,21 @@ public class GraphicsController extends Controller {
 
                 /* Floor */
                 if (patchPatchField.getClass() == Floor.class) {
-                    patchColor = Color.rgb(117,110,115);
+
+                    // Floor
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(117,110,115);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimFloor")){
+                        patchColor = Color.rgb(55, 50, 55);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
+
                 }
 
                 /* Divider: Walls (and its top view), Office Exterior  */
@@ -218,6 +232,10 @@ public class GraphicsController extends Controller {
                     } else if (patchStrPair.getValue().equals("directorBathroom")) {
                         patchColor = Color.rgb(196, 201, 203);
 
+                    // Dim
+                    } else if (patchStrPair.getValue().equals("dimDirectorBathroom")){
+                            patchColor = Color.rgb(110, 100, 120);
+
                     // else, throw error
                     } else {
                         throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
@@ -226,12 +244,20 @@ public class GraphicsController extends Controller {
 
                 /* Reception */
                 else if (patchPatchField.getClass() == Reception.class) {
-                    patchColor = Color.rgb(189, 182, 205);
-                }
 
-                /* MESA */
-                else if (patchPatchField.getClass() == StaffArea.class) {
-                    patchColor = Color.rgb(209, 191, 213);
+                    // Reception
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(189, 182, 205);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimReception")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Solo Room */
@@ -240,6 +266,7 @@ public class GraphicsController extends Controller {
                     // Solo Room 1
                     if (patchStrPair.getValue().equals("SR1")) {
                         patchColor = Color.rgb(220, 212, 233);
+
 
                     // Solo Room 2
                     } else if (patchStrPair.getValue().equals("SR2")) {
@@ -250,24 +277,63 @@ public class GraphicsController extends Controller {
                         patchColor = Color.rgb(190, 196, 217);
 
                     // Solo Room 4
-                    } else {
+                    } else if (patchStrPair.getValue().equals("SR4")) {
                         patchColor = Color.rgb(223, 196, 217);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimSR1") ||
+                            patchStrPair.getValue().equals("dimSR2") ||
+                            patchStrPair.getValue().equals("dimSR3") ||
+                            patchStrPair.getValue().equals("dimSR4") ) {
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
                     }
                 }
 
                 /* Data Center */
                 else if (patchPatchField.getClass() == DataCenter.class) {
-                    patchColor = Color.rgb(234, 210, 213);
+
+                    // Data Center
+                    if (patchStrPair.getValue().equals("dataCenter")) {
+                        patchColor = Color.rgb(234, 210, 213);
+                    }
 
                     // CCTV Area
-                    if (patchStrPair.getValue().equals("CCTV")) {
+                    else if (patchStrPair.getValue().equals("CCTV")) {
                         patchColor = Color.rgb(229, 215, 236);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimDataCenter") ||
+                             patchStrPair.getValue().equals("dimCCTV")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
                     }
                 }
 
                 /* Control Center */
                 else if (patchPatchField.getClass() == ControlCenter.class) {
-                    patchColor = Color.rgb(157, 162, 164);
+
+                    // Control Center
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(157, 162, 164);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimControlCenter")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Learning Space */
@@ -286,69 +352,237 @@ public class GraphicsController extends Controller {
                         patchColor = Color.rgb(229, 218, 229);
 
                     // Learning Space 4
-                    } else {
+                    } else if (patchStrPair.getValue().equals("LS4")) {
                         patchColor = Color.rgb(208, 214, 220);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimLS1") ||
+                            patchStrPair.getValue().equals("dimLS2") ||
+                            patchStrPair.getValue().equals("dimLS3") ||
+                            patchStrPair.getValue().equals("dimLS4") ) {
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
                     }
                 }
 
                 /* Breaker Room */
                 else if (patchPatchField.getClass() == BreakerRoom.class) {
-                    patchColor = Color.rgb(111, 156, 166);
+
+                    // Control Center
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(111, 156, 166);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimBreakerRoom")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Meeting Room */
                 else if (patchPatchField.getClass() == MeetingRoom.class) {
-                    patchColor = Color.rgb(233, 212, 220);
+
+                    // Meeting Room
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(233, 212, 220);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimMeetingRoom")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Conference Room */
                 else if (patchPatchField.getClass() == ConferenceRoom.class) {
-                    patchColor = Color.rgb(235, 230, 251);
+
+                    // Conference Room
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(235, 230, 251);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimConferenceRoom")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Storage Room */
                 else if (patchPatchField.getClass() == StorageRoom.class) {
-                    patchColor = Color.rgb(219, 203, 221);
+
+                    // Storage Room
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(219, 203, 221);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimStorageRoom")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Clinic */
                 else if (patchPatchField.getClass() == Clinic.class) {
-                    patchColor = Color.rgb(179, 199, 220);
+
+                    // Clinic
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(179, 199, 220);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimClinic")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Faculty Room */
                 else if (patchPatchField.getClass() == FacultyRoom.class) {
-                    patchColor = Color.rgb(224, 238, 233);
+
+                    // Faculty Room
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(224, 238, 233);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimFacultyRoom")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Research Center */
                 else if (patchPatchField.getClass() == ResearchCenter.class) {
-                    patchColor = Color.rgb(217, 198, 213);
+
+                    // Research Center
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(217, 198, 213);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimResearchCenter")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* MESA */
                 else if (patchPatchField.getClass() == MESA.class) {
-                    patchColor = Color.rgb(209, 191, 213);
+
+                    // MESA
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(209, 191, 213);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimMESA")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Data Collection Room */
                 else if (patchPatchField.getClass() == DataCollectionRoom.class) {
-                    patchColor = Color.rgb(232, 231, 244);
+
+                    // Data Collection
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(232, 231, 244);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimDataCollRoom")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
-                /* Human Experiment Room */
+                /* Human Experience Room */
                 else if (patchPatchField.getClass() == HumanExpRoom.class) {
-                    patchColor = Color.rgb(241, 223, 255);
+
+                    // Human Experience Room
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(241, 223, 255);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimHumExpRoom")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Director Room */
                 else if (patchPatchField.getClass() == DirectorRoom.class) {
-                    patchColor = Color.rgb(206, 198, 207);
+
+                    // Director Room
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(206, 198, 207);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimDirectorRoom")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 /* Pantry */
                 else if (patchPatchField.getClass() == Pantry.class) {
-                    patchColor = Color.rgb(220, 216, 208);
+
+                    // Pantry
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(220, 216, 208);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimPantry")){
+                        patchColor = Color.rgb(110, 100, 120);
+                    }
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
                 }
 
                 // else, throw error
@@ -357,7 +591,7 @@ public class GraphicsController extends Controller {
                 }
 
                 backgroundGraphicsContext.setFill(patchColor);
-                backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize * 1.0, tileSize * 1.0);
+                backgroundGraphicsContext.fillRect(column * tileSize, row * tileSize, tileSize, tileSize);
                 backgroundGraphicsContext.setStroke(patchColor);
                 backgroundGraphicsContext.setLineWidth(1);
                 backgroundGraphicsContext.strokeRect(column * tileSize, row * tileSize, tileSize, tileSize);

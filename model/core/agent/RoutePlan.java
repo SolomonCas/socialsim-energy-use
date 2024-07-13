@@ -182,9 +182,9 @@ public class RoutePlan {
             for(int i = 0; i < environment.getSoloRooms().size(); i++) {
                 inspectRoom(environment.getSoloRooms().get(i), environment, actions);
             }
-            // Inspect Staff Room/s
-            for(int i = 0; i < environment.getStaffRooms().size(); i++) {
-                inspectRoom(environment.getStaffRooms().get(i), environment, actions);
+            // Inspect MESA
+            for(int i = 0; i < environment.getMESAs().size(); i++) {
+                inspectRoom(environment.getMESAs().get(i), environment, actions);
             }
             // Inspect Director Room/s
             for(int i = 0; i < environment.getDirectorRooms().size(); i++) {
@@ -605,9 +605,9 @@ public class RoutePlan {
                 for(int i = 0; i < environment.getSoloRooms().size(); i++) {
                     inspect(environment.getSoloRooms().get(i), environment, actions);
                 }
-                // Inspect Staff Room/s
-                for(int i = 0; i < environment.getStaffRooms().size(); i++) {
-                    inspect(environment.getStaffRooms().get(i), environment, actions);
+                // Inspect MESA
+                for(int i = 0; i < environment.getMESAs().size(); i++) {
+                    inspect(environment.getMESAs().get(i), environment, actions);
                 }
                 // Inspect Director Room/s
                 for(int i = 0; i < environment.getDirectorRooms().size(); i++) {

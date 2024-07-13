@@ -13,6 +13,7 @@ import com.socialsim.controller.controls.ScreenController;
 import com.socialsim.model.core.agent.*;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
+import com.socialsim.model.core.environment.patchfield.Bathroom;
 import com.socialsim.model.core.environment.patchfield.PatchField;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
@@ -403,6 +404,7 @@ public class Simulator {
                 }
             }
         }
+
     }
 
     public static void updateAgentsInEnvironment(Environment environment, long currentTick, SimulationTime time) throws InterruptedException {
@@ -1896,6 +1898,7 @@ public class Simulator {
                             ((WindowBlinds) agentMovement.getCurrentAmenity()).getWindowBlindsGraphic().change(); // change graphic of window
                         }
 
+
                         if (!agentMovement.getCurrentState().getActions().isEmpty()) {
                             agentMovement.setBlindsToOpen(null);
                             agentMovement.getGoalAttractor().setIsReserved(false);
@@ -1989,6 +1992,9 @@ public class Simulator {
                                     }
                                 }
                             }
+
+                            environmentInstance.updatePatchfieldVariation(patchField.getClass(), true);
+
                         }
                         else {
                             agentMovement.getLightsToOpen().setOn(false);
@@ -2007,6 +2013,8 @@ public class Simulator {
                                     }
                                 }
                             }
+
+                            environmentInstance.updatePatchfieldVariation(patchField.getClass(), false);
                         }
                         else {
                             agentMovement.getLightsToOpen().setOn(true);

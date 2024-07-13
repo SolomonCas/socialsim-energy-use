@@ -14,6 +14,7 @@ public class WindowBlindsGraphic extends AmenityGraphic {
 
     private static final int NORMAL_ROW_OFFSET = 0;
     private static final int NORMAL_COLUMN_OFFSET = 0;
+
     private final WindowBlinds windowBlinds;
     private String state;
 
