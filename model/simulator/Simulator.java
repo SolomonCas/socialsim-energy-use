@@ -14,11 +14,13 @@ import com.socialsim.model.core.agent.*;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchfield.Bathroom;
+import com.socialsim.model.core.environment.patchfield.Floor;
 import com.socialsim.model.core.environment.patchfield.PatchField;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
 import com.socialsim.model.core.environment.patchobject.passable.goal.*;
 import com.socialsim.model.core.environment.position.Coordinates;
+import javafx.util.Pair;
 
 import static java.lang.Math.max;
 import static java.lang.Math.random;
@@ -239,7 +241,7 @@ public class Simulator {
     public Simulator() {
         this.environment = null;
         this.running = new AtomicBoolean(false);
-        this.time = new SimulationTime(9, 30, 0);
+        this.time = new SimulationTime(7, 0, 0);
         this.playSemaphore = new Semaphore(0);
         this.start();
     }
@@ -269,6 +271,7 @@ public class Simulator {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
+                        ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(environment);
                         ((ScreenController) Main.mainScreenController).drawEnvironmentViewForeground(Main.simulator.getEnvironment(), SimulationTime.SLEEP_TIME_MILLISECONDS.get() < speedAwarenessLimitMilliseconds);
 
                         this.time.tick();
@@ -406,6 +409,7 @@ public class Simulator {
             }
         }
 
+
     }
 
     public static void updateAgentsInEnvironment(Environment environment, long currentTick, SimulationTime time) throws InterruptedException {
@@ -538,6 +542,18 @@ public class Simulator {
                         agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                         agent.getAgentMovement().resetGoal();
                     }
+                }
+
+                if (agent.getType() == Agent.Type.MAINTENANCE &&
+                        time.getTime().equals(LocalTime.of(16,0))) {
+                    agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(0, agent.getAgentMovement().getRoutePlan().addUrgentRoute("OPEN_HALLWAY_LIGHTS", agent, environment));
+                    agent.getAgentMovement().setCurrentState(0);
+                    agent.getAgentMovement().setStateIndex(0);
+                    agent.getAgentMovement().setActionIndex(0);
+                    agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                    agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration()); // setting the new duration of the action
+                    agent.getAgentMovement().resetGoal();
+                    agent.getAgentMovement().getRoutePlan().setAtDesk(false); // JIC needed
                 }
 
                 // Agents leave on their scheduled timeOut
@@ -793,9 +809,21 @@ public class Simulator {
                                 agentMovement.setCurrentState(agentMovement.getStateIndex());
                                 agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
                                 agentMovement.setActionIndex(0); // JIC if needed
-                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                agentMovement.resetGoal();
-                                agentMovement.getRoutePlan().setAtDesk(false);
+                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                }
+                                else {
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed to set the new action
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                    agentMovement.resetGoal();
+                                }
+
                             }
                             if (!agentMovement.visualComfortChecker(time) && agentMovement.visualComfortCoolDown()) {
                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
@@ -1987,49 +2015,39 @@ public class Simulator {
                 }
                 else {
                     if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
-                        if (agentMovement.isOpenMultipleLights()) {
-                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
-                            for (Light light : environmentInstance.getLights()) {
-                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
-                                        light.setOn(false);
-                                        break;
-                                    }
+                        Pair<PatchField, String> patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField();
+                        for (Light light : environmentInstance.getLights()) {
+                            for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                                if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
+                                        attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
+                                    light.setOn(false);
+                                    break;
                                 }
                             }
-
-                            environmentInstance.updatePatchfieldVariation(patchField.getClass(), true);
-
                         }
-                        else {
-                            agentMovement.getLightsToOpen().setOn(false);
-                        }
+
+                        environmentInstance.updatePatchfieldVariation(patchField, true);
                         currentLightTurnOffCount++;
                     }
                     else if (action.getName() == Action.Name.TURN_ON_LIGHT) {
 
-                        if (agentMovement.isOpenMultipleLights()) {
-                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
-                            for (Light light : environmentInstance.getLights()) {
-                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
-                                        light.setOn(true);
-                                        break;
-                                    }
+                        Pair<PatchField, String> patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField();
+                        for (Light light : environmentInstance.getLights()) {
+                            for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                                if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
+                                        attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
+                                    light.setOn(true);
+                                    break;
                                 }
                             }
+                        }
 
-                            environmentInstance.updatePatchfieldVariation(patchField.getClass(), false);
-                        }
-                        else {
-                            agentMovement.getLightsToOpen().setOn(true);
-                        }
+                        environmentInstance.updatePatchfieldVariation(patchField, false);
                         currentLightTurnOnCount++;
                     }
 
                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
                         agentMovement.setLightsToOpen(null);
-                        agentMovement.setOpenMultipleLights(false);
                         agentMovement.getGoalAttractor().setIsReserved(false);
                         agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
                         agentMovement.setActionIndex(0); // JIC needed
@@ -2250,9 +2268,21 @@ public class Simulator {
                                         agentMovement.setCurrentState(agentMovement.getStateIndex());
                                         agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
                                         agentMovement.setActionIndex(0); // JIC if needed
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                        agentMovement.resetGoal();
-                                        agentMovement.getRoutePlan().setAtDesk(false);
+                                        if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.resetGoal();
+                                            agentMovement.getRoutePlan().setAtDesk(false);
+                                        }
+                                        else {
+                                            agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                            agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                            agentMovement.setStateIndex(0); // JIC if needed
+                                            agentMovement.setActionIndex(0); // JIC if needed to set the new action
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                            agentMovement.resetGoal();
+                                        }
+
                                     }
                                     if (!agentMovement.visualComfortChecker(time) && agentMovement.visualComfortCoolDown()) {
                                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
@@ -2485,20 +2515,18 @@ public class Simulator {
                                 }
                                 else {
                                     if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
-                                        if (agentMovement.isOpenMultipleLights()) {
-                                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
-                                            for (Light light : environmentInstance.getLights()) {
-                                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-                                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
-                                                        light.setOn(false);
-                                                        break;
-                                                    }
+                                        Pair<PatchField, String> patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField();
+                                        for (Light light : environmentInstance.getLights()) {
+                                            for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                                                if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
+                                                        attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
+                                                    light.setOn(false);
+                                                    break;
                                                 }
                                             }
                                         }
-                                        else {
-                                            agentMovement.getLightsToOpen().setOn(false);
-                                        }
+                                        currentLightTurnOffCount++;
+                                        environmentInstance.updatePatchfieldVariation(patchField, true);
                                     }
 
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -2669,6 +2697,8 @@ public class Simulator {
                                 else {
                                     if (action.getName() == Action.Name.TURN_OFF_AC) {
                                         agentMovement.getAirconToChange().setOn(false);
+                                        currentAirconCount--;
+                                        currentAirconTurnOffCount++;
                                     }
 
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -3065,20 +3095,18 @@ public class Simulator {
                                 }
                                 else {
                                     if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
-                                        if (agentMovement.isOpenMultipleLights()) {
-                                            PatchField patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField().getKey();
-                                            for (Light light : environmentInstance.getLights()) {
-                                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-                                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
-                                                        light.setOn(false);
-                                                        break;
-                                                    }
+                                        Pair<PatchField, String> patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField();
+                                        for (Light light : environmentInstance.getLights()) {
+                                            for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                                                if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
+                                                        attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
+                                                    light.setOn(false);
+                                                    break;
                                                 }
                                             }
                                         }
-                                        else {
-                                            agentMovement.getLightsToOpen().setOn(false);
-                                        }
+                                        currentLightTurnOffCount++;
+                                        environmentInstance.updatePatchfieldVariation(patchField, true);
                                     }
 
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -3249,6 +3277,9 @@ public class Simulator {
                                 else {
                                     if (action.getName() == Action.Name.TURN_OFF_AC) {
                                         agentMovement.getAirconToChange().setOn(false);
+                                        currentAirconCount--;
+                                        currentAirconTurnOffCount++;
+
                                     }
 
                                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {

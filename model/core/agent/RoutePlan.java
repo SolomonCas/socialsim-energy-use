@@ -3,6 +3,7 @@ package com.socialsim.model.core.agent;
 import com.socialsim.controller.Main;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
+import com.socialsim.model.core.environment.patchfield.Floor;
 import com.socialsim.model.core.environment.patchfield.PatchField;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.goal.*;
@@ -220,6 +221,8 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GO_TO_LUNCH)); // Maintenance does not have an assigned seat in the model
             actions.add(new Action(Action.Name.EAT_LUNCH, 720));
             routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+
+
 
             actions = new ArrayList<>();
             int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
@@ -565,6 +568,23 @@ public class RoutePlan {
                 actions.add(new Action(Action.Name.GO_TO_GUARD));
                 actions.add(new Action(Action.Name.ASK_GUARD, 12, 40));
                 officeState = new State(State.Name.INQUIRE_GUARD, this, agent, actions);
+            }
+            case "OPEN_HALLWAY_LIGHTS" -> {
+                actions = new ArrayList<>();
+                // go to chooseAgentAsGoal for which guard to inquire
+                for (Light light : environment.getLights()) {
+                    for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                        if (attractor.getPatch().getPatchField().getKey() instanceof Floor && !light.isOn()) {
+                            agent.getAgentMovement().setLightsToOpen(light);
+                            actions.add(new Action(Action.Name.TURN_ON_LIGHT));
+                            break;
+                        }
+                    }
+                    if (agent.getAgentMovement().getLightsToOpen() != null) {
+                        break;
+                    }
+                }
+                officeState = new State(State.Name.FIXING_VISUAL_COMFORT, this, agent, actions);
             }
             case "INSPECT" -> {
                 actions = new ArrayList<>();

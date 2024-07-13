@@ -100,7 +100,6 @@ public class AgentMovement {
 
     private WindowBlinds blindsToOpen = null;
     private Light lightsToOpen = null;
-    private boolean openMultipleLights = false;
     public enum InteractionType {
         NON_VERBAL, COOPERATIVE, EXCHANGE
     }
@@ -704,7 +703,7 @@ public class AgentMovement {
 
                 // check if ac is in the same room
                 PatchField patchField = distancesToAirconEntry.getKey().getPatch().getPatchField().getKey();
-                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
+                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(distancesToAirconEntry.getKey().getPatch().getPatchField().getValue())) {
                     // check if ac is on
                     if(((Aircon) distancesToAirconEntry.getKey().getParent()).isOn()){
                         //SETS TEMP PREFERENCE RANGE TO COMPROMISE WITH OTHER AGENTS TEMP PREFERENCE
@@ -812,6 +811,8 @@ public class AgentMovement {
                 if(!((Aircon) distancesToAirconEntry.getKey().getParent()).isOn()){
 //                    System.out.println("turn on ac");
                     airconToChange = ( (Aircon) distancesToAirconEntry.getKey().getParent());
+                    isToCool = false;
+                    isToHeat = false;
                     return true;
                 }
                 else{
@@ -830,6 +831,8 @@ public class AgentMovement {
         //RETURN TRUE IF AIRCON IS FOUND BUT NOT WITHIN SAME PATCHFIELD
         if(airconToChange != null){
 //            System.out.println("turn on ac, but outside patchfield");
+            isToCool = false;
+            isToHeat = false;
             return true;
         }
         return false;
@@ -921,7 +924,7 @@ public class AgentMovement {
                 && time.getTime().isBefore(LocalTime.of(16,0))) {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistancesBlinds.entrySet()) {
                 PatchField patchField = distancesToAttractorEntry.getKey().getPatch().getPatchField().getKey();
-                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
+                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(distancesToAttractorEntry.getKey().getPatch().getPatchField().getValue())) {
                     if (((WindowBlinds) distancesToAttractorEntry.getKey().getParent()).isOpened()) {
                         return true;
                     }
@@ -940,7 +943,7 @@ public class AgentMovement {
                 PatchField patchField = distancesToLightEntry.getKey().getPatch().getPatchField().getKey();
 
                 //if same patchfield, check if within the light range to do visual comfort logic
-                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
+                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(distancesToLightEntry.getKey().getPatch().getPatchField().getValue())) {
                     if (( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
                         return true;
                     }
@@ -1117,7 +1120,6 @@ public class AgentMovement {
                     for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
                         Amenity.AmenityBlock candidateAttractor = distancesToAttractorEntry.getKey();
                         if (!candidateAttractor.getPatch().getAmenityBlock().getIsReserved()) {
-                            this.openMultipleLights = true; // open lights in the same room
                             this.goalAmenity =  candidateAttractor.getParent();
                             this.goalAttractor = candidateAttractor; // Needed in chooseNextInPath;
                             this.goalPatch = this.goalAttractor.getPatch(); //JIC if needed
@@ -1605,27 +1607,27 @@ public class AgentMovement {
                 }
             }
 
-            for (Map.Entry<Amenity.AmenityBlock, Double> candidateAttractors: list) {
-                for (Chair amenity : temp) {
-                    if (!candidateAttractors.getKey().getPatch().getAmenityBlock().getIsReserved() &&
-                            amenity.getAttractors().getFirst().getPatch().equals(candidateAttractors.getKey().getPatch())) {
-                        this.goalAmenity = amenity;
-                        this.goalAttractor = candidateAttractors.getKey(); // Needed in chooseNextInPath;
-                        this.goalPatch = this.goalAttractor.getPatch(); // JIC if needed
-                        switch (amenity.getFacing()) {
-                            case "NORTH" -> this.workingSeatHeading =  Math.toRadians(90.0);
-                            case "EAST" -> this.workingSeatHeading = Math.toRadians(0.0);
-                            case "WEST" -> this.workingSeatHeading = Math.toRadians(180.0);
-                            case "SOUTH" -> this.workingSeatHeading = Math.toRadians(270.0);
-                        }
-                        this.setAssignedSeat(amenity);
-                        this.getRoutePlan().setAgentSeat(this.assignedSeat);
-                        getGoalAttractor().setIsReserved(true);
-                        return true;
-                    }
-                }
-
-            }
+//            for (Map.Entry<Amenity.AmenityBlock, Double> candidateAttractors: list) {
+//                for (Chair amenity : temp) {
+//                    if (!candidateAttractors.getKey().getPatch().getAmenityBlock().getIsReserved() &&
+//                            amenity.getAttractors().getFirst().getPatch().equals(candidateAttractors.getKey().getPatch())) {
+//                        this.goalAmenity = amenity;
+//                        this.goalAttractor = candidateAttractors.getKey(); // Needed in chooseNextInPath;
+//                        this.goalPatch = this.goalAttractor.getPatch(); // JIC if needed
+//                        switch (amenity.getFacing()) {
+//                            case "NORTH" -> this.workingSeatHeading =  Math.toRadians(90.0);
+//                            case "EAST" -> this.workingSeatHeading = Math.toRadians(0.0);
+//                            case "WEST" -> this.workingSeatHeading = Math.toRadians(180.0);
+//                            case "SOUTH" -> this.workingSeatHeading = Math.toRadians(270.0);
+//                        }
+//                        this.setAssignedSeat(amenity);
+//                        this.getRoutePlan().setAgentSeat(this.assignedSeat);
+//                        getGoalAttractor().setIsReserved(true);
+//                        return true;
+//                    }
+//                }
+//
+//            }
 
             // if no available seats for research tables and solo rooms (if solo)
             // go check for collaboration seats
@@ -2665,9 +2667,6 @@ public class AgentMovement {
         return lightsToOpen;
     }
 
-    public boolean isOpenMultipleLights() {
-        return openMultipleLights;
-    }
 
     public boolean isToCool() {
         return isToCool;
@@ -2795,10 +2794,6 @@ public class AgentMovement {
 
     public void setLightsToOpen(Light lightsToOpen) {
         this.lightsToOpen = lightsToOpen;
-    }
-
-    public void setOpenMultipleLights(boolean openMultipleLights) {
-        this.openMultipleLights = openMultipleLights;
     }
 
     //SETTER aircon

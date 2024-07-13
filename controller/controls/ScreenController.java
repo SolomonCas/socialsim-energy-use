@@ -2567,7 +2567,7 @@ public class ScreenController extends Controller {
     }
 
 
-    public void drawInterface() {
+    private void drawInterface() {
         drawEnvironmentViewBackground(simulator.getEnvironment());
         drawEnvironmentViewForeground(simulator.getEnvironment(), false);
     }

@@ -10,6 +10,7 @@ import com.socialsim.model.core.environment.position.Coordinates;
 import com.socialsim.model.core.environment.position.MatrixPosition;
 import com.socialsim.model.simulator.Simulator;
 import com.socialsim.model.core.environment.patchobject.passable.goal.*;
+import javafx.util.Pair;
 
 import static com.socialsim.controller.Main.mainScreenController;
 import static com.socialsim.controller.Main.simulator;
@@ -1515,682 +1516,664 @@ public class Environment extends BaseObject implements Serializable {
 
 
     /* Handle updates on visualization of lights turned on and off */
-    public void updatePatchfieldVariation(Class<? extends PatchField> patchfieldClass, boolean isLightOn) {
+    public void updatePatchfieldVariation(Pair<PatchField, String> patchfieldClass, boolean isLightOn) {
 
         /* Bathroom */
-        if (patchfieldClass == Bathroom.class) {
+        if (patchfieldClass.getKey().getClass() == Bathroom.class) {
             for (Bathroom patchField: getBathrooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimDirectorBathroom") && !isLightOn){
-                    patchField.setVariation("directorBathroom");
-                }
-                else if (variation.equals("directorBathroom") && isLightOn){
-                    patchField.setVariation("dimDirectorBathroom");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimDirectorBathroom") && !isLightOn){
+                        patchField.setVariation("directorBathroom");
+                    }
+                    else if (variation.equals("directorBathroom") && isLightOn){
+                        patchField.setVariation("dimDirectorBathroom");
+                    }
 
-                simulator.getEnvironment().getBathrooms().remove(patchField);
-                simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getBathrooms().remove(patchField);
+                    simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Breaker Room */
-        else if (patchfieldClass == BreakerRoom.class) {
+        else if (patchfieldClass.getKey().getClass() == BreakerRoom.class) {
             for (BreakerRoom patchField: getBreakerRooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimBreakerRoom") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimBreakerRoom");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimBreakerRoom") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimBreakerRoom");
+                    }
 
-                simulator.getEnvironment().getBreakerRooms().remove(patchField);
-                simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getBreakerRooms().remove(patchField);
+                    simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Clinic */
-        else if (patchfieldClass == Clinic.class) {
+        else if (patchfieldClass.getKey().getClass() == Clinic.class) {
             for (Clinic patchField: getClinics()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimClinic") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimClinic");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimClinic") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimClinic");
+                    }
 
-                simulator.getEnvironment().getClinics().remove(patchField);
-                simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getClinics().remove(patchField);
+                    simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Conference Room */
-        else if (patchfieldClass == ConferenceRoom.class) {
+        else if (patchfieldClass.getKey().getClass() == ConferenceRoom.class) {
             for (ConferenceRoom patchField: getConferenceRooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimConferenceRoom") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimConferenceRoom");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimConferenceRoom") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimConferenceRoom");
+                    }
 
-                simulator.getEnvironment().getConferenceRooms().remove(patchField);
-                simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    simulator.getEnvironment().getConferenceRooms().remove(patchField);
+                    simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(area, patchField.getVariation()));
+
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Control Center */
-        else if (patchfieldClass == ControlCenter.class) {
+        else if (patchfieldClass.getKey().getClass() == ControlCenter.class) {
             for (ControlCenter patchField: getControlCenters()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimControlCenter") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimControlCenter");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimControlCenter") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimControlCenter");
+                    }
 
-                simulator.getEnvironment().getControlCenters().remove(patchField);
-                simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getControlCenters().remove(patchField);
+                    simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Data Center */
-        else if (patchfieldClass == DataCenter.class) {
+        else if (patchfieldClass.getKey().getClass() == DataCenter.class) {
             for (DataCenter patchField: getDataCenters()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimDataCenter") && !isLightOn){
-                    patchField.setVariation("dataCenter");
-                }
-                else if (variation.equals("dimCCTV") && !isLightOn){
-                    patchField.setVariation("CCTV");
-                }
-                else if (variation.equals("CCTV") && isLightOn){
-                    patchField.setVariation("dimCCTV");
-                }
-                else if (variation.equals("dataCenter") && isLightOn){
-                    patchField.setVariation("dimDataCenter");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimDataCenter") && !isLightOn){
+                        patchField.setVariation("dataCenter");
+                    }
+                    else if (variation.equals("dimCCTV") && !isLightOn){
+                        patchField.setVariation("CCTV");
+                    }
+                    else if (variation.equals("CCTV") && isLightOn){
+                        patchField.setVariation("dimCCTV");
+                    }
+                    else if (variation.equals("dataCenter") && isLightOn){
+                        patchField.setVariation("dimDataCenter");
+                    }
 
-                simulator.getEnvironment().getDataCenters().remove(patchField);
-                simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getDataCenters().remove(patchField);
+                    simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Data Collection Room */
-        else if (patchfieldClass == DataCollectionRoom.class) {
+        else if (patchfieldClass.getKey().getClass() == DataCollectionRoom.class) {
             for (DataCollectionRoom patchField: getDataCollectionRooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimDataCollRoom") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimDataCollRoom");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimDataCollRoom") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimDataCollRoom");
+                    }
 
-                simulator.getEnvironment().getDataCollectionRooms().remove(patchField);
-                simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getDataCollectionRooms().remove(patchField);
+                    simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Director Room */
-        else if (patchfieldClass == DirectorRoom.class) {
+        else if (patchfieldClass.getKey().getClass() == DirectorRoom.class) {
             for (DirectorRoom patchField: getDirectorRooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimDirectorRoom") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimDirectorRoom");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimDirectorRoom") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimDirectorRoom");
+                    }
 
-                simulator.getEnvironment().getDirectorRooms().remove(patchField);
-                simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getDirectorRooms().remove(patchField);
+                    simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Faculty Room */
-        else if (patchfieldClass == FacultyRoom.class) {
+        else if (patchfieldClass.getKey().getClass() == FacultyRoom.class) {
             for (FacultyRoom patchField: getFacultyRooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimFacultyRoom") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimFacultyRoom");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimFacultyRoom") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimFacultyRoom");
+                    }
 
-                simulator.getEnvironment().getFacultyRooms().remove(patchField);
-                simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getFacultyRooms().remove(patchField);
+                    simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Floor */
-        else if (patchfieldClass == Floor.class) {
+        else if (patchfieldClass.getKey().getClass() == Floor.class) {
             for (Floor patchField: getFloors()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimFloor") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimFloor");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimFloor") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimFloor");
+                    }
 
-                simulator.getEnvironment().getFloors().remove(patchField);
-                simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getFloors().remove(patchField);
+                    simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Human Experience Room */
-        else if (patchfieldClass == HumanExpRoom.class) {
+        else if (patchfieldClass.getKey().getClass() == HumanExpRoom.class) {
             for (HumanExpRoom patchField: getHumanExpRooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimHumanExpRoom") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimHumanExpRoom");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimHumanExpRoom") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimHumanExpRoom");
+                    }
 
-                simulator.getEnvironment().getHumanExpRooms().remove(patchField);
-                simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getHumanExpRooms().remove(patchField);
+                    simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Learning Spaces */
-        else if (patchfieldClass == LearningSpace.class) {
+        else if (patchfieldClass.getKey().getClass() == LearningSpace.class) {
             for (LearningSpace patchField: getLearningSpaces()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimLS1") && !isLightOn){
-                    patchField.setVariation("LS1");
-                }
-                else if (variation.equals("dimLS2") && !isLightOn){
-                    patchField.setVariation("LS2");
-                }
-                else if (variation.equals("dimLS3") && !isLightOn){
-                    patchField.setVariation("LS3");
-                }
-                else if (variation.equals("dimLS4") && !isLightOn){
-                    patchField.setVariation("LS4");
-                }
-                else if (variation.equals("LS1") && isLightOn){
-                    patchField.setVariation("dimLS1");
-                }
-                else if (variation.equals("LS2") && isLightOn){
-                    patchField.setVariation("dimLS2");
-                }
-                else if (variation.equals("LS3") && isLightOn){
-                    patchField.setVariation("dimLS3");
-                }
-                else if (variation.equals("LS4") && isLightOn){
-                    patchField.setVariation("dimLS4");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimLS1") && !isLightOn){
+                        patchField.setVariation("LS1");
+                    }
+                    else if (variation.equals("dimLS2") && !isLightOn){
+                        patchField.setVariation("LS2");
+                    }
+                    else if (variation.equals("dimLS3") && !isLightOn){
+                        patchField.setVariation("LS3");
+                    }
+                    else if (variation.equals("dimLS4") && !isLightOn){
+                        patchField.setVariation("LS4");
+                    }
+                    else if (variation.equals("LS1") && isLightOn){
+                        patchField.setVariation("dimLS1");
+                    }
+                    else if (variation.equals("LS2") && isLightOn){
+                        patchField.setVariation("dimLS2");
+                    }
+                    else if (variation.equals("LS3") && isLightOn){
+                        patchField.setVariation("dimLS3");
+                    }
+                    else if (variation.equals("LS4") && isLightOn){
+                        patchField.setVariation("dimLS4");
+                    }
 
 
-                simulator.getEnvironment().getLearningSpaces().remove(patchField);
-                simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getLearningSpaces().remove(patchField);
+                    simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Meeting Room */
-        else if (patchfieldClass == MeetingRoom.class) {
+        else if (patchfieldClass.getKey().getClass() == MeetingRoom.class) {
             for (MeetingRoom patchField: getMeetingRooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimMeetingRoom") && !isLightOn){
-                    patchField.setVariation("");
+                    if (variation.equals("dimMeetingRoom") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimMeetingRoom");
+                    }
+
+
+                    simulator.getEnvironment().getMeetingRooms().remove(patchField);
+                    simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(area, patchField.getVariation()));
+
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimMeetingRoom");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
-
-
-                simulator.getEnvironment().getMeetingRooms().remove(patchField);
-                simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(area, patchField.getVariation()));
-
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
-                }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* MESA */
-        else if (patchfieldClass == MESA.class) {
+        else if (patchfieldClass.getKey().getClass() == MESA.class) {
             for (MESA patchField: getMESAs()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimMESA") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimMESA");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimMESA") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimMESA");
+                    }
 
-                simulator.getEnvironment().getMESAs().remove(patchField);
-                simulator.getEnvironment().getMESAs().add(MESA.MESAFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getMESAs().remove(patchField);
+                    simulator.getEnvironment().getMESAs().add(MESA.MESAFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Pantry */
-        else if (patchfieldClass == Pantry.class) {
+        else if (patchfieldClass.getKey().getClass() == Pantry.class) {
             for (Pantry patchField: getPantries()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimPantry") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimPantry");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimPantry") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimPantry");
+                    }
 
-                simulator.getEnvironment().getPantries().remove(patchField);
-                simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getPantries().remove(patchField);
+                    simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Reception */
-        else if (patchfieldClass == Reception.class) {
+        else if (patchfieldClass.getKey().getClass() == Reception.class) {
             for (Reception patchField: getReceptions()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimReception") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimReception");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimReception") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimReception");
+                    }
 
-                simulator.getEnvironment().getReceptions().remove(patchField);
-                simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getReceptions().remove(patchField);
+                    simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Research Center */
-        else if (patchfieldClass == ResearchCenter.class) {
+        else if (patchfieldClass.getKey().getClass() == ResearchCenter.class) {
             for (ResearchCenter patchField: getResearchCenters()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimResearchCenter") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimResearchCenter");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimResearchCenter") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimResearchCenter");
+                    }
 
-                simulator.getEnvironment().getResearchCenters().remove(patchField);
-                simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getResearchCenters().remove(patchField);
+                    simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Solo Rooms */
-        else if (patchfieldClass == SoloRoom.class) {
+        else if (patchfieldClass.getKey().getClass() == SoloRoom.class) {
             for (SoloRoom patchField: getSoloRooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())){
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimSR1") && !isLightOn){
-                    patchField.setVariation("SR1");
-                }
-                else if (variation.equals("dimSR2") && !isLightOn){
-                    patchField.setVariation("SR2");
-                }
-                else if (variation.equals("dimSR3") && !isLightOn){
-                    patchField.setVariation("SR3");
-                }
-                else if (variation.equals("dimSR4") && !isLightOn){
-                    patchField.setVariation("SR4");
-                }
-                else if (variation.equals("SR1") && isLightOn){
-                    patchField.setVariation("dimSR1");
-                }
-                else if (variation.equals("SR2") && isLightOn){
-                    patchField.setVariation("dimSR2");
-                }
-                else if (variation.equals("SR3") && isLightOn){
-                    patchField.setVariation("dimSR3");
-                }
-                else if (variation.equals("SR4") && isLightOn){
-                    patchField.setVariation("dimSR4");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimSR1") && !isLightOn){
+                        patchField.setVariation("SR1");
+                    }
+                    else if (variation.equals("dimSR2") && !isLightOn){
+                        patchField.setVariation("SR2");
+                    }
+                    else if (variation.equals("dimSR3") && !isLightOn){
+                        patchField.setVariation("SR3");
+                    }
+                    else if (variation.equals("dimSR4") && !isLightOn){
+                        patchField.setVariation("SR4");
+                    }
+                    else if (variation.equals("SR1") && isLightOn){
+                        patchField.setVariation("dimSR1");
+                    }
+                    else if (variation.equals("SR2") && isLightOn){
+                        patchField.setVariation("dimSR2");
+                    }
+                    else if (variation.equals("SR3") && isLightOn){
+                        patchField.setVariation("dimSR3");
+                    }
+                    else if (variation.equals("SR4") && isLightOn){
+                        patchField.setVariation("dimSR4");
+                    }
 
-                simulator.getEnvironment().getSoloRooms().remove(patchField);
-                simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getSoloRooms().remove(patchField);
+                    simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         /* Storage Room */
-        else if (patchfieldClass == StorageRoom.class) {
+        else if (patchfieldClass.getKey().getClass() == StorageRoom.class) {
             for (StorageRoom patchField: getStorageRooms()) {
-                String variation = patchField.getVariation();
-                List<Patch> area = patchField.getArea();
+                if (patchField.getVariation().equals(patchfieldClass.getValue())) {
+                    String variation = patchField.getVariation();
+                    List<Patch> area = patchField.getArea();
 
-                if (variation.equals("dimStorageRoom") && !isLightOn){
-                    patchField.setVariation("");
-                }
-                else if (variation.isEmpty() && isLightOn){
-                    patchField.setVariation("dimStorageRoom");
-                }
-                else {
-                    throw new IllegalArgumentException("Unexpected PatchField Variation: " + variation);
-                }
+                    if (variation.equals("dimStorageRoom") && !isLightOn){
+                        patchField.setVariation("");
+                    }
+                    else if (variation.isEmpty() && isLightOn){
+                        patchField.setVariation("dimStorageRoom");
+                    }
 
-                simulator.getEnvironment().getStorageRooms().remove(patchField);
-                simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(area, patchField.getVariation()));
+                    simulator.getEnvironment().getStorageRooms().remove(patchField);
+                    simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(area, patchField.getVariation()));
 
-                List<Divider> newDividers = new ArrayList<>();
-                for (Divider divider : getDividers()) {
-                    newDividers.add(new Divider(divider));
+                    List<Divider> newDividers = new ArrayList<>();
+                    for (Divider divider : getDividers()) {
+                        newDividers.add(new Divider(divider));
+                    }
+
+                    simulator.getEnvironment().getDividers().clear();
+                    for (Divider divider : newDividers) {
+                        simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
+                    }
+
+                    break;
                 }
-
-                simulator.getEnvironment().getDividers().clear();
-                for (Divider divider : newDividers) {
-                    simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
-                }
-
-                ((ScreenController) mainScreenController).drawInterface();
             }
         }
 
         // Throw Error
         else {
-            throw new IllegalArgumentException("Unknown PatchField Class: " + patchfieldClass);
+            throw new IllegalArgumentException("Unknown PatchField Class: " + patchfieldClass.getKey().getClass());
         }
     }
 
