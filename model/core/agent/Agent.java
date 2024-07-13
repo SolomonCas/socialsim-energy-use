@@ -148,11 +148,6 @@ public class Agent extends PatchObject {
 
 
     public static EnergyProfile energyProfilePicker(double greenProb, double nonGreenProb, double neutralProb) {
-        // Normalize probabilities
-        double totalProb = greenProb + nonGreenProb + neutralProb;
-        greenProb /= totalProb;
-        nonGreenProb /= totalProb;
-        neutralProb /= totalProb;
 
         // Generate a random number between 0 and 1
         double randomValue = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble();
