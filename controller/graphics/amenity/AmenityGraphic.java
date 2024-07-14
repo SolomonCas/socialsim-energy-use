@@ -328,7 +328,8 @@ public class AmenityGraphic extends Graphic {
         /* AIR CON */
 
         final List<AmenityGraphicLocation> AirconGraphic = new ArrayList<>();
-        AirconGraphic.add(new AmenityGraphicLocation(31, 28));
+        AirconGraphic.add(new AmenityGraphicLocation(31, 27)); // TURNED OFF
+        AirconGraphic.add(new AmenityGraphicLocation(31, 29)); // TURNED ON
         AMENITY_GRAPHICS.put(Aircon.class, AirconGraphic);
 
 
@@ -338,6 +339,9 @@ public class AmenityGraphic extends Graphic {
 
         // Single Pendant Light
         LightGraphic.add(new AmenityGraphicLocation(36, 22));
+
+        // Single Recessed Light
+        LightGraphic.add(new AmenityGraphicLocation(36, 30));
 
         // Linear Pendant Light
         LightGraphic.add(new AmenityGraphicLocation(36, 20)); // HORIZONTAL

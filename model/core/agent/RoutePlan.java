@@ -388,7 +388,7 @@ public class RoutePlan {
             // Check if the amenity is in the selected room
             if (amenity.getAmenityBlocks().get(0).getPatch().getPatchField() != null && amenity.getAmenityBlocks().get(0).getPatch().getPatchField().getKey() == room) {
                 // Add an action if the amenity is in the selected room
-                if ((amenity instanceof Aircon && ((Aircon) amenity).isOn())) {
+                if ((amenity instanceof Aircon && ((Aircon) amenity).isTurnedOn())) {
                     actions.add(new Action(Action.Name.TURN_OFF_AC, amenity.getAttractors().getFirst().getPatch()));
                 }
                 else if ((amenity instanceof Light && ((Light) amenity).isOn())) {

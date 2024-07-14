@@ -16,10 +16,16 @@ public class AirconGraphic extends AmenityGraphic {
 
     /***** CONSTRUCTOR *****/
 
-    public AirconGraphic(Aircon aircon) {
+    public AirconGraphic(Aircon aircon, boolean isTurnedOn) {
         super(aircon, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
 
-        this.graphicIndex = 0;
+        if (!isTurnedOn) {
+            this.graphicIndex = 0;
+        } else {
+            this.graphicIndex = 1;
+        }
+
+
     }
 
 }

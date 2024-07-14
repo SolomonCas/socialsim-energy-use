@@ -28,7 +28,7 @@ public class LightGraphic extends AmenityGraphic {
 
     private static int getRowSpan(String type, String orientation) {
         return switch (type) {
-            case "SINGLE_PENDANT_LIGHT" -> SPAN_1;
+            case "SINGLE_PENDANT_LIGHT", "SINGLE_RECESSED_LIGHT" -> SPAN_1;
             case "LINEAR_PENDANT_LIGHT", "RECESSED_LINEAR_LIGHT" -> switch (orientation) {
                 case "HORIZONTAL" -> SPAN_1;
                 case "VERTICAL" -> SPAN_2;
@@ -45,7 +45,7 @@ public class LightGraphic extends AmenityGraphic {
 
     private static int getColumnSpan(String type, String orientation) {
         return switch (type) {
-            case "SINGLE_PENDANT_LIGHT" -> SPAN_1;
+            case "SINGLE_PENDANT_LIGHT", "SINGLE_RECESSED_LIGHT" -> SPAN_1;
             case "LINEAR_PENDANT_LIGHT", "RECESSED_LINEAR_LIGHT" -> switch (orientation) {
                 case "HORIZONTAL" -> SPAN_2;
                 case "VERTICAL" -> SPAN_1;
@@ -63,19 +63,20 @@ public class LightGraphic extends AmenityGraphic {
     private static int getGraphicIndex(String type, String orientation) {
         return switch (type) {
             case "SINGLE_PENDANT_LIGHT" -> 0;
+            case "SINGLE_RECESSED_LIGHT" -> 1;
             case "LINEAR_PENDANT_LIGHT" -> switch (orientation) {
-                case "HORIZONTAL" -> 1;
-                case "VERTICAL" -> 2;
+                case "HORIZONTAL" -> 2;
+                case "VERTICAL" -> 3;
                 default -> throw new IllegalArgumentException("Unknown orientation: " + orientation);
             };
             case "RECESSED_LINEAR_LIGHT" -> switch (orientation) {
-                case "HORIZONTAL" -> 3;
-                case "VERTICAL" -> 4;
+                case "HORIZONTAL" -> 4;
+                case "VERTICAL" -> 5;
                 default -> throw new IllegalArgumentException("Unknown orientation: " + orientation);
             };
             case "TRACK_LIGHT" -> switch (orientation) {
-                case "HORIZONTAL" -> 5;
-                case "VERTICAL" -> 6;
+                case "HORIZONTAL" -> 6;
+                case "VERTICAL" -> 7;
                 default -> throw new IllegalArgumentException("Unknown orientation: " + orientation);
             };
             default -> throw new IllegalArgumentException("Unknown type: " + type);

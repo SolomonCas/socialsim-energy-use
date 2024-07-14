@@ -20,7 +20,7 @@ public class Aircon extends Goal {
     private int airconTemp;
     private int coolingTimeInTicks;
     private boolean isInActiveCycle;
-    private boolean isOn;
+    private boolean isTurnedOn;
     private int coolingRange;
 
     static {
@@ -28,9 +28,9 @@ public class Aircon extends Goal {
     }
 
     /***** CONSTRUCTOR *****/
-    protected Aircon(List<AmenityBlock> amenityBlocks, boolean enabled) {
+    protected Aircon(List<AmenityBlock> amenityBlocks, boolean enabled, boolean isTurnedOn) {
         super(amenityBlocks, enabled);
-        this.isOn = false;
+        this.isTurnedOn = isTurnedOn;
         this.isInActiveCycle = false;
 
         this.roomTemp = 27;
@@ -38,12 +38,12 @@ public class Aircon extends Goal {
         this.coolingTimeInTicks = 0;
         this.coolingRange = 25;
 
-        this.airconGraphic = new AirconGraphic(this);
+        this.airconGraphic = new AirconGraphic(this, isTurnedOn);
     }
 
     /***** GETTER *****/
-    public boolean isOn() {
-        return isOn;
+    public boolean isTurnedOn() {
+        return isTurnedOn;
     }
 
     public boolean isInActiveCycle() {
@@ -68,7 +68,7 @@ public class Aircon extends Goal {
 
     /***** SETTER *****/
     public void setOn(boolean on) {
-        isOn = on;
+        isTurnedOn = on;
     }
 
     public void setInActiveCycle(boolean inActiveCycle) {
@@ -128,8 +128,8 @@ public class Aircon extends Goal {
     }
 
     public static class AirconFactory extends GoalFactory {
-        public static Aircon create(List<AmenityBlock> amenityBlocks, boolean enabled) {
-            return new Aircon(amenityBlocks, enabled);
+        public static Aircon create(List<AmenityBlock> amenityBlocks, boolean enabled, boolean isTurnedOn) {
+            return new Aircon(amenityBlocks, enabled, isTurnedOn);
         }
     }
 
