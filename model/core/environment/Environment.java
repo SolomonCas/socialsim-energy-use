@@ -1106,13 +1106,91 @@ public class Environment extends BaseObject implements Serializable {
     }
 
     //TODO: coolingtime will differ based on whether there are nearby groups of people minimum of 4
+//    public void tempChanger(){
+//        for(Aircon aircon : this.getAircons()) {
+//            int closeAgentCount = 0;
+//            for(Agent agent : this.getMovableAgents()){
+//                for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
+//                    if (agent.getAgentMovement() != null && agent.getAgentMovement().getRoutePlan().isAtDesk()) {
+//                        double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
+//                        if(distanceToAircon < aircon.getCoolingRange()){
+//                            closeAgentCount++;
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//
+////            System.out.println("close agent count: "+closeAgentCount);
+//            int coolingTicks = 0;
+//            //IF TEMP IS GOING HIGHER OR HEATING
+//            //System.out.println("old aircon active cycle? "+aircon.isInActiveCycle());
+//            if(aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.isTurnedOn()){
+//                if(closeAgentCount < 4){
+//                    aircon.setInActiveCycle(false);
+//                    coolingTicks = 24;
+//                }
+//                else{
+//                    aircon.setInActiveCycle(false);
+//                    coolingTicks = 20;
+//                }
+//                System.out.println("is aircon active cycle: "+ aircon.isInActiveCycle());
+//                //THIS MEANS THAT 2 MINUTES OR GREATER HAS PASSED
+//                if(coolingTimer(aircon, coolingTicks)){
+//                    System.out.println("HEATING");
+//                    int newTemp = aircon.getRoomTemp();
+//                    newTemp++;
+//
+//                    aircon.setRoomTemp(newTemp);
+//                }
+//            }//TEMP IS LOWERING OR COOLING
+//            else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()){
+//                if(closeAgentCount < 4)
+//                {
+//                    aircon.setInActiveCycle(true);
+//                    coolingTicks = 20;
+//                }
+//                else{
+//                    aircon.setInActiveCycle(true);
+//                    coolingTicks = 42;
+//                }
+//                System.out.println("Aircon temp: "+aircon.getAirconTemp() + " room Temp: "+ aircon.getRoomTemp());
+//                System.out.println("COOLING is aircon active cycle: "+ aircon.isInActiveCycle());
+//                //THIS MEANS THAT 1 MINUTES OR GREATER HAS PASSED
+//                if(coolingTimer(aircon, coolingTicks)){
+//                    System.out.println("COOLING ");
+//                    int newTemp = aircon.getRoomTemp();
+//                    newTemp --;
+//
+//                    aircon.setRoomTemp(newTemp);
+//                }
+//            }
+//            if(aircon.getAirconTemp() == aircon.getRoomTemp()){
+//                aircon.setInActiveCycle(false);
+//            }
+//            //System.out.println("new aircon active cycle? "+aircon.isInActiveCycle());
+//        }
+//    }
+    //WITH LINEAR REGRESSION
     public void tempChanger(){
+        // Coefficients for the linear regression formula
+        double beta0Cooling = 20.0; // Base cooling ticks when cooling
+        double beta1Cooling = 1.0; // Effect of the number of teams on cooling ticks
+        double beta2Cooling = -1.0; // Effect of the number of nearby aircons on cooling ticks
+
+        double beta0Heating = 24.0; // Base cooling ticks when heating
+        double beta1Heating = -1.0; // Effect of the number of teams on heating ticks
+        double beta2Heating = 0.5; // Effect of the number of nearby aircons on heating ticks
+
         for(Aircon aircon : this.getAircons()) {
             int closeAgentCount = 0;
+            int nearbyAircons = 0;
+
+            // Count nearby agents
             for(Agent agent : this.getMovableAgents()){
                 for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
                     if (agent.getAgentMovement() != null && agent.getAgentMovement().getRoutePlan().isAtDesk()) {
-                        double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
+                        double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch());
                         if(distanceToAircon < aircon.getCoolingRange()){
                             closeAgentCount++;
                             break;
@@ -1121,56 +1199,48 @@ public class Environment extends BaseObject implements Serializable {
                 }
             }
 
-//            System.out.println("close agent count: "+closeAgentCount);
-            int coolingTicks = 0;
-            //IF TEMP IS GOING HIGHER OR HEATING
-            //System.out.println("old aircon active cycle? "+aircon.isInActiveCycle());
-            if(aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.isTurnedOn()){
-                if(closeAgentCount < 4){
-                    aircon.setInActiveCycle(false);
-                    coolingTicks = 24;
-                }
-                else{
-                    aircon.setInActiveCycle(false);
-                    coolingTicks = 20;
-                }
-                System.out.println("is aircon active cycle: "+ aircon.isInActiveCycle());
-                //THIS MEANS THAT 2 MINUTES OR GREATER HAS PASSED
-                if(coolingTimer(aircon, coolingTicks)){
-                    System.out.println("HEATING");
-                    int newTemp = aircon.getRoomTemp();
-                    newTemp++;
-
-                    aircon.setRoomTemp(newTemp);
-                }
-            }//TEMP IS LOWERING OR COOLING
-            else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()){
-                if(closeAgentCount < 4)
-                {
-                    aircon.setInActiveCycle(true);
-                    coolingTicks = 20;
-                }
-                else{
-                    aircon.setInActiveCycle(true);
-                    coolingTicks = 42;
-                }
-                System.out.println("Aircon temp: "+aircon.getAirconTemp() + " room Temp: "+ aircon.getRoomTemp());
-                System.out.println("COOLING is aircon active cycle: "+ aircon.isInActiveCycle());
-                //THIS MEANS THAT 1 MINUTES OR GREATER HAS PASSED
-                if(coolingTimer(aircon, coolingTicks)){
-                    System.out.println("COOLING ");
-                    int newTemp = aircon.getRoomTemp();
-                    newTemp --;
-
-                    aircon.setRoomTemp(newTemp);
+            // Count nearby aircons
+            for(Aircon otherAircon : this.getAircons()) {
+                if(otherAircon != aircon) {
+                    double distanceToAircon = Coordinates.distance(aircon.getAttractors().getFirst().getPatch(), otherAircon.getAttractors().getFirst().getPatch());
+                    if(distanceToAircon < aircon.getCoolingRange() && otherAircon.isTurnedOn()){
+                        nearbyAircons++;
+                    }
                 }
             }
+            System.out.println("close agents: "+closeAgentCount);
+            System.out.println("nearby aircons "+nearbyAircons);
+            // Calculate number of teams (assuming 4 agents per team)
+            int numTeams = closeAgentCount / 4;
+
+
+            int coolingTicks = 0;
+            if(aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.isTurnedOn()){
+                aircon.setInActiveCycle(false);
+                coolingTicks = (int)(beta0Heating + beta1Heating * numTeams + beta2Heating * nearbyAircons);
+                if(coolingTimer(aircon, coolingTicks)){
+                    int newTemp = aircon.getRoomTemp();
+                    newTemp++;
+                    aircon.setRoomTemp(newTemp);
+                }
+                System.out.println("I am in heating "+aircon.getCoolingTimeInTicks());
+            } else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()){
+                aircon.setInActiveCycle(true);
+                coolingTicks = (int)(beta0Cooling + beta1Cooling * numTeams + beta2Cooling * nearbyAircons);
+                if(coolingTimer(aircon, coolingTicks)){
+                    int newTemp = aircon.getRoomTemp();
+                    newTemp--;
+                    aircon.setRoomTemp(newTemp);
+                }
+                System.out.println("I am in cooling "+aircon.getCoolingTimeInTicks());
+            }
+
             if(aircon.getAirconTemp() == aircon.getRoomTemp()){
                 aircon.setInActiveCycle(false);
             }
-            //System.out.println("new aircon active cycle? "+aircon.isInActiveCycle());
         }
     }
+
 
     public boolean coolingTimer(Aircon aircon, int duration) {
         if (aircon.getCoolingTimeInTicks() <= 0) {
