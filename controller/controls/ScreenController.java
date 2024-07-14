@@ -452,94 +452,72 @@ public class ScreenController extends Controller {
                 humanExpRoom = new ArrayList<>(), dataCollectionRoom = new ArrayList<>(),
                 storageRoom = new ArrayList<>(), clinic = new ArrayList<>();
 
-
-
         Object[][] floorRanges =  {
-
                 // consistent across all layouts
-                {elevatorLobby, "", 14, 64, 177, 192},
-                {hallway, "dimHallway", 18, 21, 1, 21}, {hallway, "dimHallway", 22, 59, 17, 21}, {hallway, "dimHallway", 51, 59, 147, 152},
-                {hallway, "dimHallway", 60, 66, 1, 168}, {hallway, "dimHallway", 67, 79, 16, 37}, {hallway, "dimHallway", 67, 79, 57, 83},
-                {hallway, "dimHallway", 67, 79, 103, 142}, {hallway, "dimHallway", 67, 79, 162, 168},
-                {hallway, "dimHallway", 80, 86, 16, 128}, {hallway, "dimHallway", 80, 87, 129, 132}, {hallway, "dimHallway", 80, 88, 133, 142},
-                {hallway, "dimHallway", 81, 88, 143, 161}, {hallway, "dimHallway", 80, 88, 162, 185}, {hallway, "dimHallway", 89, 110, 170, 185},
-                {maleBathroom, "maleBathroom", 4, 13, 186, 202}, {maleBathroom, "maleBathroom", 14, 18, 191, 202},
-                {femaleBathroom, "femaleBathroom", 65, 74, 186, 202}, {femaleBathroom, "femaleBathroom", 60, 64, 191, 202},
-                {reception, "dimReception", 56, 75, 169, 183}, {breakerRoom, "dimBreakerRoom", 18, 21, 22, 30}, {pantry, "dimPantry", 111, 124, 135, 185},
-
-
+                {elevatorLobby, 14, 64, 177, 192},
+                {hallway, 18, 21, 1, 21}, {hallway, 22, 59, 17, 21}, {hallway, 51, 59, 147, 152},
+                {hallway, 60, 66, 1, 168}, {hallway, 67, 79, 16, 37}, {hallway, 67, 79, 57, 83},
+                {hallway, 67, 79, 103, 142}, {hallway, 67, 79, 162, 168},
+                {hallway, 80, 86, 16, 128}, {hallway, 80, 87, 129, 132}, {hallway, 80, 88, 133, 142},
+                {hallway, 81, 88, 143, 161}, {hallway, 80, 88, 162, 185}, {hallway, 89, 110, 170, 185},
+                {maleBathroom, 4, 13, 186, 202}, {maleBathroom, 14, 18, 191, 202},
+                {femaleBathroom, 65, 74, 186, 202}, {femaleBathroom, 60, 64, 191, 202},
+                {reception, 56, 75, 169, 183}, {breakerRoom, 18, 21, 22, 30}, {pantry, 111, 124, 135, 185},
+                
                 // small to big changes in other layouts
-                {directorRoom, "dimDirectorRoom", 92, 113, 186, 202}, {directorBathroom, "dimDirectorBathroom", 80, 91, 195, 202},
-                {conferenceRoom, "dimConferenceRoom", 89, 106, 143, 168}, {meetingRoom, "dimMeetingRoom", 22, 59, 1, 16},
-                {dataCenter, "dimDataCenter", 38, 59, 107, 125}, {dataCenterCCTV, "dimCCTV", 26, 37, 107, 125},
-                {controlCenter, "dimControlCenter", 38, 59, 127, 145}, {mesa, "dimMESA", 67, 80, 144, 160},
-                {SR1, "dimSR1", 67, 79, 94, 101}, {SR2, "dimSR2", 67, 79, 85, 92}, {SR3, "dimSR3", 67, 79, 48, 55}, {SR4, "dimSR4", 67, 79, 39, 46},
-                {LS1, "dimLS1", 26, 59, 86, 105}, {LS2, "dimLS2", 26, 59, 65, 84}, {LS3, "dimLS3", 26, 59, 44, 63}, {LS4, "dimLS4", 26, 59, 22, 42},
-                {researchCenter, "dimResearchCenter", 87, 106, 24, 98}, {facultyRoom, "dimFacultyRoom", 87, 106, 99, 127},
-                {humanExpRoom, "dimHumExpRoom", 67, 86, 1, 15}, {dataCollectionRoom, "dimDataCollRoom", 87, 104, 1, 22},
-                {storageRoom, "dimStorageRoom", 89, 106, 129, 141}, {clinic, "dimClinic", 80, 91, 186, 193}
-
+                {directorRoom, 92, 113, 186, 202}, {directorBathroom, 80, 91, 195, 202},
+                {conferenceRoom, 89, 106, 143, 168}, {meetingRoom,22, 59, 1, 16},
+                {dataCenter, 38, 59, 107, 125}, {dataCenterCCTV, 26, 37, 107, 125},
+                {controlCenter, 38, 59, 127, 145}, {mesa, 67, 80, 144, 160},
+                {SR1, 67, 79, 94, 101}, {SR2, 67, 79, 85, 92}, {SR3, 67, 79, 48, 55}, {SR4, 67, 79, 39, 46},
+                {LS1, 26, 59, 86, 105}, {LS2, 26, 59, 65, 84}, {LS3, 26, 59, 44, 63}, {LS4, 26, 59, 22, 42},
+                {researchCenter, 87, 106, 24, 98}, {facultyRoom, 87, 106, 99, 127},
+                {humanExpRoom, 67, 86, 1, 15}, {dataCollectionRoom, 87, 104, 1, 22},
+                {storageRoom, 89, 106, 129, 141}, {clinic, 80, 91, 186, 193}
         };
-
 
         for (Object[] range : floorRanges) {
             List<Patch> floorPatches =  (List<Patch>) range[0];
-            String str = (String) range[1];
-            int startRow = (int) range[2];
-            int endRow = (int) range[3];
-            int startColumn = (int) range[4];
-            int endColumn = (int) range[5];
-
+            int startRow = (int) range[1];
+            int endRow = (int) range[2];
+            int startColumn = (int) range[3];
+            int endColumn = (int) range[4];
             for (int i = startRow; i <= endRow; i ++) {
                 for (int j = startColumn; j <= endColumn; j ++) {
                     floorPatches.add(environment.getPatch(i, j));
                 }
             }
-
-            switch (floorPatches) {
-                case List<Patch> list when list == elevatorLobby ->
-                        simulator.getEnvironment().getElevatorLobbies().add(ElevatorLobby.elevatorLobbyFactory.create(floorPatches, str));
-                case List<Patch> list when list == hallway ->
-                        simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(floorPatches, str));
-                case List<Patch> list when list == maleBathroom || list == femaleBathroom || list == directorBathroom ->
-                    simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(floorPatches, str));
-                case List<Patch> list when list == breakerRoom ->
-                    simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == reception ->
-                    simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(floorPatches, str));
-                case List<Patch> list when list == directorRoom ->
-                    simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == conferenceRoom ->
-                    simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == meetingRoom ->
-                    simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == dataCenter || list == dataCenterCCTV ->
-                    simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(floorPatches, str));
-                case List<Patch> list when list == controlCenter ->
-                    simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(floorPatches, str));
-                case List<Patch> list when list == SR1 || list == SR2 || list == SR3 || list == SR4 ->
-                    simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == LS1 || list == LS2 || list == LS3 || list == LS4 ->
-                    simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(floorPatches, str));
-                case List<Patch> list when list == researchCenter ->
-                    simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(floorPatches, str));
-                case List<Patch> list when list == facultyRoom ->
-                    simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == humanExpRoom ->
-                    simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == dataCollectionRoom ->
-                    simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == storageRoom ->
-                    simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(floorPatches, str));
-                case List<Patch> list when list == clinic ->
-                    simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(floorPatches, str));
-                case List<Patch> list when list == mesa ->
-                    simulator.getEnvironment().getMESAs().add(MESA.MESAFactory.create(floorPatches, str));
-                case List<Patch> list when list == pantry ->
-                    simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(floorPatches, str));
-                default -> throw new IllegalStateException("Unexpected value: " + floorPatches);
-            }
         }
+
+        simulator.getEnvironment().getElevatorLobbies().add(ElevatorLobby.elevatorLobbyFactory.create(elevatorLobby, ""));
+        simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(hallway, "dimHallway"));
+        simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(maleBathroom, "maleBathroom"));
+        simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(femaleBathroom, "femaleBathroom"));
+        simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(directorBathroom, "dimDirectorBathroom"));
+        simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(breakerRoom, "dimBreakerRoom"));
+        simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(reception, "dimReception"));
+        simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(directorRoom, "dimDirectorRoom"));
+        simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(conferenceRoom, "dimConferenceRoom"));
+        simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(meetingRoom, "dimMeetingRoom"));
+        simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(dataCenter, "dimDataCenter"));
+        simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(dataCenterCCTV, "dimCCTV"));
+        simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(controlCenter, "dimControlCenter"));
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR1, "dimSR1"));
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR2, "dimSR2"));
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR3, "dimSR3"));
+        simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR4, "dimSR4"));
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS1, "dimLS1"));
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS2, "dimLS2"));
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS3, "dimLS3"));
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS4, "dimLS4"));
+        simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(researchCenter, "dimResearchCenter"));
+        simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(facultyRoom, "dimFacultyRoom"));
+        simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(humanExpRoom, "dimHumExpRoom"));
+        simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(dataCollectionRoom, "dimDataCollRoom"));
+        simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(storageRoom, "dimStorageRoom"));
+        simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(clinic, "dimClinic"));
+        simulator.getEnvironment().getMESAs().add(MESA.MESAFactory.create(mesa, "dimMESA"));
+        simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(pantry, "dimPantry"));
 
         /* Office Next Door */
 
@@ -889,154 +867,140 @@ public class ScreenController extends Controller {
 
 
         /* AMENITIES */
-
-
+        
         /* Cubicles */
-
+        
         List<Patch> nwMESA = new ArrayList<>(), neMESA = new ArrayList<>(), swMESA = new ArrayList<>(), seMESA = new ArrayList<>(),
                 cubicleA  = new ArrayList<>(), westCubicleB  = new ArrayList<>(), eastCubicleB  = new ArrayList<>(),
                 westCubicleC  = new ArrayList<>();
 
-
         Object[][] cubicleRanges =  {
 
                 // MESA
-                {nwMESA, "MESA", "", "NORTH_AND_WEST", false, 0, 67, 153}, {neMESA, "MESA", "", "NORTH_AND_EAST", false, 0, 67, 148},
-                {swMESA, "MESA", "", "SOUTH_AND_WEST", false, 0, 76, 153}, {seMESA, "MESA", "", "SOUTH_AND_EAST", false, 0, 76, 148},
+                {nwMESA, 67, 153}, {neMESA, 67, 148},
+                {swMESA, 76, 153}, {seMESA, 76, 148},
 
                 // Type A
-                {cubicleA, "TYPE_A", "", "", true, 1, 43, 111},
+                {cubicleA, 43, 111},
 
                 // Type B
-                {westCubicleB, "TYPE_B", "WEST", "", true, 2, 95, 105}, {westCubicleB, "TYPE_B", "WEST", "", true, 2, 95, 115}, {westCubicleB, "TYPE_B", "WEST", "", true, 2, 95, 125},
-                {westCubicleB, "TYPE_B", "WEST", "", true, 2, 99, 105}, {westCubicleB, "TYPE_B", "WEST", "", true, 2, 99, 115}, {westCubicleB, "TYPE_B", "WEST", "", true, 2, 99, 125},
-
-
-                {eastCubicleB, "TYPE_B", "EAST", "", true, 2, 95, 108}, {eastCubicleB, "TYPE_B", "EAST", "", true, 2, 95, 118},
-                {eastCubicleB, "TYPE_B", "EAST", "", true, 2, 99, 108}, {eastCubicleB, "TYPE_B", "EAST", "", true, 2, 99, 118},
+                {westCubicleB, 95, 105}, {westCubicleB, 95, 115}, {westCubicleB, 95, 125},
+                {westCubicleB, 99, 105}, {westCubicleB, 99, 115}, {westCubicleB, 99, 125},
+                
+                {eastCubicleB, 95, 108}, {eastCubicleB, 95, 118},
+                {eastCubicleB, 99, 108}, {eastCubicleB, 99, 118},
 
                 // Type C
-                {westCubicleC, "TYPE_C", "WEST", "", false, 0, 41, 120}, {westCubicleC, "TYPE_C", "WEST", "", false, 0, 44, 120},
-                {westCubicleC, "TYPE_C", "WEST", "", false, 0, 47, 120}, {westCubicleC, "TYPE_C", "WEST", "", false, 0, 50, 120},
+                {westCubicleC, 41, 120}, {westCubicleC, 44, 120},
+                {westCubicleC, 47, 120}, {westCubicleC, 50, 120},
         };
-
-
+        
         for (Object[] range : cubicleRanges) {
             List<Patch> amenityPatches =  (List<Patch>) range[0];
-            String type = (String) range[1];
-            String facing = (String) range[2];
-            String tableOn = (String) range[3];
-            boolean withAppliance = (boolean) range[4];
-            int numberOfMonitors = (int) range[5];
-            int row = (int) range[6];
-            int column = (int) range[7];
-
+            int row = (int) range[1];
+            int column = (int) range[2];
             amenityPatches.add(environment.getPatch(row, column));
-            CubicleMapper.draw(amenityPatches, type, facing, tableOn, withAppliance, numberOfMonitors);
         }
-
-
+        
+        CubicleMapper.draw(nwMESA, "MESA", "", "NORTH_AND_WEST", false, 0);
+        CubicleMapper.draw(neMESA, "MESA", "", "NORTH_AND_EAST", false, 0);
+        CubicleMapper.draw(swMESA, "MESA", "", "SOUTH_AND_WEST", false, 0);
+        CubicleMapper.draw(seMESA, "MESA", "", "SOUTH_AND_EAST", false, 0);
+        CubicleMapper.draw(cubicleA, "TYPE_A", "", "", true, 1);
+        CubicleMapper.draw(westCubicleB, "TYPE_B", "WEST", "", true, 2);
+        CubicleMapper.draw(eastCubicleB, "TYPE_B", "EAST", "", true, 2);
+        CubicleMapper.draw(westCubicleC, "TYPE_C", "WEST", "", false, 0);
+        
         /* Reception Table */
-
+        
         List<Patch> ReceptionTable1x8 = new ArrayList<>();
-        ReceptionTable1x8.add(environment.getPatch(69,170)); // Reception Bar
+        ReceptionTable1x8.add(environment.getPatch(69,170));
         ReceptionTableMapper.draw(ReceptionTable1x8, "1x8");
-
-
+        
         /* Research Tables */
-
+        
         List<Patch> westResearchTable = new ArrayList<>(), westMonitorResearchTable = new ArrayList<>(),
                 eastResearchTable = new ArrayList<>(), eastMonitorResearchTable = new ArrayList<>();
-
-
+        
         Object[][] researchTableRanges =  {
-                {westResearchTable, "WEST", false, 100, 38}, {eastResearchTable, "EAST", false, 100, 39},
-                {westMonitorResearchTable, "WEST", false, 100, 46}, {eastResearchTable, "EAST", false, 100, 47},
-                {westResearchTable, "WEST", false, 100, 60}, {eastResearchTable, "EAST", false, 100, 61},
-                {westMonitorResearchTable, "WEST", false, 100, 68}, {eastResearchTable, "EAST", false, 100, 69},
-                {westMonitorResearchTable, "WEST", false, 100, 76}, {eastResearchTable, "EAST", false, 100, 77},
-                {westResearchTable, "WEST", false, 100, 90}, {eastMonitorResearchTable, "EAST", false, 100, 91}
+                {westResearchTable, 100, 38}, {eastResearchTable, 100, 39},
+                {westMonitorResearchTable, 100, 46}, {eastResearchTable, 100, 47},
+                {westResearchTable, 100, 60}, {eastResearchTable, 100, 61},
+                {westMonitorResearchTable, 100, 68}, {eastResearchTable, 100, 69},
+                {westMonitorResearchTable, 100, 76}, {eastResearchTable, 100, 77},
+                {westResearchTable, 100, 90}, {eastMonitorResearchTable, 100, 91}
         };
-
-
+        
         for (Object[] range : researchTableRanges) {
             List<Patch> amenityPatches =  (List<Patch>) range[0];
-            String facing = (String) range[1];
-            boolean withAppliance = (boolean) range[2];
-            int row = (int) range[3];
-            int column = (int) range[4];
-
+            int row = (int) range[1];
+            int column = (int) range[2];
             amenityPatches.add(environment.getPatch(row, column));
-            ResearchTableMapper.draw(amenityPatches, facing, withAppliance);
         }
 
+        ResearchTableMapper.draw(westResearchTable, "WEST", false);
+        ResearchTableMapper.draw(eastResearchTable, "EAST", false);
+        ResearchTableMapper.draw(westMonitorResearchTable, "WEST", true);
+        ResearchTableMapper.draw(eastMonitorResearchTable, "EAST", true);
 
+        
         /* Learning Tables */
-
+        
         List<Patch> learningTables = new ArrayList<>();
-
-
+        
         Object[][] learningTableRanges =  {
-
                 // Learning Space 1
-                {learningTables, "HORIZONTAL", 33, 89}, {learningTables, "HORIZONTAL", 33, 98},
-                {learningTables, "HORIZONTAL", 47, 89}, {learningTables, "HORIZONTAL", 47, 98},
+                {33, 89}, {33, 98},
+                {47, 89}, {47, 98},
 
                 // Learning Space 2
-                {learningTables, "HORIZONTAL", 33, 68}, {learningTables, "HORIZONTAL", 33, 77},
-                {learningTables, "HORIZONTAL", 47, 68}, {learningTables, "HORIZONTAL", 47, 77},
+                {33, 68}, {33, 77},
+                {47, 68}, {47, 77},
 
                 // Learning Space 3
-                {learningTables, "HORIZONTAL", 33, 47}, {learningTables, "HORIZONTAL", 33, 56},
-                {learningTables, "HORIZONTAL", 47, 47}, {learningTables, "HORIZONTAL", 47, 56},
+                {33, 47}, {33, 56},
+                {47, 47}, {47, 56},
 
                 // Learning Space 4
-                {learningTables, "HORIZONTAL", 33, 26}, {learningTables, "HORIZONTAL", 33, 35},
-                {learningTables, "HORIZONTAL", 47, 26}, {learningTables, "HORIZONTAL", 47, 35}
+                {33, 26}, {33, 35},
+                {47, 26}, {47, 35}
         };
-
 
         for (Object[] range : learningTableRanges) {
-            List<Patch> amenityPatches =  (List<Patch>) range[0];
-            String orientation = (String) range[1];
-            int row = (int) range[2];
-            int column = (int) range[3];
-
-            amenityPatches.add(environment.getPatch(row, column));
-            LearningTableMapper.draw(amenityPatches, orientation);
+            int row = (int) range[0];
+            int column = (int) range[1];
+            learningTables.add(environment.getPatch(row, column));
         }
-
+        
+        LearningTableMapper.draw(learningTables, "HORIZONTAL");
 
         /* Meeting Tables */
-
-        List<Patch> largeHorizontalMeetingTables = new ArrayList<>(), leftLargeHorizontalMeetingTables = new ArrayList<>(),
+        
+        List<Patch> largeVerticalMeetingTables = new ArrayList<>(), leftLargeHorizontalMeetingTables = new ArrayList<>(),
                 rightLargeHorizontalMeetingTables = new ArrayList<>(), smallVerticalMeetingTables = new ArrayList<>();
-
-
+        
         Object[][] meetingTableRanges =  {
-
                 // Conference Room
-                {leftLargeHorizontalMeetingTables, "HORIZONTAL", "LARGE", "LEFT", 98, 147}, {rightLargeHorizontalMeetingTables, "HORIZONTAL", "LARGE", "RIGHT", 98, 156},
+                {leftLargeHorizontalMeetingTables, 98, 147}, {rightLargeHorizontalMeetingTables, 98, 156},
 
                 // Meeting Room
-                {largeHorizontalMeetingTables, "VERTICAL", "LARGE", "", 36, 7},
+                {largeVerticalMeetingTables, 36, 7},
 
                 // Director Room
-                {smallVerticalMeetingTables, "VERTICAL", "SMALL", "", 97, 198},
+                {smallVerticalMeetingTables, 97, 198},
         };
-
-
+        
         for (Object[] range : meetingTableRanges) {
             List<Patch> amenityPatches =  (List<Patch>) range[0];
-            String orientation = (String) range[1];
-            String size = (String) range[2];
-            String position = (String) range[3];
-            int row = (int) range[4];
-            int column = (int) range[5];
-
+            int row = (int) range[1];
+            int column = (int) range[2];
             amenityPatches.add(environment.getPatch(row, column));
-            MeetingTableMapper.draw(amenityPatches, orientation, size, position);
         }
+
+        MeetingTableMapper.draw(largeVerticalMeetingTables, "VERTICAL", "LARGE", "");
+        MeetingTableMapper.draw(leftLargeHorizontalMeetingTables, "HORIZONTAL", "LARGE", "LEFT");
+        MeetingTableMapper.draw(rightLargeHorizontalMeetingTables, "HORIZONTAL", "LARGE", "RIGHT");
+        MeetingTableMapper.draw(smallVerticalMeetingTables, "VERTICAL", "SMALL", "");
 
 
         /* Pantry Tables and Chairs */
@@ -1048,47 +1012,44 @@ public class ScreenController extends Controller {
         Object[][] pantryTableRanges =  {
 
                 // Type A
-                {typeApantryTables, "TYPE_A", 117, 180}, {typeApantryTables, "TYPE_A", 120, 175},
+                {typeApantryTables, 117, 180}, {typeApantryTables, 120, 175},
 
                 // Type B
-                {typeBpantryTables, "TYPE_B", 117, 169}, {typeBpantryTables, "TYPE_B", 121, 139}, {typeBpantryTables, "TYPE_B", 121, 148},
-                {typeBpantryTables, "TYPE_B", 121, 154}, {typeBpantryTables, "TYPE_B", 121, 160}
+                {typeBpantryTables, 117, 169}, {typeBpantryTables, 121, 139}, {typeBpantryTables,  121, 148},
+                {typeBpantryTables, 121, 154}, {typeBpantryTables, 121, 160}
         };
+
+        for (Object[] range : pantryTableRanges) {
+            List<Patch> amenityPatches =  (List<Patch>) range[0];
+            int row = (int) range[1];
+            int column = (int) range[2];
+            amenityPatches.add(environment.getPatch(row, column));
+        }
+
+        PantryTableMapper.draw(typeApantryTables, "TYPE_A");
+        PantryTableMapper.draw(typeBpantryTables, "TYPE_B");
 
         Object[][] pantryChairRanges =  {
 
                 // Type A
-                {typeApantryChairs, "PANTRY_TYPE_A", 111, 150}, {typeApantryChairs, "PANTRY_TYPE_A", 111, 151}, {typeApantryChairs, "PANTRY_TYPE_A", 111, 152},
-                {typeApantryChairs, "PANTRY_TYPE_A", 111, 153}, {typeApantryChairs, "PANTRY_TYPE_A", 111, 154},
+                {typeApantryChairs, 111, 150}, {typeApantryChairs, 111, 151}, {typeApantryChairs, 111, 152},
+                {typeApantryChairs, 111, 153}, {typeApantryChairs, 111, 154},
 
                 // Type B
-                {typeBpantryChairs, "PANTRY_TYPE_B", 111, 145}, {typeBpantryChairs, "PANTRY_TYPE_B", 111, 146}, {typeBpantryChairs, "PANTRY_TYPE_B", 111, 147},
-                {typeBpantryChairs, "PANTRY_TYPE_B", 111, 148}, {typeBpantryChairs, "PANTRY_TYPE_B", 111, 149}
+                {typeBpantryChairs, 111, 145}, {typeBpantryChairs, 111, 146}, {typeBpantryChairs, 111, 147},
+                {typeBpantryChairs, 111, 148}, {typeBpantryChairs, 111, 149}
         };
-
-
-        for (Object[] range : pantryTableRanges) {
-            List<Patch> amenityPatches =  (List<Patch>) range[0];
-            String type = (String) range[1];
-            int row = (int) range[2];
-            int column = (int) range[3];
-
-            amenityPatches.add(environment.getPatch(row, column));
-            PantryTableMapper.draw(amenityPatches, type);
-        }
-
+        
         for (Object[] range : pantryChairRanges) {
             List<Patch> amenityPatches =  (List<Patch>) range[0];
-            String type = (String) range[1];
-            int row = (int) range[2];
-            int column = (int) range[3];
-
+            int row = (int) range[1];
+            int column = (int) range[2];
             amenityPatches.add(environment.getPatch(row, column));
-            ChairMapper.draw(amenityPatches, 0, "SOUTH", type, "");
         }
 
-
-
+        ChairMapper.draw(typeApantryChairs, 0, "SOUTH","PANTRY_TYPE_A", "");
+        ChairMapper.draw(typeBpantryChairs, 0, "SOUTH","PANTRY_TYPE_B", "");
+        
         /* Director Table */
 
         List<Patch> directorTable = new ArrayList<>();
@@ -1097,6 +1058,7 @@ public class ScreenController extends Controller {
 
 
         /* TABLE 2x2 */
+        
         List<Patch> table2x2 = new ArrayList<>();
         table2x2.add(environment.getPatch(45,127));
         Table2x2Mapper.draw(table2x2);
@@ -1116,54 +1078,48 @@ public class ScreenController extends Controller {
         bottomSoloTables.add(environment.getPatch(75,94));
         SoloTableMapper.draw(bottomSoloTables, "1x8", "BOTTOM");
 
-
-
         /* Human Experience Table */
         List<Patch> humanExpTable = new ArrayList<>();
         humanExpTable.add(environment.getPatch(77,5));
         HumanExpTableMapper.draw(humanExpTable, "5x1");
-
-
+        
         /* Data Collection Table */
         List<Patch> dataCollTable = new ArrayList<>();
         dataCollTable.add(environment.getPatch(91,2));
         DataCollTableMapper.draw(dataCollTable, "1x6");
-
-
+        
         /* White Board */
 
         List<Patch> northWhiteBoard = new ArrayList<>(), southWhiteBoard = new ArrayList<>(), westWhiteBoard = new ArrayList<>(),
                     eastWhiteBoard_4 = new ArrayList<>(), eastWhiteBoard_11 = new ArrayList<>();
-
-
+        
         Object[][] whiteBoardRanges =  {
-
                 // Research Center Pillars
-                {westWhiteBoard, "WEST", "4", 96, 30}, {northWhiteBoard, "NORTH", "2", 95, 31}, {eastWhiteBoard_4, "EAST", "4", 96, 33},
-                {westWhiteBoard, "WEST", "4", 96, 52}, {northWhiteBoard, "NORTH", "2", 95, 53}, {eastWhiteBoard_4, "EAST", "4", 96, 55},
+                {westWhiteBoard, 96, 30}, {northWhiteBoard, 95, 31}, {eastWhiteBoard_4, 96, 33},
+                {westWhiteBoard, 96, 52}, {northWhiteBoard, 95, 53}, {eastWhiteBoard_4, 96, 55},
 
                 // Meeting Room
-                {eastWhiteBoard_11, "EAST", "11", 36, 1},
+                {eastWhiteBoard_11, 36, 1},
 
                 // Learning Spaces
-                {southWhiteBoard, "SOUTH", "5", 23, 26}, {southWhiteBoard, "SOUTH", "5", 23, 35},
-                {southWhiteBoard, "SOUTH", "5", 23, 47}, {southWhiteBoard, "SOUTH", "5", 23, 56},
-                {southWhiteBoard, "SOUTH", "5", 23, 68}, {southWhiteBoard, "SOUTH", "5", 23, 77},
-                {southWhiteBoard, "SOUTH", "5", 23, 89}, {southWhiteBoard, "SOUTH", "5", 23, 98},
-
+                {southWhiteBoard, 23, 26}, {southWhiteBoard, 23, 35},
+                {southWhiteBoard, 23, 47}, {southWhiteBoard, 23, 56},
+                {southWhiteBoard, 23, 68}, {southWhiteBoard, 23, 77},
+                {southWhiteBoard, 23, 89}, {southWhiteBoard, 23, 98},
         };
-
 
         for (Object[] range : whiteBoardRanges) {
             List<Patch> amenityPatches =  (List<Patch>) range[0];
-            String facing = (String) range[1];
-            String length = (String) range[2];
-            int row = (int)  range[3];
-            int column = (int) range[4];
-
+            int row = (int)  range[1];
+            int column = (int) range[2];
             amenityPatches.add(environment.getPatch(row, column));
-            WhiteboardMapper.draw(amenityPatches, facing, length);
         }
+
+        WhiteboardMapper.draw(northWhiteBoard, "NORTH", "2");
+        WhiteboardMapper.draw(southWhiteBoard, "SOUTH", "5");
+        WhiteboardMapper.draw(westWhiteBoard, "WEST", "4");
+        WhiteboardMapper.draw(eastWhiteBoard_4, "EAST", "4");
+        WhiteboardMapper.draw(eastWhiteBoard_11, "EAST", "11");
 
 
         /* Elevator */
@@ -1216,24 +1172,19 @@ public class ScreenController extends Controller {
                 {microwaveBar, 111, 135}
         };
 
-
         for (Object[] range : simpleAmenityRanges) {
             List<Patch> amenityPatches =  (List<Patch>) range[0];
             int row = (int) range[1];
             int column = (int) range[2];
-
             amenityPatches.add(environment.getPatch(row, column));
-
-            switch (amenityPatches) {
-                case List<Patch> list when list == plants -> PlantMapper.draw(amenityPatches);
-                case List<Patch> list when list == trashCans -> TrashCanMapper.draw(amenityPatches);
-                case List<Patch> list when list == pantryCabinets -> PantryCabinetMapper.draw(amenityPatches);
-                case List<Patch> list when list == coffeeMakerBar -> CoffeeMakerBarMapper.draw(amenityPatches);
-                case List<Patch> list when list == kettleBar -> KettleBarMapper.draw(amenityPatches);
-                case List<Patch> list when list == microwaveBar -> MicrowaveBarMapper.draw(amenityPatches);
-                default -> throw new IllegalStateException("Unexpected value: " + amenityPatches);
-            }
         }
+        
+        PlantMapper.draw(plants);
+        TrashCanMapper.draw(trashCans);
+        PantryCabinetMapper.draw(pantryCabinets);
+        CoffeeMakerBarMapper.draw(coffeeMakerBar);
+        KettleBarMapper.draw(kettleBar);
+        MicrowaveBarMapper.draw(microwaveBar);
 
 
         /* Sinks & Toilets */
@@ -1244,45 +1195,38 @@ public class ScreenController extends Controller {
         Object[][] sinkToiletRanges =  {
 
                 // Male Bathroom
-                {southToilets, "SOUTH", "TOILET",  3, 188}, {southToilets, "SOUTH", "TOILET",  3, 191},
-                {southToilets, "SOUTH", "TOILET",  3, 194}, {southToilets, "SOUTH", "TOILET",  3, 197},
-                {southToilets, "SOUTH", "TOILET",  3, 200}, {northSinks, "NORTH", "SINK",  18, 194},
-                {northSinks, "NORTH", "SINK",  18, 197}, {northSinks, "NORTH", "SINK",  18, 200},
+                {southToilets, 3, 188}, {southToilets, 3, 191},
+                {southToilets, 3, 194}, {southToilets, 3, 197},
+                {southToilets, 3, 200}, {northSinks, 18, 194},
+                {northSinks, 18, 197}, {northSinks, 18, 200},
 
                 // Female Bathroom
-                {northToilets, "NORTH", "TOILET",  73, 188}, {northToilets, "NORTH", "TOILET",  73, 191},
-                {northToilets, "NORTH", "TOILET",  73, 194}, {northToilets, "NORTH", "TOILET",  73, 197},
-                {northToilets, "NORTH", "TOILET",  73, 200}, {southSinks, "SOUTH", "SINK",  60, 194},
-                {southSinks, "SOUTH", "SINK",  60, 197}, {southSinks, "SOUTH", "SINK",  60, 200},
+                {northToilets, 73, 188}, {northToilets, 73, 191},
+                {northToilets, 73, 194}, {northToilets, 73, 197},
+                {northToilets, 73, 200}, {southSinks,  60, 194},
+                {southSinks, 60, 197}, {southSinks, 60, 200},
 
                 // Director Bathroom
-                {southOfficeToilets, "SOUTH", "OFFICE_TOILET",  79, 200}, {southOfficeSinks, "SOUTH", "OFFICE_SINK",  80, 197},
+                {southOfficeToilets, 79, 200}, {southOfficeSinks, 80, 197},
 
                 // Pantry
-                {southOfficeSinks, "SOUTH", "OFFICE_SINK",  111, 136},
-
-
+                {southOfficeSinks, 111, 136},
         };
 
         for (Object[] range : sinkToiletRanges) {
             List<Patch> amenityPatches =  (List<Patch>) range[0];
-            String facing = (String) range[1];
-            String type = (String) range[2];
-            int row = (int) range[3];
-            int column = (int) range[4];
-
+            int row = (int) range[1];
+            int column = (int) range[2];
             amenityPatches.add(environment.getPatch(row, column));
-
-            switch (amenityPatches) {
-                case List<Patch> list when list == southSinks || list == northSinks || list == southOfficeSinks ->
-                        SinkMapper.draw(amenityPatches, facing, type);
-                case List<Patch> list when list == southToilets || list == northToilets || list == southOfficeToilets ->
-                        ToiletMapper.draw(amenityPatches, facing, type );
-                    default -> throw new IllegalStateException("Unexpected value: " + amenityPatches);
-            }
         }
-
-
+        
+        SinkMapper.draw(southSinks, "SOUTH", "SINK");
+        SinkMapper.draw(southOfficeSinks, "SOUTH", "OFFICE_SINK");
+        SinkMapper.draw(northSinks, "NORTH", "SINK");
+        ToiletMapper.draw(southToilets, "SOUTH", "TOILET");
+        ToiletMapper.draw(southOfficeToilets, "SOUTH", "OFFICE_TOILET");
+        ToiletMapper.draw(northToilets, "NORTH", "TOILET");
+        
         /* Switches */
 
         List<Patch> southLightSwitches = new ArrayList<>(), northLightSwitches = new ArrayList<>(), westLightSwitches = new ArrayList<>(), eastLightSwitches = new ArrayList<>(),
@@ -1291,510 +1235,302 @@ public class ScreenController extends Controller {
         Object[][] switchRanges =  {
 
                 // Meeting Room
-                {southLightSwitches, "LIGHT", "SOUTH", 24, 13}, {southAirconSwitches, "AC", "SOUTH", 24, 14},
+                {southLightSwitches,24, 13}, {southAirconSwitches, 24, 14},
 
                 // Learning Spaces
-                {eastLightSwitches, "LIGHT", "EAST", 53, 23}, {eastAirconSwitches, "AC", "EAST", 53, 24},
-                {westLightSwitches, "LIGHT", "WEST", 53, 105}, {westAirconSwitches, "AC", "WEST", 54, 105},
+                {eastLightSwitches, 53, 23}, {eastAirconSwitches, 54, 23},
+                {westLightSwitches, 53, 105}, {westAirconSwitches, 54, 105},
 
                 // Control Center
-                {southLightSwitches, "LIGHT", "SOUTH", 36, 115}, {southAirconSwitches, "AC", "SOUTH", 36, 116},
+                {southLightSwitches,36, 115}, {southAirconSwitches, 36, 116},
 
                 // Data Center
-                {westLightSwitches, "LIGHT", "WEST", 53, 145}, {westAirconSwitches, "AC", "WEST", 54, 145},
+                {westLightSwitches, 53, 145}, {westAirconSwitches, 54, 145},
 
                 // Hallway
-                {eastLightSwitches, "LIGHT", "EAST", 57, 147}, {eastAirconSwitches, "AC", "EAST", 58, 147},
+                {eastLightSwitches, 57, 147}, {eastAirconSwitches, 58, 147},
 
                 // Reception
-                {southLightSwitches, "LIGHT", "SOUTH", 58, 174}, {southAirconSwitches, "AC", "SOUTH", 58, 175},
+                {southLightSwitches,58, 174}, {southAirconSwitches, 58, 175},
 
                 // Human Experience Room
-                {southLightSwitches, "LIGHT", "SOUTH", 69, 12}, {southAirconSwitches, "AC", "SOUTH", 69, 13},
+                {southLightSwitches,69, 12}, {southAirconSwitches, 69, 13},
 
                 // Data Collection Room
-                {northLightSwitches, "LIGHT", "NORTH", 95, 5}, {northAirconSwitches, "AC", "NORTH", 95, 6},
+                {northLightSwitches, 95, 5}, {northAirconSwitches, 95, 6},
 
                 // Research Center
-                {southLightSwitches, "LIGHT", "SOUTH", 89, 32}, {southAirconSwitches, "AC", "SOUTH", 89, 33},
+                {westLightSwitches, 103, 83}, {westAirconSwitches, 104, 83},
 
                 // Faculty Room
-                {southLightSwitches, "LIGHT", "SOUTH", 89, 117}, {southAirconSwitches, "AC", "SOUTH", 89, 118},
+                {southLightSwitches,89, 117}, {southAirconSwitches, 89, 118},
 
                 // Storage Room
-                {southLightSwitches, "LIGHT", "SOUTH", 91, 133}, {southAirconSwitches, "AC", "SOUTH", 91, 134},
+                {southLightSwitches,91, 133},
 
                 // Conference Room
-                {southLightSwitches, "LIGHT", "SOUTH", 91, 151}, {southAirconSwitches, "AC", "SOUTH", 91, 152},
+                {southLightSwitches,91, 151}, {southAirconSwitches, 91, 152},
 
                 // Clinic
-                {southLightSwitches, "LIGHT", "SOUTH", 78, 188}, {southAirconSwitches, "AC", "SOUTH", 78, 189},
+                {southLightSwitches,78, 188}, {southAirconSwitches, 78, 189},
 
                 // Director Room
-                {southLightSwitches, "LIGHT", "SOUTH", 90, 188}, {southAirconSwitches, "AC", "SOUTH", 90, 189},
+                {southLightSwitches,90, 188}, {southAirconSwitches, 90, 189},
 
                 // Pantry
-                {westLightSwitches, "LIGHT", "WEST", 185, 112}, {southAirconSwitches, "AC", "SOUTH", 109, 168},
+                {westLightSwitches, 112, 185}, {southAirconSwitches, 109, 168},
 
                 // Solo Rooms
-                {westLightSwitches, "LIGHT", "WEST", 72, 101}, {eastLightSwitches, "LIGHT", "EAST", 74, 85},
-                {westLightSwitches, "LIGHT", "WEST", 74, 55}, {eastLightSwitches, "LIGHT", "EAST", 72, 39},
+                {westLightSwitches, 72, 101}, {eastLightSwitches, 74, 85},
+                {westLightSwitches, 74, 55}, {eastLightSwitches, 72, 39},
 
                 // Director Bathroom
-                {eastLightSwitches, "LIGHT", "EAST", 86, 195},
-
-
-
+                {eastLightSwitches, 86, 195},
         };
 
         for (Object[] range : switchRanges) {
             List<Patch> amenityPatches =  (List<Patch>) range[0];
-            String type = (String) range[1];
-            String facing = (String) range[2];
-            int row = (int) range[3];
-            int column = (int) range[4];
-
+            int row = (int) range[1];
+            int column = (int) range[2];
             amenityPatches.add(environment.getPatch(row, column));
-            SwitchMapper.draw(amenityPatches, type, facing);
         }
 
-
-        /* Aircon */
+        SwitchMapper.draw(southLightSwitches, "LIGHT", "SOUTH");
+        SwitchMapper.draw(northLightSwitches, "LIGHT", "NORTH");
+        SwitchMapper.draw(westLightSwitches, "LIGHT", "WEST");
+        SwitchMapper.draw(eastLightSwitches, "LIGHT", "EAST");
+        SwitchMapper.draw(southAirconSwitches, "AC", "SOUTH");
+        SwitchMapper.draw(northAirconSwitches, "AC", "NORTH");
+        SwitchMapper.draw(westAirconSwitches, "AC", "WEST");
+        SwitchMapper.draw(eastAirconSwitches, "AC", "EAST");
+        
+        /* Aircons */
 
         List<Patch> aircons = new ArrayList<>();
 
         Object[][] airconRanges =  {
 
                 // Meeting Room
-                {southLightSwitches, "LIGHT", "SOUTH", 24, 13}, {southAirconSwitches, "AC", "SOUTH", 24, 14},
+                {42, 7},
 
                 // Learning Spaces
-                {eastLightSwitches, "LIGHT", "EAST", 53, 23}, {eastAirconSwitches, "AC", "EAST", 53, 24},
-                {westLightSwitches, "LIGHT", "WEST", 53, 105}, {westAirconSwitches, "AC", "WEST", 54, 105},
+                {28, 35}, {50, 25},
+                {27, 55}, {50, 48}, {50, 56},
+                {27, 78}, {47, 70},
+                {27, 99}, {47, 91},
 
                 // Control Center
-                {southLightSwitches, "LIGHT", "SOUTH", 36, 115}, {southAirconSwitches, "AC", "SOUTH", 36, 116},
+                {41, 118}, {50, 118},
 
                 // Data Center
-                {westLightSwitches, "LIGHT", "WEST", 53, 145}, {westAirconSwitches, "AC", "WEST", 54, 145},
+                {41, 132}, {41, 139},
 
                 // Hallway
-                {eastLightSwitches, "LIGHT", "EAST", 57, 147}, {eastAirconSwitches, "AC", "EAST", 58, 147},
+                {72, 22}, {72, 62}, {71, 99}, {71, 105},
+                {71, 111}, {71, 125}, {62, 147},{62, 147},
 
                 // Reception
-                {southLightSwitches, "LIGHT", "SOUTH", 58, 174}, {southAirconSwitches, "AC", "SOUTH", 58, 175},
+                {66, 179},
 
                 // Human Experience Room
-                {southLightSwitches, "LIGHT", "SOUTH", 69, 12}, {southAirconSwitches, "AC", "SOUTH", 69, 13},
+                {73, 6},
 
                 // Data Collection Room
-                {northLightSwitches, "LIGHT", "NORTH", 95, 5}, {northAirconSwitches, "AC", "NORTH", 95, 6},
+                {93, 9},
 
                 // Research Center
-                {southLightSwitches, "LIGHT", "SOUTH", 89, 32}, {southAirconSwitches, "AC", "SOUTH", 89, 33},
+                {92, 34}, {92, 40}, {97, 71}, {85, 88},
 
                 // Faculty Room
-                {southLightSwitches, "LIGHT", "SOUTH", 89, 117}, {southAirconSwitches, "AC", "SOUTH", 89, 118},
-
-                // Storage Room
-                {southLightSwitches, "LIGHT", "SOUTH", 91, 133}, {southAirconSwitches, "AC", "SOUTH", 91, 134},
+                {95, 101}, {95, 112}, {100, 122},
 
                 // Conference Room
-                {southLightSwitches, "LIGHT", "SOUTH", 91, 151}, {southAirconSwitches, "AC", "SOUTH", 91, 152},
+                {94, 149}, {94, 161},
 
                 // Clinic
-                {southLightSwitches, "LIGHT", "SOUTH", 78, 188}, {southAirconSwitches, "AC", "SOUTH", 78, 189},
+                {82, 189},
 
                 // Director Room
-                {southLightSwitches, "LIGHT", "SOUTH", 90, 188}, {southAirconSwitches, "AC", "SOUTH", 90, 189},
+                {99, 191},
 
                 // Pantry
-                {westLightSwitches, "LIGHT", "WEST", 185, 112}, {southAirconSwitches, "AC", "SOUTH", 109, 168},
-
-                // Solo Rooms
-                {westLightSwitches, "LIGHT", "WEST", 72, 101}, {eastLightSwitches, "LIGHT", "EAST", 74, 85},
-                {westLightSwitches, "LIGHT", "WEST", 74, 55}, {eastLightSwitches, "LIGHT", "EAST", 72, 39},
-
-                // Director Bathroom
-                {eastLightSwitches, "LIGHT", "EAST", 86, 195},
+                {120, 151},
         };
 
-
         for (Object[] range : airconRanges) {
-            int row = (int) range[1];
-            int column = (int) range[2];
+            int row = (int) range[0];
+            int column = (int) range[1];
 
             aircons.add(environment.getPatch(row, column));
-            AirconMapper.draw(aircons);
+
         }
-
-
-
-        aircons.add(environment.getPatch(40,7));
-        aircons.add(environment.getPatch(94,9));
-
-        // Research Center
-        aircons.add(environment.getPatch(92,34));
-        aircons.add(environment.getPatch(92,40));
-        aircons.add(environment.getPatch(97,71));
-        aircons.add(environment.getPatch(95,88));
-
-        // Faculty Room
-        aircons.add(environment.getPatch(95,101));
-        aircons.add(environment.getPatch(95,112));
-        aircons.add(environment.getPatch(100,122));
-
-        // Conference Room
-        aircons.add(environment.getPatch(94,149));
-        aircons.add(environment.getPatch(94,161));
-
-        aircons.add(environment.getPatch(119,151));
-        aircons.add(environment.getPatch(99,191));
-        aircons.add(environment.getPatch(82,189));
-        aircons.add(environment.getPatch(66,175));
-        aircons.add(environment.getPatch(39,132));
-        aircons.add(environment.getPatch(41,117));
-        aircons.add(environment.getPatch(50,117));
-        aircons.add(environment.getPatch(39,139));
-        aircons.add(environment.getPatch(27,99));
-        aircons.add(environment.getPatch(27,78));
-        aircons.add(environment.getPatch(47,70));
-        aircons.add(environment.getPatch(27,55));
-        aircons.add(environment.getPatch(50,48));
-        aircons.add(environment.getPatch(50,56));
-        aircons.add(environment.getPatch(28,35));
-        aircons.add(environment.getPatch(50,25));
-
-        aircons.add(environment.getPatch(72,21));
-        aircons.add(environment.getPatch(72,62));
-        aircons.add(environment.getPatch(72,99));
-        aircons.add(environment.getPatch(72,111));
-        aircons.add(environment.getPatch(72,125));
         AirconMapper.draw(aircons, false);
 
         /* Lights */
 
-        // SINGLE_PENDANT_LIGHT
-        List<Patch> singlePendantLights = new ArrayList<>();
+        /* Switches */
 
-        // Research Center
-        singlePendantLights.add(environment.getPatch(97,27));
-        singlePendantLights.add(environment.getPatch(103,27));
-        singlePendantLights.add(environment.getPatch(93,69));
-        singlePendantLights.add(environment.getPatch(93,76));
-        singlePendantLights.add(environment.getPatch(93,83));
-        singlePendantLights.add(environment.getPatch(93,90));
+        List<Patch> singlePendantLights = new ArrayList<>(), singleRecessedLights = new ArrayList<>(), horizontalPendantLights = new ArrayList<>(), verticalPendantLights = new ArrayList<>(),
+                    horizontalRecessedLights = new ArrayList<>(), verticalRecessedLights = new ArrayList<>(), horizontalTrackLights = new ArrayList<>(), verticalTrackLights = new ArrayList<>();
 
-        // Pantry
-        singlePendantLights.add(environment.getPatch(117,136));
-        singlePendantLights.add(environment.getPatch(120,136));
-        singlePendantLights.add(environment.getPatch(123,136));
-        singlePendantLights.add(environment.getPatch(114,184));
-        singlePendantLights.add(environment.getPatch(121,184));
+        Object[][] lightRanges =  {
 
-        // Director Room
-        singlePendantLights.add(environment.getPatch(98,198));
+                // Meeting Room
+                {horizontalTrackLights, 30, 7},
+                {verticalRecessedLights, 32, 8}, {verticalRecessedLights, 47, 8},
 
-        // Director Bathroom
-        singlePendantLights.add(environment.getPatch(82,197));
-        singlePendantLights.add(environment.getPatch(82,200));
+                // Learning Space 4
+                {horizontalTrackLights, 27, 27}, {horizontalTrackLights, 43, 27},
+                {horizontalTrackLights, 43, 35}, {horizontalTrackLights, 54, 27},
+                {verticalRecessedLights, 28, 25}, {verticalRecessedLights, 28, 40},
+                {verticalRecessedLights, 50, 33},
 
-        // Hall
-        singlePendantLights.add(environment.getPatch(75,78));
-        singlePendantLights.add(environment.getPatch(75,106));
+                // Learning Space 3
+                {horizontalTrackLights, 27, 49}, {horizontalTrackLights, 43, 48},
+                {horizontalTrackLights, 43, 56}, {horizontalTrackLights, 54, 52},
+                {verticalRecessedLights, 28, 46}, {verticalRecessedLights, 28, 58},
+                {verticalRecessedLights, 52, 54},
 
+                // Learning Space 2
+                {horizontalTrackLights, 27, 69}, {horizontalTrackLights, 43, 69},
+                {horizontalTrackLights, 43, 77}, {horizontalTrackLights, 54, 73},
+                {verticalRecessedLights, 27, 67}, {verticalRecessedLights, 27, 75},
+                {verticalRecessedLights, 52, 67}, {verticalRecessedLights, 52, 75},
+
+                // Learning Space 1
+                {horizontalTrackLights, 27, 90}, {horizontalTrackLights, 43, 90},
+                {horizontalTrackLights, 43, 98}, {horizontalTrackLights, 54, 94},
+                {verticalRecessedLights, 27, 88}, {verticalRecessedLights, 27, 96},
+                {verticalRecessedLights, 52, 88}, {verticalRecessedLights, 52, 96},
+
+                // Control Center
+                {verticalRecessedLights, 39, 109}, {verticalRecessedLights, 39, 116},
+                {verticalRecessedLights, 39, 123}, {verticalRecessedLights, 53, 109},
+                {verticalRecessedLights, 53, 123},
+
+                // Data Center
+                {verticalRecessedLights, 41, 129}, {verticalRecessedLights, 41, 136},
+                {verticalRecessedLights, 41, 143},
+
+                // Hallway
+                {verticalRecessedLights, 31, 19}, {verticalRecessedLights, 49, 19},
+                {verticalRecessedLights, 62, 4}, {verticalRecessedLights, 62, 16},
+                {verticalRecessedLights, 62, 138}, {verticalRecessedLights, 54, 150},
+                {verticalRecessedLights, 62, 158}, {verticalRecessedLights, 62, 165},
+                {verticalRecessedLights, 73, 138}, {verticalRecessedLights, 71, 165},
+                {verticalRecessedLights, 83, 138}, {verticalRecessedLights, 80, 165},
+                {verticalRecessedLights, 85, 177}, {verticalRecessedLights, 100, 177},
+                {horizontalRecessedLights, 63, 22}, {horizontalRecessedLights, 83, 22},
+                {horizontalRecessedLights, 63, 30}, {horizontalRecessedLights, 83, 30},
+                {horizontalRecessedLights, 63, 38}, {horizontalRecessedLights, 83, 38},
+                {horizontalRecessedLights, 63, 46}, {horizontalRecessedLights, 83, 46},
+                {horizontalRecessedLights, 63, 54}, {horizontalRecessedLights, 83, 54},
+                {horizontalRecessedLights, 63, 62}, {horizontalRecessedLights, 83, 62},
+                {horizontalRecessedLights, 63, 70}, {horizontalRecessedLights, 83, 70},
+                {horizontalRecessedLights, 63, 78}, {horizontalRecessedLights, 83, 78},
+                {horizontalRecessedLights, 63, 86}, {horizontalRecessedLights, 83, 86},
+                {horizontalRecessedLights, 63, 94}, {horizontalRecessedLights, 83, 94},
+                {horizontalRecessedLights, 63, 102}, {horizontalRecessedLights, 83, 102},
+                {horizontalRecessedLights, 63, 110}, {horizontalRecessedLights, 83, 110},
+                {horizontalRecessedLights, 63, 118}, {horizontalRecessedLights, 83, 118},
+                {horizontalRecessedLights, 63, 126}, {horizontalRecessedLights, 83, 126},
+                {horizontalPendantLights, 75, 62}, {horizontalPendantLights, 75, 118},
+                {verticalPendantLights, 72, 33},
+                {singlePendantLights, 75, 78}, {singlePendantLights, 75, 106},
+
+                // Reception
+                {verticalRecessedLights, 62, 172}, {verticalRecessedLights, 62, 180},
+                {verticalRecessedLights, 71, 172}, {verticalRecessedLights, 71, 180},
+                {verticalTrackLights, 66, 182},
+
+                // Human Experience Room
+                {verticalRecessedLights, 78, 6}, {verticalRecessedLights, 78, 10},
+
+                // Data Collection Room
+                {verticalRecessedLights, 93, 5}, {verticalRecessedLights, 93, 19},
+
+                // Research Center
+                {verticalRecessedLights, 92, 32}, {verticalRecessedLights, 92, 38},
+                {verticalRecessedLights, 92, 44}, {verticalRecessedLights, 92, 50},
+                {verticalRecessedLights, 92, 56}, {verticalRecessedLights, 92, 62},
+                {verticalRecessedLights, 92, 68}, {verticalRecessedLights, 92, 74},
+                {verticalRecessedLights, 92, 80}, {verticalRecessedLights, 92, 86},
+                {verticalRecessedLights, 92, 92},
+                {verticalRecessedLights, 97, 62}, {verticalRecessedLights, 97, 68},
+                {verticalRecessedLights, 97, 74}, {verticalRecessedLights, 97, 80},
+                {verticalRecessedLights, 97, 86}, {verticalRecessedLights, 97, 92},
+                {verticalPendantLights, 100, 41}, {verticalPendantLights, 102, 41},
+                {verticalPendantLights, 100, 49}, {verticalPendantLights, 102, 49},
+                {verticalPendantLights, 100, 63}, {verticalPendantLights, 102, 63},
+                {verticalPendantLights, 100, 71}, {verticalPendantLights, 102, 71},
+                {verticalPendantLights, 100, 79}, {verticalPendantLights, 102, 79},
+                {verticalPendantLights, 100, 93}, {verticalPendantLights, 102, 93},
+                {singlePendantLights, 97, 27}, {singlePendantLights, 103, 27},
+                {singlePendantLights, 93, 72}, {singlePendantLights, 93, 78},
+                {singlePendantLights, 93, 84}, {singlePendantLights, 93, 90},
+
+                // Faculty Room
+                {horizontalTrackLights, 93, 121}, {horizontalTrackLights, 104, 111},
+                {horizontalTrackLights, 104, 121}, {verticalRecessedLights, 92, 102},
+                {verticalRecessedLights, 92, 107}, {verticalRecessedLights, 92, 114},
+                {verticalRecessedLights, 99, 102}, {verticalRecessedLights, 99, 107},
+                {horizontalRecessedLights, 94, 126}, {horizontalRecessedLights, 103, 126},
+                {horizontalPendantLights, 98, 111}, {horizontalPendantLights, 98, 113},
+                {horizontalPendantLights, 99, 111}, {horizontalPendantLights, 99, 113},
+
+                // Storage Room
+                {verticalRecessedLights, 95, 134}, {verticalRecessedLights, 103, 134},
+
+                // Conference Room
+                {verticalTrackLights, 96, 144}, {verticalTrackLights, 96, 167},
+                {verticalRecessedLights, 95, 147}, {verticalRecessedLights, 95, 158},
+                {horizontalPendantLights, 99, 153}, {horizontalPendantLights, 99, 155},
+                {horizontalPendantLights, 99, 157},
+
+                // Clinic
+                {verticalRecessedLights, 82, 187}, {verticalRecessedLights, 82, 192},
+
+                // Director Room
+                {verticalRecessedLights, 93, 189}, {verticalRecessedLights, 93, 194},
+                {verticalRecessedLights, 104, 189}, {verticalRecessedLights, 109, 194},
+                {verticalRecessedLights, 111, 189}, {horizontalTrackLights, 112, 190},
+                {horizontalPendantLights, 107, 191}, {singlePendantLights, 98, 198},
+
+                // Director Bathroom
+                {singlePendantLights, 83, 197}, {singlePendantLights, 83, 200},
+
+                // Pantry
+                {singlePendantLights, 114, 184}, {singlePendantLights, 122, 184},
+                {singlePendantLights, 114, 137}, {singlePendantLights, 118, 137},
+                {singlePendantLights, 122, 137}, {horizontalRecessedLights, 114, 146},
+                {horizontalRecessedLights, 114, 158}, {horizontalRecessedLights, 114, 170},
+                {horizontalRecessedLights, 123, 161}, {horizontalRecessedLights, 123, 170},
+                {verticalTrackLights, 115, 149}, {verticalTrackLights, 115, 155},
+                {verticalTrackLights, 115, 167}, {verticalTrackLights, 115, 178},
+                {horizontalTrackLights, 113, 136}, {horizontalTrackLights, 118, 151},
+                {verticalRecessedLights, 122, 138}, {verticalRecessedLights, 122, 143},
+
+                // Solo Rooms
+                {singleRecessedLights, 72, 42}, {singleRecessedLights, 74, 52},
+                {singleRecessedLights, 72, 98}, {singleRecessedLights, 74, 88},
+
+
+        };
+
+        for (Object[] range : lightRanges) {
+            List<Patch> amenityPatches = (List<Patch>) range[0];
+            int row = (int) range[1];
+            int column = (int) range[2];
+            amenityPatches.add(environment.getPatch(row, column));
+        }
+        
         LightMapper.draw(singlePendantLights, "SINGLE_PENDANT_LIGHT", "");
-
-
-        //  HORIZONTAL LINEAR_PENDANT_LIGHT
-        List<Patch> horizontalLinearPendantLights = new ArrayList<>();
-
-        // Data Coll Room
-        horizontalLinearPendantLights.add(environment.getPatch(91,5));
-
-        // Faculty Room
-        horizontalLinearPendantLights.add(environment.getPatch(97,112));
-        horizontalLinearPendantLights.add(environment.getPatch(98,112));
-
-        // Conference Room
-        horizontalLinearPendantLights.add(environment.getPatch(99,153));
-        horizontalLinearPendantLights.add(environment.getPatch(99,155));
-        horizontalLinearPendantLights.add(environment.getPatch(99,157));
-
-        // Director Room
-        horizontalLinearPendantLights.add(environment.getPatch(107,191));
-
-        // MESA
-        horizontalLinearPendantLights.add(environment.getPatch(68,146));
-        horizontalLinearPendantLights.add(environment.getPatch(79,146));
-        horizontalLinearPendantLights.add(environment.getPatch(68,157));
-        horizontalLinearPendantLights.add(environment.getPatch(79,157));
-
-        // Hall
-        horizontalLinearPendantLights.add(environment.getPatch(75,62));
-        horizontalLinearPendantLights.add(environment.getPatch(75,118));
-
-
-
-        LightMapper.draw(horizontalLinearPendantLights, "LINEAR_PENDANT_LIGHT", "HORIZONTAL");
-
-        //  VERTICAL LINEAR_PENDANT_LIGHT
-        List<Patch> verticalLinearPendantLights = new ArrayList<>();
-
-        // Hall
-        verticalLinearPendantLights.add(environment.getPatch(73,33));
-        verticalLinearPendantLights.add(environment.getPatch(75,33));
-
-        // Research Center
-        verticalLinearPendantLights.add(environment.getPatch(99,36));
-        verticalLinearPendantLights.add(environment.getPatch(101,36));
-        verticalLinearPendantLights.add(environment.getPatch(99,44));
-        verticalLinearPendantLights.add(environment.getPatch(101,44));
-        verticalLinearPendantLights.add(environment.getPatch(99,58));
-        verticalLinearPendantLights.add(environment.getPatch(101,58));
-        verticalLinearPendantLights.add(environment.getPatch(99,66));
-        verticalLinearPendantLights.add(environment.getPatch(101,66));
-        verticalLinearPendantLights.add(environment.getPatch(99,74));
-        verticalLinearPendantLights.add(environment.getPatch(101,74));
-        verticalLinearPendantLights.add(environment.getPatch(99,88));
-        verticalLinearPendantLights.add(environment.getPatch(101,88));
-
-        LightMapper.draw(verticalLinearPendantLights, "LINEAR_PENDANT_LIGHT", "VERTICAL");
-
-        //  HORIZONTAL RECESSED_LINEAR_LIGHT
-        List<Patch> horizontalRecessedLinearLights = new ArrayList<>();
-
-        // Pantry
-        horizontalRecessedLinearLights.add(environment.getPatch(114,147));
-        horizontalRecessedLinearLights.add(environment.getPatch(114,158));
-        horizontalRecessedLinearLights.add(environment.getPatch(114,170));
-        horizontalRecessedLinearLights.add(environment.getPatch(123,161));
-        horizontalRecessedLinearLights.add(environment.getPatch(123,170));
-
-        // Hall
-        horizontalRecessedLinearLights.add(environment.getPatch(63,22));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,30));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,38));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,46));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,54));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,62));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,70));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,78));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,86));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,94));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,102));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,110));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,118));
-        horizontalRecessedLinearLights.add(environment.getPatch(63,126));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,22));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,30));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,38));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,46));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,54));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,62));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,70));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,78));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,86));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,94));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,102));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,110));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,118));
-        horizontalRecessedLinearLights.add(environment.getPatch(83,126));
-
-        LightMapper.draw(horizontalRecessedLinearLights, "RECESSED_LINEAR_LIGHT", "HORIZONTAL");
-
-
-        //  VERTICAL RECESSED_LINEAR_LIGHT
-        List<Patch> verticalRecessedLinearLights = new ArrayList<>();
-
-        // MeetingRoom
-        verticalRecessedLinearLights.add(environment.getPatch(31,8));
-        verticalRecessedLinearLights.add(environment.getPatch(46,8));
-
-        // HumanExpRoom
-        verticalRecessedLinearLights.add(environment.getPatch(78,6));
-        verticalRecessedLinearLights.add(environment.getPatch(78,10));
-
-        // Data Coll Room
-        verticalRecessedLinearLights.add(environment.getPatch(93,5));
-
-        // Research Center
-        verticalRecessedLinearLights.add(environment.getPatch(92,33));
-        verticalRecessedLinearLights.add(environment.getPatch(92,39));
-        verticalRecessedLinearLights.add(environment.getPatch(92,45));
-        verticalRecessedLinearLights.add(environment.getPatch(92,51));
-        verticalRecessedLinearLights.add(environment.getPatch(92,64));
-        verticalRecessedLinearLights.add(environment.getPatch(92,71));
-        verticalRecessedLinearLights.add(environment.getPatch(92,78));
-        verticalRecessedLinearLights.add(environment.getPatch(92,85));
-        verticalRecessedLinearLights.add(environment.getPatch(92,92));
-        verticalRecessedLinearLights.add(environment.getPatch(97,39));
-        verticalRecessedLinearLights.add(environment.getPatch(97,46));
-        verticalRecessedLinearLights.add(environment.getPatch(97,70));
-        verticalRecessedLinearLights.add(environment.getPatch(97,78));
-        verticalRecessedLinearLights.add(environment.getPatch(97,85));
-        verticalRecessedLinearLights.add(environment.getPatch(97,92));
-
-        // Faculty Room
-        verticalRecessedLinearLights.add(environment.getPatch(92,102));
-        verticalRecessedLinearLights.add(environment.getPatch(92,107));
-        verticalRecessedLinearLights.add(environment.getPatch(92,114));
-        verticalRecessedLinearLights.add(environment.getPatch(98,107));
-        verticalRecessedLinearLights.add(environment.getPatch(98,114));
-
-        // Storage Room
-        verticalRecessedLinearLights.add(environment.getPatch(95,134));
-        verticalRecessedLinearLights.add(environment.getPatch(103,134));
-
-        // Conference Room
-        verticalRecessedLinearLights.add(environment.getPatch(95,158));
-
-        // Director Room
-        verticalRecessedLinearLights.add(environment.getPatch(93,189));
-        verticalRecessedLinearLights.add(environment.getPatch(104,189));
-        verticalRecessedLinearLights.add(environment.getPatch(111,189));
-        verticalRecessedLinearLights.add(environment.getPatch(93,194));
-        verticalRecessedLinearLights.add(environment.getPatch(109,194));
-
-        // Clinic
-        verticalRecessedLinearLights.add(environment.getPatch(82,187));
-        verticalRecessedLinearLights.add(environment.getPatch(82,192));
-
-        // Reception
-        verticalRecessedLinearLights.add(environment.getPatch(62,172));
-        verticalRecessedLinearLights.add(environment.getPatch(71,172));
-        verticalRecessedLinearLights.add(environment.getPatch(62,179));
-        verticalRecessedLinearLights.add(environment.getPatch(71,179));
-
-        // Data Center
-        verticalRecessedLinearLights.add(environment.getPatch(39,129));
-        verticalRecessedLinearLights.add(environment.getPatch(39,136));
-        verticalRecessedLinearLights.add(environment.getPatch(39,143));
-
-        // Control Center
-        verticalRecessedLinearLights.add(environment.getPatch(39,109));
-        verticalRecessedLinearLights.add(environment.getPatch(52,109));
-        verticalRecessedLinearLights.add(environment.getPatch(39,116));
-        verticalRecessedLinearLights.add(environment.getPatch(39,123));
-        verticalRecessedLinearLights.add(environment.getPatch(52,123));
-
-        // Learning Space 1
-        verticalRecessedLinearLights.add(environment.getPatch(27,88));
-        verticalRecessedLinearLights.add(environment.getPatch(52,88));
-        verticalRecessedLinearLights.add(environment.getPatch(27,96));
-        verticalRecessedLinearLights.add(environment.getPatch(52,96));
-
-        // Learning Space 2
-        verticalRecessedLinearLights.add(environment.getPatch(27,67));
-        verticalRecessedLinearLights.add(environment.getPatch(52,67));
-        verticalRecessedLinearLights.add(environment.getPatch(27,75));
-        verticalRecessedLinearLights.add(environment.getPatch(52,75));
-
-        // Learning Space 3
-        verticalRecessedLinearLights.add(environment.getPatch(28,46));
-        verticalRecessedLinearLights.add(environment.getPatch(28,58));
-        verticalRecessedLinearLights.add(environment.getPatch(52,54));
-
-        // Learning Space 4
-        verticalRecessedLinearLights.add(environment.getPatch(28,25));
-        verticalRecessedLinearLights.add(environment.getPatch(28,40));
-        verticalRecessedLinearLights.add(environment.getPatch(50,33));
-
-        // Hall
-        verticalRecessedLinearLights.add(environment.getPatch(31,19));
-        verticalRecessedLinearLights.add(environment.getPatch(49,19));
-        verticalRecessedLinearLights.add(environment.getPatch(62,4));
-        verticalRecessedLinearLights.add(environment.getPatch(62,16));
-        verticalRecessedLinearLights.add(environment.getPatch(54,149));
-        verticalRecessedLinearLights.add(environment.getPatch(62,138));
-        verticalRecessedLinearLights.add(environment.getPatch(62,158));
-        verticalRecessedLinearLights.add(environment.getPatch(62,166));
-        verticalRecessedLinearLights.add(environment.getPatch(71,138));
-        verticalRecessedLinearLights.add(environment.getPatch(71,146));
-        verticalRecessedLinearLights.add(environment.getPatch(71,158));
-        verticalRecessedLinearLights.add(environment.getPatch(71,166));
-        verticalRecessedLinearLights.add(environment.getPatch(80,138));
-        verticalRecessedLinearLights.add(environment.getPatch(80,146));
-        verticalRecessedLinearLights.add(environment.getPatch(80,158));
-        verticalRecessedLinearLights.add(environment.getPatch(80,166));
-
-        LightMapper.draw(verticalRecessedLinearLights, "RECESSED_LINEAR_LIGHT", "VERTICAL");
-
-
-        //  HORIZONTAL TRACK_LIGHT
-        List<Patch> horizontalTrackLights = new ArrayList<>();
-
-        // Meeting Room
-        horizontalTrackLights.add(environment.getPatch(29,7));
-
-        // Research Center
-        horizontalTrackLights.add(environment.getPatch(95,34));
-        horizontalTrackLights.add(environment.getPatch(95,48));
-        horizontalTrackLights.add(environment.getPatch(95,59));
-        horizontalTrackLights.add(environment.getPatch(95,75));
-        horizontalTrackLights.add(environment.getPatch(95,91));
-
-        // Faculty Room
-        horizontalTrackLights.add(environment.getPatch(93,121));
-        horizontalTrackLights.add(environment.getPatch(102,111));
-        horizontalTrackLights.add(environment.getPatch(102,121));
-
-        // Pantry
-        horizontalTrackLights.add(environment.getPatch(118,151));
-        horizontalTrackLights.add(environment.getPatch(114,135));
-
-        // Director Room
-        horizontalTrackLights.add(environment.getPatch(112,190));
-
-        // Learning Space 1
-        horizontalTrackLights.add(environment.getPatch(27,90));
-        horizontalTrackLights.add(environment.getPatch(43,90));
-        horizontalTrackLights.add(environment.getPatch(43,98));
-        horizontalTrackLights.add(environment.getPatch(54,94));
-
-
-        // Learning Space 2
-        horizontalTrackLights.add(environment.getPatch(27,69));
-        horizontalTrackLights.add(environment.getPatch(43,69));
-        horizontalTrackLights.add(environment.getPatch(43,77));
-        horizontalTrackLights.add(environment.getPatch(54,73));
-
-
-        // Learning Space 3
-        horizontalTrackLights.add(environment.getPatch(27,49));
-        horizontalTrackLights.add(environment.getPatch(43,48));
-        horizontalTrackLights.add(environment.getPatch(54,52));
-
-        horizontalTrackLights.add(environment.getPatch(43,56));
-
-        // Learning Space 4
-        horizontalTrackLights.add(environment.getPatch(27,27));
-        horizontalTrackLights.add(environment.getPatch(43,27));
-        horizontalTrackLights.add(environment.getPatch(54,27));
-        horizontalTrackLights.add(environment.getPatch(43,35));
-
-
+        LightMapper.draw(singleRecessedLights, "SINGLE_RECESSED_LIGHT", "");
+        LightMapper.draw(horizontalPendantLights, "LINEAR_PENDANT_LIGHT", "HORIZONTAL");
+        LightMapper.draw(verticalPendantLights, "LINEAR_PENDANT_LIGHT", "VERTICAL");
+        LightMapper.draw(horizontalRecessedLights, "RECESSED_LINEAR_LIGHT", "HORIZONTAL");
+        LightMapper.draw(verticalRecessedLights, "RECESSED_LINEAR_LIGHT", "VERTICAL");
         LightMapper.draw(horizontalTrackLights, "TRACK_LIGHT", "HORIZONTAL");
-
-
-
-        /* VERTICAL TRACK_LIGHT */
-
-        List<Patch> verticalTrackLights = new ArrayList<>();
-
-        // Conference Room
-        verticalTrackLights.add(environment.getPatch(96,144));
-        verticalTrackLights.add(environment.getPatch(96,167));
-
-        // Pantry
-        verticalTrackLights.add(environment.getPatch(116,149));
-        verticalTrackLights.add(environment.getPatch(116,155));
-        verticalTrackLights.add(environment.getPatch(116,167));
-        verticalTrackLights.add(environment.getPatch(116,178));
-
-        // Reception
-        verticalTrackLights.add(environment.getPatch(66,180));
-
         LightMapper.draw(verticalTrackLights, "TRACK_LIGHT", "VERTICAL");
 
 
@@ -2433,20 +2169,20 @@ public class ScreenController extends Controller {
         Object[][] learningTableRanges =  {
 
                 // Learning Space 1
-                {learningTables, "HORIZONTAL", 84, 129}, {learningTables, "HORIZONTAL", 84, 138},
-                {learningTables, "HORIZONTAL", 98, 129}, {learningTables, "HORIZONTAL", 98, 138},
+                {84, 129}, {84, 138},
+                {98, 129}, {98, 138},
 
                 // Learning Space 2
-                {learningTables, "HORIZONTAL", 84, 108}, {learningTables, "HORIZONTAL", 84, 117},
-                {learningTables, "HORIZONTAL", 98, 108}, {learningTables, "HORIZONTAL", 98, 117},
+                {84, 108}, {84, 117},
+                {98, 108}, {98, 117},
 
                 // Learning Space 3
-                {learningTables, "HORIZONTAL", 84, 87}, {learningTables, "HORIZONTAL", 84, 96},
-                {learningTables, "HORIZONTAL", 98, 87}, {learningTables, "HORIZONTAL", 98, 96},
+                {84, 87}, {84, 96},
+                {98, 87}, {98, 96},
 
                 // Learning Space 4
-                {learningTables, "HORIZONTAL", 84, 66}, {learningTables, "HORIZONTAL", 84, 75},
-                {learningTables, "HORIZONTAL", 98, 66}, {learningTables, "HORIZONTAL", 98, 75}
+                {84, 66}, {84, 75},
+                {98, 66}, {98, 75}
         };
 
 

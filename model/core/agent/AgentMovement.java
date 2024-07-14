@@ -1120,8 +1120,12 @@ public class AgentMovement {
                 });
 
                 HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+                Set<Switch> uniqueSwitch = new HashSet<>();
                 for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
-                    sortedDistances.put(aa.getKey(), aa.getValue());
+                    Switch switches = ((Switch) aa.getKey().getParent());
+                    if (uniqueSwitch.add(switches)) {
+                        sortedDistances.put(aa.getKey(), aa.getValue());
+                    }
                 }
 
                 if (!sortedDistances.isEmpty()) {
@@ -1168,8 +1172,12 @@ public class AgentMovement {
             });
 
             HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+            Set<Switch> uniqueSwitch = new HashSet<>();
             for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
-                sortedDistances.put(aa.getKey(), aa.getValue());
+                Switch switches = ((Switch) aa.getKey().getParent());
+                if (uniqueSwitch.add(switches)) {
+                    sortedDistances.put(aa.getKey(), aa.getValue());
+                }
             }
 
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {

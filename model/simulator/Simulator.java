@@ -4254,6 +4254,7 @@ public class Simulator {
         int count = 0;
         for (Aircon aircon : environment.getAircons()) {
             if (aircon.isTurnedOn()) {
+                System.out.println("Graphic Index: " + aircon.getAirconGraphic());
                 count++;
             }
         }
