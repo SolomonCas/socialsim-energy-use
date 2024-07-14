@@ -25,11 +25,11 @@ public class SinkMapper extends AmenityMapper {
             patch.setAmenityBlock(amenityBlock);
 
             switch (type) {
-                case "Sink" -> {
+                case "SINK" -> {
                     Sink sinkToAdd = Sink.SinkFactory.create(amenityBlocks, true, facing);
                     Main.simulator.getEnvironment().getSinks().add(sinkToAdd);
                 }
-                case "OfficeSink" -> {
+                case "OFFICE_SINK" -> {
                     OfficeSink officeSinkToAdd = OfficeSink.OfficeSinkFactory.create(amenityBlocks, true, facing);
                     Main.simulator.getEnvironment().getOfficeSinks().add(officeSinkToAdd);
                 }

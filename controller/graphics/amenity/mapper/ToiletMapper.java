@@ -33,11 +33,11 @@ public class ToiletMapper extends AmenityMapper {
 
 
             switch (type) {
-                case "Toilet" -> {
+                case "TOILET" -> {
                     Toilet toiletToAdd = Toilet.ToiletFactory.create(amenityBlocks, true, facing);
                     Main.simulator.getEnvironment().getToilets().add(toiletToAdd);
                 }
-                case "OfficeToilet" -> {
+                case "OFFICE_TOILET" -> {
                     OfficeToilet officeToiletToAdd = OfficeToilet.OfficeToiletFactory.create(amenityBlocks, true, facing);
                     Main.simulator.getEnvironment().getOfficeToilets().add(officeToiletToAdd);
                 }
