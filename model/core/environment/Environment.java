@@ -1820,11 +1820,11 @@ public class Environment extends BaseObject implements Serializable {
                     String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimFloor") && !isLightOn){
+                    if (variation.equals("dimHallway") && !isLightOn){
                         patchField.setVariation("");
                     }
                     else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimFloor");
+                        patchField.setVariation("dimHallway");
                     }
 
                     simulator.getEnvironment().getFloors().remove(patchField);

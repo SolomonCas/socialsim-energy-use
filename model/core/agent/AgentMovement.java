@@ -980,7 +980,7 @@ public class AgentMovement {
                     if (amenity.getType().equals("AC")) {
                         for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
                             // get switches are in the same Patchfield as from the AC
-                            if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                            if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString()) && attractor.getPatch().getPatchField().getValue().equals(airconAttractor.getPatch().getPatchField().getValue())) {
                                 // get the distance between the switch and the agent
                                 // the assumption is that the switch might be near the agent
                                 double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());
@@ -1000,8 +1000,12 @@ public class AgentMovement {
                 });
 
                 HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+                Set<Switch> uniqueSwitch = new HashSet<>();
                 for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
-                    sortedDistances.put(aa.getKey(), aa.getValue());
+                    Switch switches = ((Switch) aa.getKey().getParent());
+                    if (uniqueSwitch.add(switches)) {
+                        sortedDistances.put(aa.getKey(), aa.getValue());
+                    }
                 }
 
                 if (!sortedDistances.isEmpty()) {
@@ -1048,8 +1052,12 @@ public class AgentMovement {
             });
 
             HashMap<Amenity.AmenityBlock, Double> sortedDistances = new LinkedHashMap<Amenity.AmenityBlock, Double>();
+            Set<Switch> uniqueSwitch = new HashSet<>();
             for (Map.Entry<Amenity.AmenityBlock, Double> aa : list) {
-                sortedDistances.put(aa.getKey(), aa.getValue());
+                Switch switches = ((Switch) aa.getKey().getParent());
+                if (uniqueSwitch.add(switches)) {
+                    sortedDistances.put(aa.getKey(), aa.getValue());
+                }
             }
 
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistances.entrySet()) {
@@ -1092,7 +1100,7 @@ public class AgentMovement {
                     if (amenity.getType().equals("LIGHT")) {
                         for (Amenity.AmenityBlock attractor : amenity.getAttractors()) {
                             // get switches are in the same Patchfield as from the LIGHT
-                            if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                            if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.toString()) && attractor.getPatch().getPatchField().getValue().equals(lightAttractor.getPatch().getPatchField().getValue())) {
                                 // get the distance between the switch and the agent
                                 // the assumption is that the switch might be near the agent
                                 double distanceToAttractor = Coordinates.distance(this.currentPatch, attractor.getPatch());

@@ -1355,7 +1355,7 @@ public class ScreenController extends Controller {
         aircons.add(environment.getPatch(72,99));
         aircons.add(environment.getPatch(72,111));
         aircons.add(environment.getPatch(72,125));
-        AirconMapper.draw(aircons);
+        AirconMapper.draw(aircons, false);
 
         /* Lights */
 

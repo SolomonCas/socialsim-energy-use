@@ -13,8 +13,6 @@ import com.socialsim.controller.controls.ScreenController;
 import com.socialsim.model.core.agent.*;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
-import com.socialsim.model.core.environment.patchfield.Bathroom;
-import com.socialsim.model.core.environment.patchfield.Floor;
 import com.socialsim.model.core.environment.patchfield.PatchField;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
@@ -545,7 +543,7 @@ public class Simulator {
                 }
 
                 if (agent.getType() == Agent.Type.MAINTENANCE &&
-                        time.getTime().equals(LocalTime.of(16,0))) {
+                        time.getTime().equals(LocalTime.of(10,0))) {
                     agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().add(0, agent.getAgentMovement().getRoutePlan().addUrgentRoute("OPEN_HALLWAY_LIGHTS", agent, environment));
                     agent.getAgentMovement().setCurrentState(0);
                     agent.getAgentMovement().setStateIndex(0);
@@ -2128,12 +2126,14 @@ public class Simulator {
                 else {
                     if (action.getName() == Action.Name.TURN_OFF_AC) {
                         agentMovement.getAirconToChange().setOn(false);
+                        agentMovement.getAirconToChange().getAirconGraphic().change();
                         currentAirconTurnOffCount++;
                         currentAirconCount--;
                     }
                     else if (action.getName() == Action.Name.TURN_ON_AC) {
                         agentMovement.getAirconToChange().setOn(true);
                         agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
+                        agentMovement.getAirconToChange().getAirconGraphic().change();
                         currentAirconTurnOnCount++;
                         currentAirconCount++;
                     }
@@ -2697,6 +2697,7 @@ public class Simulator {
                                 else {
                                     if (action.getName() == Action.Name.TURN_OFF_AC) {
                                         agentMovement.getAirconToChange().setOn(false);
+                                        agentMovement.getAirconToChange().getAirconGraphic().change();
                                         currentAirconCount--;
                                         currentAirconTurnOffCount++;
                                     }
@@ -3277,6 +3278,7 @@ public class Simulator {
                                 else {
                                     if (action.getName() == Action.Name.TURN_OFF_AC) {
                                         agentMovement.getAirconToChange().setOn(false);
+                                        agentMovement.getAirconToChange().getAirconGraphic().change();
                                         currentAirconCount--;
                                         currentAirconTurnOffCount++;
 

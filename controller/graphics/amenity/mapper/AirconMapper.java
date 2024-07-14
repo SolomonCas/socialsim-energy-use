@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AirconMapper extends AmenityMapper {
 
-    public static void draw(List<Patch> patches) {
+    public static void draw(List<Patch> patches, boolean isOn) {
         for (Patch patch : patches) {
             List<Amenity.AmenityBlock> amenityBlocks = new ArrayList<>();
             int origPatchRow = patch.getMatrixPosition().getRow();
@@ -37,7 +37,7 @@ public class AirconMapper extends AmenityMapper {
 
             List<Aircon> aircons = Main.simulator.getEnvironment().getAircons();
             Aircon airconToAdd;
-            airconToAdd = Aircon.AirconFactory.create(amenityBlocks, true);
+            airconToAdd = Aircon.AirconFactory.create(amenityBlocks, true, isOn);
             aircons.add(airconToAdd);
 
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));

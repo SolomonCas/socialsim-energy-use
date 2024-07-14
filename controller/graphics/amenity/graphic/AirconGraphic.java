@@ -12,12 +12,18 @@ public class AirconGraphic extends AmenityGraphic {
     private static final int NORMAL_ROW_OFFSET = 0;
     private static final int NORMAL_COLUMN_OFFSET = 0;
 
+    Aircon aircon;
+    boolean isTurnedOn;
+
 
 
     /***** CONSTRUCTOR *****/
 
     public AirconGraphic(Aircon aircon, boolean isTurnedOn) {
         super(aircon, ROW_SPAN, COLUMN_SPAN, NORMAL_ROW_OFFSET, NORMAL_COLUMN_OFFSET);
+
+        this.aircon = aircon;
+        this.isTurnedOn = isTurnedOn;
 
         if (!isTurnedOn) {
             this.graphicIndex = 0;
@@ -26,6 +32,15 @@ public class AirconGraphic extends AmenityGraphic {
         }
 
 
+    }
+
+    public void change() {
+        if (aircon.isTurnedOn()) {
+            this.graphicIndex = 1;
+        }
+        else {
+            this.graphicIndex = 0;
+        }
     }
 
 }

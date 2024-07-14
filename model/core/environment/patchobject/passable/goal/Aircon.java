@@ -46,6 +46,10 @@ public class Aircon extends Goal {
         return isTurnedOn;
     }
 
+    public AirconGraphic getAirconGraphic() {
+        return airconGraphic;
+    }
+
     public boolean isInActiveCycle() {
         return isInActiveCycle;
     }
