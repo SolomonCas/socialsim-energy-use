@@ -4244,14 +4244,14 @@ public class Simulator {
         }
 
         for (Aircon aircon : environment.getAircons()) {
-            if (aircon.isOn() && !aircon.isInActiveCycle()) {
+            if (aircon.isTurnedOn() && !aircon.isInActiveCycle()) {
                 activeAirConCount++;
             }
         }
 
         int count = 0;
         for (Aircon aircon : environment.getAircons()) {
-            if (aircon.isOn()) {
+            if (aircon.isTurnedOn()) {
                 count++;
             }
         }

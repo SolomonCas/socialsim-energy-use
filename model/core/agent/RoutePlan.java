@@ -504,11 +504,11 @@ public class RoutePlan {
             case "FIX_THERMAL_COMFORT" -> {
                 // TODO: MAINTENANCE THERMAL COMFORT
                 actions = new ArrayList<>();
-                if  (!agent.getAgentMovement().getAirconToChange().isOn())
+                if  (!agent.getAgentMovement().getAirconToChange().isTurnedOn())
                     actions.add(new Action(Action.Name.TURN_ON_AC));
-                else if (agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isOn())
+                else if (agent.getAgentMovement().isToCool() && agent.getAgentMovement().getAirconToChange().isTurnedOn())
                     actions.add(new Action(Action.Name.SET_AC_TO_COOL));
-                else if (agent.getAgentMovement().isToHeat() && agent.getAgentMovement().getAirconToChange().isOn())
+                else if (agent.getAgentMovement().isToHeat() && agent.getAgentMovement().getAirconToChange().isTurnedOn())
                     actions.add(new Action(Action.Name.SET_AC_TO_WARM));
 
                 officeState = new State(State.Name.FIXING_THERMAL_COMFORT, this, agent, actions);
