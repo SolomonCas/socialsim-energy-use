@@ -1124,14 +1124,14 @@ public class Environment extends BaseObject implements Serializable {
 //            System.out.println("close agent count: "+closeAgentCount);
             int coolingTicks = 0;
             //IF TEMP IS GOING HIGHER OR HEATING
-
+            //System.out.println("old aircon active cycle? "+aircon.isInActiveCycle());
             if(aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.isTurnedOn()){
                 if(closeAgentCount < 4){
                     aircon.setInActiveCycle(false);
                     coolingTicks = 24;
                 }
                 else{
-                    aircon.setInActiveCycle(true);
+                    aircon.setInActiveCycle(false);
                     coolingTicks = 20;
                 }
                 System.out.println("is aircon active cycle: "+ aircon.isInActiveCycle());
@@ -1142,20 +1142,20 @@ public class Environment extends BaseObject implements Serializable {
                     newTemp++;
 
                     aircon.setRoomTemp(newTemp);
-                    aircon.setCoolingTimeInTicks(24);
                 }
             }//TEMP IS LOWERING OR COOLING
             else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()){
                 if(closeAgentCount < 4)
                 {
-                    aircon.setInActiveCycle(false);
+                    aircon.setInActiveCycle(true);
                     coolingTicks = 20;
                 }
                 else{
                     aircon.setInActiveCycle(true);
                     coolingTicks = 42;
                 }
-                System.out.println("is aircon active cycle: "+ aircon.isInActiveCycle());
+                System.out.println("Aircon temp: "+aircon.getAirconTemp() + " room Temp: "+ aircon.getRoomTemp());
+                System.out.println("COOLING is aircon active cycle: "+ aircon.isInActiveCycle());
                 //THIS MEANS THAT 1 MINUTES OR GREATER HAS PASSED
                 if(coolingTimer(aircon, coolingTicks)){
                     System.out.println("COOLING ");
@@ -1163,9 +1163,12 @@ public class Environment extends BaseObject implements Serializable {
                     newTemp --;
 
                     aircon.setRoomTemp(newTemp);
-                    aircon.setCoolingTimeInTicks(12);
                 }
             }
+            if(aircon.getAirconTemp() == aircon.getRoomTemp()){
+                aircon.setInActiveCycle(false);
+            }
+            //System.out.println("new aircon active cycle? "+aircon.isInActiveCycle());
         }
     }
 
@@ -1174,9 +1177,9 @@ public class Environment extends BaseObject implements Serializable {
             aircon.setCoolingTimeInTicks(duration); // set cool down duration
             return true;
         }
-        if(aircon.isInActiveCycle()){
-            Simulator.setTotalWattageCount(Simulator.getAirconWattageActive());
-        }
+//        if(aircon.isInActiveCycle()){
+//            Simulator.setTotalWattageCount(simulator.getTotalWattageCount() + ((Simulator.getAirconWattageActive() * 5) / 3600));
+//        }
         aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - 1);
         return false;
     }

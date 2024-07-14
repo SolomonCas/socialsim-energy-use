@@ -2128,14 +2128,14 @@ public class Simulator {
                         agentMovement.getAirconToChange().setOn(false);
                         agentMovement.getAirconToChange().getAirconGraphic().change();
                         currentAirconTurnOffCount++;
-                        currentAirconCount--;
+                        //currentAirconCount--;
                     }
                     else if (action.getName() == Action.Name.TURN_ON_AC) {
                         agentMovement.getAirconToChange().setOn(true);
                         agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
                         agentMovement.getAirconToChange().getAirconGraphic().change();
                         currentAirconTurnOnCount++;
-                        currentAirconCount++;
+                        //currentAirconCount++;
                     }
                     else if(action.getName() == Action.Name.SET_AC_TO_COOL || action.getName() == Action.Name.SET_AC_TO_WARM){
                         agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
@@ -2698,7 +2698,7 @@ public class Simulator {
                                     if (action.getName() == Action.Name.TURN_OFF_AC) {
                                         agentMovement.getAirconToChange().setOn(false);
                                         agentMovement.getAirconToChange().getAirconGraphic().change();
-                                        currentAirconCount--;
+                                        //currentAirconCount--;
                                         currentAirconTurnOffCount++;
                                     }
 
@@ -3279,7 +3279,7 @@ public class Simulator {
                                     if (action.getName() == Action.Name.TURN_OFF_AC) {
                                         agentMovement.getAirconToChange().setOn(false);
                                         agentMovement.getAirconToChange().getAirconGraphic().change();
-                                        currentAirconCount--;
+                                        //currentAirconCount--;
                                         currentAirconTurnOffCount++;
 
                                     }
@@ -4245,11 +4245,25 @@ public class Simulator {
             }
         }
 
+//        for (Aircon aircon : environment.getAircons()) {
+//            if (aircon.isTurnedOn() && !aircon.isInActiveCycle()) {
+//                activeAirConCount++;
+//            }
+//        }
+
         for (Aircon aircon : environment.getAircons()) {
             if (aircon.isTurnedOn() && !aircon.isInActiveCycle()) {
+                totalWattageCount+= ((airconWattage * 5) / 3600);
+                activeAirConCount++;
+            }
+            else if(aircon.isTurnedOn() && aircon.isInActiveCycle()){
+                totalWattageCount+= ((airconWattageActive * 5) / 3600);
                 activeAirConCount++;
             }
         }
+
+        //set current switched on aircon
+        currentAirconCount = activeAirConCount;
 
         int count = 0;
         for (Aircon aircon : environment.getAircons()) {
@@ -4399,7 +4413,7 @@ public class Simulator {
 
         totalWattageCount+= ((monitorWattage * activeMonitorCount * 5) / 3600);
 
-        totalWattageCount+= ((airconWattage * activeAirConCount *5) / 3600);
+        //totalWattageCount+= ((airconWattage * activeAirConCount *5) / 3600);
     }
     public void replenishStaticVars() {
 
