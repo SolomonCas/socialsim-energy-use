@@ -32,8 +32,7 @@ public class Environment extends BaseObject implements Serializable {
 
 
 
-    // Environment
-
+    // Environment8
     private final List<Floor> floors;
     private final List<ElevatorLobby> elevatorLobbies;
     private final List<Divider> dividers;
@@ -1208,8 +1207,8 @@ public class Environment extends BaseObject implements Serializable {
                     }
                 }
             }
-            System.out.println("close agents: "+closeAgentCount);
-            System.out.println("nearby aircons "+nearbyAircons);
+//            System.out.println("close agents: "+closeAgentCount);
+//            System.out.println("nearby aircons "+nearbyAircons);
             // Calculate number of teams (assuming 4 agents per team)
             int numTeams = closeAgentCount / 4;
 
@@ -1223,7 +1222,7 @@ public class Environment extends BaseObject implements Serializable {
                     newTemp++;
                     aircon.setRoomTemp(newTemp);
                 }
-                System.out.println("I am in heating "+aircon.getCoolingTimeInTicks());
+//                System.out.println("I am in heating "+aircon.getCoolingTimeInTicks());
             } else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()){
                 aircon.setInActiveCycle(true);
                 coolingTicks = (int)(beta0Cooling + beta1Cooling * numTeams + beta2Cooling * nearbyAircons);

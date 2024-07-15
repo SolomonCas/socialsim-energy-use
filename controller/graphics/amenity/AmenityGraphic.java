@@ -325,7 +325,7 @@ public class AmenityGraphic extends Graphic {
         AMENITY_GRAPHICS.put(Switch.class, SwitchGraphic);
 
 
-        /* AIR CON */
+        /* AIRCON */
 
         final List<AmenityGraphicLocation> AirconGraphic = new ArrayList<>();
         AirconGraphic.add(new AmenityGraphicLocation(31, 27)); // TURNED OFF

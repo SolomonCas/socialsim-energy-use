@@ -18,12 +18,12 @@ public class WindowBlindsMapper extends AmenityMapper {
             int origPatchRow = patch.getMatrixPosition().getRow();
             int origPatchCol = patch.getMatrixPosition().getColumn();
             boolean isOpened = state.equals("OPENED_SOUTH_FROM_INSIDE") || state.equals("OPENED_SOUTH_FROM_OUTSIDE") ||
-                    state.equals("OPENED_NORTH_AND_SOUTH") || state.equals("OPENED_NORTH") ||
-                    state.equals("OPENED_EAST") || state.equals("OPENED_WEST");
+                                state.equals("OPENED_NORTH_AND_SOUTH") || state.equals("OPENED_NORTH") ||
+                                state.equals("OPENED_EAST") || state.equals("OPENED_WEST");
 
             WindowBlinds windowBlindsToAdd;
             List<WindowBlinds> windowBlinds = Main.simulator.getEnvironment().getWindowBlinds();
-            int index = 0;
+
 
             // FIRST PATCH
             Amenity.AmenityBlock.AmenityBlockFactory amenityBlockFactory = WindowBlinds.WindowBlindsBlock.windowBlindsBlockFactory;
@@ -53,9 +53,9 @@ public class WindowBlindsMapper extends AmenityMapper {
 
             }
             else if (   state.equals("OPENED_EAST") ||
-                    state.equals("OPENED_WEST") ||
-                    state.equals("CLOSED_EAST") ||
-                    state.equals("CLOSED_WEST")) {
+                        state.equals("OPENED_WEST") ||
+                        state.equals("CLOSED_EAST") ||
+                        state.equals("CLOSED_WEST") ){
 
                 // LENGTH: Number of instances in a row
                 for (int i = 1; i < length; i++) {
@@ -65,10 +65,21 @@ public class WindowBlindsMapper extends AmenityMapper {
                     nextPatch.setAmenityBlock(nextAmenityBlock);
                 }
             }
-            else if (   state.equals("OPENED_SOUTH_FROM_INSIDE") ||
+            else if (   state.equals("OPENED_NORTH") ||
+                        state.equals("CLOSED_NORTH")){
+
+                // LENGTH: Number of instances in a row
+                for (int j = 1; j < length; j++) {
+                    Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + j);
+                    Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, true);
+                    amenityBlocks.add(nextAmenityBlock);
+                    nextPatch.setAmenityBlock(nextAmenityBlock);
+                }
+            }
+            else if (   state.equals("OPENED_SOUTH_FROM_INSIDE")  ||
                         state.equals("OPENED_SOUTH_FROM_OUTSIDE") ||
-                        state.equals("CLOSED_SOUTH_FROM_INSIDE") ||
-                        state.equals("CLOSED_SOUTH_FROM_OUTSIDE")) {
+                        state.equals("CLOSED_SOUTH_FROM_INSIDE")  ||
+                        state.equals("CLOSED_SOUTH_FROM_OUTSIDE") ){
 
                 // THE REST OF THE PATCHES
                 Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol);
@@ -76,10 +87,10 @@ public class WindowBlindsMapper extends AmenityMapper {
                 amenityBlocks.add(nextAmenityBlock);
                 nextPatch.setAmenityBlock(nextAmenityBlock);
 
-                nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol);
-                nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-                amenityBlocks.add(nextAmenityBlock);
-                nextPatch.setAmenityBlock(nextAmenityBlock);
+//                nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol);
+//                nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+//                amenityBlocks.add(nextAmenityBlock);
+//                nextPatch.setAmenityBlock(nextAmenityBlock);
 
 
                 // LENGTH: Number of instances in a row
@@ -89,15 +100,15 @@ public class WindowBlindsMapper extends AmenityMapper {
                     amenityBlocks.add(nextAmenityBlock);
                     nextPatch.setAmenityBlock(nextAmenityBlock);
 
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + j);
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
+//                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 2, origPatchCol + j);
+//                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+//                    amenityBlocks.add(nextAmenityBlock);
+//                    nextPatch.setAmenityBlock(nextAmenityBlock);
 
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol);
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
+//                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol);
+//                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+//                    amenityBlocks.add(nextAmenityBlock);
+//                    nextPatch.setAmenityBlock(nextAmenityBlock);
                 }
             }
             else if (   state.equals("OPENED_NORTH_AND_SOUTH") ||
@@ -114,10 +125,10 @@ public class WindowBlindsMapper extends AmenityMapper {
                 amenityBlocks.add(nextAmenityBlock);
                 nextPatch.setAmenityBlock(nextAmenityBlock);
 
-                nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 4, origPatchCol);
-                nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-                amenityBlocks.add(nextAmenityBlock);
-                nextPatch.setAmenityBlock(nextAmenityBlock);
+//                nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 4, origPatchCol);
+//                nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+//                amenityBlocks.add(nextAmenityBlock);
+//                nextPatch.setAmenityBlock(nextAmenityBlock);
 
                 // LENGTH: Number of instances in a row
                 for (int j = 1; j < length; j++) {
@@ -131,15 +142,15 @@ public class WindowBlindsMapper extends AmenityMapper {
                     amenityBlocks.add(nextAmenityBlock);
                     nextPatch.setAmenityBlock(nextAmenityBlock);
 
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + j);
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
+//                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 3, origPatchCol + j);
+//                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+//                    amenityBlocks.add(nextAmenityBlock);
+//                    nextPatch.setAmenityBlock(nextAmenityBlock);
 
-                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 4, origPatchCol + j);
-                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
-                    amenityBlocks.add(nextAmenityBlock);
-                    nextPatch.setAmenityBlock(nextAmenityBlock);
+//                    nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow + 4, origPatchCol + j);
+//                    nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+//                    amenityBlocks.add(nextAmenityBlock);
+//                    nextPatch.setAmenityBlock(nextAmenityBlock);
                 }
             }
 

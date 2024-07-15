@@ -336,7 +336,7 @@ public class Simulator {
                     Agent.guardCount++;
                     Agent.agentCount++;
                     currentGuardCount++;
-                    System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
+                    // System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
                     break;
                 }
                 else if (time.getTime().isAfter(agent.getTimeIn()) && agent.getType() == Agent.Type.MAINTENANCE) {
@@ -346,7 +346,7 @@ public class Simulator {
                     Agent.maintenanceCount++;
                     Agent.agentCount++;
                     currentMaintenanceCount++;
-                    System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
+                    // System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
                     break;
                 }
                 else if (time.getTime().isAfter(agent.getTimeIn()) && agent.getType() == Agent.Type.DIRECTOR) {
@@ -357,14 +357,14 @@ public class Simulator {
                     Agent.directorCount++;
                     Agent.agentCount++;
                     currentDirectorCount++;
-                    System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
+                    // System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
                     break;
                 }
                 else if (time.getTime().isAfter(agent.getTimeIn()) && agent.getType() == Agent.Type.FACULTY) {
                     agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), team, null));
                     environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
                     currentFacultyCount++;
-                    System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
+                    // System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
                     Agent.facultyCount++;
                     Agent.agentCount++;
                     break;
@@ -373,7 +373,7 @@ public class Simulator {
                     agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), team, null));
                     environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
                     currentStudentCount++;
-                    System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
+                    // System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
                     Agent.studentCount++;
                     Agent.agentCount++;
                     break;
@@ -395,8 +395,8 @@ public class Simulator {
     }
 
     public static void updateEnvironment (Environment environment, long currentTick, SimulationTime time) {
-        System.out.println("CURRENT TICK: "+currentTick);
-        System.out.println("Number of used amenities: " + environment.getUsedAmenities().size());
+        // System.out.println("CURRENT TICK: "+currentTick);
+        // System.out.println("Number of used amenities: " + environment.getUsedAmenities().size());
         // Change to night
         if (time.getTime().isAfter(LocalTime.of(16,30))) {
             for (WindowBlinds windowBlinds : environment.getWindowBlinds()) {
@@ -588,12 +588,12 @@ public class Simulator {
                 if((type == Agent.Type.STUDENT || type == Agent.Type.FACULTY) && agentMovement.getAssignedSeat() == null) {
                     if(!agentMovement.chooseWorkingSeat()) {
                         isFull = true;
-//                        System.out.println("AGENT WASN'T ABLE TO SELECT A SEAT");
+//                        // System.out.println("AGENT WASN'T ABLE TO SELECT A SEAT");
                     }
 
                 }
                 else if (agentMovement.getAssignedSeat() != null) {
-//                    System.out.println("AGENT USED ASSIGNED SEAT");
+//                    // System.out.println("AGENT USED ASSIGNED SEAT");
                     agentMovement.setGoalAmenity(agentMovement.getAssignedSeat());
                     agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
                 }
@@ -619,7 +619,7 @@ public class Simulator {
                     if (agentMovement.hasReachedNextPatchInPath()) {
                         agentMovement.reachPatchInPath();
                         if (agentMovement.hasAgentReachedFinalPatchInPath()) {
-                            System.out.println("SITTING");
+                            // System.out.println("SITTING");
                             agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                             agentMovement.setHeading(agentMovement.getWorkingSeatHeading());
                             agentMovement.reachGoal();
@@ -632,7 +632,7 @@ public class Simulator {
                             agentMovement.getCurrentState().getName() == State.Name.GOING_HOME)) {
                         if (agentMovement.getCurrentAmenity() instanceof Monitor) {
                             if (!( (Monitor) agentMovement.getCurrentAmenity()).isOn()) {
-                                System.out.println("Turn on Monitor");
+                                // System.out.println("Turn on Monitor");
                                 ((Monitor) agentMovement.getCurrentAmenity()).setOn(true);
                             }
                         }
@@ -656,12 +656,12 @@ public class Simulator {
                                 agentMovement.reachGoal();
                                 if (agentMovement.getCurrentAmenity() instanceof Monitor) {
                                     if (( (Monitor) agentMovement.getCurrentAmenity()).isOn()) {
-                                        System.out.println("Turn off Monitor");
+                                        // System.out.println("Turn off Monitor");
                                         ((Monitor) agentMovement.getCurrentAmenity()).setOn(false);
                                     }
                                 }
                                 if (type == Agent.Type.STUDENT) {
-//                                System.out.println("set reservation to false");
+//                                // System.out.println("set reservation to false");
                                     agentMovement.getGoalAttractor().setIsReserved(false);
                                 }
                             }
@@ -685,7 +685,7 @@ public class Simulator {
                     else {
                         if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Monitor) {
                             if (!( (Monitor) agentMovement.getCurrentAmenity()).isOn()) {
-                                System.out.println("Turn on Monitor");
+                                // System.out.println("Turn on Monitor");
                                 ((Monitor) agentMovement.getCurrentAmenity()).setOn(true);
                             }
                         }
@@ -864,7 +864,7 @@ public class Simulator {
                                 }
                             }
 
-                            System.out.println("closeAgentCount: " + closeAgentCount);
+                            // System.out.println("closeAgentCount: " + closeAgentCount);
 
                             if (closeAgentCount != 0) {
                                 // Use destination in route plan
@@ -902,7 +902,7 @@ public class Simulator {
                                     }
                                 }
                             }
-                            System.out.println("closeAgentCount: " + closeAgentCount);
+                            // System.out.println("closeAgentCount: " + closeAgentCount);
                             if (closeAgentCount != 0) {
                                 // Use destination in route plan
                                 agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
@@ -1009,7 +1009,7 @@ public class Simulator {
 //                        totalAgent++;
 //                    }
 //                }
-//                System.out.println("Number of Agents ready: " + countAgent);
+//                // System.out.println("Number of Agents ready: " + countAgent);
 //                if (countAgent == environmentInstance.getPresentTeamMembers(agent.getTeam()).size()) {
 //                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
 //                    agentMovement.setActionIndex(0); // JIC needed
@@ -1018,7 +1018,7 @@ public class Simulator {
 //                    agentMovement.resetGoal();
 //                    for(Agent agent1 : environmentInstance.getPresentTeamMembers(agent.getTeam())) {
 //                        if(agent1 != agent && agent1.getType() == type) {
-////                            System.out.println("CHANGING CURRENT ACTION");
+////                            // System.out.println("CHANGING CURRENT ACTION");
 //                            agent1.getAgentMovement().getCurrentState().getActions().remove(agent1.getAgentMovement().getActionIndex()); // removing finished action
 //                            agent1.getAgentMovement().setActionIndex(0); // JIC needed
 //                            agent1.getAgentMovement().setCurrentAction(agent1.getAgentMovement().getCurrentState().getActions().get(agentMovement.getActionIndex()));
@@ -1346,21 +1346,21 @@ public class Simulator {
 
             // This is to confirm if the agent is interacting with the electric appliance
             if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
-                System.out.println("getting water initial wattage: "+ totalWattageCount);
+                // System.out.println("getting water initial wattage: "+ totalWattageCount);
                 if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof WaterDispenser) {
                     ((WaterDispenser) agentMovement.getCurrentAmenity()).setWaterLevel(((WaterDispenser) agentMovement.getCurrentAmenity()).getWaterLevel() - 5);
                 }
                 totalWattageCount+= ((waterDispenserWattageInUse * 5) / 3600);
-                System.out.println("getting water wattage: "+ totalWattageCount);
+                // System.out.println("getting water wattage: "+ totalWattageCount);
             }
             else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
                 //1.3 per second so 1.3x5?
-                System.out.println("getting fridge initial wattage: "+ totalWattageCount);
+                // System.out.println("getting fridge initial wattage: "+ totalWattageCount);
                 if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof Refrigerator) {
                     ((Refrigerator) agentMovement.getCurrentAmenity()).setCoolnessLevel(((Refrigerator) agentMovement.getCurrentAmenity()).getCoolnessLevel() - 5);
                 }
                 totalWattageCount += ((fridgeWattageInUse * 5) / 3600);
-                System.out.println("getting fridge wattage: "+ totalWattageCount);
+                // System.out.println("getting fridge wattage: "+ totalWattageCount);
             }
 
             if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -1649,7 +1649,7 @@ public class Simulator {
 
                     if (type != Agent.Type.MAINTENANCE && type != Agent.Type.GUARD && state.getName() == State.Name.EATING_LUNCH && CHANCE < agentMovement.getRoutePlan().getEAT_OUTSIDE_CHANCE()) {
                         // eat outside
-                        System.out.println("Eat on outside");
+                        // System.out.println("Eat on outside");
                         if(agent.getTeam() != 0 && type == Agent.Type.STUDENT) {
                             int randomDurationTicks = RANDOM_NUMBER_GENERATOR.nextInt(180, 360);
                             agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
@@ -1667,7 +1667,7 @@ public class Simulator {
                                 if(agent1 != agent && agent1.getType() == type) {
                                     int index = agent1.getAgentMovement().getRoutePlan().findIndexState(State.Name.EATING_LUNCH);
                                     if (index != -1) {
-//                                        System.out.println("CHANGING CURRENT STATE");
+//                                        // System.out.println("CHANGING CURRENT STATE");
                                         agent1.getAgentMovement().setStateIndex(index); // Set the index to EATING_LUNCH
                                         agent1.getAgentMovement().getRoutePlan().getCurrentRoutePlan()
                                                 .remove(agentMovement.getStateIndex()); // removing finished state
@@ -1679,7 +1679,7 @@ public class Simulator {
                                         agent1.getAgentMovement().resetGoal();
                                     }
                                     else {
-                                        System.out.println(type + " does not have EATING_LUNCH in their Route Plan or done eating");
+                                        // System.out.println(type + " does not have EATING_LUNCH in their Route Plan or done eating");
                                     }
                                 }
                             }
@@ -1703,9 +1703,9 @@ public class Simulator {
                         agentMovement.setSeatHeading(agentMovement.getWorkingSeatHeading()); // JIC needed
                     }
                     else if (agentMovement.chooseBreakSeat()) {
-//                        System.out.println("Sit on break seat");
+//                        // System.out.println("Sit on break seat");
                         agentMovement.getRoutePlan().setAtDesk(false); // The agent is leaving to his or her current location
-//                        System.out.println("Eat on assigned seat");
+//                        // System.out.println("Eat on assigned seat");
 
                     }
                     else {
@@ -1782,7 +1782,7 @@ public class Simulator {
         else if (action.getName() == Action.Name.EAT_LUNCH || action.getName() == Action.Name.TAKING_BREAK) {
             agentMovement.setSimultaneousInteractionAllowed(true);
             agentMovement.setDuration(agentMovement.getDuration() - 1);
-            System.out.println("Duration: " + agentMovement.getDuration());
+            // System.out.println("Duration: " + agentMovement.getDuration());
             // Developer Note: these actions will be different from the others for it handles the urgent task.
             // To know the urgent task, refer to the RoutePlan addUrgentRoute function/s
             if (agentMovement.getDuration() <= 0) {
@@ -2170,7 +2170,7 @@ public class Simulator {
             }
         }
         else {
-            System.out.println(type + " does not have that action");
+            // System.out.println(type + " does not have that action");
         }
     }
 
@@ -2183,9 +2183,9 @@ public class Simulator {
         Action action = agentMovement.getCurrentAction();
         Environment environmentInstance = agentMovement.getEnvironment();
 
-        System.out.println("Type: " + type + " Persona: " + persona + " State: " + state.getName() + " Action: " + action.getName());
-        System.out.println("Team: " + agent.getTeam() + " CanUrgent: " + agentMovement.getRoutePlan().getCanUrgent());
-        System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
+        // System.out.println("Type: " + type + " Persona: " + persona + " State: " + state.getName() + " Action: " + action.getName());
+        // System.out.println("Team: " + agent.getTeam() + " CanUrgent: " + agentMovement.getRoutePlan().getCanUrgent());
+        // System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
         boolean isFull = false;
 
         if (!agentMovement.isInteracting() || agentMovement.isSimultaneousInteractionAllowed()) {
@@ -2220,7 +2220,7 @@ public class Simulator {
                                 agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
                                 if (agentMovement.getRoutePlan().getCanUrgent()) {
                                     double CHANCE = Simulator.roll();
-                                    System.out.println("CHANCE: " + CHANCE);
+                                    // System.out.println("CHANCE: " + CHANCE);
 
                                     if (CHANCE >= agentMovement.getRoutePlan().getWORKING_CHANCE()) {
                                         if (1.0 - CHANCE < agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.coolDown(AgentMovement.MAX_BATHROOM_COOL_DOWN_DURATION)) {
@@ -2386,7 +2386,7 @@ public class Simulator {
                                 }
 
                                 if (agentMovement.getLightsToOpen() == null) {
-                                    System.out.println("WEIRD THERE SHOULD BE LIGHT");
+                                    // System.out.println("WEIRD THERE SHOULD BE LIGHT");
                                     isFull = true;
                                     if (agentMovement.getLightsToOpen() != null) {
                                         agentMovement.setLightsToOpen(null);
@@ -2430,10 +2430,10 @@ public class Simulator {
                                         }
                                     }
 
-                                    System.out.println("closeAgentCount: " + closeAgentCount);
+                                    // System.out.println("closeAgentCount: " + closeAgentCount);
 
                                     if (closeAgentCount != 0) {
-                                        System.out.println("THERE IS AGENT");
+                                        // System.out.println("THERE IS AGENT");
                                         isFull = true;
                                         if (agentMovement.getLightsToOpen() != null) {
                                             agentMovement.setLightsToOpen(null);
@@ -2466,7 +2466,7 @@ public class Simulator {
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
                                         else {
-                                            System.out.println("IG NO LIGHTS");
+                                            // System.out.println("IG NO LIGHTS");
                                             isFull = true;
                                             if (agentMovement.getLightsToOpen() != null) {
                                                 agentMovement.setLightsToOpen(null);
@@ -2567,7 +2567,7 @@ public class Simulator {
                                 }
 
                                 if (agentMovement.getAirconToChange() == null) {
-                                    System.out.println("WEIRD THERE SHOULD BE AIRCON");
+                                    // System.out.println("WEIRD THERE SHOULD BE AIRCON");
                                     isFull = true;
                                     if (agentMovement.getAirconToChange() != null) {
                                         agentMovement.setAirconToChange(null);
@@ -2611,10 +2611,10 @@ public class Simulator {
                                         }
                                     }
 
-                                    System.out.println("closeAgentCount: " + closeAgentCount);
+                                    // System.out.println("closeAgentCount: " + closeAgentCount);
 
                                     if (closeAgentCount != 0) {
-                                        System.out.println("THERE IS AGENT");
+                                        // System.out.println("THERE IS AGENT");
                                         isFull = true;
                                         if (agentMovement.getAirconToChange() != null) {
                                             agentMovement.setAirconToChange(null);
@@ -2647,7 +2647,7 @@ public class Simulator {
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
                                         else {
-                                            System.out.println("IG NO AIRCON");
+                                            // System.out.println("IG NO AIRCON");
                                             isFull = true;
                                             if (agentMovement.getAirconToChange() != null) {
                                                 agentMovement.setAirconToChange(null);
@@ -2967,7 +2967,7 @@ public class Simulator {
                                 }
 
                                 if (agentMovement.getLightsToOpen() == null) {
-                                    System.out.println("WEIRD THERE SHOULD BE LIGHT");
+                                    // System.out.println("WEIRD THERE SHOULD BE LIGHT");
                                     isFull = true;
                                     if (agentMovement.getLightsToOpen() != null) {
                                         agentMovement.setLightsToOpen(null);
@@ -3011,10 +3011,10 @@ public class Simulator {
                                         }
                                     }
 
-                                    System.out.println("closeAgentCount: " + closeAgentCount);
+                                    // System.out.println("closeAgentCount: " + closeAgentCount);
 
                                     if (closeAgentCount != 0) {
-                                        System.out.println("THERE IS AGENT");
+                                        // System.out.println("THERE IS AGENT");
                                         isFull = true;
                                         if (agentMovement.getLightsToOpen() != null) {
                                             agentMovement.setLightsToOpen(null);
@@ -3047,7 +3047,7 @@ public class Simulator {
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
                                         else {
-                                            System.out.println("IG NO LIGHTS");
+                                            // System.out.println("IG NO LIGHTS");
                                             isFull = true;
                                             if (agentMovement.getLightsToOpen() != null) {
                                                 agentMovement.setLightsToOpen(null);
@@ -3148,7 +3148,7 @@ public class Simulator {
                                 }
 
                                 if (agentMovement.getAirconToChange() == null) {
-                                    System.out.println("WEIRD THERE SHOULD BE AIRCON");
+                                    // System.out.println("WEIRD THERE SHOULD BE AIRCON");
                                     isFull = true;
                                     if (agentMovement.getAirconToChange() != null) {
                                         agentMovement.setAirconToChange(null);
@@ -3192,10 +3192,10 @@ public class Simulator {
                                         }
                                     }
 
-                                    System.out.println("closeAgentCount: " + closeAgentCount);
+                                    // System.out.println("closeAgentCount: " + closeAgentCount);
 
                                     if (closeAgentCount != 0) {
-                                        System.out.println("THERE IS AGENT");
+                                        // System.out.println("THERE IS AGENT");
                                         isFull = true;
                                         if (agentMovement.getAirconToChange() != null) {
                                             agentMovement.setAirconToChange(null);
@@ -3228,7 +3228,7 @@ public class Simulator {
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
                                         else {
-                                            System.out.println("IG NO AIRCON");
+                                            // System.out.println("IG NO AIRCON");
                                             isFull = true;
                                             if (agentMovement.getAirconToChange() != null) {
                                                 agentMovement.setAirconToChange(null);
@@ -3536,7 +3536,7 @@ public class Simulator {
 
                                         // setting isAtDesk true is important for leaving the environment permanently/partially
                                         if (state.getName() != State.Name.GOING_TO_EAT_OUTSIDE && state.getName() != State.Name.GOING_HOME) {
-//                                      System.out.println("Set isAtDesk to false");
+//                                      // System.out.println("Set isAtDesk to false");
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
 
@@ -3563,7 +3563,7 @@ public class Simulator {
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_GUARD && currentGuardCount <= 0) ||
                                         (action.getName() == Action.Name.GO_TO_MAINTENANCE && currentMaintenanceCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
-                                    System.out.println("Agent Not Found");
+                                    // System.out.println("Agent Not Found");
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
@@ -3676,7 +3676,7 @@ public class Simulator {
                                     for (Agent agent1 : environmentInstance.getMovableAgents()) {
                                          if (agent1 != agent && agent1.getAgentMovement().getAssignedSeat() != null &&
                                                  agentMovement.getGoalAttractor().getPatch().equals(agent1.getAgentMovement().getAssignedSeat().getAttractors().getFirst().getPatch())) {
-//                                             System.out.println("SEEN AGENT");
+//                                             // System.out.println("SEEN AGENT");
                                              agentMovement.setAgentToInquire(agent1);
                                              break;
                                          }
@@ -3782,7 +3782,7 @@ public class Simulator {
                             agentMovement.setSimultaneousInteractionAllowed(true);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_STUDENT && currentStudentCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
-                                    System.out.println("Agent Not Found");
+                                    // System.out.println("Agent Not Found");
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
@@ -3883,7 +3883,7 @@ public class Simulator {
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_GUARD && currentGuardCount <= 0) ||
                                         (action.getName() == Action.Name.GO_TO_MAINTENANCE && currentMaintenanceCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
-                                    System.out.println("Agent Not Found");
+                                    // System.out.println("Agent Not Found");
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
@@ -3990,7 +3990,7 @@ public class Simulator {
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_FACULTY && currentFacultyCount <= 0) ||
                                         (action.getName() == Action.Name.GO_TO_STUDENT && currentStudentCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
-                                    System.out.println("Agent Not Found");
+                                    // System.out.println("Agent Not Found");
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
@@ -4091,7 +4091,7 @@ public class Simulator {
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_GUARD && currentGuardCount <= 0) ||
                                         (action.getName() == Action.Name.GO_TO_MAINTENANCE && currentMaintenanceCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
-                                    System.out.println("Agent Not Found");
+                                    // System.out.println("Agent Not Found");
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
@@ -4233,7 +4233,7 @@ public class Simulator {
 
     public void runWattageCount(long currentTick){
         Random rand = new Random();
-        System.out.println("CURRENT TICK: "+currentTick);
+        // System.out.println("CURRENT TICK: "+currentTick);
         //PUT RANDOM TIMES OF FLUCTUATION
         //multiplied to 5 since 5 seconds per tick?
         //APPLIANCES
@@ -4278,11 +4278,11 @@ public class Simulator {
         int count = 0;
         for (Aircon aircon : environment.getAircons()) {
             if (aircon.isTurnedOn()) {
-                System.out.println("Graphic Index: " + aircon.getAirconGraphic());
+                // // System.out.println("Graphic Index: " + aircon.getAirconGraphic());
                 count++;
             }
         }
-        System.out.println("Number of Aircon: " + count);
+        // // System.out.println("Number of Aircon: " + count);
 
         for (Light light : environment.getLights()) {
             if (light.isOn()) {
@@ -4290,7 +4290,7 @@ public class Simulator {
             }
         }
         currentLightCount = activeLightCount;
-        System.out.println("Number of Lights: " + activeLightCount);
+        // System.out.println("Number of Lights: " + activeLightCount);
 
         // Check Monitor in Cubicle
         for (Cubicle cubicle : environment.getCubicles()) {
@@ -4318,7 +4318,7 @@ public class Simulator {
         }
 
         currentMonitorCount = activeMonitorCount;
-        System.out.println("Number of Monitor: " + activeMonitorCount);
+        // System.out.println("Number of Monitor: " + activeMonitorCount);
 
         //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
         //ACTIVE CYCLE FOR EVERY REFRIGERATOR
@@ -4328,10 +4328,10 @@ public class Simulator {
 //                //increase coolness level
 //                ref.setCoolnessLevel((ref.getCoolnessLevel() + 1));
 //                if(ref.getDuration() > 0){
-//                    System.out.println("initial wattage: " + totalWattageCount);
+//                    // System.out.println("initial wattage: " + totalWattageCount);
 //
 //                    totalWattageCount += (((fridgeWattageActive + rand.nextFloat(101))* 5) / 3600);
-//                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
+//                    // System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
 //                    ref.setDuration((ref.getDuration() - 1));
 //                }
 //                else{
@@ -4345,7 +4345,7 @@ public class Simulator {
 //
 //                if(currentTick % 60L == 0){
 //                    double activeCycleChance = max(0,(100 - ref.getCoolnessLevel()) / 100);
-//                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+//                    // System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
 //                    double CHANCE = Simulator.roll();
 //                    if(CHANCE < activeCycleChance){
 //                        ref.setActiveCycle(true);
@@ -4365,18 +4365,18 @@ public class Simulator {
 //                //increase coolness level
 //                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() + 1));
 //                if(dispenser.getDuration() > 0){
-//                    System.out.println("initial wattage: " + totalWattageCount);
+//                    // System.out.println("initial wattage: " + totalWattageCount);
 //
 //                    // Check if in high wattage active cycle
 //                    if(dispenser.isHighActiveCycle()){
 //                        totalWattageCount += ((732.7F * 5) / 3600);
 //                        dispenser.setWaterLevel(dispenser.getWaterLevel() + 10);
-//                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
+//                        // System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
 //                    } else {
 //                        totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
-//                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
+//                        // System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
 //                    }
-//                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
+//                    // System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
 //                    dispenser.setDuration((dispenser.getDuration() - 1));
 //                }
 //                else if(dispenser.getDuration() <= 0 && dispenser.isHighActiveCycle()){
@@ -4395,13 +4395,13 @@ public class Simulator {
 //
 //                if(currentTick % 60L == 0){
 //                    double activeCycleChance = max(0,(100 - dispenser.getCoolnessLevel()) / 100);
-//                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+//                    // System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
 //                    double CHANCE = Simulator.roll();
 //                    double lowWater_Threshold = 50;
 //                    // Check if water level is low to trigger high wattage active cycle
 //                    if(dispenser.getWaterLevel() < lowWater_Threshold){
 //                        double highActiveCycleChance = (lowWater_Threshold - dispenser.getWaterLevel()) / lowWater_Threshold;
-//                        System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
+//                        // System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
 //
 //                        if(CHANCE < highActiveCycleChance){
 //                            dispenser.setActiveCycle(true);
@@ -4418,7 +4418,7 @@ public class Simulator {
 //            }
 //        }
 
-        //System.out.println("aircon wattage= "+airconWattage);
+        //// System.out.println("aircon wattage= "+airconWattage);
         totalWattageCount+= ((lightWattage * activeLightCount * 5) / 3600);
 
         totalWattageCount+= ((monitorWattage * activeMonitorCount * 5) / 3600);
