@@ -54,12 +54,12 @@ public class Main extends Application {
                     mainTitle = "Alternative Office Layout A";
                 }
 
-//                else if (WelcomeScreenController.environment.equals("Alternative Office Layout B")) {
-//                    mainScreenLoader = Controller.getLoader(getClass(), "/com/socialsim/view/OfficeScreenLayoutB.fxml");
-//                    mainRoot = mainScreenLoader.load();
-//                    mainScreenController = (ScreenController) mainScreenLoader.getController();
-//                    mainTitle = "Alternative Office Layout B";
-//                }
+                else if (WelcomeScreenController.environment.equals("Alternative Office Layout B")) {
+                    mainScreenLoader = Controller.getLoader(getClass(), "/com/socialsim/view/OfficeScreenLayoutB.fxml");
+                    mainRoot = mainScreenLoader.load();
+                    mainScreenController = (ScreenController) mainScreenLoader.getController();
+                    mainTitle = "Alternative Office Layout B";
+                }
 
 
             }
