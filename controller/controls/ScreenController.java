@@ -424,12 +424,6 @@ public class ScreenController extends Controller {
         drawInterface();
     }
 
-    public void updateEnvironment(PatchField patchField) {
-        drawInterface();
-    }
-
-
-
     public void mapEnvironment() {
         Environment environment = simulator.getEnvironment();
 

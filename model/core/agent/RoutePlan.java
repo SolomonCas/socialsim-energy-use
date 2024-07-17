@@ -23,7 +23,6 @@ public class RoutePlan {
 
 
 
-    private Chair agentSeat;
 
     private Amenity.AmenityBlock lunchAttractor;
     private Amenity lunchAmenity;
@@ -56,7 +55,7 @@ public class RoutePlan {
 
     /***** CONSTRUCTOR *****/
 
-    public RoutePlan(Agent agent, Environment environment, Patch spawnPatch, int team, Chair assignedSeat) {
+    public RoutePlan(Agent agent, Environment environment, Patch spawnPatch, int team, Amenity assignedSeat) {
         this.routePlan = new ArrayList<>();
         ArrayList<Action> actions;
 
@@ -82,7 +81,6 @@ public class RoutePlan {
             setBathAM(false);
             setBathPM(false);
             setAtDesk(false);
-            setAgentSeat(assignedSeat);
 
 
             actions = new ArrayList<>();
@@ -107,7 +105,6 @@ public class RoutePlan {
             setBathAM(false);
             setBathPM(false);
             setAtDesk(false);
-            setAgentSeat(assignedSeat);
 
             WORKING_CHANCE = 0.8;
             INQUIRE_STUDENT_CHANCE = 0.0;
@@ -235,7 +232,6 @@ public class RoutePlan {
             setBathAM(false);
             setBathPM(false);
             setAtDesk(false);
-            setAgentSeat(assignedSeat);
 
             WORKING_CHANCE = 0.8;
             INQUIRE_STUDENT_CHANCE = 0.0;
@@ -275,7 +271,6 @@ public class RoutePlan {
             setBathAM(false);
             setBathPM(false);
             setAtDesk(false);
-            setAgentSeat(assignedSeat);
 
             WORKING_CHANCE = 0.8;
             BATHROOM_CHANCE = 0.15;
@@ -326,7 +321,6 @@ public class RoutePlan {
             setBathAM(false);
             setBathPM(false);
             setAtDesk(false);
-            setAgentSeat(assignedSeat);
 
             WORKING_CHANCE = 0.8;
             BATHROOM_CHANCE = 0.15;
@@ -651,13 +645,8 @@ public class RoutePlan {
     public ArrayList<State> getCurrentRoutePlan() {
         return routePlan;
     }
-
     public State getCurrentState() {
         return currentState;
-    }
-
-    public Chair getAgentSeat() {
-        return agentSeat;
     }
     public int getBATH_AM() {
         return BATH_AM;
@@ -683,18 +672,6 @@ public class RoutePlan {
     public int getREFRIGERATOR(){return this.REFRIGERATOR;}
     public int getLastDuration() {
         return lastDuration;
-    }
-    public long getCollaborationEnd() {
-        return collaborationEnd;
-    }
-    public long getMeetingStart() {
-        return meetingStart;
-    }
-    public long getMeetingEnd() {
-        return meetingEnd;
-    }
-    public int getMeetingRoom() {
-        return (int) meetingRoom;
     }
     public Amenity.AmenityBlock getLunchAttractor() {
         return lunchAttractor;
@@ -790,9 +767,6 @@ public class RoutePlan {
     }
     public void setBathAM(boolean bathAM) {
         this.bathAM = bathAM;
-    }
-    public void setAgentSeat(Chair agentSeat) {
-        this.agentSeat = agentSeat;
     }
     public void setBATH_AM(int BATH_AM) {
         this.BATH_AM -= BATH_AM;

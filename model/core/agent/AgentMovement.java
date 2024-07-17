@@ -53,7 +53,7 @@ public class AgentMovement {
     private double proposedHeading;
     private double heading;
     private final int team;
-    private Chair assignedSeat;
+    private Amenity assignedSeat;
     private Patch currentPatch;
     private Amenity currentAmenity;
     private Patch goalPatch;
@@ -249,26 +249,22 @@ public class AgentMovement {
                     CHANCE_EXCHANGE2 = ((double) environment.getInteractionTypeChances().get(agent.getPersonaActionGroup().getID()).get(agent.getAgentMovement().getCurrentAction().getName().getID()).get(2)) / 100;
             if (CHANCE < (CHANCE_NONVERBAL1 + CHANCE_NONVERBAL2) / 2){
                 Simulator.currentNonverbalCount++;
-                this.getParent().getAgentMovement().setInteractionType(InteractionType.NON_VERBAL);
+                this.setInteractionType(InteractionType.NON_VERBAL);
                 agent.getAgentMovement().setInteractionType(InteractionType.NON_VERBAL);
                 interactionMean = getEnvironment().getNonverbalMean();
                 interactionStdDeviation = getEnvironment().getNonverbalStdDev();
             }
             else if (CHANCE < (CHANCE_NONVERBAL1 + CHANCE_NONVERBAL2 + CHANCE_COOPERATIVE1 + CHANCE_COOPERATIVE2) / 2){
                 Simulator.currentCooperativeCount++;
-                this.getParent().getAgentMovement().setInteractionType(InteractionType.COOPERATIVE);
+                this.setInteractionType(InteractionType.COOPERATIVE);
                 agent.getAgentMovement().setInteractionType(InteractionType.COOPERATIVE);
-                CHANCE1 = Simulator.roll() * IOS1;
-                CHANCE2 = Simulator.roll() * IOS2;
                 interactionMean = getEnvironment().getCooperativeMean();
                 interactionStdDeviation = getEnvironment().getCooperativeStdDev();
             }
             else if (CHANCE < (CHANCE_NONVERBAL1 + CHANCE_NONVERBAL2 + CHANCE_COOPERATIVE1 + CHANCE_COOPERATIVE2 + CHANCE_EXCHANGE1 + CHANCE_EXCHANGE2) / 2){
                 Simulator.currentExchangeCount++;
-                this.getParent().getAgentMovement().setInteractionType(InteractionType.EXCHANGE);
+                this.setInteractionType(InteractionType.EXCHANGE);
                 agent.getAgentMovement().setInteractionType(InteractionType.EXCHANGE);
-                CHANCE1 = Simulator.roll() * IOS1;
-                CHANCE2 = Simulator.roll() * IOS2;
                 interactionMean = getEnvironment().getExchangeMean();
                 interactionStdDeviation = getEnvironment().getExchangeStdDev();
             }
@@ -581,7 +577,8 @@ public class AgentMovement {
         for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
             // check if ac is in the same room
             PatchField patchField = distancesToAirconEntry.getKey().getPatch().getPatchField().getKey();
-            if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
+            String keyField = distancesToAirconEntry.getKey().getPatch().getPatchField().getValue();
+            if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(keyField)) {
                 // check if ac is on
                 if(((Aircon) distancesToAirconEntry.getKey().getParent()).isTurnedOn()){
                     airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
@@ -619,9 +616,9 @@ public class AgentMovement {
         for (Map.Entry<Amenity.AmenityBlock, Double> distancesToLightEntry : sortedDistancesLight.entrySet()) {
 
             PatchField patchField = distancesToLightEntry.getKey().getPatch().getPatchField().getKey();
-
+            String keyField = distancesToLightEntry.getKey().getPatch().getPatchField().getValue();
             //if same patchfield, check if within the light range to do visual comfort logic
-            if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
+            if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(keyField)) {
                 if (((Light) distancesToLightEntry.getKey().getParent()).isOn()) {
                     lightsToOpen = ((Light) distancesToLightEntry.getKey().getParent());
                     return true;
@@ -632,18 +629,6 @@ public class AgentMovement {
             }
 
         }
-        // check maybe the light is outside the room (this is for the lights for Solo Rooms)
-//        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToLightEntry : sortedDistancesLight.entrySet()) {
-//            //range of light
-//            //IF NOT SAME PATCH FIELD BUT MAYBE CLOSEST TO THE AGENT
-//            if (( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
-//                lightsToOpen = ((Light) distancesToLightEntry.getKey().getParent());
-//                return true;
-//            }
-//            else {
-//                break;
-//            }
-//        }
 
         return false;
     }
@@ -695,8 +680,9 @@ public class AgentMovement {
         double CHANCE = Simulator.roll();
         // System.out.println("CHANCE: " + CHANCE);
 
-        if ((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN && CHANCE < 0.01)
-                || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && CHANCE < 0.5) || this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN) {
+        // based on the chances, change aircon temp based on an agent's preference
+        if ((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN && CHANCE < 0.25)
+                || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && CHANCE < 0.5) || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN && CHANCE < 0.75)) {
             // for each attractor in aircon get it's Patchfield and compare to currentPatch of agent
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
                 // System.out.println("hello preference: "+ this.parent.getTempPreference() + " hello room temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() + "hello aircon temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp());
@@ -799,42 +785,44 @@ public class AgentMovement {
                     break;
                 }
             }
-        }
 
 
-
-        // maybe the aircon is not on at all
-        for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
-            PatchField patchField = distancesToAirconEntry.getKey().getPatch().getPatchField().getKey();
-            //if same, check if within the cooling range then do the thermal comfort logic
-            if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString())) {
-                if(!((Aircon) distancesToAirconEntry.getKey().getParent()).isTurnedOn()){
-//                    // System.out.println("turn on ac");
-                    airconToChange = ( (Aircon) distancesToAirconEntry.getKey().getParent());
-                    isToCool = false;
-                    isToHeat = false;
-                    return true;
+            // maybe the aircon is not on at all
+            for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
+                PatchField patchField = distancesToAirconEntry.getKey().getPatch().getPatchField().getKey();
+                String keyField = distancesToAirconEntry.getKey().getPatch().getPatchField().getValue();
+                //if same, check if within the cooling range then do the thermal comfort logic
+                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(keyField)) {
+                    if(!((Aircon) distancesToAirconEntry.getKey().getParent()).isTurnedOn()){
+//                    System.out.println("turn on ac");
+                        airconToChange = ( (Aircon) distancesToAirconEntry.getKey().getParent());
+                        isToCool = false;
+                        isToHeat = false;
+                        return true;
+                    }
+                    else{
+                        break;
+                    }
                 }
                 else{
-                    break;
+                    if(!((Aircon) distancesToAirconEntry.getKey().getParent()).isTurnedOn()){
+                        airconToChange = ( (Aircon) distancesToAirconEntry.getKey().getParent());
+                    }
+                    else{
+                        break;
+                    }
                 }
             }
-            else{
-                if(!((Aircon) distancesToAirconEntry.getKey().getParent()).isTurnedOn()){
-                    airconToChange = ( (Aircon) distancesToAirconEntry.getKey().getParent());
-                }
-                else{
-                    break;
-                }
+            //RETURN TRUE IF AIRCON IS FOUND BUT NOT WITHIN SAME PATCHFIELD
+            if(airconToChange != null){
+//            System.out.println("turn on ac, but outside patchfield");
+                isToCool = false;
+                isToHeat = false;
+                return true;
             }
         }
-        //RETURN TRUE IF AIRCON IS FOUND BUT NOT WITHIN SAME PATCHFIELD
-        if(airconToChange != null){
-//            // System.out.println("turn on ac, but outside patchfield");
-            isToCool = false;
-            isToHeat = false;
-            return true;
-        }
+
+
         return false;
     }
 
@@ -918,9 +906,10 @@ public class AgentMovement {
 
         //CHECK IF AGENT IS GREEN, NEUTRAL OR NONGREEN
         //IF GREEN, CHECK BLINDS FIRST THEN LIGHTS IF NO BLINDS WITHIN RANGE FOUND
-        double neutralChance = Simulator.roll();
+        double CHANCE = Simulator.roll();
         //FOR GREEN OR NEUTRAL CHANCE
-        if((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && neutralChance < 0.5)) && !sortedDistancesBlinds.isEmpty()
+        if(((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN && CHANCE < 0.75)
+                || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && CHANCE < 0.5) || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN && CHANCE < 0.25)) && !sortedDistancesBlinds.isEmpty()
                 && time.getTime().isBefore(LocalTime.of(16,0))) {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistancesBlinds.entrySet()) {
                 PatchField patchField = distancesToAttractorEntry.getKey().getPatch().getPatchField().getKey();
@@ -936,7 +925,8 @@ public class AgentMovement {
             }
         }
 
-        if(!sortedDistancesLight.isEmpty()){
+        if(((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN && CHANCE < 0.25)
+                || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && CHANCE < 0.5) || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN && CHANCE < 0.75)) && !sortedDistancesLight.isEmpty()){
             // check first if there are lights near the agent that is within the same room
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToLightEntry : sortedDistancesLight.entrySet()) {
 
@@ -1454,8 +1444,6 @@ public class AgentMovement {
                 }
             }
 
-          // This can be altered
-//            temp.addAll(this.environment.getChairs());
 
             // Agents are not allowed to work and eat their lunch on the couch
             if(this.getCurrentState().getName() != State.Name.GOING_TO_LUNCH) {
@@ -1493,6 +1481,10 @@ public class AgentMovement {
                         this.goalPatch = this.goalAttractor.getPatch(); // JIC if needed
                         this.seatHeading = candidateAttractors.getValue();
                         getGoalAttractor().setIsReserved(true);
+                        if (this.parent.getType() == Agent.Type.MAINTENANCE && this.getAssignedSeat() == null) {
+                            this.assignedSeat = this.goalAmenity;
+                            this.workingSeatHeading = seatHeading;
+                        }
                         return true;
                     }
                 }
@@ -1623,27 +1615,26 @@ public class AgentMovement {
                 }
             }
 
-//            for (Map.Entry<Amenity.AmenityBlock, Double> candidateAttractors: list) {
-//                for (Chair amenity : temp) {
-//                    if (!candidateAttractors.getKey().getPatch().getAmenityBlock().getIsReserved() &&
-//                            amenity.getAttractors().getFirst().getPatch().equals(candidateAttractors.getKey().getPatch())) {
-//                        this.goalAmenity = amenity;
-//                        this.goalAttractor = candidateAttractors.getKey(); // Needed in chooseNextInPath;
-//                        this.goalPatch = this.goalAttractor.getPatch(); // JIC if needed
-//                        switch (amenity.getFacing()) {
-//                            case "NORTH" -> this.workingSeatHeading =  Math.toRadians(90.0);
-//                            case "EAST" -> this.workingSeatHeading = Math.toRadians(0.0);
-//                            case "WEST" -> this.workingSeatHeading = Math.toRadians(180.0);
-//                            case "SOUTH" -> this.workingSeatHeading = Math.toRadians(270.0);
-//                        }
-//                        this.setAssignedSeat(amenity);
-//                        this.getRoutePlan().setAgentSeat(this.assignedSeat);
-//                        getGoalAttractor().setIsReserved(true);
-//                        return true;
-//                    }
-//                }
-//
-//            }
+            for (Map.Entry<Amenity.AmenityBlock, Double> candidateAttractors: list) {
+                for (Chair amenity : temp) {
+                    if (!candidateAttractors.getKey().getPatch().getAmenityBlock().getIsReserved() &&
+                            amenity.getAttractors().getFirst().getPatch().equals(candidateAttractors.getKey().getPatch())) {
+                        this.goalAmenity = amenity;
+                        this.goalAttractor = candidateAttractors.getKey(); // Needed in chooseNextInPath;
+                        this.goalPatch = this.goalAttractor.getPatch(); // JIC if needed
+                        switch (amenity.getFacing()) {
+                            case "NORTH" -> this.workingSeatHeading =  Math.toRadians(90.0);
+                            case "EAST" -> this.workingSeatHeading = Math.toRadians(0.0);
+                            case "WEST" -> this.workingSeatHeading = Math.toRadians(180.0);
+                            case "SOUTH" -> this.workingSeatHeading = Math.toRadians(270.0);
+                        }
+                        this.setAssignedSeat(amenity);
+                        getGoalAttractor().setIsReserved(true);
+                        return true;
+                    }
+                }
+
+            }
 
             // if no available seats for research tables and solo rooms (if solo)
             // go check for collaboration seats
@@ -1732,9 +1723,9 @@ public class AgentMovement {
                             }
                             if (this.assignedSeat == null) {
                                 this.setAssignedSeat(amenity);
-                                this.getRoutePlan().setAgentSeat(this.assignedSeat);
-                                getGoalAttractor().setIsReserved(true);
+
                             }
+                            getGoalAttractor().setIsReserved(true);
                             return true;
                         }
                     }
@@ -2512,7 +2503,7 @@ public class AgentMovement {
         return team;
     }
 
-    public Chair getAssignedSeat() {
+    public Amenity getAssignedSeat() {
         return assignedSeat;
     }
 

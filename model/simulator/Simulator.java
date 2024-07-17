@@ -269,7 +269,6 @@ public class Simulator {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
-                        ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(environment);
                         ((ScreenController) Main.mainScreenController).drawEnvironmentViewForeground(Main.simulator.getEnvironment(), SimulationTime.SLEEP_TIME_MILLISECONDS.get() < speedAwarenessLimitMilliseconds);
 
                         this.time.tick();
@@ -2030,8 +2029,12 @@ public class Simulator {
                     else if (action.getName() == Action.Name.TURN_ON_LIGHT) {
 
                         Pair<PatchField, String> patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField();
+//                        System.out.println("PatchField Key: " + patchField.getKey().toString());
+//                        System.out.println("PatchField Value: " + patchField.getValue());
                         for (Light light : environmentInstance.getLights()) {
+//                            System.out.println("Light: " + light.getAttractors().getFirst().getPatch());
                             for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                                System.out.println("Light Patch: " + attractor.getPatch());
                                 if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
                                         attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
                                     light.setOn(true);
@@ -2183,9 +2186,9 @@ public class Simulator {
         Action action = agentMovement.getCurrentAction();
         Environment environmentInstance = agentMovement.getEnvironment();
 
-        // System.out.println("Type: " + type + " Persona: " + persona + " State: " + state.getName() + " Action: " + action.getName());
-        // System.out.println("Team: " + agent.getTeam() + " CanUrgent: " + agentMovement.getRoutePlan().getCanUrgent());
-        // System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
+         System.out.println("Type: " + type + " Persona: " + persona + " State: " + state.getName() + " Action: " + action.getName());
+         System.out.println("Team: " + agent.getTeam() + " CanUrgent: " + agentMovement.getRoutePlan().getCanUrgent());
+         System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
         boolean isFull = false;
 
         if (!agentMovement.isInteracting() || agentMovement.isSimultaneousInteractionAllowed()) {
@@ -3386,7 +3389,14 @@ public class Simulator {
                         if (action.getName() == Action.Name.GO_TO_WAIT_AREA) {
                             agentMovement.setSimultaneousInteractionAllowed(true);
                             if (agentMovement.getGoalAmenity() == null) {
-                                isFull = !agentMovement.chooseBreakSeat(); // goalAmenity and attractor is set here if true
+                                if (agentMovement.getAssignedSeat() != null) {
+                                    agentMovement.setGoalAmenity(agentMovement.getAssignedSeat());
+                                    agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                                    agentMovement.setSeatHeading(agentMovement.getWorkingSeatHeading());
+                                }
+                                else {
+                                    isFull = !agentMovement.chooseBreakSeat(); // goalAmenity and attractor is set here if true
+                                }
                             }
 
                             if(isFull) {
@@ -4255,12 +4265,6 @@ public class Simulator {
             }
         }
 
-//        for (Aircon aircon : environment.getAircons()) {
-//            if (aircon.isTurnedOn() && !aircon.isInActiveCycle()) {
-//                activeAirConCount++;
-//            }
-//        }
-
         for (Aircon aircon : environment.getAircons()) {
             if (aircon.isTurnedOn() && !aircon.isInActiveCycle()) {
                 totalWattageCount+= ((airconWattage * 5) / 3600);
@@ -4278,7 +4282,6 @@ public class Simulator {
         int count = 0;
         for (Aircon aircon : environment.getAircons()) {
             if (aircon.isTurnedOn()) {
-                // // System.out.println("Graphic Index: " + aircon.getAirconGraphic());
                 count++;
             }
         }
@@ -4322,103 +4325,98 @@ public class Simulator {
 
         //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
         //ACTIVE CYCLE FOR EVERY REFRIGERATOR
-//        for(Refrigerator ref : environment.getRefrigerators()){
-//            //IF REF IS IN ACTIVE CYCLE
-//            if(ref.isActiveCycle()){
-//                //increase coolness level
-//                ref.setCoolnessLevel((ref.getCoolnessLevel() + 1));
-//                if(ref.getDuration() > 0){
-//                    // System.out.println("initial wattage: " + totalWattageCount);
-//
-//                    totalWattageCount += (((fridgeWattageActive + rand.nextFloat(101))* 5) / 3600);
-//                    // System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
-//                    ref.setDuration((ref.getDuration() - 1));
-//                }
-//                else{
-//                    ref.setActiveCycle(false);
-//                }
-//            }//IF REF IS NOT IN ACTIVE CYCLE
-//            else{
-//                //decrease coolness level by decay rate
-//                ref.setCoolnessLevel((ref.getCoolnessLevel() - environment.getDecayRateRef()));
-//                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
-//
-//                if(currentTick % 60L == 0){
-//                    double activeCycleChance = max(0,(100 - ref.getCoolnessLevel()) / 100);
-//                    // System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
-//                    double CHANCE = Simulator.roll();
-//                    if(CHANCE < activeCycleChance){
-//                        ref.setActiveCycle(true);
-//                        ref.setDuration(240 + rand.nextInt( 61) - 5);
-//                    }
-//                }
-//            }
-//        }
+        for(Refrigerator ref : environment.getRefrigerators()){
+            //IF REF IS IN ACTIVE CYCLE
+            if(ref.isActiveCycle()){
+                //increase coolness level
+                ref.setCoolnessLevel((ref.getCoolnessLevel() + 1));
+                if(ref.getDuration() > 0){
+//                    System.out.println("initial wattage: " + totalWattageCount);
 
-        //TODO: SET ACTIVE CYCLE TO TRUE WHEN WATER LEVEL IS LOW
-        // BUT WITHIN 20-30 SECONDS, ACTIVE WATTAGE IS 732
-        // AFTER 20-30 SECONDS, ACTIVE WATTAGE IS BACK TO NORMAL
-        //ACTIVE CYCLE FOR EVERY WATER DISPENSER
-//        for(WaterDispenser dispenser : environment.getWaterDispensers()){
-//            //IF DISPENSER IS IN ACTIVE CYCLE
-//            if(dispenser.isActiveCycle()){
-//                //increase coolness level
-//                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() + 1));
-//                if(dispenser.getDuration() > 0){
-//                    // System.out.println("initial wattage: " + totalWattageCount);
-//
-//                    // Check if in high wattage active cycle
-//                    if(dispenser.isHighActiveCycle()){
-//                        totalWattageCount += ((732.7F * 5) / 3600);
-//                        dispenser.setWaterLevel(dispenser.getWaterLevel() + 10);
-//                        // System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
-//                    } else {
-//                        totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
-//                        // System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
-//                    }
-//                    // System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
-//                    dispenser.setDuration((dispenser.getDuration() - 1));
-//                }
-//                else if(dispenser.getDuration() <= 0 && dispenser.isHighActiveCycle()){
-//                    dispenser.setHighActiveCycle(false);
-//                    dispenser.setDuration((240 + rand.nextInt(61) - 5));
-//                }
-//                else{
-//                    dispenser.setActiveCycle(false);
-//                    dispenser.setHighActiveCycle(false);
-//                }
-//            }//IF dispenser IS NOT IN ACTIVE CYCLE
-//            else{
-//                //decrease coolness level by decay rate
-//                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() - environment.getDecayRateDispenser()));
-//                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
-//
-//                if(currentTick % 60L == 0){
-//                    double activeCycleChance = max(0,(100 - dispenser.getCoolnessLevel()) / 100);
-//                    // System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
-//                    double CHANCE = Simulator.roll();
-//                    double lowWater_Threshold = 50;
-//                    // Check if water level is low to trigger high wattage active cycle
-//                    if(dispenser.getWaterLevel() < lowWater_Threshold){
-//                        double highActiveCycleChance = (lowWater_Threshold - dispenser.getWaterLevel()) / lowWater_Threshold;
-//                        // System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
-//
-//                        if(CHANCE < highActiveCycleChance){
-//                            dispenser.setActiveCycle(true);
-//                            dispenser.setHighActiveCycle(true); // Set high wattage cycle flag
-//                            dispenser.setDuration(4 + rand.nextInt(2)); // Duration 4 to 6 ticks
-//                        }
-//                    }
-//
-//                    if(CHANCE < activeCycleChance && !dispenser.isHighActiveCycle()){
-//                        dispenser.setActiveCycle(true);
-//                        dispenser.setDuration(240 + rand.nextInt(61) - 5); // Duration 235 to 245 ticks
-//                    }
-//                }
-//            }
-//        }
+                    totalWattageCount += (((fridgeWattageActive + rand.nextFloat(101))* 5) / 3600);
+//                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
+                    ref.setDuration((ref.getDuration() - 1));
+                }
+                else{
+                    ref.setActiveCycle(false);
+                }
+            }//IF REF IS NOT IN ACTIVE CYCLE
+            else{
+                //decrease coolness level by decay rate
+                ref.setCoolnessLevel((ref.getCoolnessLevel() - environment.getDecayRateRef()));
+                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
 
-        //// System.out.println("aircon wattage= "+airconWattage);
+                if(currentTick % 60L == 0){
+                    double activeCycleChance = max(0,(100 - ref.getCoolnessLevel()) / 100);
+//                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+                    double CHANCE = Simulator.roll();
+                    if(CHANCE < activeCycleChance){
+                        ref.setActiveCycle(true);
+                        ref.setDuration(240 + rand.nextInt( 61) - 5);
+                    }
+                }
+            }
+        }
+        for(WaterDispenser dispenser : environment.getWaterDispensers()){
+            //IF DISPENSER IS IN ACTIVE CYCLE
+            if(dispenser.isActiveCycle()){
+                //increase coolness level
+                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() + 1));
+                if(dispenser.getDuration() > 0){
+//                    System.out.println("initial wattage: " + totalWattageCount);
+
+                    // Check if in high wattage active cycle
+                    if(dispenser.isHighActiveCycle()){
+                        totalWattageCount += ((732.7F * 5) / 3600);
+                        dispenser.setWaterLevel(dispenser.getWaterLevel() + 10);
+//                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
+                    } else {
+                        totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
+//                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
+                    }
+//                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
+                    dispenser.setDuration((dispenser.getDuration() - 1));
+                }
+                else if(dispenser.getDuration() <= 0 && dispenser.isHighActiveCycle()){
+                    dispenser.setHighActiveCycle(false);
+                    dispenser.setDuration((240 + rand.nextInt(61) - 5));
+                }
+                else{
+                    dispenser.setActiveCycle(false);
+                    dispenser.setHighActiveCycle(false);
+                }
+            }//IF dispenser IS NOT IN ACTIVE CYCLE
+            else{
+                //decrease coolness level by decay rate
+                dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() - environment.getDecayRateDispenser()));
+                //EVERY 60 TICKS CALCULATE CHANCE OF ACTIVE CYCLE
+
+                if(currentTick % 60L == 0){
+                    double activeCycleChance = max(0,(100 - dispenser.getCoolnessLevel()) / 100);
+//                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+                    double CHANCE = Simulator.roll();
+                    double lowWater_Threshold = 50;
+                    // Check if water level is low to trigger high wattage active cycle
+                    if(dispenser.getWaterLevel() < lowWater_Threshold){
+                        double highActiveCycleChance = (lowWater_Threshold - dispenser.getWaterLevel()) / lowWater_Threshold;
+//                        System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
+
+                        if(CHANCE < highActiveCycleChance){
+                            dispenser.setActiveCycle(true);
+                            dispenser.setHighActiveCycle(true); // Set high wattage cycle flag
+                            dispenser.setDuration(4 + rand.nextInt(2)); // Duration 4 to 6 ticks
+                        }
+                    }
+
+                    if(CHANCE < activeCycleChance && !dispenser.isHighActiveCycle()){
+                        dispenser.setActiveCycle(true);
+                        dispenser.setDuration(240 + rand.nextInt(61) - 5); // Duration 235 to 245 ticks
+                    }
+                }
+            }
+        }
+
+//        System.out.println("aircon wattage= "+airconWattage);
         totalWattageCount+= ((lightWattage * activeLightCount * 5) / 3600);
 
         totalWattageCount+= ((monitorWattage * activeMonitorCount * 5) / 3600);

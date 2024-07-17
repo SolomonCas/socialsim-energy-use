@@ -1,5 +1,6 @@
 package com.socialsim.model.core.environment;
 
+import com.socialsim.controller.Main;
 import com.socialsim.controller.controls.ScreenController;
 import com.socialsim.model.core.agent.Action;
 import com.socialsim.model.core.agent.Agent;
@@ -401,7 +402,6 @@ public class Environment extends BaseObject implements Serializable {
             for (int team = 1; team <= numOfTeams; team++) {
                 LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(9, 11),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
                 LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(21, 23), 0);
-                //System.out.println("team "+ team);
                 Agent agent = AgentFactory.create(Type.FACULTY, true, team, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
                 this.getAgents().add(agent);
                 numOfFaculty--;
@@ -1104,72 +1104,6 @@ public class Environment extends BaseObject implements Serializable {
         }
     }
 
-    //TODO: coolingtime will differ based on whether there are nearby groups of people minimum of 4
-//    public void tempChanger(){
-//        for(Aircon aircon : this.getAircons()) {
-//            int closeAgentCount = 0;
-//            for(Agent agent : this.getMovableAgents()){
-//                for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
-//                    if (agent.getAgentMovement() != null && agent.getAgentMovement().getRoutePlan().isAtDesk()) {
-//                        double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
-//                        if(distanceToAircon < aircon.getCoolingRange()){
-//                            closeAgentCount++;
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//
-////            System.out.println("close agent count: "+closeAgentCount);
-//            int coolingTicks = 0;
-//            //IF TEMP IS GOING HIGHER OR HEATING
-//            //System.out.println("old aircon active cycle? "+aircon.isInActiveCycle());
-//            if(aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.isTurnedOn()){
-//                if(closeAgentCount < 4){
-//                    aircon.setInActiveCycle(false);
-//                    coolingTicks = 24;
-//                }
-//                else{
-//                    aircon.setInActiveCycle(false);
-//                    coolingTicks = 20;
-//                }
-//                System.out.println("is aircon active cycle: "+ aircon.isInActiveCycle());
-//                //THIS MEANS THAT 2 MINUTES OR GREATER HAS PASSED
-//                if(coolingTimer(aircon, coolingTicks)){
-//                    System.out.println("HEATING");
-//                    int newTemp = aircon.getRoomTemp();
-//                    newTemp++;
-//
-//                    aircon.setRoomTemp(newTemp);
-//                }
-//            }//TEMP IS LOWERING OR COOLING
-//            else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()){
-//                if(closeAgentCount < 4)
-//                {
-//                    aircon.setInActiveCycle(true);
-//                    coolingTicks = 20;
-//                }
-//                else{
-//                    aircon.setInActiveCycle(true);
-//                    coolingTicks = 42;
-//                }
-//                System.out.println("Aircon temp: "+aircon.getAirconTemp() + " room Temp: "+ aircon.getRoomTemp());
-//                System.out.println("COOLING is aircon active cycle: "+ aircon.isInActiveCycle());
-//                //THIS MEANS THAT 1 MINUTES OR GREATER HAS PASSED
-//                if(coolingTimer(aircon, coolingTicks)){
-//                    System.out.println("COOLING ");
-//                    int newTemp = aircon.getRoomTemp();
-//                    newTemp --;
-//
-//                    aircon.setRoomTemp(newTemp);
-//                }
-//            }
-//            if(aircon.getAirconTemp() == aircon.getRoomTemp()){
-//                aircon.setInActiveCycle(false);
-//            }
-//            //System.out.println("new aircon active cycle? "+aircon.isInActiveCycle());
-//        }
-//    }
     //WITH LINEAR REGRESSION
     public void tempChanger(){
         // Coefficients for the linear regression formula
@@ -1190,7 +1124,7 @@ public class Environment extends BaseObject implements Serializable {
                 for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
                     if (agent.getAgentMovement() != null && agent.getAgentMovement().getRoutePlan().isAtDesk()) {
                         double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch());
-                        if(distanceToAircon < aircon.getCoolingRange()){
+                        if(distanceToAircon < aircon.getCoolingRange()) {
                             closeAgentCount++;
                             break;
                         }
@@ -1207,8 +1141,7 @@ public class Environment extends BaseObject implements Serializable {
                     }
                 }
             }
-//            System.out.println("close agents: "+closeAgentCount);
-//            System.out.println("nearby aircons "+nearbyAircons);
+
             // Calculate number of teams (assuming 4 agents per team)
             int numTeams = closeAgentCount / 4;
 
@@ -1224,6 +1157,7 @@ public class Environment extends BaseObject implements Serializable {
                 }
 //                System.out.println("I am in heating "+aircon.getCoolingTimeInTicks());
             } else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()){
+
                 aircon.setInActiveCycle(true);
                 coolingTicks = (int)(beta0Cooling + beta1Cooling * numTeams + beta2Cooling * nearbyAircons);
                 if(coolingTimer(aircon, coolingTicks)){
@@ -1233,9 +1167,9 @@ public class Environment extends BaseObject implements Serializable {
                 }
                 System.out.println("I am in cooling "+aircon.getCoolingTimeInTicks());
             }
-
-            if(aircon.getAirconTemp() == aircon.getRoomTemp()){
+            else if(aircon.getAirconTemp() == aircon.getRoomTemp() && aircon.isTurnedOn()){
                 aircon.setInActiveCycle(false);
+
             }
         }
     }
@@ -1246,9 +1180,6 @@ public class Environment extends BaseObject implements Serializable {
             aircon.setCoolingTimeInTicks(duration); // set cool down duration
             return true;
         }
-//        if(aircon.isInActiveCycle()){
-//            Simulator.setTotalWattageCount(simulator.getTotalWattageCount() + ((Simulator.getAirconWattageActive() * 5) / 3600));
-//        }
         aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - 1);
         return false;
     }
@@ -1259,16 +1190,6 @@ public class Environment extends BaseObject implements Serializable {
             activeCycleTimerRefrigerator--;
             return true;
         }
-        return false;
-    }
-
-    public boolean activeCycleTimerDispenser() {
-//        System.out.println("ACTIVE CYCLE TIMER: "+ activeCycleTimerDispenser);
-        if (this.activeCycleTimerDispenser > 0) {
-            activeCycleTimerDispenser--;
-            return true;
-        }
-
         return false;
     }
 
@@ -1616,7 +1537,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1648,7 +1569,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1680,7 +1601,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1713,7 +1634,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1745,7 +1666,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1783,7 +1704,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1815,7 +1736,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1847,7 +1768,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1879,7 +1800,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1911,7 +1832,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1943,7 +1864,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -1994,7 +1915,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -2027,7 +1948,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -2059,7 +1980,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -2091,7 +2012,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -2123,7 +2044,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -2155,7 +2076,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -2205,7 +2126,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
@@ -2237,7 +2158,7 @@ public class Environment extends BaseObject implements Serializable {
                     for (Divider divider : newDividers) {
                         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(divider.getArea(), divider.getVariation()));
                     }
-
+                    ((ScreenController) Main.mainScreenController).drawEnvironmentViewBackground(this);
                     break;
                 }
             }
