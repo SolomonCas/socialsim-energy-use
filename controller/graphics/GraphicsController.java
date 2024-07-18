@@ -248,7 +248,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     } else if (patchStrPair.getValue().equals("dimDirectorBathroom")){
-                            patchColor = Color.rgb(119, 114, 119);
+                            patchColor = Color.rgb(128, 134, 136);
 
                     // else, throw error
                     } else {
@@ -602,7 +602,7 @@ public class GraphicsController extends Controller {
 
                     // Dim
                     else if (patchStrPair.getValue().equals("dimDirectorRoom")){
-                        patchColor = Color.rgb(119, 113, 119);
+                        patchColor = Color.rgb(123, 114, 124);
                     }
 
                     else {
