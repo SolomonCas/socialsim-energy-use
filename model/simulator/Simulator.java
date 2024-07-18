@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,7 +21,6 @@ import com.socialsim.model.core.environment.position.Coordinates;
 import javafx.util.Pair;
 
 import static java.lang.Math.max;
-import static java.lang.Math.random;
 
 public class Simulator {
 
@@ -76,6 +74,8 @@ public class Simulator {
     public static int currentLightCount = 0;
     public static int currentMonitorCount = 0;
 
+    public static int currentCoffeeMakerCount = 0;
+
     public static int currentAirconTurnOnCount = 0;
     public static int currentAirconTurnOffCount = 0;
 
@@ -109,6 +109,9 @@ public class Simulator {
     //Monitor
     public static float monitorWattage = 16.0F;
 
+    //COFFEE
+    public static float coffeeMakerWattageLow = 28.0F;
+    public static float coffeeMakerWattageHigh = 140.0F;
 
     // Average Interaction Duration
     public static float averageNonverbalDuration = 0;
@@ -1362,6 +1365,10 @@ public class Simulator {
                 totalWattageCount += ((fridgeWattageInUse * 5) / 3600);
                 // System.out.println("getting fridge wattage: "+ totalWattageCount);
             }
+            else if (state.getName() == State.Name.COFFEE && action.getName() == Action.Name.MAKE_COFFEE) {
+                totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(coffeeMakerWattageLow, coffeeMakerWattageHigh) * 5) / 3600);
+                // System.out.println("getting fridge wattage: "+ totalWattageCount);
+            }
 
             if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
                 agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
@@ -1379,6 +1386,9 @@ public class Simulator {
                 }
                 else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
                     currentFridgeInteractionCount++;
+                }
+                else if (state.getName() == State.Name.COFFEE && action.getName() == Action.Name.MAKE_COFFEE) {
+                    currentCoffeeMakerCount++;
                 }
                 agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
             }
@@ -1799,7 +1809,7 @@ public class Simulator {
             }
             else {
                 double CHANCE = Simulator.roll();
-                if (CHANCE < agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.coolDown(AgentMovement.MAX_BATHROOM_COOL_DOWN_DURATION)) {
+                if (agentMovement.getRoutePlan().getBATHROOM_CHANCE() != 0.0  && CHANCE < agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.coolDown(AgentMovement.MAX_BATHROOM_COOL_DOWN_DURATION)) {
                     if (action.getName() == Action.Name.EAT_LUNCH && agentMovement.getRoutePlan().getBATH_LUNCH() > 0) {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
                         agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -1812,7 +1822,7 @@ public class Simulator {
                     }
 
                 }
-                else if(CHANCE < agentMovement.getRoutePlan().getDISPENSER_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.coolDown(AgentMovement.MAX_DISPENSER_COOL_DOWN_DURATION)){
+                else if(agentMovement.getRoutePlan().getDISPENSER_CHANCE() != 0.0  && CHANCE < agentMovement.getRoutePlan().getDISPENSER_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.coolDown(AgentMovement.MAX_DISPENSER_COOL_DOWN_DURATION)){
                     if (action.getName() == Action.Name.EAT_LUNCH && agentMovement.getRoutePlan().getDISPENSER_LUNCH() > 0) {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("DISPENSER", agent, environmentInstance));
                         agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -1834,7 +1844,7 @@ public class Simulator {
                         agentMovement.getRoutePlan().setDISPENSER(1);
                     }
                 }
-                else if(CHANCE < agentMovement.getRoutePlan().getREFRIGERATOR_CHANCE() + agentMovement.getRoutePlan().getDISPENSER_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.coolDown(AgentMovement.MAX_REFRIGERATOR_COOL_DOWN_DURATION)){
+                else if(agentMovement.getRoutePlan().getREFRIGERATOR_CHANCE() != 0.0  && CHANCE < agentMovement.getRoutePlan().getREFRIGERATOR_CHANCE() + agentMovement.getRoutePlan().getDISPENSER_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.coolDown(AgentMovement.MAX_REFRIGERATOR_COOL_DOWN_DURATION)){
                     if (action.getName() == Action.Name.EAT_LUNCH && agentMovement.getRoutePlan().getREFRIGERATOR_LUNCH() > 0) {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("REFRIGERATOR", agent, environmentInstance));
                         agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -1856,7 +1866,7 @@ public class Simulator {
                         agentMovement.getRoutePlan().setREFRIGERATOR(1);
                     }
                 }
-                else if(CHANCE < agentMovement.getRoutePlan().getCOFFEE_CHANCE() + agentMovement.getRoutePlan().getREFRIGERATOR_CHANCE() + agentMovement.getRoutePlan().getDISPENSER_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.getRoutePlan().getCOFFEE_COUNT() > 0 && agentMovement.coolDown(AgentMovement.MAX_COFFEE_COOL_DOWN_DURATION)){
+                else if(agentMovement.getRoutePlan().getCOFFEE_CHANCE() != 0.0 && CHANCE < agentMovement.getRoutePlan().getCOFFEE_CHANCE() + agentMovement.getRoutePlan().getREFRIGERATOR_CHANCE() + agentMovement.getRoutePlan().getDISPENSER_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.getRoutePlan().getCOFFEE_COUNT() > 0 && agentMovement.coolDown(AgentMovement.MAX_COFFEE_COOL_DOWN_DURATION)){
                     agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("COFFEE", agent, environmentInstance));
                     agentMovement.setCurrentState(agentMovement.getStateIndex());
                     agentMovement.setStateIndex(agentMovement.getStateIndex());
@@ -2243,7 +2253,7 @@ public class Simulator {
                                     // System.out.println("CHANCE: " + CHANCE);
 
                                     if (CHANCE >= agentMovement.getRoutePlan().getWORKING_CHANCE()) {
-                                        if (1.0 - CHANCE < agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.coolDown(AgentMovement.MAX_BATHROOM_COOL_DOWN_DURATION)) {
+                                        if (agentMovement.getRoutePlan().getBATHROOM_CHANCE() != 0.0 && 1.0 - CHANCE < agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.coolDown(AgentMovement.MAX_BATHROOM_COOL_DOWN_DURATION)) {
                                             if (agentMovement.getRoutePlan().isBathAM() && agentMovement.getRoutePlan().getBATH_AM() > 0) {
                                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
                                                 agentMovement.setCurrentState(agentMovement.getStateIndex());
@@ -2268,7 +2278,7 @@ public class Simulator {
                                             }
 
                                         }
-                                        else if (1.0 - CHANCE < agentMovement.getRoutePlan().getBREAK_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.getRoutePlan().isBathPM() && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.coolDown(AgentMovement.MAX_BREAK_COOL_DOWN_DURATION)) {
+                                        else if (agentMovement.getRoutePlan().getBREAK_CHANCE() != 0.0 && 1.0 - CHANCE < agentMovement.getRoutePlan().getBREAK_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.getRoutePlan().isBathPM() && agentMovement.getRoutePlan().getBREAK_COUNT() > 0 && agentMovement.coolDown(AgentMovement.MAX_BREAK_COOL_DOWN_DURATION)) {
                                             agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("BREAK", agent, environmentInstance)); // add the break state
                                             agentMovement.setCurrentState(agentMovement.getStateIndex()); // set the new current state into the go to the break state
                                             agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
@@ -2278,8 +2288,15 @@ public class Simulator {
                                             agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
-                                        else if (1.0 - CHANCE < agentMovement.getRoutePlan().getCOFFEE_CHANCE() + agentMovement.getRoutePlan().getBREAK_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.getRoutePlan().isBathPM() && agentMovement.getRoutePlan().getCOFFEE_COUNT() > 0 && agentMovement.coolDown(AgentMovement.MAX_COFFEE_COOL_DOWN_DURATION)) {
-
+                                        else if (agentMovement.getRoutePlan().getCOFFEE_CHANCE() != 0.0 && 1.0 - CHANCE < agentMovement.getRoutePlan().getCOFFEE_CHANCE() + agentMovement.getRoutePlan().getBREAK_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() && agentMovement.getRoutePlan().getCOFFEE_COUNT() > 0 && agentMovement.coolDown(AgentMovement.MAX_COFFEE_COOL_DOWN_DURATION)) {
+                                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("COFFEE", agent, environmentInstance));
+                                            agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                            agentMovement.setStateIndex(agentMovement.getStateIndex());
+                                            agentMovement.setActionIndex(0);
+                                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                            agentMovement.resetGoal();
+                                            agentMovement.getRoutePlan().setCOFFEE_COUNT(1);
+                                            agentMovement.getRoutePlan().setAtDesk(false);
                                         }
                                     }
 
@@ -3499,6 +3516,16 @@ public class Simulator {
                                                 agentMovement.getRoutePlan().setBREAK_COUNT(1); // indicate how many breaks can an agent do
                                                 agentMovement.getRoutePlan().setAtDesk(false);
                                             }
+                                            else if (1.0 - CHANCE < agentMovement.getRoutePlan().getCOFFEE_CHANCE() + agentMovement.getRoutePlan().getBREAK_CHANCE() + agentMovement.getRoutePlan().getBATHROOM_CHANCE() + agentMovement.getRoutePlan().getINQUIRE_MAINTENANCE_CHANCE() + agentMovement.getRoutePlan().getINQUIRE_GUARD_CHANCE() && agentMovement.getRoutePlan().getCOFFEE_COUNT() > 0 && agentMovement.coolDown(AgentMovement.MAX_COFFEE_COOL_DOWN_DURATION)) {
+                                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("COFFEE", agent, environmentInstance));
+                                                agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                                agentMovement.setStateIndex(agentMovement.getStateIndex());
+                                                agentMovement.setActionIndex(0);
+                                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                                agentMovement.resetGoal();
+                                                agentMovement.getRoutePlan().setCOFFEE_COUNT(1);
+                                                agentMovement.getRoutePlan().setAtDesk(false);
+                                            }
 
                                             if (!agentMovement.visualComfortChecker(time) && agentMovement.visualComfortCoolDown()) {
                                                 agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
@@ -4343,15 +4370,19 @@ public class Simulator {
         //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
         //ACTIVE CYCLE FOR EVERY REFRIGERATOR
         for(Refrigerator ref : environment.getRefrigerators()){
+            if(fridgeWattageActive <= 0 || fridgeWattageInUse <= 0 || fridgeWattage <= 0){
+                break;
+            }
             //IF REF IS IN ACTIVE CYCLE
             if(ref.isActiveCycle()){
                 //increase coolness level
                 ref.setCoolnessLevel((ref.getCoolnessLevel() + 1));
                 if(ref.getDuration() > 0){
-//                    System.out.println("initial wattage: " + totalWattageCount);
+                    System.out.println("initial wattage: " + totalWattageCount);
+
 
                     totalWattageCount += (((fridgeWattageActive + rand.nextFloat(101))* 5) / 3600);
-//                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
+                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
                     ref.setDuration((ref.getDuration() - 1));
                 }
                 else{
@@ -4365,7 +4396,7 @@ public class Simulator {
 
                 if(currentTick % 60L == 0){
                     double activeCycleChance = max(0,(100 - ref.getCoolnessLevel()) / 100);
-//                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
                     double CHANCE = Simulator.roll();
                     if(CHANCE < activeCycleChance){
                         ref.setActiveCycle(true);
@@ -4375,23 +4406,26 @@ public class Simulator {
             }
         }
         for(WaterDispenser dispenser : environment.getWaterDispensers()){
+            if(waterDispenserWattageActive <= 0 || waterDispenserWattageInUse <= 0 || waterDispenserWattage <= 0){
+                break;
+            }
             //IF DISPENSER IS IN ACTIVE CYCLE
             if(dispenser.isActiveCycle()){
                 //increase coolness level
                 dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() + 1));
                 if(dispenser.getDuration() > 0){
-//                    System.out.println("initial wattage: " + totalWattageCount);
+                    System.out.println("initial wattage: " + totalWattageCount);
 
                     // Check if in high wattage active cycle
                     if(dispenser.isHighActiveCycle()){
                         totalWattageCount += ((732.7F * 5) / 3600);
                         dispenser.setWaterLevel(dispenser.getWaterLevel() + 10);
-//                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
+                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
                     } else {
                         totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
-//                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
+                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
                     }
-//                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
+                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
                     dispenser.setDuration((dispenser.getDuration() - 1));
                 }
                 else if(dispenser.getDuration() <= 0 && dispenser.isHighActiveCycle()){
@@ -4410,13 +4444,13 @@ public class Simulator {
 
                 if(currentTick % 60L == 0){
                     double activeCycleChance = max(0,(100 - dispenser.getCoolnessLevel()) / 100);
-//                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
+                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
                     double CHANCE = Simulator.roll();
                     double lowWater_Threshold = 50;
                     // Check if water level is low to trigger high wattage active cycle
                     if(dispenser.getWaterLevel() < lowWater_Threshold){
                         double highActiveCycleChance = (lowWater_Threshold - dispenser.getWaterLevel()) / lowWater_Threshold;
-//                        System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
+                        System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
 
                         if(CHANCE < highActiveCycleChance){
                             dispenser.setActiveCycle(true);
@@ -4438,7 +4472,6 @@ public class Simulator {
 
         totalWattageCount+= ((monitorWattage * activeMonitorCount * 5) / 3600);
 
-        //totalWattageCount+= ((airconWattage * activeAirConCount *5) / 3600);
     }
     public void replenishStaticVars() {
 
@@ -4803,6 +4836,14 @@ public class Simulator {
         return monitorWattage;
     }
 
+    public static float getCoffeeMakerWattageLow() {
+        return coffeeMakerWattageLow;
+    }
+
+    public static float getCoffeeMakerWattageHigh() {
+        return coffeeMakerWattageHigh;
+    }
+
     public static float getTotalWattageCount(){
         return totalWattageCount;
     }
@@ -4877,6 +4918,14 @@ public class Simulator {
 
     public static void setMonitorWattage(float monitorWattage) {
         Simulator.monitorWattage = monitorWattage;
+    }
+
+    public static void setCoffeeMakerWattageLow(float coffeeMakerWattageLow) {
+        Simulator.coffeeMakerWattageLow = coffeeMakerWattageLow;
+    }
+
+    public static void setCoffeeMakerWattageHigh(float coffeeMakerWattageHigh) {
+        Simulator.coffeeMakerWattageHigh = coffeeMakerWattageHigh;
     }
 
     public static void setTotalWattageCount(float totalWattageCount){

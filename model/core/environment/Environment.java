@@ -733,9 +733,9 @@ public class Environment extends BaseObject implements Serializable {
                             case TURN_OFF_AC -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case TURN_OFF_LIGHT -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case SET_AC_TO_COOL -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
-                            case SET_AC_TO_WARM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 50, 60)));
+                            case SET_AC_TO_WARM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case OPEN_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
-                            case CLOSE_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 50, 50)));
+                            case CLOSE_BLINDS -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 50, 50)));
                             case GO_TO_STATION -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GO_TO_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case ASK_DIRECTOR -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
@@ -766,10 +766,10 @@ public class Environment extends BaseObject implements Serializable {
                             case INSPECTING_ROOM -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(0, 0, 0)));
                             case GO_TO_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case ASK_MAINTENANCE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 20, 70)));
-                            case GOING_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 60)));
-                            case GOING_COFFEEMAKER -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 60)));
+                            case GOING_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 20, 60)));
+                            case GOING_COFFEEMAKER -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 20, 60)));
                             case USE_MICROWAVE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 40, 40)));
-                            case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 60)));
+                            case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 20, 60)));
                         }
                     }
                     case APP_FACULTY -> {

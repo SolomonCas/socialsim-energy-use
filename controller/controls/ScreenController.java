@@ -5,7 +5,6 @@ import com.socialsim.controller.graphics.amenity.mapper.*;
 import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
-import com.socialsim.model.core.environment.patchobject.passable.goal.Switch;
 import com.socialsim.model.simulator.Simulator;
 
 import com.socialsim.model.core.environment.Patch;
@@ -27,7 +26,6 @@ import javafx.stage.Stage;
 
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Window;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -81,6 +79,9 @@ public class ScreenController extends Controller {
     @FXML private TextField lightWattage;
     //MONITOR
     @FXML private TextField monitorWattage;
+    //COFFEE MAKER
+    @FXML private TextField coffeeMakerWattageLow;
+    @FXML private TextField coffeeMakerWattageHigh;
 
     //Agent Chances
     @FXML private TextField greenChance;
@@ -105,6 +106,7 @@ public class ScreenController extends Controller {
     @FXML private Label currentFridgeInteractionCount;
     @FXML private Label currentWaterDispenserInteractionCount;
     @FXML private Label currentMonitorCount;
+    @FXML private Label currentCoffeeMakerCount;
 
     //AIRCON and LIGHT SWITCH INTERACTIONS
     @FXML private Label currentAirconTurnOnCount;
@@ -223,6 +225,10 @@ public class ScreenController extends Controller {
         simulator.setLightWattage(Float.parseFloat(lightWattage.getText()));
         //MONITOR
         simulator.setMonitorWattage(Float.parseFloat(monitorWattage.getText()));
+        //COFFEE MAKER
+        simulator.setCoffeeMakerWattageLow(Float.parseFloat(coffeeMakerWattageLow.getText()));
+        simulator.setCoffeeMakerWattageHigh(Float.parseFloat(coffeeMakerWattageHigh.getText()));
+
 
         // Current Agent Count Per Type
         currentDirectorCount.setText(String.valueOf(Simulator.currentDirectorCount));
@@ -242,6 +248,8 @@ public class ScreenController extends Controller {
         currentAirconCount.setText(String.valueOf(Simulator.currentAirconCount));
         currentLightCount.setText(String.valueOf(Simulator.currentLightCount));
         currentMonitorCount.setText(String.valueOf(Simulator.currentMonitorCount));
+
+        currentCoffeeMakerCount.setText(String.valueOf(Simulator.currentCoffeeMakerCount));
 
         currentAirconTurnOnCount.setText(String.valueOf(Simulator.currentAirconTurnOnCount));
         currentAirconTurnOffCount.setText(String.valueOf(Simulator.currentAirconTurnOffCount));
@@ -331,7 +339,11 @@ public class ScreenController extends Controller {
         airconWattageActive.setDisable(true);
 
         lightWattage.setDisable(true);
+
         monitorWattage.setDisable(true);
+
+        coffeeMakerWattageLow.setDisable(true);
+        coffeeMakerWattageHigh.setDisable(true);
 
         fridgeWattage.setDisable(true);
         fridgeWattageActive.setDisable(true);
@@ -371,7 +383,12 @@ public class ScreenController extends Controller {
         airconWattageActive.setText(Float.toString(Simulator.getAirconWattageActive()));
 
         lightWattage.setText(Float.toString(Simulator.getLightWattage()));
+
         monitorWattage.setText(Float.toString(Simulator.getMonitorWattage()));
+
+        coffeeMakerWattageLow.setText(Float.toString(Simulator.getCoffeeMakerWattageLow()));
+        coffeeMakerWattageHigh.setText(Float.toString(Simulator.getCoffeeMakerWattageHigh()));
+
 
         //AGENT CHANCES
         greenChance.setText(Double.toString(Simulator.getGreenChance()));
@@ -4053,6 +4070,7 @@ public class ScreenController extends Controller {
         currentAirconCount.setText(String.valueOf(Simulator.currentAirconCount));
         currentLightCount.setText(String.valueOf(Simulator.currentLightCount));
         currentMonitorCount.setText(String.valueOf(Simulator.currentMonitorCount));
+        currentCoffeeMakerCount.setText(String.valueOf(Simulator.currentCoffeeMakerCount));
 
         currentAirconTurnOnCount.setText(String.valueOf(Simulator.currentAirconTurnOnCount));
         currentAirconTurnOffCount.setText(String.valueOf(Simulator.currentAirconTurnOffCount));

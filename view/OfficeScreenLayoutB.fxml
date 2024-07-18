@@ -189,6 +189,19 @@
                                                     <TextField fx:id="monitorWattage" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
                                                 </children>
                                             </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Coffee Maker Wattage In Use(Low)" />
+                                                    <TextField fx:id="coffeeMakerWattageLow" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                <children>
+                                                    <Label prefHeight="26.0" prefWidth="150.0" text="Coffee Maker Wattage In Use(High)" />
+                                                    <TextField fx:id="coffeeMakerWattageHigh" alignment="CENTER_RIGHT" layoutX="167.0" prefWidth="50.0" />
+                                                </children>
+                                            </AnchorPane>
+
                                         </children>
                                     </VBox>
                                 </content>
@@ -253,6 +266,13 @@
                                             <Label fx:id="currentMonitorCount" alignment="CENTER_RIGHT" layoutX="167.0" prefHeight="26.0" prefWidth="50.0" />
                                         </children>
                                     </AnchorPane>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                        <children>
+                                            <Label style="-fx-font-size: 10px;" prefHeight="26.0" prefWidth="150.0" text="Current Coffee Maker Interaction Count" />
+                                            <Label fx:id="currentCoffeeMakerCount" alignment="CENTER_RIGHT" layoutX="167.0" prefHeight="26.0" prefWidth="50.0" />
+                                        </children>
+                                    </AnchorPane>
+
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                         <children>
                                             <Label style="-fx-font-size: 10px;" prefHeight="26.0" prefWidth="150.0" text="Aircon Switch On Interaction Count" />
