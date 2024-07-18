@@ -1413,6 +1413,9 @@ public class ScreenController extends Controller {
                 {singlePendantLights, 97, 27}, {singlePendantLights, 103, 27},
                 {singlePendantLights, 93, 72}, {singlePendantLights, 93, 78},
                 {singlePendantLights, 93, 84}, {singlePendantLights, 93, 90},
+                {horizontalTrackLights, 95, 34}, {horizontalTrackLights, 95, 48},
+                {horizontalTrackLights, 95, 59}, {horizontalTrackLights, 95, 75},
+                {horizontalTrackLights, 95, 93},
 
                 // Faculty Room
                 {horizontalTrackLights, 93, 121}, {horizontalTrackLights, 104, 111},
@@ -1514,7 +1517,7 @@ public class ScreenController extends Controller {
                 {93, 9},
 
                 // Research Center
-                {92, 34}, {92, 40}, {97, 71}, {85, 88},
+                {92, 34}, {92, 40}, {97, 71}, {95, 88},
 
                 // Faculty Room
                 {95, 101}, {95, 112}, {100, 122},
@@ -2684,7 +2687,7 @@ public class ScreenController extends Controller {
                 {93, 9},
 
                 // Research Center
-                {92, 34}, {92, 40}, {97, 71}, {85, 88},
+                {92, 34}, {92, 40}, {97, 71}, {95, 88},
 
                 // Faculty Space
                 {30, 73}, {30, 84}, {35, 84}, {37, 105}, {37, 120},
@@ -2809,7 +2812,8 @@ public class ScreenController extends Controller {
                 dataCenter = new ArrayList<>(), mesa = new ArrayList<>(),
                 SR1 = new ArrayList<>(), SR2 = new ArrayList<>(),  SR3 = new ArrayList<>(), SR4 = new ArrayList<>(),
                 LS1 = new ArrayList<>(), LS2 = new ArrayList<>(),  LS3 = new ArrayList<>(), LS4 = new ArrayList<>(),
-                researchCenter = new ArrayList<>(), facultyRoom = new ArrayList<>(),
+                RC1 = new ArrayList<>(),  RC2 = new ArrayList<>(), RC3 = new ArrayList<>(), RC4 = new ArrayList<>(),
+                FR1 = new ArrayList<>(), FR2 = new ArrayList<>(), FR3 = new ArrayList<>(),
                 humanExpRoom = new ArrayList<>(), dataCollectionRoom = new ArrayList<>(),
                 storageRoom = new ArrayList<>(), clinic = new ArrayList<>();
 
@@ -2832,7 +2836,8 @@ public class ScreenController extends Controller {
                 {dataCenter, 38, 59, 127, 145}, {mesa, 67, 80, 144, 160},
                 {SR1, 67, 79, 94, 101}, {SR2, 67, 79, 85, 92}, {SR3, 67, 79, 48, 55}, {SR4, 67, 79, 39, 46},
                 {LS1, 26, 59, 86, 105}, {LS2, 26, 59, 65, 84}, {LS3, 26, 59, 44, 63}, {LS4, 26, 59, 22, 42},
-                {researchCenter, 87, 106, 24, 98}, {facultyRoom, 87, 106, 99, 127},
+                {RC1, 87, 106, 24, 37}, {RC2, 87, 106, 39, 52}, {RC3, 87, 106, 54, 67}, {RC4, 87, 106, 69, 82},
+                {FR1, 87, 106, 84, 97}, {FR2, 87, 106, 99, 112}, {FR3, 87, 106, 114, 127},
                 {humanExpRoom, 67, 86, 1, 15}, {dataCollectionRoom, 87, 104, 1, 22},
                 {storageRoom, 89, 106, 129, 141}, {clinic, 80, 91, 186, 193}
         };
@@ -2873,8 +2878,13 @@ public class ScreenController extends Controller {
         simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS2, "dimLS2"));
         simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS3, "dimLS3"));
         simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS4, "dimLS4"));
-        simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(researchCenter, "dimResearchCenter"));
-        simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(facultyRoom, "dimFacultyRoom"));
+        simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(RC1, "dimRC1"));
+        simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(RC2, "dimRC2"));
+        simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(RC3, "dimRC3"));
+        simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(RC4, "dimRC4"));
+        simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(FR1, "dimFR1"));
+        simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(FR2, "dimFR2"));
+        simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(FR3, "dimFR3"));
         simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(humanExpRoom, "dimHumExpRoom"));
         simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(dataCollectionRoom, "dimDataCollRoom"));
         simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(storageRoom, "dimStorageRoom"));
@@ -3079,7 +3089,9 @@ public class ScreenController extends Controller {
 
                 // Human Experiment Room, Data Collection Room, Research Center,
                 // Faculty Room, Storage Room, Conference Room
-                {68, 1, 15}, {88, 1, 8}, {88, 14, 16}, {88, 22, 24}, {88, 30, 120}, {88, 127, 128},
+                {68, 1, 15}, {88, 1, 8}, {88, 14, 16}, {88, 22, 24},
+                {88, 30, 39}, {88, 45, 54}, {88, 60, 69}, {88, 75, 91},
+                {88, 97, 106}, {88, 112, 121}, {88, 127, 128},
                 {90, 129, 130}, {90, 133, 135}, {90, 141, 143}, {90, 149, 155}, {90, 158, 162},
                 {90, 168, 169}, {97, 1, 6}, {106, 142, 144}, {110, 142, 144}, {106, 143, 144},
                 {108, 135, 169},
@@ -3128,7 +3140,9 @@ public class ScreenController extends Controller {
 
                 // Human Experiment Room, Data Collection Room, Research Center,
                 // Faculty Room, Storage Room, Conference Room
-                {67, 1, 15}, {87, 1, 8}, {87, 14, 16}, {87, 22, 24}, {87, 30, 120}, {87, 127, 128},
+                {67, 1, 15}, {87, 1, 8}, {87, 14, 16}, {87, 22, 24},
+                {87, 30, 39}, {87, 45, 54}, {87, 60, 69}, {87, 75, 91},
+                {87, 97, 106}, {87, 112, 121}, {87, 127, 128},
                 {89, 129, 130}, {89, 133, 135}, {89, 141, 143}, {89, 149, 155}, {89, 158, 162},
                 {89, 168, 169}, {96, 1, 6}, {105, 142, 144}, {109, 142, 144}, {105, 143, 144}, {104, 6, 6},
                 {107, 135, 169},
@@ -3156,7 +3170,10 @@ public class ScreenController extends Controller {
 
                 // Human Experiment Room, Data Collection Room, Research Center,
                 // Faculty Room, Storage Room, Conference Room
-                {15, 77, 86}, {23, 88, 104}, {98, 98, 106}, {128, 88, 106}, {142, 90, 109}, {169, 90, 106},
+                {15, 77, 86}, {23, 88, 104},
+                {38, 88, 106}, {53, 88, 95}, {53, 98, 106}, {68, 88, 106},
+                {83, 88, 106}, {98, 88, 106}, {113, 88, 106}, {128, 88, 106},
+                {142, 90, 109}, {169, 90, 106},
 
                 // Director Room & Bathroom and Clinic
                 {186, 85, 87}, {186, 97, 113}, {194, 77, 87}
@@ -3206,8 +3223,10 @@ public class ScreenController extends Controller {
                 /* Not Permanent (inside office) */
                 {9, 57}, {15, 57}, {31, 57}, {37, 57}, {57, 57}, {63, 57}, {78, 57}, {84, 57}, {99, 57}, {105, 57},
                 {119, 57}, {125, 57}, {139, 57}, {145, 57}, {15, 68}, {39, 68}, {44, 68}, {96, 68}, {101, 68},
-                {50, 77}, {55, 77}, {85, 77}, {90, 77}, {8, 88}, {14, 88}, {16, 88}, {22, 88}, {24, 88}, {30, 88},
-                {120, 88}, {127, 88}, {135, 90}, {141, 90}, {143, 90}, {149, 90}, {162, 90}, {168, 90}, {186, 89},
+                {50, 77}, {55, 77}, {85, 77}, {90, 77}, {8, 88}, {14, 88}, {16, 88}, {22, 88},
+                {24, 88}, {30, 88}, {39, 88}, {45, 88}, {54, 88}, {60, 88}, {69, 88}, {75, 88},
+                {91, 88}, {97, 88}, {106, 88}, {112, 88}, {121, 88}, {127, 88},
+                {135, 90}, {141, 90}, {143, 90}, {149, 90}, {162, 90}, {168, 90}, {186, 89},
                 {195, 89}, {200, 89}
 
         };
@@ -3252,11 +3271,14 @@ public class ScreenController extends Controller {
                 {cubicleA, 43, 111},
 
                 // Type B
-                {westCubicleB, 95, 105}, {westCubicleB, 95, 115}, {westCubicleB, 95, 125},
-                {westCubicleB, 99, 105}, {westCubicleB, 99, 115}, {westCubicleB, 99, 125},
 
-                {eastCubicleB, 95, 108}, {eastCubicleB, 95, 118},
-                {eastCubicleB, 99, 108}, {eastCubicleB, 99, 118},
+                // Faculty Room 1
+                {eastCubicleB, 92, 84}, {eastCubicleB, 97, 84}, {westCubicleB, 95, 95},
+                // Faculty Room 2
+                {eastCubicleB, 92, 99}, {eastCubicleB, 97, 99}, {westCubicleB, 95, 110},
+                // Faculty Room 3
+                {westCubicleB, 95, 118}, {eastCubicleB, 95, 121},
+                {westCubicleB, 100, 118}, {eastCubicleB, 100, 121},
 
                 // Type C
                 {westCubicleC, 41, 120}, {westCubicleC, 44, 120},
@@ -3289,6 +3311,7 @@ public class ScreenController extends Controller {
                 // Research Tables
                 westResearchTable = new ArrayList<>(), westMonitorResearchTable = new ArrayList<>(),
                 eastResearchTable = new ArrayList<>(), eastMonitorResearchTable = new ArrayList<>(),
+                southResearchTable = new ArrayList<>(), southMonitorResearchTable = new ArrayList<>(),
                 // Learning Tables
                 learningTables = new ArrayList<>(),
                 // Meeting Tables
@@ -3312,12 +3335,23 @@ public class ScreenController extends Controller {
 
         // Research Tables
         Object[][] researchTableRanges =  {
-                {westResearchTable, 100, 38}, {eastResearchTable, 100, 39},
-                {westMonitorResearchTable, 100, 46}, {eastResearchTable, 100, 47},
-                {westResearchTable, 100, 60}, {eastResearchTable, 100, 61},
-                {westMonitorResearchTable, 100, 68}, {eastResearchTable, 100, 69},
-                {westMonitorResearchTable, 100, 76}, {eastResearchTable, 100, 77},
-                {westResearchTable, 100, 90}, {eastMonitorResearchTable, 100, 91}
+
+                // RC 1
+                {eastMonitorResearchTable, 93, 25},
+                {eastResearchTable, 97, 25},
+                {eastMonitorResearchTable, 101, 25},
+
+                // RC 2
+                {westResearchTable, 96, 44}, {eastResearchTable, 96, 47},
+                {southMonitorResearchTable, 101, 44},
+
+                // RC 3
+                {westMonitorResearchTable, 96, 59}, {eastMonitorResearchTable, 96, 62},
+                {southResearchTable, 101, 59},
+
+                // RC 4
+                {westResearchTable, 96, 74}, {eastResearchTable, 96, 77},
+                {southMonitorResearchTable, 101, 74},
         };
 
         for (Object[] range : researchTableRanges) {
@@ -3408,8 +3442,10 @@ public class ScreenController extends Controller {
         // Research Table
         ResearchTableMapper.draw(westResearchTable, "WEST", false);
         ResearchTableMapper.draw(eastResearchTable, "EAST", false);
+        ResearchTableMapper.draw(southResearchTable, "SOUTH", false);
         ResearchTableMapper.draw(westMonitorResearchTable, "WEST", true);
         ResearchTableMapper.draw(eastMonitorResearchTable, "EAST", true);
+        ResearchTableMapper.draw(southMonitorResearchTable, "SOUTH", true);
         // Learning Table
         LearningTableMapper.draw(learningTables, "HORIZONTAL");
         // Meeting Tables
@@ -3535,9 +3571,17 @@ public class ScreenController extends Controller {
 
         Object[][] whiteBoardRanges =  {
 
-                // Research Center Pillars
-                {westWhiteBoard, 96, 30}, {northWhiteBoard, 95, 31}, {eastWhiteBoard_4, 96, 33},
-                {westWhiteBoard, 96, 52}, {northWhiteBoard, 95, 53}, {eastWhiteBoard_4, 96, 55},
+                // RC 1
+                {westWhiteBoard, 96, 30},
+
+                // RC 2
+                {eastWhiteBoard_4, 96, 39}, {westWhiteBoard, 96, 52},
+
+                // RC 3
+                {eastWhiteBoard_4, 96, 55}, {westWhiteBoard, 96, 67},
+
+                // RC 3
+                {eastWhiteBoard_4, 96, 69}, {westWhiteBoard, 96, 82},
 
                 // Meeting Room
                 {eastWhiteBoard_11, 36, 1},
@@ -3608,31 +3652,36 @@ public class ScreenController extends Controller {
                 {eastLightSwitches, 57, 147}, {eastAirconSwitches, 58, 147},
 
                 // Reception
-                {southLightSwitches,58, 174}, {southAirconSwitches, 58, 175},
+                {southLightSwitches, 58, 174}, {southAirconSwitches, 58, 175},
 
                 // Human Experience Room
-                {southLightSwitches,69, 12}, {southAirconSwitches, 69, 13},
+                {southLightSwitches, 69, 12}, {southAirconSwitches, 69, 13},
 
                 // Data Collection Room
                 {northLightSwitches, 95, 5}, {northAirconSwitches, 95, 6},
 
                 // Research Center
-                {westLightSwitches, 103, 83}, {westAirconSwitches, 104, 83},
+                {southLightSwitches, 89, 32}, {southAirconSwitches, 89, 33},
+                {southLightSwitches, 89, 47}, {southAirconSwitches, 89, 48},
+                {southLightSwitches, 89, 62}, {southAirconSwitches, 89, 63},
+                {southLightSwitches, 89, 77}, {southAirconSwitches, 89, 78},
 
                 // Faculty Room
-                {southLightSwitches,89, 117}, {southAirconSwitches, 89, 118},
+                {southLightSwitches, 89, 87}, {southAirconSwitches, 89, 88},
+                {southLightSwitches, 89, 102}, {southAirconSwitches, 89, 103},
+                {southLightSwitches, 89, 117}, {southAirconSwitches, 89, 118},
 
                 // Storage Room
-                {southLightSwitches,91, 133},
+                {southLightSwitches, 91, 133},
 
                 // Conference Room
-                {southLightSwitches,91, 151}, {southAirconSwitches, 91, 152},
+                {southLightSwitches, 91, 151}, {southAirconSwitches, 91, 152},
 
                 // Clinic
-                {southLightSwitches,78, 188}, {southAirconSwitches, 78, 189},
+                {southLightSwitches, 78, 188}, {southAirconSwitches, 78, 189},
 
                 // Director Room
-                {southLightSwitches,90, 188}, {southAirconSwitches, 90, 189},
+                {southLightSwitches, 90, 188}, {southAirconSwitches, 90, 189},
 
                 // Pantry
                 {westLightSwitches, 112, 185}, {southAirconSwitches, 109, 168},
@@ -3743,34 +3792,50 @@ public class ScreenController extends Controller {
                 // Data Collection Room
                 {verticalRecessedLights, 93, 5}, {verticalRecessedLights, 93, 19},
 
-                // Research Center
-                {verticalRecessedLights, 92, 32}, {verticalRecessedLights, 92, 38},
-                {verticalRecessedLights, 92, 44}, {verticalRecessedLights, 92, 50},
-                {verticalRecessedLights, 92, 56}, {verticalRecessedLights, 92, 62},
-                {verticalRecessedLights, 92, 68}, {verticalRecessedLights, 92, 74},
-                {verticalRecessedLights, 92, 80}, {verticalRecessedLights, 92, 86},
-                {verticalRecessedLights, 92, 92},
-                {verticalRecessedLights, 97, 62}, {verticalRecessedLights, 97, 68},
-                {verticalRecessedLights, 97, 74}, {verticalRecessedLights, 97, 80},
-                {verticalRecessedLights, 97, 86}, {verticalRecessedLights, 97, 92},
-                {verticalPendantLights, 100, 41}, {verticalPendantLights, 102, 41},
-                {verticalPendantLights, 100, 49}, {verticalPendantLights, 102, 49},
-                {verticalPendantLights, 100, 63}, {verticalPendantLights, 102, 63},
-                {verticalPendantLights, 100, 71}, {verticalPendantLights, 102, 71},
-                {verticalPendantLights, 100, 79}, {verticalPendantLights, 102, 79},
-                {verticalPendantLights, 100, 93}, {verticalPendantLights, 102, 93},
-                {singlePendantLights, 97, 27}, {singlePendantLights, 103, 27},
-                {singlePendantLights, 93, 72}, {singlePendantLights, 93, 78},
-                {singlePendantLights, 93, 84}, {singlePendantLights, 93, 90},
+                // Research Center 1
+                {verticalPendantLights, 93, 24}, {verticalPendantLights, 95, 24},
+                {verticalPendantLights, 97, 24}, {verticalPendantLights, 99, 24},
+                {verticalPendantLights, 101, 24}, {verticalPendantLights, 103, 24},
+                {verticalRecessedLights, 92, 29}, {verticalRecessedLights, 92, 35},
+                {verticalRecessedLights, 102, 29}, {verticalRecessedLights, 102, 35},
+                {horizontalTrackLights, 105, 26}, {horizontalTrackLights, 105, 32},
 
-                // Faculty Room
-                {horizontalTrackLights, 93, 121}, {horizontalTrackLights, 104, 111},
-                {horizontalTrackLights, 104, 121}, {verticalRecessedLights, 92, 102},
-                {verticalRecessedLights, 92, 107}, {verticalRecessedLights, 92, 114},
-                {verticalRecessedLights, 99, 102}, {verticalRecessedLights, 99, 107},
-                {horizontalRecessedLights, 94, 126}, {horizontalRecessedLights, 103, 126},
-                {horizontalPendantLights, 98, 111}, {horizontalPendantLights, 98, 113},
-                {horizontalPendantLights, 99, 111}, {horizontalPendantLights, 99, 113},
+                // Research Center 2
+                {verticalPendantLights, 97, 45}, {verticalPendantLights, 97, 46},
+                {verticalRecessedLights, 94, 43}, {verticalRecessedLights, 94, 48},
+                {verticalRecessedLights, 103, 43}, {verticalRecessedLights, 103, 48},
+                {singlePendantLights, 97, 40}, {singlePendantLights, 97, 51},
+                {horizontalTrackLights, 100, 44},
+
+                // Research Center 3
+                {verticalPendantLights, 97, 60}, {verticalPendantLights, 97, 61},
+                {verticalRecessedLights, 94, 58}, {verticalRecessedLights, 94, 63},
+                {verticalRecessedLights, 103, 58}, {verticalRecessedLights, 103, 63},
+                {singlePendantLights, 97, 56}, {singlePendantLights, 97, 66},
+                {horizontalTrackLights, 100, 59},
+
+                // Research Center 4
+                {verticalPendantLights, 97, 75}, {verticalPendantLights, 97, 76},
+                {verticalRecessedLights, 94, 73}, {verticalRecessedLights, 94, 78},
+                {verticalRecessedLights, 103, 73}, {verticalRecessedLights, 103, 78},
+                {singlePendantLights, 97, 71}, {singlePendantLights, 97, 81},
+                {horizontalTrackLights, 100, 74},
+
+                // Faculty Room 1
+                {horizontalPendantLights, 96, 85}, {horizontalPendantLights, 94, 95},
+                {horizontalRecessedLights, 94, 90}, {horizontalRecessedLights, 101, 90},
+                {horizontalTrackLights, 104, 89},
+
+                // Faculty Room 2
+                {horizontalPendantLights, 96, 100}, {horizontalPendantLights, 94, 110},
+                {horizontalRecessedLights, 94, 105}, {horizontalRecessedLights, 101, 105},
+                {horizontalTrackLights, 104, 104},
+
+                // Faculty Room 3
+                {verticalRecessedLights, 93, 116}, {verticalRecessedLights, 93, 125},
+                {horizontalRecessedLights, 104, 120}, {horizontalTrackLights, 99, 119},
+
+
 
                 // Storage Room
                 {verticalRecessedLights, 95, 134}, {verticalRecessedLights, 103, 134},
@@ -3863,10 +3928,10 @@ public class ScreenController extends Controller {
                 {93, 9},
 
                 // Research Center
-                {92, 34}, {92, 40}, {97, 71}, {85, 88},
+                {96, 28}, {94, 45}, {94, 60}, {94, 75},
 
                 // Faculty Room
-                {95, 101}, {95, 112}, {100, 122},
+                {97, 90}, {97, 105}, {93, 120},
 
                 // Conference Room
                 {94, 149}, {94, 161},

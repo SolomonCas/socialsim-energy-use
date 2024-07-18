@@ -162,8 +162,6 @@ public class GraphicsController extends Controller {
             }
 
 
-
-
             // PATCH COLORS
             if (patchStrPair != null) {
                 PatchField patchPatchField = patchStrPair.getKey();
@@ -515,6 +513,38 @@ public class GraphicsController extends Controller {
                         patchColor = Color.rgb(145, 133, 151);
                     }
 
+                    // Faculty Room 1
+                    else if (patchStrPair.getValue().equals("FR1")) {
+                        patchColor = Color.rgb(173, 184, 204);
+                    }
+
+                    // Dim 1
+                    else if (patchStrPair.getValue().equals("dimFR1")){
+                        patchColor = Color.rgb(126, 134, 149);
+                    }
+
+                    // Faculty Room 2
+                    else if (patchStrPair.getValue().equals("FR2")) {
+                        patchColor = Color.rgb(190, 184, 204);
+                    }
+
+                    // Dim 2
+                    else if (patchStrPair.getValue().equals("dimFR2")){
+                        patchColor = Color.rgb(138, 135, 153);
+                    }
+
+                    // Faculty Room 3
+                    else if (patchStrPair.getValue().equals("FR3")) {
+                        patchColor = Color.rgb(215, 224, 229);
+                    }
+
+                    // Dim 3
+                    else if (patchStrPair.getValue().equals("dimFR3")){
+                        patchColor = Color.rgb(127, 139, 147);
+                    }
+
+
+
                     else {
                         throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
                     }
@@ -528,10 +558,44 @@ public class GraphicsController extends Controller {
                         patchColor = Color.rgb(217, 198, 213);
                     }
 
-                    // Dim
+                    // Dim 0
                     else if (patchStrPair.getValue().equals("dimResearchCenter")){
                         patchColor = Color.rgb(126, 113, 113);
                     }
+
+                    // Research Center 1
+                    else if (patchStrPair.getValue().equals("RC1")) {
+                        patchColor = Color.rgb(206, 193, 214);
+                    }
+                    // Dim 1
+                    else if (patchStrPair.getValue().equals("dimRC1")){
+                        patchColor = Color.rgb(122, 114, 127);
+                    }
+                    // Research Center 2
+                    else if (patchStrPair.getValue().equals("RC2")) {
+                        patchColor = Color.rgb(186, 176, 207);
+                    }
+                    // Dim 2
+                    else if (patchStrPair.getValue().equals("dimRC2")){
+                        patchColor = Color.rgb(122, 116, 136);
+                    }
+                    // Research Center 3
+                    else if (patchStrPair.getValue().equals("RC3")) {
+                        patchColor = Color.rgb(198, 206, 217);
+                    }
+                    // Dim 3
+                    else if (patchStrPair.getValue().equals("dimRC3")){
+                        patchColor = Color.rgb(116, 122, 130);
+                    }
+                    // Research Center 4
+                    else if (patchStrPair.getValue().equals("RC4")) {
+                        patchColor = Color.rgb(227, 199, 220);
+                    }
+                    // Dim 4
+                    else if (patchStrPair.getValue().equals("dimRC4")){
+                        patchColor = Color.rgb(150, 132, 146);
+                    }
+
 
                     else {
                         throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
