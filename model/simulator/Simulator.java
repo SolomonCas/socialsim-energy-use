@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -582,7 +583,7 @@ public class Simulator {
         // Mainly used by Director, Faculty, and Student agents
         // where urgent task happen for Director, Faculty, and Student agents
         if (action.getName() == Action.Name.GO_TO_STATION) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
                 if((type == Agent.Type.STUDENT || type == Agent.Type.FACULTY) && agentMovement.getAssignedSeat() == null) {
                     if(!agentMovement.chooseWorkingSeat()) {
@@ -840,7 +841,7 @@ public class Simulator {
         }
 
         else if (action.getName() == Action.Name.LEAVE_OFFICE || action.getName() == Action.Name.EXIT_LUNCH) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
 
                 double neutralChance = Simulator.roll();
@@ -1038,7 +1039,7 @@ public class Simulator {
         }
 
         else if (action.getName() == Action.Name.GOING_TO_RECEPTION_QUEUE || action.getName() == Action.Name.GO_TO_WAIT_AREA) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalQueueingPatchField() == null || agentMovement.getGoalAmenity() == null) {
                 if (state.getName() == State.Name.GOING_TO_RECEPTION) {
                     // Go to the end of the ReceptionQueue
@@ -1173,7 +1174,7 @@ public class Simulator {
 
 
         else if (action.getName()== Action.Name.GO_TO_BATHROOM) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
                 if ((type == Agent.Type.DIRECTOR && !agentMovement.chooseBathroomGoal(OfficeToilet.class)) ||
                         (type != Agent.Type.DIRECTOR && !agentMovement.chooseBathroomGoal(Toilet.class))) {
@@ -1251,7 +1252,7 @@ public class Simulator {
             }
         }
         else if (action.getName() == Action.Name.FIND_SINK) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
                 if ((type != Agent.Type.DIRECTOR && !agentMovement.chooseBathroomGoal(Sink.class))
                         || (type == Agent.Type.DIRECTOR && !agentMovement.chooseBathroomGoal(OfficeSink.class))) {
@@ -1407,7 +1408,7 @@ public class Simulator {
         }
 
         else if(action.getName() == Action.Name.GOING_FRIDGE){
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if(agentMovement.getGoalAmenity() == null){
                 if(!agentMovement.chooseGoal(Refrigerator.class)){
                     isFull = true;
@@ -1484,7 +1485,7 @@ public class Simulator {
             }
         }
         else if(action.getName() == Action.Name.GOING_COFFEEMAKER){
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if(agentMovement.getGoalAmenity() == null){
                 if(!agentMovement.chooseGoal(CoffeeMakerBar.class)){
                     isFull = true;
@@ -1561,7 +1562,7 @@ public class Simulator {
             }
         }
         else if(action.getName() == Action.Name.GOING_DISPENSER){
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if(agentMovement.getGoalAmenity() == null){
                 if(!agentMovement.chooseGoal(WaterDispenser.class)){
                     isFull = true;
@@ -1640,7 +1641,7 @@ public class Simulator {
 
 
         else if (action.getName() == Action.Name.GO_TO_LUNCH || action.getName() == Action.Name.GO_TO_BREAK) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
                 if (agentMovement.getRoutePlan().getLunchAmenity() == null) {
                     double CHANCE = Simulator.roll();
@@ -1870,7 +1871,7 @@ public class Simulator {
         }
 
         else if (action.getName() == Action.Name.CLOSE_BLINDS || action.getName() == Action.Name.OPEN_BLINDS) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
                 if (agentMovement.chooseWindowBlindGoal()) {
                     agentMovement.getRoutePlan().setAtDesk(false);
@@ -1959,7 +1960,7 @@ public class Simulator {
             }
         }
         else if (action.getName() == Action.Name.TURN_OFF_LIGHT || action.getName() == Action.Name.TURN_ON_LIGHT) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
                 if (agentMovement.chooseLightGoal()) {
                     agentMovement.getRoutePlan().setAtDesk(false);
@@ -2075,7 +2076,7 @@ public class Simulator {
         }
         else if (action.getName() == Action.Name.TURN_OFF_AC || action.getName() == Action.Name.TURN_ON_AC ||
                 action.getName() == Action.Name.SET_AC_TO_COOL || action.getName() == Action.Name.SET_AC_TO_WARM) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
                 if (agentMovement.chooseAirConGoal()) {
                     agentMovement.getRoutePlan().setAtDesk(false);
@@ -2135,13 +2136,29 @@ public class Simulator {
                     }
                     else if (action.getName() == Action.Name.TURN_ON_AC) {
                         agentMovement.getAirconToChange().setOn(true);
-                        agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
+                        if (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN) {
+                            if (agent.getTempPreference() + 2 <= 25) {
+                                agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference() + 2);
+                            } else {
+                                agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
+                            }
+                        } else {
+                            agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
+                        }
                         agentMovement.getAirconToChange().getAirconGraphic().change();
                         currentAirconTurnOnCount++;
                         //currentAirconCount++;
                     }
                     else if(action.getName() == Action.Name.SET_AC_TO_COOL || action.getName() == Action.Name.SET_AC_TO_WARM){
-                        agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
+                        if (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN) {
+                            if (agent.getTempPreference() + 2 <= 25) {
+                                agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference() + 2);
+                            } else {
+                                agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
+                            }
+                        } else {
+                            agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference());
+                        }
                         agentMovement.setToCool(false);
                         agentMovement.setToHeat(false);
                     }
@@ -2305,7 +2322,7 @@ public class Simulator {
 
                     else if (state.getName() == State.Name.INSPECT_ROOMS) {
                         if (action.getName() == Action.Name.INSPECTING_ROOM) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
 
                                 int agentCount = 0;
@@ -2379,7 +2396,7 @@ public class Simulator {
                             }
                         }
                         else if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 for (Light light : environmentInstance.getLights()) {
                                     if (light.getAttractors().getFirst().getPatch().equals(agentMovement.getCurrentAction().getDestination())) {
@@ -2560,7 +2577,7 @@ public class Simulator {
                         }
 
                         else if (action.getName() == Action.Name.TURN_OFF_AC) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 for (Aircon aircon : environmentInstance.getAircons()) {
                                     if (aircon.getAttractors().getFirst().getPatch().equals(agentMovement.getCurrentAction().getDestination())) {
@@ -2886,7 +2903,7 @@ public class Simulator {
                     }
                     else if (state.getName() == State.Name.INSPECT_ROOMS) {
                         if (action.getName() == Action.Name.INSPECTING_ROOM) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
 
                                 int agentCount = 0;
@@ -2960,7 +2977,7 @@ public class Simulator {
                             }
                         }
                         else if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 for (Light light : environmentInstance.getLights()) {
                                     if (light.getAttractors().getFirst().getPatch().equals(agentMovement.getCurrentAction().getDestination())) {
@@ -3141,7 +3158,7 @@ public class Simulator {
                         }
 
                         else if (action.getName() == Action.Name.TURN_OFF_AC) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 for (Aircon aircon : environmentInstance.getAircons()) {
                                     if (aircon.getAttractors().getFirst().getPatch().equals(agentMovement.getCurrentAction().getDestination())) {
@@ -3569,7 +3586,7 @@ public class Simulator {
                     }
                     else if (state.getName() == State.Name.INQUIRE_GUARD || state.getName() == State.Name.INQUIRE_MAINTENANCE) {
                         if (action.getName() == Action.Name.GO_TO_GUARD || action.getName() == Action.Name.GO_TO_MAINTENANCE) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_GUARD && currentGuardCount <= 0) ||
                                         (action.getName() == Action.Name.GO_TO_MAINTENANCE && currentMaintenanceCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
@@ -3614,7 +3631,7 @@ public class Simulator {
                             }
                         }
                         else if (action.getName() == Action.Name.ASK_GUARD || action.getName() == Action.Name.ASK_MAINTENANCE) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
 
                             if (agentMovement.getAgentToInquire() != null &&
                                     agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().isAtDesk()) {
@@ -3676,7 +3693,7 @@ public class Simulator {
                 case DIRECTOR:
                     if (state.getName() == State.Name.INQUIRE_FACULTY) {
                         if (action.getName() == Action.Name.GO_TO_FACULTY) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 // For director the destination is set in RoutePlan addUrgentRoute
                                 if (agentMovement.getCurrentAction().getDestination() != null) {
@@ -3733,7 +3750,7 @@ public class Simulator {
                             }
                         }
                         else if (action.getName() == Action.Name.ASK_FACULTY) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
 
                             if (agentMovement.getAgentToInquire() != null &&
                                     agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().isAtDesk()) {
@@ -3789,7 +3806,7 @@ public class Simulator {
                     }
                     else if (state.getName() == State.Name.INQUIRE_STUDENT) {
                         if (action.getName() == Action.Name.GO_TO_STUDENT) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_STUDENT && currentStudentCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
                                     // System.out.println("Agent Not Found");
@@ -3833,7 +3850,7 @@ public class Simulator {
                             }
                         }
                         else if (action.getName() == Action.Name.ASK_STUDENT) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
 
                             if (agentMovement.getAgentToInquire() != null &&
                                     agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().isAtDesk()) {
@@ -3889,7 +3906,7 @@ public class Simulator {
                     }
                     else if (state.getName() == State.Name.INQUIRE_GUARD || state.getName() == State.Name.INQUIRE_MAINTENANCE) {
                         if (action.getName() == Action.Name.GO_TO_GUARD || action.getName() == Action.Name.GO_TO_MAINTENANCE) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_GUARD && currentGuardCount <= 0) ||
                                         (action.getName() == Action.Name.GO_TO_MAINTENANCE && currentMaintenanceCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
@@ -3934,7 +3951,7 @@ public class Simulator {
                             }
                         }
                         else if (action.getName() == Action.Name.ASK_GUARD || action.getName() == Action.Name.ASK_MAINTENANCE) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
 
                             if (agentMovement.getAgentToInquire() != null &&
                                     agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().isAtDesk()) {
@@ -3996,7 +4013,7 @@ public class Simulator {
                 case FACULTY: case STUDENT:
                     if (state.getName() == State.Name.INQUIRE_FACULTY || state.getName() == State.Name.INQUIRE_STUDENT) {
                         if (action.getName() == Action.Name.GO_TO_FACULTY || action.getName() == Action.Name.GO_TO_STUDENT) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_FACULTY && currentFacultyCount <= 0) ||
                                         (action.getName() == Action.Name.GO_TO_STUDENT && currentStudentCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
@@ -4041,7 +4058,7 @@ public class Simulator {
                             }
                         }
                         else if (action.getName() == Action.Name.ASK_FACULTY || action.getName() == Action.Name.ASK_STUDENT) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
 
                             if (agentMovement.getAgentToInquire() != null &&
                                     agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().isAtDesk()) {
@@ -4097,7 +4114,7 @@ public class Simulator {
                     }
                     else if (state.getName() == State.Name.INQUIRE_GUARD || state.getName() == State.Name.INQUIRE_MAINTENANCE) {
                         if (action.getName() == Action.Name.GO_TO_GUARD || action.getName() == Action.Name.GO_TO_MAINTENANCE) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
                             if (agentMovement.getGoalAmenity() == null) {
                                 if ((action.getName() == Action.Name.GO_TO_GUARD && currentGuardCount <= 0) ||
                                         (action.getName() == Action.Name.GO_TO_MAINTENANCE && currentMaintenanceCount <= 0) || !agentMovement.chooseAgentAsGoal()) { // no faculty or student
@@ -4142,7 +4159,7 @@ public class Simulator {
                             }
                         }
                         else if (action.getName() == Action.Name.ASK_GUARD || action.getName() == Action.Name.ASK_MAINTENANCE) {
-                            agentMovement.setSimultaneousInteractionAllowed(true);
+                            agentMovement.setSimultaneousInteractionAllowed(false);
 
                             if (agentMovement.getAgentToInquire() != null &&
                                     agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().isAtDesk()) {
