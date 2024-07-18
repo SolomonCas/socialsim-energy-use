@@ -227,7 +227,7 @@
                                 <Text fx:id="elapsedTimeText" strokeType="OUTSIDE" strokeWidth="0.0" text="Current time: 00:00:00 (0 ticks)" textAlignment="CENTER" />
                             </HBox>
                             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                <Text fx:id="totalWattageCountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Watts: 0.000 Wh " textAlignment="CENTER" />
+                                <Text fx:id="totalWattageCountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Watts: 0.000 W " textAlignment="CENTER" />
                             </HBox>
 
                             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="230.0" spacing="10.0">

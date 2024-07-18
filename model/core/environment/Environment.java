@@ -414,6 +414,10 @@ public class Environment extends BaseObject implements Serializable {
             this.getAgents().add(agent);
         }
 
+        for (int i = 0; i < 1; i++) {
+            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(7,30, i), LocalTime.of(11,0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
 
         for (int i = 0; i < 1; i++) {
             LocalTime randomizeTimeIn = LocalTime.of(7,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 16));
@@ -422,7 +426,7 @@ public class Environment extends BaseObject implements Serializable {
         }
 
         for (int i = 0; i < 1; i++) {
-            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(22,0), Agent.energyProfilePicker(green, nonGreen, neutral));
             this.getAgents().add(agent);
         }
 

@@ -209,7 +209,7 @@ public class ScreenController extends Controller {
 
         //Wattage
 
-        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " Wh");
+        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " W");
         //WATER DISPENSER
         simulator.setWaterDispenserWattage(Float.parseFloat(waterDispenserWattage.getText()));
         simulator.setWaterDispenserWattageInUse(Float.parseFloat(waterDispenserWattageInUse.getText()));
@@ -4078,7 +4078,7 @@ public class ScreenController extends Controller {
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
 
         // WATTAGE
-        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " Wh");
+        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " W");
 
     }
 

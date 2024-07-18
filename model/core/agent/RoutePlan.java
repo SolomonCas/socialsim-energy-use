@@ -68,7 +68,7 @@ public class RoutePlan {
             INQUIRE_MAINTENANCE_CHANCE = 0.0;
             BATHROOM_CHANCE = 0.15;
             BREAK_CHANCE = 0.05;
-            COFFEE_CHANCE = 1.0;//0.0;
+            COFFEE_CHANCE = 0.0;
 
             DISPENSER_CHANCE = 0.02;
             REFRIGERATOR_CHANCE = 0.03;
@@ -114,7 +114,7 @@ public class RoutePlan {
             INQUIRE_MAINTENANCE_CHANCE = 0.02;
             BATHROOM_CHANCE = 0.10;
             BREAK_CHANCE = 0.01;
-            COFFEE_CHANCE = 1.0;//0.0;
+            COFFEE_CHANCE = 0.0;
 
             DISPENSER_CHANCE = 0.02;
             REFRIGERATOR_CHANCE = 0.03;
@@ -241,7 +241,7 @@ public class RoutePlan {
             INQUIRE_MAINTENANCE_CHANCE = 0.0;
             BATHROOM_CHANCE = 0.15;
             BREAK_CHANCE = 0.01;
-            COFFEE_CHANCE = 1.0;//0.04;
+            COFFEE_CHANCE = 0.04;
 
             DISPENSER_CHANCE = 0.02;
             REFRIGERATOR_CHANCE = 0.03;
@@ -275,7 +275,7 @@ public class RoutePlan {
             WORKING_CHANCE = 0.8;
             BATHROOM_CHANCE = 0.15;
             BREAK_CHANCE = 0.02;
-            COFFEE_CHANCE = 1.0;//0.02;
+            COFFEE_CHANCE = 0.02;
 
             DISPENSER_CHANCE = 0.13;
             REFRIGERATOR_CHANCE = 0.1;
@@ -323,9 +323,9 @@ public class RoutePlan {
             setAtDesk(false);
 
             WORKING_CHANCE = 0.8;
-            BATHROOM_CHANCE = 0.15;
+            BATHROOM_CHANCE = 0.14;
             BREAK_CHANCE = 0.03;
-            COFFEE_CHANCE = 1.0;//0.0;
+            COFFEE_CHANCE = 0.01;
 
             DISPENSER_CHANCE = 0.25;
             REFRIGERATOR_CHANCE = 0.1;
