@@ -2671,7 +2671,7 @@ public class ScreenController extends Controller {
 
 
         /* WINDOW + BLINDS */
-        List<Patch> glass = new ArrayList<>(), southFacultyClosedBlinds = new ArrayList<>(), northFacultyClosedBlinds = new ArrayList<>(),
+        List<Patch> glass = new ArrayList<>(), southFacultyClosedBlinds = new ArrayList<>(),
                 eastHallwayWindowBlinds = new ArrayList<>(), eastWindowBlinds = new ArrayList<>(), northSouthWindowBlinds = new ArrayList<>(),
                 westWindowBlinds = new ArrayList<>();
 
@@ -2694,7 +2694,6 @@ public class ScreenController extends Controller {
 
                 // Faculty Room
                 {southFacultyClosedBlinds, 108, 99, 127, 5},
-                {northFacultyClosedBlinds, 106, 99, 127, 5},
 
                 // Pantry Room
                 {eastWindowBlinds, 115, 135},
@@ -2731,7 +2730,6 @@ public class ScreenController extends Controller {
 
         WindowBlindsMapper.draw(glass, "GLASS", 7);
         WindowBlindsMapper.draw(southFacultyClosedBlinds, "CLOSED_SOUTH_FROM_OUTSIDE", 4);
-        WindowBlindsMapper.draw(northFacultyClosedBlinds, "CLOSED_NORTH", 4);
         WindowBlindsMapper.draw(northSouthWindowBlinds, "OPENED_NORTH_AND_SOUTH", 4);
         WindowBlindsMapper.draw(eastWindowBlinds, "OPENED_EAST", 4);
         WindowBlindsMapper.draw(eastHallwayWindowBlinds, "OPENED_EAST", 5);
