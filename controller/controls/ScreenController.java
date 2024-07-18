@@ -455,8 +455,8 @@ public class ScreenController extends Controller {
                 // small to big changes in other layouts
                 directorRoom = new ArrayList<>(), directorBathroom = new ArrayList<>(),
                 conferenceRoom = new ArrayList<>(), meetingRoom = new ArrayList<>(),
-                dataCenter = new ArrayList<>(), dataCenterCCTV = new ArrayList<>(),
-                controlCenter = new ArrayList<>(), mesa = new ArrayList<>(),
+                controlCenter = new ArrayList<>(), controlCenterCCTV = new ArrayList<>(),
+                dataCenter = new ArrayList<>(), mesa = new ArrayList<>(),
                 SR1 = new ArrayList<>(), SR2 = new ArrayList<>(),  SR3 = new ArrayList<>(), SR4 = new ArrayList<>(),
                 LS1 = new ArrayList<>(), LS2 = new ArrayList<>(),  LS3 = new ArrayList<>(), LS4 = new ArrayList<>(),
                 researchCenter = new ArrayList<>(), facultyRoom = new ArrayList<>(),
@@ -478,8 +478,8 @@ public class ScreenController extends Controller {
                 // small to big changes in other layouts
                 {directorRoom, 92, 113, 186, 202}, {directorBathroom, 80, 91, 195, 202},
                 {conferenceRoom, 89, 106, 143, 168}, {meetingRoom,22, 59, 1, 16},
-                {dataCenter, 38, 59, 107, 125}, {dataCenterCCTV, 26, 37, 107, 125},
-                {controlCenter, 38, 59, 127, 145}, {mesa, 67, 80, 144, 160},
+                {controlCenter, 38, 59, 107, 125}, {controlCenterCCTV, 26, 37, 107, 125},
+                {dataCenter, 38, 59, 127, 145}, {mesa, 67, 80, 144, 160},
                 {SR1, 67, 79, 94, 101}, {SR2, 67, 79, 85, 92}, {SR3, 67, 79, 48, 55}, {SR4, 67, 79, 39, 46},
                 {LS1, 26, 59, 86, 105}, {LS2, 26, 59, 65, 84}, {LS3, 26, 59, 44, 63}, {LS4, 26, 59, 22, 42},
                 {researchCenter, 87, 106, 24, 98}, {facultyRoom, 87, 106, 99, 127},
@@ -510,9 +510,9 @@ public class ScreenController extends Controller {
         simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(directorRoom, "dimDirectorRoom"));
         simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(conferenceRoom, "dimConferenceRoom"));
         simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(meetingRoom, "dimMeetingRoom"));
-        simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(dataCenter, "dimDataCenter"));
-        simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(dataCenterCCTV, "dimCCTV"));
         simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(controlCenter, "dimControlCenter"));
+        simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(controlCenterCCTV, "dimCCTV"));
+        simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(dataCenter, "dimDataCenter"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR1, "dimSR1"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR2, "dimSR2"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR3, "dimSR3"));
@@ -835,7 +835,7 @@ public class ScreenController extends Controller {
         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(wallTops, "wallTop"));
 
 
-        /* Permanent Door Patches */
+        /* Door Patches */
 
         List<Patch> permanentDoorPatches = new ArrayList<>();
 
@@ -1662,16 +1662,15 @@ public class ScreenController extends Controller {
                 // consistent across all layouts
                 hallway = new ArrayList<>(), elevatorLobby = new ArrayList<>(),
                 maleBathroom = new ArrayList<>(), femaleBathroom = new ArrayList<>(),
-                reception = new ArrayList<>(), breakerRoom = new ArrayList<>(), pantry = new ArrayList<>(),
+                receptionA = new ArrayList<>(), breakerRoom = new ArrayList<>(), pantry = new ArrayList<>(),
 
                 // small to big changes in other layouts
                 directorRoom = new ArrayList<>(), directorBathroom = new ArrayList<>(),
                 conferenceRoom = new ArrayList<>(), meetingRoom = new ArrayList<>(),
-                dataCenter = new ArrayList<>(), dataCenterCCTV = new ArrayList<>(),
-                controlCenter = new ArrayList<>(), mesa = new ArrayList<>(),
+                dataCenter = new ArrayList<>(), mesa = new ArrayList<>(),
                 SR1 = new ArrayList<>(), SR2 = new ArrayList<>(),  SR3 = new ArrayList<>(), SR4 = new ArrayList<>(),
                 LS1 = new ArrayList<>(), LS2 = new ArrayList<>(),  LS3 = new ArrayList<>(), LS4 = new ArrayList<>(),
-                researchCenter = new ArrayList<>(), facultyRoom = new ArrayList<>(),
+                researchCenter = new ArrayList<>(), facultySpace = new ArrayList<>(),
                 humanExpRoom = new ArrayList<>(), dataCollectionRoom = new ArrayList<>(),
                 storageRoom = new ArrayList<>(), clinic = new ArrayList<>();
 
@@ -1681,23 +1680,22 @@ public class ScreenController extends Controller {
                 {elevatorLobby, 14, 64, 177, 192},
                 {maleBathroom, 4, 13, 186, 202}, {maleBathroom, 14, 18, 191, 202},
                 {femaleBathroom, 65, 74, 186, 202}, {femaleBathroom, 60, 64, 191, 202},
-                {reception, 56, 75, 169, 183}, {breakerRoom, 18, 21, 22, 30}, {pantry, 111, 124, 135, 185},
+                {receptionA, 56, 75, 169, 183}, {breakerRoom, 18, 21, 22, 30}, {pantry, 111, 124, 135, 185},
 
                 // small to big changes in other layouts
                 {hallway, 18, 21, 1, 21}, {hallway, 22, 45, 18, 21}, {hallway, 60, 66, 1, 15},
                 {hallway, 60, 86, 16, 22}, {hallway, 46, 59, 18, 32}, {hallway, 60, 72, 23, 32},
-                {hallway, 56, 63, 51, 79}, {hallway, 56, 63, 98, 108}, {hallway, 46, 55, 33, 108},
+                {hallway, 56, 63, 51, 79}, {hallway, 56, 63, 98, 119}, {hallway, 46, 55, 33, 119},
                 {hallway, 64, 72, 33, 108}, {hallway, 51, 59, 147, 152}, {hallway, 60, 79, 147, 168},
                 {hallway, 80, 81, 147, 185}, {hallway, 82, 99, 147, 148}, {hallway, 100, 106, 147, 185},
                 {hallway, 82, 99, 165, 185}, {hallway, 107, 110, 170, 185}, {hallway, 60, 72, 109, 146},
                 {directorRoom, 26, 59, 1, 16}, {directorBathroom, 26, 36, 8, 16},
                 {conferenceRoom, 26, 45, 23, 50}, {meetingRoom, 26, 45, 52, 70},
-                {dataCenter, 26, 45, 101, 125}, {dataCenterCCTV, 38, 45, 126, 145},
-                {controlCenter, 46, 59, 110, 145}, {mesa, 82, 99, 149, 164},
+                {facultySpace, 26, 45, 72, 125}, {facultySpace, 38, 41, 126, 145},
+                {researchCenter, 73, 106, 23, 145},
+                {dataCenter, 46, 59, 121, 145}, {mesa, 82, 99, 149, 164},
                 {SR1, 56, 63, 89, 97}, {SR2, 56, 63, 80, 88}, {SR3, 56, 63, 42, 50}, {SR4, 56, 63, 33, 41},
-                {LS1, 73, 106, 125, 145}, {LS2, 73, 106, 104, 124}, {LS3, 73, 106, 83, 103}, {LS4, 73, 106, 62, 82},
-                {researchCenter, 73, 106, 24, 61}, {facultyRoom, 26, 45, 72, 100},
-                {humanExpRoom, 67, 86, 1, 14}, {dataCollectionRoom, 87, 104, 1, 22},
+                {humanExpRoom, 67, 86, 1, 15}, {dataCollectionRoom, 87, 104, 1, 22},
                 {storageRoom, 80, 100, 186, 202}, {clinic, 101, 113, 186, 202},
 
         };
@@ -1721,23 +1719,17 @@ public class ScreenController extends Controller {
         simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(femaleBathroom, "femaleBathroom"));
         simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(directorBathroom, "dimDirectorBathroom"));
         simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(breakerRoom, "dimBreakerRoom"));
-        simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(reception, "dimReception"));
+        simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(receptionA, "dimReception"));
         simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(directorRoom, "dimDirectorRoom"));
         simulator.getEnvironment().getConferenceRooms().add(ConferenceRoom.conferenceRoomFactory.create(conferenceRoom, "dimConferenceRoom"));
         simulator.getEnvironment().getMeetingRooms().add(MeetingRoom.meetingRoomFactory.create(meetingRoom, "dimMeetingRoom"));
+        simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(facultySpace, "dimFacultySpace"));
         simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(dataCenter, "dimDataCenter"));
-        simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(dataCenterCCTV, "dimCCTV"));
-        simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(controlCenter, "dimControlCenter"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR1, "dimSR1"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR2, "dimSR2"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR3, "dimSR3"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR4, "dimSR4"));
-        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS1, "dimLS1"));
-        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS2, "dimLS2"));
-        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS3, "dimLS3"));
-        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS4, "dimLS4"));
         simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(researchCenter, "dimResearchCenter"));
-        simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(facultyRoom, "dimFacultyRoom"));
         simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(humanExpRoom, "dimHumExpRoom"));
         simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(dataCollectionRoom, "dimDataCollRoom"));
         simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(storageRoom, "dimStorageRoom"));
@@ -1930,7 +1922,7 @@ public class ScreenController extends Controller {
 
                 // Conference, Meeting, & Faculty Room, and Data & Control Centers
                 {43, 22, 23}, {43, 30, 43}, {43, 50, 52}, {43, 59, 92},
-                {43, 99, 101}, {43, 108, 145}, {57, 109, 138}, {57, 145, 146},
+                {43, 99, 101}, {43, 108, 145}, {57, 120, 138}, {57, 145, 146},
 
                 // Human Experiment & Data Collection Rooms, Research Center, Learning Spaces, & Pantry
                 {68, 1, 15}, {88, 1, 8}, {88, 14, 16}, {88, 22, 23}, {97, 1, 6},
@@ -1957,7 +1949,7 @@ public class ScreenController extends Controller {
         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(walls, "wall"));
 
 
-        /* Permanent Door Patches */
+        /* Door Patches (Column, Row) */
 
         List<Patch> doorPatches = new ArrayList<>();
 
@@ -1967,18 +1959,35 @@ public class ScreenController extends Controller {
 
                 // Elevators
                 {193, 23}, {193, 34}, {193, 45},
-
                 // Male Bathroom
                 {191, 11},
-
                 // Female Bathroom
                 {191, 57},
-
-                // Office
+                // Breaker Room, Reception,
                 {183, 57}, {169, 57}, {22, 15},
 
+                
                 /* Not Permanent (inside office) */
 
+                {186, 77},              // Clinic
+                {186, 98},              // Storage Room
+                {8, 23},                // Director Bathroom
+                {2, 57}, {9, 57},       // Director Room
+                {52, 43}, {59, 43},     // Meeting Room
+                {138, 57}, {138, 57},   // Data Center
+                {15, 68},               // Human Experience Room
+                // Data Collection Room
+                {8, 88}, {14, 88}, {16, 88}, {22, 88}, {6, 97},
+                // Conference Room
+                {23, 43}, {30, 43}, {43, 43}, {50, 43},
+                // Faculty Space
+                {92, 43}, {99, 43}, {101, 43}, {108, 43}, {126, 35},
+                // Student Space
+                {23, 78}, {55, 74}, {61, 74},
+                {76, 74}, {82, 74},
+                {97, 74}, {103, 74},
+                {118, 74}, {124, 74},
+                {139, 74}, {145, 74}
 
 
         };
@@ -2008,7 +2017,7 @@ public class ScreenController extends Controller {
 
                 // Conference, Meeting, & Faculty Room, and Data & Control Centers
                 {42, 22, 23}, {42, 30, 43}, {42, 50, 52}, {42, 59, 92},
-                {42, 99, 101}, {42, 108, 145}, {56, 109, 138}, {56, 145, 146},
+                {42, 99, 101}, {42, 108, 145}, {56, 120, 138}, {56, 145, 146},
 
                 // Human Experiment & Data Collection Rooms, Research Center, Learning Spaces, & Pantry
                 {67, 1, 15}, {87, 1, 8}, {87, 14, 16}, {87, 22, 23}, {96, 1, 6}, {104, 6, 6},
@@ -2027,7 +2036,7 @@ public class ScreenController extends Controller {
                 {8, 30, 32}, {17, 23, 55},
 
                 // Conference, Meeting, & Faculty Room, and Data & Control Centers
-                {22, 23, 41}, {51, 23, 41}, {71, 23, 41}, {109, 43, 55}, {146, 48, 55},
+                {22, 23, 41}, {51, 23, 41}, {71, 23, 41}, {120, 43, 55}, {146, 48, 55},
 
                 // Human Experiment & Data Collection Rooms, Research Center, Learning Spaces, & Pantry
                 {15, 77, 86}, {23, 74, 77}, {23, 86, 104}, {146, 74, 106},
@@ -2145,7 +2154,7 @@ public class ScreenController extends Controller {
                     typeApantryTables = new ArrayList<>(), typeBpantryTables = new ArrayList<>(),
                     typeApantryChairs = new ArrayList<>(), typeBpantryChairs = new ArrayList<>();
 
-        table2x2.add(environment.getPatch(53,111));
+        table2x2.add(environment.getPatch(53,124));
         receptionTable.add(environment.getPatch(69,170));
         directorTable.add(environment.getPatch(40,12));
         humanExpTable.add(environment.getPatch(77,5));
@@ -2274,11 +2283,13 @@ public class ScreenController extends Controller {
         Object[][] simpleAmenityRanges =  {
 
                 // Plants
-                {plants, 62, 2}, {plants, 74, 179}, {plants, 74, 181}, {plants, 75, 180},
-                {plants, 82, 201}, {plants, 84, 201}, {plants, 86, 201},
+                {plants, 63, 2},
+                {plants, 74, 179}, {plants, 74, 181}, {plants, 75, 180}, // Reception Area
+                {plants, 32, 9}, {plants, 32, 16},
 
                 // Trash Cans
-                {trashCans, 80, 199}, {trashCans, 113, 135}, {trashCans, 107, 201},
+                {trashCans, 26, 13}, {trashCans, 40, 11}, // director room & bathroom
+                {trashCans, 113, 135}, // pantry
 
                 // Pantry Cabinets
                 {pantryCabinets, 109, 135}, {pantryCabinets, 109, 136}, {pantryCabinets, 109, 137}, {pantryCabinets, 109, 138},
@@ -2299,7 +2310,7 @@ public class ScreenController extends Controller {
                 {waterDispenser, 110, 140},
 
                 // Couch
-                {couch, 69, 141}
+                {couch, 69, 167}
         };
 
         for (Object[] range : simpleAmenityRanges) {
@@ -2342,7 +2353,7 @@ public class ScreenController extends Controller {
                 {southSinks, 60, 197}, {southSinks, 60, 200},
 
                 // Director Bathroom
-                {southOfficeToilets, 79, 200}, {southOfficeSinks, 80, 197},
+                {southOfficeToilets, 25, 15}, {southOfficeSinks, 26, 12},
 
                 // Pantry
                 {southOfficeSinks, 111, 136},
@@ -2369,15 +2380,21 @@ public class ScreenController extends Controller {
 
         Object[][] switchRanges =  {
 
+                // Director Room
+                {eastLightSwitches, 53, 1}, {eastAirconSwitches, 54, 1},
+
+                // Director Bathroom
+                {southLightSwitches, 24, 10},
+
+                // Conference Room
+                {eastLightSwitches, 39, 23}, {eastAirconSwitches, 40, 23},
+
                 // Meeting Room
-                {southLightSwitches,24, 13}, {southAirconSwitches, 24, 14},
+                {eastLightSwitches, 39, 52}, {eastAirconSwitches, 40, 52},
 
-                // Learning Spaces
-                {eastLightSwitches, 53, 23}, {eastAirconSwitches, 54, 23},
-                {westLightSwitches, 53, 105}, {westAirconSwitches, 54, 105},
-
-                // Control Center
-                {southLightSwitches,36, 115}, {southAirconSwitches, 36, 116},
+                // Faculty Space
+                {eastLightSwitches, 39, 72}, {eastAirconSwitches, 40, 72},
+                {westLightSwitches, 32, 125}, {westAirconSwitches, 33, 125},
 
                 // Data Center
                 {westLightSwitches, 53, 145}, {westAirconSwitches, 54, 145},
@@ -2386,41 +2403,38 @@ public class ScreenController extends Controller {
                 {eastLightSwitches, 57, 147}, {eastAirconSwitches, 58, 147},
 
                 // Reception
-                {southLightSwitches,58, 174}, {southAirconSwitches, 58, 175},
+                {southLightSwitches, 58, 174}, {southAirconSwitches, 58, 175},
 
-                // Human Experience Room
-                {southLightSwitches,69, 12}, {southAirconSwitches, 69, 13},
-
-                // Data Collection Room
-                {northLightSwitches, 95, 5}, {northAirconSwitches, 95, 6},
-
-                // Research Center
-                {westLightSwitches, 103, 83}, {westAirconSwitches, 104, 83},
-
-                // Faculty Room
-                {southLightSwitches,89, 117}, {southAirconSwitches, 89, 118},
-
-                // Storage Room
-                {southLightSwitches,91, 133},
-
-                // Conference Room
-                {southLightSwitches,91, 151}, {southAirconSwitches, 91, 152},
+                // MESA
+                {southLightSwitches, 92, 156}, {southAirconSwitches, 92, 157},
 
                 // Clinic
-                {southLightSwitches,78, 188}, {southAirconSwitches, 78, 189},
+                {southLightSwitches, 78, 188}, {southAirconSwitches, 78, 189},
 
-                // Director Room
-                {southLightSwitches,90, 188}, {southAirconSwitches, 90, 189},
+                // Storage Room
+                {southLightSwitches, 99, 188},
 
                 // Pantry
                 {westLightSwitches, 112, 185}, {southAirconSwitches, 109, 168},
 
-                // Solo Rooms
-                {westLightSwitches, 72, 101}, {eastLightSwitches, 74, 85},
-                {westLightSwitches, 74, 55}, {eastLightSwitches, 72, 39},
+                // Human Experience  Room
+                {southLightSwitches, 69, 12}, {southAirconSwitches, 69, 13},
 
-                // Director Bathroom
-                {eastLightSwitches, 86, 195},
+                // Data Collection Room
+                {northLightSwitches, 95, 5}, {northAirconSwitches, 95, 6},
+
+                // Student Space
+                {southLightSwitches, 75, 25}, {southAirconSwitches, 75, 26},
+                {southLightSwitches, 75, 63}, {southAirconSwitches, 75, 64},
+                {southLightSwitches, 75, 84}, {southAirconSwitches, 75, 85},
+                {southLightSwitches, 75, 105}, {southAirconSwitches, 75, 106},
+                {southLightSwitches, 75, 126}, {southAirconSwitches, 75, 127},
+
+                // Solo Rooms
+                {westLightSwitches, 60, 35}, {eastLightSwitches, 59, 48},
+                {westLightSwitches, 59, 86}, {eastLightSwitches, 59, 86},
+
+
         };
 
         for (Object[] range : switchRanges) {
@@ -2447,23 +2461,20 @@ public class ScreenController extends Controller {
         Object[][] airconRanges =  {
 
                 // Meeting Room
-                {42, 7},
+                {32, 63},
 
                 // Learning Spaces
-                {28, 35}, {50, 25},
-                {27, 55}, {50, 48}, {50, 56},
-                {27, 78}, {47, 70},
-                {27, 99}, {47, 91},
-
-                // Control Center
-                {41, 118}, {50, 118},
+                {81, 65}, {103, 75},
+                {81, 88}, {81, 96}, {104, 95},
+                {84, 110}, {104, 118},
+                {78, 138}, {98, 131},
 
                 // Data Center
-                {41, 132}, {41, 139},
+                {47, 128}, {47, 137},
 
                 // Hallway
-                {72, 22}, {72, 62}, {72, 108}, {72, 120},
-                {72, 132}, {62, 147},
+                {59, 22}, {59, 62}, {59, 99}, {59, 111},
+                {65, 130}, {69, 156},
 
                 // Reception
                 {66, 179},
@@ -2477,17 +2488,17 @@ public class ScreenController extends Controller {
                 // Research Center
                 {92, 34}, {92, 40}, {97, 71}, {85, 88},
 
-                // Faculty Room
-                {95, 101}, {95, 112}, {100, 122},
+                // Faculty Space
+                {30, 73}, {30, 84}, {35, 84}, {37, 105}, {37, 120},
 
                 // Conference Room
-                {94, 149}, {94, 161},
+                {37, 30}, {37, 42},
 
                 // Clinic
                 {82, 189},
 
                 // Director Room
-                {99, 191},
+                {50, 8},
 
                 // Pantry
                 {120, 151},
@@ -2510,72 +2521,121 @@ public class ScreenController extends Controller {
         Object[][] lightRanges =  {
 
                 // Meeting Room
-                {horizontalTrackLights, 30, 7},
-                {verticalRecessedLights, 32, 8}, {verticalRecessedLights, 47, 8},
+                {horizontalTrackLights, 27, 57}, {horizontalTrackLights, 27, 62},
+                {verticalRecessedLights, 30, 54}, {verticalRecessedLights, 35, 54},
+                {verticalRecessedLights, 30, 68}, {verticalRecessedLights, 35, 68},
+
+                // Research Center
+                {verticalRecessedLights, 78, 27}, {verticalRecessedLights, 83, 27},
+                {verticalRecessedLights, 88, 27}, {verticalRecessedLights, 93, 27},
+                {verticalRecessedLights, 98, 27}, {verticalRecessedLights, 103, 27},
+                {verticalRecessedLights, 98, 42}, {verticalRecessedLights, 93, 42},
+                {verticalRecessedLights, 88, 42}, {verticalRecessedLights, 83, 42},
+                {verticalRecessedLights, 78, 42},
+                {verticalRecessedLights, 78, 58}, {verticalRecessedLights, 83, 58},
+                {verticalRecessedLights, 88, 58}, {verticalRecessedLights, 93, 58},
+                {verticalRecessedLights, 98, 58}, {verticalRecessedLights, 103, 58},
+                {verticalPendantLights, 79, 34}, {verticalPendantLights, 81, 34},
+                {verticalPendantLights, 90, 34}, {verticalPendantLights, 92, 34},
+                {verticalPendantLights, 102, 34}, {verticalPendantLights, 104, 34},
+                {verticalPendantLights, 79, 51}, {verticalPendantLights, 81, 51},
+                {verticalPendantLights, 90, 51}, {verticalPendantLights, 92, 51},
+                {verticalPendantLights, 102, 51}, {verticalPendantLights, 104, 51},
+                {singlePendantLights, 97, 25}, {singlePendantLights, 102, 25},
+                {singlePendantLights, 83, 60}, {singlePendantLights, 88, 60},
+                {singlePendantLights, 93, 60}, {singlePendantLights, 98, 60},
 
                 // Learning Space 4
-                {horizontalTrackLights, 27, 27}, {horizontalTrackLights, 43, 27},
-                {horizontalTrackLights, 43, 35}, {horizontalTrackLights, 54, 27},
-                {verticalRecessedLights, 28, 25}, {verticalRecessedLights, 28, 40},
-                {verticalRecessedLights, 50, 33},
+                {horizontalTrackLights, 78, 67}, {horizontalTrackLights, 89, 67},
+                {horizontalTrackLights, 89, 75}, {horizontalTrackLights, 105, 67},
+                {verticalRecessedLights, 81, 73}, {verticalRecessedLights, 103, 65},
+                {verticalRecessedLights, 103, 80},
 
                 // Learning Space 3
-                {horizontalTrackLights, 27, 49}, {horizontalTrackLights, 43, 48},
-                {horizontalTrackLights, 43, 56}, {horizontalTrackLights, 54, 52},
-                {verticalRecessedLights, 28, 46}, {verticalRecessedLights, 28, 58},
-                {verticalRecessedLights, 52, 54},
+                {horizontalTrackLights, 78, 92}, {horizontalTrackLights, 89, 88},
+                {horizontalTrackLights, 89, 96}, {horizontalTrackLights, 105, 89},
+                {verticalRecessedLights, 79, 94}, {verticalRecessedLights, 103, 86},
+                {verticalRecessedLights, 103, 98},
 
                 // Learning Space 2
-                {horizontalTrackLights, 27, 69}, {horizontalTrackLights, 43, 69},
-                {horizontalTrackLights, 43, 77}, {horizontalTrackLights, 54, 73},
-                {verticalRecessedLights, 27, 67}, {verticalRecessedLights, 27, 75},
-                {verticalRecessedLights, 52, 67}, {verticalRecessedLights, 52, 75},
+                {horizontalTrackLights, 78, 113}, {horizontalTrackLights, 89, 109},
+                {horizontalTrackLights, 89, 117}, {horizontalTrackLights, 105, 109},
+                {verticalRecessedLights, 79, 107}, {verticalRecessedLights, 104, 107},
+                {verticalRecessedLights, 79, 115}, {verticalRecessedLights, 104, 115},
 
                 // Learning Space 1
-                {horizontalTrackLights, 27, 90}, {horizontalTrackLights, 43, 90},
-                {horizontalTrackLights, 43, 98}, {horizontalTrackLights, 54, 94},
-                {verticalRecessedLights, 27, 88}, {verticalRecessedLights, 27, 96},
-                {verticalRecessedLights, 52, 88}, {verticalRecessedLights, 52, 96},
+                {horizontalTrackLights, 78, 130}, {horizontalTrackLights, 94, 130},
+                {horizontalTrackLights, 94, 138}, {horizontalTrackLights, 105, 134},
+                {verticalRecessedLights, 78, 128}, {verticalRecessedLights, 78, 136},
+                {verticalRecessedLights, 103, 128}, {verticalRecessedLights, 103, 128},
 
-                // Control Center
+                // Faculty Space
+                {horizontalTrackLights, 39, 83}, {horizontalTrackLights, 39, 93},
+                {horizontalTrackLights, 27, 86},
+                {verticalRecessedLights, 27, 79}, {verticalRecessedLights, 34, 79},
+                {verticalRecessedLights, 92, 114}, {verticalRecessedLights, 99, 102},
+                {verticalRecessedLights, 99, 107}, {verticalRecessedLights, 27, 113},
+                {verticalRecessedLights, 27, 103}, {verticalRecessedLights, 39, 103},
+                {verticalRecessedLights, 27, 123}, {verticalRecessedLights, 39, 123},
+                {horizontalRecessedLights, 29, 98}, {horizontalRecessedLights, 38, 98},
+
+                {horizontalPendantLights, 33, 83}, {horizontalPendantLights, 33, 85},
+                {horizontalPendantLights, 34, 83}, {horizontalPendantLights, 34, 85},
+
                 {verticalRecessedLights, 39, 109}, {verticalRecessedLights, 39, 116},
-                {verticalRecessedLights, 39, 123}, {verticalRecessedLights, 53, 109},
-                {verticalRecessedLights, 53, 123},
+                {verticalRecessedLights, 39, 123}, 
 
                 // Data Center
-                {verticalRecessedLights, 41, 129}, {verticalRecessedLights, 41, 136},
-                {verticalRecessedLights, 41, 143},
+                {verticalRecessedLights, 47, 124}, {verticalRecessedLights, 47, 133},
+                {verticalRecessedLights, 47, 142},
 
                 // Hallway
+                {verticalPendantLights, 59, 28},
+                {horizontalPendantLights, 60, 55}, {horizontalPendantLights, 60, 104},
+                {singlePendantLights, 60, 71}, {singlePendantLights, 60, 102},
+
+
                 {verticalRecessedLights, 31, 19}, {verticalRecessedLights, 49, 19},
                 {verticalRecessedLights, 62, 4}, {verticalRecessedLights, 62, 16},
-                {verticalRecessedLights, 62, 138}, {verticalRecessedLights, 71, 138},
-                {verticalRecessedLights, 80, 138}, {verticalRecessedLights, 62, 158},
-                {verticalRecessedLights, 62, 165}, {verticalRecessedLights, 71, 165},
-                {verticalRecessedLights, 80, 165}, {verticalRecessedLights, 85, 177},
-                {verticalRecessedLights, 100, 177},
-                {horizontalRecessedLights, 63, 22}, {horizontalRecessedLights, 83, 22},
-                {horizontalRecessedLights, 63, 30}, {horizontalRecessedLights, 83, 30},
-                {horizontalRecessedLights, 63, 38}, {horizontalRecessedLights, 83, 38},
-                {horizontalRecessedLights, 63, 46}, {horizontalRecessedLights, 83, 46},
-                {horizontalRecessedLights, 63, 54}, {horizontalRecessedLights, 83, 54},
-                {horizontalRecessedLights, 63, 62}, {horizontalRecessedLights, 83, 62},
-                {horizontalRecessedLights, 63, 70}, {horizontalRecessedLights, 83, 70},
-                {horizontalRecessedLights, 63, 78}, {horizontalRecessedLights, 83, 78},
-                {horizontalRecessedLights, 63, 86}, {horizontalRecessedLights, 83, 86},
-                {horizontalRecessedLights, 63, 94}, {horizontalRecessedLights, 83, 94},
-                {horizontalRecessedLights, 63, 102}, {horizontalRecessedLights, 83, 102},
-                {horizontalRecessedLights, 63, 110}, {horizontalRecessedLights, 83, 110},
-                {horizontalRecessedLights, 63, 118}, {horizontalRecessedLights, 83, 118},
-                {horizontalRecessedLights, 63, 126}, {horizontalRecessedLights, 83, 126},
-                {horizontalPendantLights, 75, 62}, {horizontalPendantLights, 75, 120},
-                {verticalPendantLights, 72, 33},
-                {singlePendantLights, 75, 78}, {singlePendantLights, 75, 108},
+
+                {verticalRecessedLights, 54, 149}, {verticalRecessedLights, 62, 149},
+                {verticalRecessedLights, 76, 149}, {verticalRecessedLights, 104, 149},
+
+                {verticalRecessedLights, 62, 157}, {verticalRecessedLights, 62, 164},
+                {verticalRecessedLights, 76, 164}, {verticalRecessedLights, 104, 164},
+
+                {verticalRecessedLights, 83, 171}, {verticalRecessedLights, 83, 179},
+                {verticalRecessedLights, 90, 171}, {verticalRecessedLights, 90, 179},
+                {verticalRecessedLights, 97, 171}, {verticalRecessedLights, 97, 179},
+
+                {horizontalRecessedLights, 69, 22}, {horizontalRecessedLights, 49, 22},
+                {horizontalRecessedLights, 69, 30}, {horizontalRecessedLights, 49, 30},
+                {horizontalRecessedLights, 69, 38}, {horizontalRecessedLights, 49, 38},
+                {horizontalRecessedLights, 69, 46}, {horizontalRecessedLights, 49, 46},
+                {horizontalRecessedLights, 69, 54}, {horizontalRecessedLights, 49, 54},
+                {horizontalRecessedLights, 69, 62}, {horizontalRecessedLights, 49, 62},
+                {horizontalRecessedLights, 69, 70}, {horizontalRecessedLights, 49, 70},
+                {horizontalRecessedLights, 69, 78}, {horizontalRecessedLights, 49, 78},
+                {horizontalRecessedLights, 69, 86}, {horizontalRecessedLights, 49, 86},
+                {horizontalRecessedLights, 69, 94}, {horizontalRecessedLights, 49, 94},
+                {horizontalRecessedLights, 69, 102}, {horizontalRecessedLights, 49, 102},
+                {horizontalRecessedLights, 69, 110}, {horizontalRecessedLights, 49, 110},
+
+                {horizontalRecessedLights, 63, 118}, {horizontalRecessedLights, 69, 118},
+                {horizontalRecessedLights, 63, 126}, {horizontalRecessedLights, 69, 126},
+                {horizontalRecessedLights, 63, 134}, {horizontalRecessedLights, 69, 134},
+                {horizontalRecessedLights, 63, 142}, {horizontalRecessedLights, 69, 142},
+
 
                 // Reception
                 {verticalRecessedLights, 62, 172}, {verticalRecessedLights, 62, 180},
                 {verticalRecessedLights, 71, 172}, {verticalRecessedLights, 71, 180},
                 {verticalTrackLights, 66, 182},
+
+                // MESA
+                {verticalRecessedLights, 90, 149}, {verticalRecessedLights, 90, 164},
+                {verticalPendantLights, 87, 150}, {verticalPendantLights, 87, 163},
+                {verticalPendantLights, 93, 150}, {verticalPendantLights, 93, 163},
 
                 // Human Experience Room
                 {verticalRecessedLights, 78, 6}, {verticalRecessedLights, 78, 10},
@@ -2583,55 +2643,26 @@ public class ScreenController extends Controller {
                 // Data Collection Room
                 {verticalRecessedLights, 93, 5}, {verticalRecessedLights, 93, 19},
 
-                // Research Center
-                {verticalRecessedLights, 92, 32}, {verticalRecessedLights, 92, 38},
-                {verticalRecessedLights, 92, 44}, {verticalRecessedLights, 92, 50},
-                {verticalRecessedLights, 92, 56}, {verticalRecessedLights, 92, 62},
-                {verticalRecessedLights, 92, 68}, {verticalRecessedLights, 92, 74},
-                {verticalRecessedLights, 92, 80}, {verticalRecessedLights, 92, 86},
-                {verticalRecessedLights, 92, 92},
-                {verticalRecessedLights, 97, 62}, {verticalRecessedLights, 97, 68},
-                {verticalRecessedLights, 97, 74}, {verticalRecessedLights, 97, 80},
-                {verticalRecessedLights, 97, 86}, {verticalRecessedLights, 97, 92},
-                {verticalPendantLights, 100, 41}, {verticalPendantLights, 102, 41},
-                {verticalPendantLights, 100, 49}, {verticalPendantLights, 102, 49},
-                {verticalPendantLights, 100, 63}, {verticalPendantLights, 102, 63},
-                {verticalPendantLights, 100, 71}, {verticalPendantLights, 102, 71},
-                {verticalPendantLights, 100, 79}, {verticalPendantLights, 102, 79},
-                {verticalPendantLights, 100, 93}, {verticalPendantLights, 102, 93},
-                {singlePendantLights, 97, 27}, {singlePendantLights, 103, 27},
-                {singlePendantLights, 93, 72}, {singlePendantLights, 93, 78},
-                {singlePendantLights, 93, 84}, {singlePendantLights, 93, 90},
-
-                // Faculty Room
-                {horizontalTrackLights, 93, 121}, {horizontalTrackLights, 104, 111},
-                {horizontalTrackLights, 104, 121}, {verticalRecessedLights, 92, 102},
-                {verticalRecessedLights, 92, 107}, {verticalRecessedLights, 92, 114},
-                {verticalRecessedLights, 99, 102}, {verticalRecessedLights, 99, 107},
-                {horizontalRecessedLights, 94, 126}, {horizontalRecessedLights, 103, 126},
-                {horizontalPendantLights, 98, 111}, {horizontalPendantLights, 98, 113},
-                {horizontalPendantLights, 99, 111}, {horizontalPendantLights, 99, 113},
-
                 // Storage Room
-                {verticalRecessedLights, 95, 134}, {verticalRecessedLights, 103, 134},
+                {verticalRecessedLights, 103, 194}, {verticalRecessedLights, 111, 194},
 
                 // Conference Room
-                {verticalTrackLights, 96, 144}, {verticalTrackLights, 96, 167},
-                {verticalRecessedLights, 95, 147}, {verticalRecessedLights, 95, 158},
-                {horizontalPendantLights, 99, 153}, {horizontalPendantLights, 99, 155},
-                {horizontalPendantLights, 99, 157},
+                {verticalTrackLights, 30, 25}, {verticalTrackLights, 30, 48},
+                {verticalRecessedLights, 36, 28}, {verticalRecessedLights, 36, 39},
+                {horizontalPendantLights, 33, 34}, {horizontalPendantLights, 33, 36},
+                {horizontalPendantLights, 33, 38},
 
                 // Clinic
-                {verticalRecessedLights, 82, 187}, {verticalRecessedLights, 82, 192},
+                {verticalRecessedLights, 81, 194}, {verticalRecessedLights, 93, 194},
 
                 // Director Room
-                {verticalRecessedLights, 93, 189}, {verticalRecessedLights, 93, 194},
-                {verticalRecessedLights, 104, 189}, {verticalRecessedLights, 109, 194},
-                {verticalRecessedLights, 111, 189}, {horizontalTrackLights, 112, 190},
-                {horizontalPendantLights, 107, 191}, {singlePendantLights, 98, 198},
+                {verticalRecessedLights, 27, 4}, {verticalRecessedLights, 36, 4},
+                {verticalRecessedLights, 45, 2}, {verticalRecessedLights, 53, 4},
+                {verticalRecessedLights, 45, 13}, {horizontalTrackLights, 40, 3},
+                {horizontalPendantLights, 41, 13}, {singlePendantLights, 48, 5},
 
                 // Director Bathroom
-                {singlePendantLights, 83, 197}, {singlePendantLights, 83, 200},
+                {singlePendantLights, 30, 10}, {singlePendantLights, 30, 15},
 
                 // Pantry
                 {singlePendantLights, 114, 184}, {singlePendantLights, 122, 184},
@@ -2645,8 +2676,8 @@ public class ScreenController extends Controller {
                 {verticalRecessedLights, 122, 138}, {verticalRecessedLights, 122, 143},
 
                 // Solo Rooms
-                {singleRecessedLights, 72, 42}, {singleRecessedLights, 74, 52},
-                {singleRecessedLights, 72, 98}, {singleRecessedLights, 74, 88},
+                {singleRecessedLights, 62, 37}, {singleRecessedLights, 57, 46},
+                {singleRecessedLights, 57, 84}, {singleRecessedLights, 62, 93},
 
 
         };
@@ -2669,9 +2700,9 @@ public class ScreenController extends Controller {
 
 
         /* WINDOW + BLINDS */
-        List<Patch> glass = new ArrayList<>(), southFacultyClosedBlinds = new ArrayList<>(),
+        List<Patch> glass = new ArrayList<>(), southFacultyClosedBlinds = new ArrayList<>(), northSouthWindowBlinds_3 = new ArrayList<>(), southFacultyClosedBlinds_3 = new ArrayList<>(),
                 eastHallwayWindowBlinds = new ArrayList<>(), eastWindowBlinds = new ArrayList<>(), northSouthWindowBlinds = new ArrayList<>(),
-                westWindowBlinds = new ArrayList<>();
+                westWindowBlinds_4 = new ArrayList<>(), westWindowBlinds_5 = new ArrayList<>();
 
         Object[][] windowBlindsRanges = {
                 // Hallway
@@ -2687,25 +2718,27 @@ public class ScreenController extends Controller {
                 {eastWindowBlinds, 91, 1},
                 {northSouthWindowBlinds, 104, 8, 21, 5},
 
-                // Research Center
-                {northSouthWindowBlinds, 106, 24, 97, 5},
-
-                // Faculty Room
-                {southFacultyClosedBlinds, 108, 99, 127, 5},
+                // Student Space
+                {northSouthWindowBlinds, 106, 24, 63, 6},
+                {northSouthWindowBlinds_3, 106, 71, 73, 3},
+                {northSouthWindowBlinds, 106, 81, 84, 4},
+                {northSouthWindowBlinds_3, 106, 92, 94, 3},
+                {southFacultyClosedBlinds, 108, 102, 105, 4},
+                {southFacultyClosedBlinds_3, 108, 113, 115, 3},
+                {southFacultyClosedBlinds_3, 108, 123, 125, 3},
 
                 // Pantry Room
                 {eastWindowBlinds, 115, 135},
                 {eastWindowBlinds, 120, 135},
                 {northSouthWindowBlinds, 124, 136, 184, 5},
 
-                // Director Bathroom
-                {westWindowBlinds, 80, 202},
-                {westWindowBlinds, 84, 202},
+                // Clinic
+                {westWindowBlinds_4, 81, 202},
+                {westWindowBlinds_4, 86, 202},
+                {westWindowBlinds_4, 92, 202},
 
-                // Director Room
-                {westWindowBlinds, 93, 202},
-                {westWindowBlinds, 98, 202},
-                {westWindowBlinds, 103, 202},
+                // Storage Room
+                {westWindowBlinds_5, 102, 202},
                 {northSouthWindowBlinds, 113, 188, 201, 5},
         };
 
@@ -2728,10 +2761,13 @@ public class ScreenController extends Controller {
 
         WindowBlindsMapper.draw(glass, "GLASS", 7);
         WindowBlindsMapper.draw(southFacultyClosedBlinds, "CLOSED_SOUTH_FROM_OUTSIDE", 4);
+        WindowBlindsMapper.draw(southFacultyClosedBlinds_3, "CLOSED_SOUTH_FROM_OUTSIDE", 3);
+        WindowBlindsMapper.draw(northSouthWindowBlinds_3, "OPENED_NORTH_AND_SOUTH", 3);
         WindowBlindsMapper.draw(northSouthWindowBlinds, "OPENED_NORTH_AND_SOUTH", 4);
         WindowBlindsMapper.draw(eastWindowBlinds, "OPENED_EAST", 4);
         WindowBlindsMapper.draw(eastHallwayWindowBlinds, "OPENED_EAST", 5);
-        WindowBlindsMapper.draw(westWindowBlinds, "OPENED_WEST", 4);
+        WindowBlindsMapper.draw(westWindowBlinds_4, "OPENED_WEST", 4);
+        WindowBlindsMapper.draw(westWindowBlinds_5, "OPENED_WEST", 5);
 
 
         /* CABINETS & DRAWERS + STORAGE */
@@ -2739,13 +2775,13 @@ public class ScreenController extends Controller {
         List<Patch> storage = new ArrayList<>(), southCabinet = new ArrayList<>(), southDrawers = new ArrayList<>(),
                 northCabinet1x2 = new ArrayList<>(), eastDoubleDrawers = new ArrayList<>(), westDoubleDrawers = new ArrayList<>();
 
-        storage.add(environment.getPatch(85, 187));
+        storage.add(environment.getPatch(94, 187));
         southCabinet.add(environment.getPatch(52, 147));
         southDrawers.add(environment.getPatch(50, 151));
         southDrawers.add(environment.getPatch(50, 152));
         northCabinet1x2.add(environment.getPatch(88, 129));
-        eastDoubleDrawers.add(environment.getPatch(72, 162));
-        westDoubleDrawers.add(environment.getPatch(72, 168));
+        westDoubleDrawers.add(environment.getPatch(87, 185));
+        westDoubleDrawers.add(environment.getPatch(92, 185));
 
         StorageMapper.draw(storage, "DOUBLE_DRAWERS", "EAST");
         CabinetDrawerMapper.draw(southCabinet, "CABINET", "SOUTH");
@@ -2759,12 +2795,47 @@ public class ScreenController extends Controller {
 
         List<Patch> serverTypeA = new ArrayList<>(), serverTypeB = new ArrayList<>();
 
-        serverTypeA.add(environment.getPatch(43, 129));
-        serverTypeB.add(environment.getPatch(47, 134));
-        serverTypeB.add(environment.getPatch(47, 135));
+        serverTypeA.add(environment.getPatch(53, 129));
+        serverTypeB.add(environment.getPatch(52, 133));
+        serverTypeB.add(environment.getPatch(52, 134));
 
         ServerMapper.draw(serverTypeA, "TYPE_A");
         ServerMapper.draw(serverTypeB, "TYPE_B");
+
+
+        /* White Board */
+
+        List<Patch> northWhiteBoard_2 = new ArrayList<>(), eastWhiteBoard_4 = new ArrayList<>(), westWhiteBoard = new ArrayList<>(),
+                    northWhiteBoard_5 = new ArrayList<>(), southWhiteBoard = new ArrayList<>();
+
+        Object[][] whiteBoardRanges =  {
+                // Research Center Pillars
+                {westWhiteBoard, 96, 30}, {northWhiteBoard_2, 95, 31}, {eastWhiteBoard_4, 96, 33},
+                {westWhiteBoard, 96, 52}, {northWhiteBoard_2, 95, 53}, {eastWhiteBoard_4, 96, 55},
+
+                // Meeting Room
+                {southWhiteBoard, 23, 59},
+
+                // Learning Spaces
+                {northWhiteBoard_5, 106, 65}, {northWhiteBoard_5, 106, 75},
+                {northWhiteBoard_5, 106, 86}, {northWhiteBoard_5, 106, 96},
+                {northWhiteBoard_5, 106, 107}, {northWhiteBoard_5, 106, 117},
+                {northWhiteBoard_5, 106, 128}, {northWhiteBoard_5, 106, 138},
+        };
+
+        for (Object[] range : whiteBoardRanges) {
+            List<Patch> amenityPatches =  (List<Patch>) range[0];
+            int row = (int)  range[1];
+            int column = (int) range[2];
+            amenityPatches.add(environment.getPatch(row, column));
+        }
+
+        WhiteboardMapper.draw(northWhiteBoard_2, "NORTH", "2");
+        WhiteboardMapper.draw(southWhiteBoard, "SOUTH", "5");
+        WhiteboardMapper.draw(westWhiteBoard, "WEST", "4");
+        WhiteboardMapper.draw(eastWhiteBoard_4, "EAST", "4");
+        WhiteboardMapper.draw(northWhiteBoard_5, "NORTH", "5");
+
 
     }
 
@@ -3170,7 +3241,7 @@ public class ScreenController extends Controller {
         simulator.getEnvironment().getDividers().add(Divider.dividerFactory.create(wallTops, "wallTop"));
 
 
-        /* Permanent Door Patches */
+        /* Door Patches */
 
         List<Patch> permanentDoorPatches = new ArrayList<>();
 
@@ -3805,12 +3876,14 @@ public class ScreenController extends Controller {
                 {verticalRecessedLights, 97, 62}, {verticalRecessedLights, 97, 68},
                 {verticalRecessedLights, 97, 74}, {verticalRecessedLights, 97, 80},
                 {verticalRecessedLights, 97, 86}, {verticalRecessedLights, 97, 92},
+
                 {verticalPendantLights, 100, 41}, {verticalPendantLights, 102, 41},
                 {verticalPendantLights, 100, 49}, {verticalPendantLights, 102, 49},
                 {verticalPendantLights, 100, 63}, {verticalPendantLights, 102, 63},
                 {verticalPendantLights, 100, 71}, {verticalPendantLights, 102, 71},
                 {verticalPendantLights, 100, 79}, {verticalPendantLights, 102, 79},
                 {verticalPendantLights, 100, 93}, {verticalPendantLights, 102, 93},
+
                 {singlePendantLights, 97, 27}, {singlePendantLights, 103, 27},
                 {singlePendantLights, 93, 72}, {singlePendantLights, 93, 78},
                 {singlePendantLights, 93, 84}, {singlePendantLights, 93, 90},

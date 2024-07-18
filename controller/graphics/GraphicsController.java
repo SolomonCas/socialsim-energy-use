@@ -318,12 +318,32 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == DataCenter.class) {
 
                     // Data Center
-                    if (patchStrPair.getValue().equals("dataCenter")) {
-                        patchColor = Color.rgb(234, 210, 213);
+                    if (patchStrPair.getValue().isEmpty()) {
+                        patchColor = Color.rgb(157, 162, 164);
                     }
 
                     // Dim Data Center
-                    else if (patchStrPair.getValue().equals("dimDataCenter")) {
+                    else if (patchStrPair.getValue().equals("dimDataCenter")){
+                        patchColor = Color.rgb(88, 91, 92);
+                    }
+
+
+                    else {
+                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
+                    }
+                }
+
+                /* Control Center */
+                else if (patchPatchField.getClass() == ControlCenter.class) {
+
+                    // Control Center
+                    if (patchStrPair.getValue().equals("controlCenter")) {
+                        patchColor = Color.rgb(234, 210, 213);
+                    }
+
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimControlCenter")) {
                         patchColor = Color.rgb(137, 121, 123);
                     }
 
@@ -335,24 +355,6 @@ public class GraphicsController extends Controller {
                     // Dim CCTV Area
                     else if (patchStrPair.getValue().equals("dimCCTV")) {
                         patchColor = Color.rgb(139, 124, 137);
-                    }
-
-                    else {
-                        throw new IllegalArgumentException("Unexpected patchStrPair: " + patchStrPair);
-                    }
-                }
-
-                /* Control Center */
-                else if (patchPatchField.getClass() == ControlCenter.class) {
-
-                    // Control Center
-                    if (patchStrPair.getValue().isEmpty()) {
-                        patchColor = Color.rgb(157, 162, 164);
-                    }
-
-                    // Dim
-                    else if (patchStrPair.getValue().equals("dimControlCenter")){
-                        patchColor = Color.rgb(88, 91, 92);
                     }
 
                     else {
@@ -501,6 +503,16 @@ public class GraphicsController extends Controller {
                     // Dim
                     else if (patchStrPair.getValue().equals("dimFacultyRoom")){
                         patchColor = Color.rgb(130, 139, 136);
+                    }
+
+                    // Joint Faculty Space
+                    else if (patchStrPair.getValue().equals("facultySpace")) {
+                        patchColor = Color.rgb(229, 215, 236);
+                    }
+
+                    // Dim
+                    else if (patchStrPair.getValue().equals("dimFacultySpace")){
+                        patchColor = Color.rgb(145, 133, 151);
                     }
 
                     else {
