@@ -18,6 +18,7 @@ public class Patch extends BaseObject implements Comparable<Patch> {
 
     // VARIABLES
     public static final double PATCH_SIZE_IN_SQUARE_METERS = 1.0;
+    public static final int MAX_NUM_PATCH_FOR_BIG_ROOM = 1122;
     private final MatrixPosition matrixPosition;
     private final Coordinates patchCenterCoordinates;
     private CopyOnWriteArrayList<Agent> agent;
@@ -31,6 +32,8 @@ public class Patch extends BaseObject implements Comparable<Patch> {
     private int amenityBlocksAround; // Denotes the number of amenity blocks around this patch
     private int dividersAround; // Denotes the number of amenity blocks around this patch
     private int team;
+    // To indicate if the patch is either in a big room or not
+    private boolean isRoomBig;
 
 
 
@@ -52,6 +55,8 @@ public class Patch extends BaseObject implements Comparable<Patch> {
         this.amenityBlocksAround = 0;
         this.dividersAround = 0;
         this.team = -1;
+        this.isRoomBig = false;
+
     }
 
 
@@ -268,6 +273,9 @@ public class Patch extends BaseObject implements Comparable<Patch> {
     public int getTeam() {
         return team;
     }
+    public boolean isRoomBig() {
+        return isRoomBig;
+    }
 
 
 
@@ -293,10 +301,9 @@ public class Patch extends BaseObject implements Comparable<Patch> {
         this.team = team;
     }
 
-
-
-
-
+    public void setRoomBig(boolean roomBig) {
+        isRoomBig = roomBig;
+    }
 
     // OVERRIDE
     @Override

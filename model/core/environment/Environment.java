@@ -1109,6 +1109,7 @@ public class Environment extends BaseObject implements Serializable {
     }
 
     //WITH LINEAR REGRESSION
+    // Number of Agents, Interactions, Room Size
     public void tempChanger(){
         // Coefficients for the linear regression formula
         double beta0Cooling = 20.0; // Base cooling ticks when cooling
@@ -1122,11 +1123,12 @@ public class Environment extends BaseObject implements Serializable {
         for(Aircon aircon : this.getAircons()) {
             int closeAgentCount = 0;
             int nearbyAircons = 0;
+            int numOfInteractions = 0;
 
             // Count nearby agents
             for(Agent agent : this.getMovableAgents()){
                 for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
-                    if (agent.getAgentMovement() != null && agent.getAgentMovement().getRoutePlan().isAtDesk()) {
+                    if (agent.getAgentMovement() != null) {
                         double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch());
                         if(distanceToAircon < aircon.getCoolingRange()) {
                             closeAgentCount++;

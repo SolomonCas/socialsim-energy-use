@@ -12,6 +12,7 @@ public class Bathroom extends PatchField {
 
     public List<Patch> area;
     public String variation;
+    public boolean isRoomBig;
 
     public static BathroomFactory bathroomFactory;
 
@@ -26,9 +27,12 @@ public class Bathroom extends PatchField {
         this.area = patches;
         this.variation = str;
 
+        this.isRoomBig = patches.size() >= Patch.MAX_NUM_PATCH_FOR_BIG_ROOM;
+
         Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
+            patch.setRoomBig(this.isRoomBig);
         }
     }
 

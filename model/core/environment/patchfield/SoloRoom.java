@@ -11,6 +11,7 @@ public class SoloRoom extends PatchField {
     // VARIABLES
     public List<Patch> area;
     public String variation;
+    private boolean isRoomBig;
 
     public static SoloRoomFactory soloRoomFactory;
 
@@ -27,9 +28,12 @@ public class SoloRoom extends PatchField {
         this.area = patches;
         this.variation = str;
 
+        this.isRoomBig = patches.size() >= Patch.MAX_NUM_PATCH_FOR_BIG_ROOM;
+
         Pair<PatchField, String> pair = new Pair<>(this, str);
         for(Patch patch : patches) {
             patch.setPatchField(pair);
+            patch.setRoomBig(this.isRoomBig);
         }
     }
 
