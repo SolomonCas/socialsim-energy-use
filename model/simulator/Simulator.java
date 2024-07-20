@@ -101,10 +101,12 @@ public class Simulator {
     public static float fridgeWattage = 0.6F;
     public static float fridgeWattageInUse = 1.3F;
     public static float fridgeWattageActive = 34.0F;
+    public static float fridgeWattageActiveHigh = 140.0F;
     //Water Dispenser
     public static float waterDispenserWattage = 0.7F;
     public static float waterDispenserWattageInUse = 6.8F;
     public static float waterDispenserWattageActive= 76.0F;
+    public static float waterDispenserWattageActiveHigh = 0.0F; //730.2F;
 
     //Monitor
     public static float monitorWattage = 16.0F;
@@ -1375,7 +1377,8 @@ public class Simulator {
                 // System.out.println("getting fridge wattage: "+ totalWattageCount);
             }
             else if (state.getName() == State.Name.COFFEE && action.getName() == Action.Name.MAKE_COFFEE) {
-                totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(coffeeMakerWattageLow, coffeeMakerWattageHigh) * 5) / 3600);
+                if(coffeeMakerWattageLow < coffeeMakerWattageHigh)
+                    totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(coffeeMakerWattageLow, coffeeMakerWattageHigh) * 5) / 3600);
                 // System.out.println("getting fridge wattage: "+ totalWattageCount);
             }
 
@@ -4398,7 +4401,7 @@ public class Simulator {
         //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
         //ACTIVE CYCLE FOR EVERY REFRIGERATOR
         for(Refrigerator ref : environment.getRefrigerators()){
-            if(fridgeWattageActive <= 0 || fridgeWattageInUse <= 0 || fridgeWattage <= 0){
+            if(fridgeWattageActive <= 0 || fridgeWattageInUse <= 0 || fridgeWattage <= 0 || fridgeWattageActiveHigh <= 0){
                 break;
             }
             //IF REF IS IN ACTIVE CYCLE
@@ -4408,8 +4411,7 @@ public class Simulator {
                 if(ref.getDuration() > 0){
 //                    System.out.println("initial wattage: " + totalWattageCount);
 
-
-                    totalWattageCount += (((fridgeWattageActive + rand.nextFloat(101))* 5) / 3600);
+                    totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(fridgeWattage, fridgeWattageActiveHigh) * 5) / 3600);
 //                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
                     ref.setDuration((ref.getDuration() - 1));
                 }
@@ -4428,13 +4430,13 @@ public class Simulator {
                     double CHANCE = Simulator.roll();
                     if(CHANCE < activeCycleChance){
                         ref.setActiveCycle(true);
-                        ref.setDuration(240 + rand.nextInt( 61) - 5);
+                        ref.setDuration(RANDOM_NUMBER_GENERATOR.nextInt(120,240));
                     }
                 }
             }
         }
         for(WaterDispenser dispenser : environment.getWaterDispensers()){
-            if(waterDispenserWattageActive <= 0 || waterDispenserWattageInUse <= 0 || waterDispenserWattage <= 0){
+            if(waterDispenserWattageActive <= 0 || waterDispenserWattageInUse <= 0 || waterDispenserWattage <= 0 || waterDispenserWattageActiveHigh <= 0){
                 break;
             }
             //IF DISPENSER IS IN ACTIVE CYCLE
@@ -4446,11 +4448,11 @@ public class Simulator {
 
                     // Check if in high wattage active cycle
                     if(dispenser.isHighActiveCycle()){
-                        totalWattageCount += ((732.7F * 5) / 3600);
+                        totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(waterDispenserWattageActive, waterDispenserWattageActiveHigh) * 5) / 3600);
                         dispenser.setWaterLevel(dispenser.getWaterLevel() + 10);
 //                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
                     } else {
-                        totalWattageCount += ((waterDispenserWattageActive * 5) / 3600);
+                        totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(waterDispenserWattageActive-5, waterDispenserWattageActiveHigh+5) * 5) / 3600);
 //                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
                     }
 //                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
