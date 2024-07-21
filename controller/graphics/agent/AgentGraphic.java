@@ -192,6 +192,9 @@ public class AgentGraphic extends Graphic {
             if (this.agent.getAgentMovement().isInteracting()) {
                 this.graphicIndex = 6;
             }
+            else if (this.agent.getAgentMovement().isUsingAppliance()) {
+                this.graphicIndex = 11;
+            }
             else {
                 this.graphicIndex = 3;
             }
@@ -200,6 +203,9 @@ public class AgentGraphic extends Graphic {
         else if (agentHeadingDegrees >= 45 && agentHeadingDegrees < 135) {
             if (this.agent.getAgentMovement().isInteracting()) {
                 this.graphicIndex = 5;
+            }
+            else if (this.agent.getAgentMovement().isUsingAppliance()) {
+                this.graphicIndex = 9;
             }
             else {
                 this.graphicIndex = 1;
@@ -210,6 +216,9 @@ public class AgentGraphic extends Graphic {
             if (this.agent.getAgentMovement().isInteracting()) {
                 this.graphicIndex = 6;
             }
+            else if (this.agent.getAgentMovement().isUsingAppliance()) {
+                this.graphicIndex = 10;
+            }
             else {
                 this.graphicIndex = 2;
             }
@@ -218,6 +227,9 @@ public class AgentGraphic extends Graphic {
         else if (agentHeadingDegrees >= 225 && agentHeadingDegrees < 315) {
             if (this.agent.getAgentMovement().isInteracting()) {
                 this.graphicIndex = 4;
+            }
+            else if (this.agent.getAgentMovement().isUsingAppliance()) {
+                this.graphicIndex = 8;
             }
             else {
                 this.graphicIndex = 0;

@@ -84,6 +84,7 @@ public class AgentMovement {
     private Vector attractiveForce;
     private Vector motivationForce;
     private boolean isInteracting;
+    private boolean isUsingAppliance;
     private boolean isSimultaneousInteractionAllowed;
     private int interactionDuration;
     private InteractionType interactionType;
@@ -167,6 +168,7 @@ public class AgentMovement {
         this.duration = this.currentAction.getDuration();
 
         this.isInteracting = false;
+        this.isUsingAppliance = false;
 
         this.free();
     }
@@ -1514,20 +1516,20 @@ public class AgentMovement {
 
             }
             else if (Agent.Type.STUDENT == this.parent.getType()) {
-//                for(ResearchTable researchTable: environment.getResearchTables()) {
-//                    for (Chair researchChair : researchTable.getResearchChairs()) {
-//                        int attractorCount = 0;
-//                        // This part checks for amenities with more than 1 attractors
-//                        for(int i = 0; i < researchChair.getAttractors().size(); i++) {
-//                            if (researchChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
-//                                attractorCount++;
-//                            }
-//                        }
-//                        if(attractorCount == 0) {
-//                            temp.add(researchChair);
-//                        }
-//                    }
-//                }
+                for(ResearchTable researchTable: environment.getResearchTables()) {
+                    for (Chair researchChair : researchTable.getResearchChairs()) {
+                        int attractorCount = 0;
+                        // This part checks for amenities with more than 1 attractors
+                        for(int i = 0; i < researchChair.getAttractors().size(); i++) {
+                            if (researchChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+                                attractorCount++;
+                            }
+                        }
+                        if(attractorCount == 0) {
+                            temp.add(researchChair);
+                        }
+                    }
+                }
 
                 // for people with no group
                 if (this.parent.getTeam() == 0) {
@@ -2623,6 +2625,9 @@ public class AgentMovement {
     public boolean isInteracting() {
         return isInteracting;
     }
+    public boolean isUsingAppliance() {
+        return isUsingAppliance;
+    }
     public boolean isSimultaneousInteractionAllowed() {
         return isSimultaneousInteractionAllowed;
     }
@@ -2746,6 +2751,11 @@ public class AgentMovement {
     public void setInteracting(boolean interacting) {
         isInteracting = interacting;
     }
+
+    public void setUsingAppliance(boolean usingAppliance) {
+        isUsingAppliance = usingAppliance;
+    }
+
     public void setSimultaneousInteractionAllowed(boolean simultaneousInteractionAllowed) {
         isSimultaneousInteractionAllowed = simultaneousInteractionAllowed;
     }
