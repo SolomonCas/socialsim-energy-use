@@ -85,9 +85,6 @@ public class Simulator {
     public static int currentFridgeInteractionCount = 0;
     public static int currentWaterDispenserInteractionCount = 0;
 
-    // Current Wattage Count
-    public static float currentWattageCount = 0;
-
     // Total Wattage Count
     public static float totalWattageCount = 0;
 
@@ -4452,7 +4449,7 @@ public class Simulator {
                         dispenser.setWaterLevel(dispenser.getWaterLevel() + 10);
 //                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
                     } else {
-                        totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(waterDispenserWattageActive-5, waterDispenserWattageActiveHigh+5) * 5) / 3600);
+                        totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(waterDispenserWattage, waterDispenserWattageActive) * 5) / 3600);
 //                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
                     }
 //                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);

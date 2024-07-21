@@ -1110,6 +1110,9 @@ public class Environment extends BaseObject implements Serializable {
 
     //WITH LINEAR REGRESSION
     // Number of Agents, Interactions, Room Size
+
+    //DONE BY CHANCE ACTIVE CYCLE (HIGHER CHANCE IF COOLING, LOWER CHANCE IF HEATING)
+    //DONE CHANCE FOR TEMPERATURE TO GO UP WHEN ROOM TEMPERATURE ALREADY REACHED AIRCON TEMPERATURE
     public void tempChanger(){
         // Coefficients for the linear regression formula
         double beta0Cooling = 20.0; // Base cooling ticks when cooling
@@ -1123,15 +1126,28 @@ public class Environment extends BaseObject implements Serializable {
         for(Aircon aircon : this.getAircons()) {
             int closeAgentCount = 0;
             int nearbyAircons = 0;
-            int numOfInteractions = 0;
+            int nearbyWalkingAgentCount = 0;
+            //int numOfInteractions = 0; //DISCONTINUED
 
             // Count nearby agents
+
             for(Agent agent : this.getMovableAgents()){
                 for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
-                    if (agent.getAgentMovement() != null) {
+                    if (agent.getAgentMovement() != null && agent.getAgentMovement().getRoutePlan().isAtDesk()) {
                         double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch());
                         if(distanceToAircon < aircon.getCoolingRange()) {
                             closeAgentCount++;
+                            break;
+                        }
+                    }
+                }
+            }
+            for(Agent agent : this.getMovableAgents()){
+                for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
+                    if (agent.getAgentMovement() != null && (!agent.getAgentMovement().getRoutePlan().isAtDesk())) {
+                        double distanceToAircon = Coordinates.distance(agent.getAgentMovement().getCurrentPatch(), attractor.getPatch());
+                        if(distanceToAircon < aircon.getCoolingRange()) {
+                            nearbyWalkingAgentCount++;
                             break;
                         }
                     }
@@ -1150,30 +1166,63 @@ public class Environment extends BaseObject implements Serializable {
 
             // Calculate number of teams (assuming 4 agents per team)
             int numTeams = closeAgentCount / 4;
+            int numWalking = nearbyWalkingAgentCount /4;
 
-
+            //DONE(?) CHECK ACTIVE CYCLE IS ON AND CHECK COOLING TIMER ACTIVE, JUST INCREMENT TO aircon.getCoolingTimeInTicks
+            // (beta1Heating/beta1Cooling * numTeams + beta2Heating/beta2Cooling* nearbyAircons)
+            //TODO: CHECK IF BIG ROOM OR SMALL ROOM, THEN BASED ON DATA, CHANGE BETA 0 VARIABLE
             int coolingTicks = 0;
+            double CHANCE = Simulator.roll();
             if(aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.isTurnedOn()){
                 aircon.setInActiveCycle(false);
+                //CHANCE THAT IT WILL BE IN ACTIVE CYCLE
+                if(CHANCE < 0.1){
+                    aircon.setInActiveCycle(true);
+                }
+
                 coolingTicks = (int)(beta0Heating + beta1Heating * numTeams + beta2Heating * nearbyAircons);
                 if(coolingTimer(aircon, coolingTicks)){
                     int newTemp = aircon.getRoomTemp();
                     newTemp++;
                     aircon.setRoomTemp(newTemp);
                 }
+                else{
+                    CHANCE = Simulator.roll();
+                    if(CHANCE < 0.1){
+                        System.out.println("random decrease in cooling time ticks before: "+ aircon.getCoolingTimeInTicks());
+                        aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - numWalking);
+                        System.out.println("random decrease in cooling time ticks after: "+ aircon.getCoolingTimeInTicks());
+                    }
+                }
 //                System.out.println("I am in heating "+aircon.getCoolingTimeInTicks());
             } else if(aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()){
-
                 aircon.setInActiveCycle(true);
+                //CHANCE THAT IT WON'T BE IN ACTIVE CYCLE
+                if(CHANCE < 0.1){
+                    aircon.setInActiveCycle(false);
+                }
                 coolingTicks = (int)(beta0Cooling + beta1Cooling * numTeams + beta2Cooling * nearbyAircons);
                 if(coolingTimer(aircon, coolingTicks)){
                     int newTemp = aircon.getRoomTemp();
                     newTemp--;
                     aircon.setRoomTemp(newTemp);
                 }
-                System.out.println("I am in cooling "+aircon.getCoolingTimeInTicks());
+                else{
+                    CHANCE = Simulator.roll();
+                    if(CHANCE < 0.1){
+                        System.out.println("random decrease in cooling time ticks before: "+ aircon.getCoolingTimeInTicks());
+                        aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() + numWalking);
+                        System.out.println("random increase in cooling time ticks after: "+ aircon.getCoolingTimeInTicks());
+                    }
+                }
+//                System.out.println("I am in cooling "+aircon.getCoolingTimeInTicks());
             }
             else if(aircon.getAirconTemp() == aircon.getRoomTemp() && aircon.isTurnedOn()){
+                CHANCE = Simulator.roll();
+                //CHANCE OF TEMPERATURE GOING UP
+                if(CHANCE < 0.1){
+                    aircon.setRoomTemp(aircon.getRoomTemp()+Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 2));
+                }
                 aircon.setInActiveCycle(false);
 
             }
@@ -1190,14 +1239,6 @@ public class Environment extends BaseObject implements Serializable {
         return false;
     }
 
-    public boolean activeCycleTimerRefrigerator() {
-//        System.out.println("ACTIVE CYCLE TIMER: "+ activeCycleTimerRefrigerator);
-        if (this.activeCycleTimerRefrigerator > 0) {
-            activeCycleTimerRefrigerator--;
-            return true;
-        }
-        return false;
-    }
 
     // GETTERS: GENERAL
     public int getRows() {
