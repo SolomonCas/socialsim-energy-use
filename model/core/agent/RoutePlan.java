@@ -26,7 +26,7 @@ public class RoutePlan {
 
     private Amenity.AmenityBlock lunchAttractor;
     private Amenity lunchAmenity;
-    private boolean isTakingLunch = false;
+    private boolean isTakingLunch = false, isLeaving = false;
 
     State LUNCH_INSTANCE = null;
 
@@ -377,12 +377,13 @@ public class RoutePlan {
 
     /***** METHODS *****/
     public void inspect(PatchField room, Environment environment, ArrayList<Action> actions) {
-
+        System.out.println("@inspect");
         for (Amenity amenity : environment.getUsedAmenities()) {
             // Check if the amenity is in the selected room
             if (amenity.getAmenityBlocks().get(0).getPatch().getPatchField() != null && amenity.getAmenityBlocks().get(0).getPatch().getPatchField().getKey() == room) {
                 // Add an action if the amenity is in the selected room
                 if ((amenity instanceof Aircon && ((Aircon) amenity).isTurnedOn())) {
+                    System.out.println("ac is on");
                     actions.add(new Action(Action.Name.TURN_OFF_AC, amenity.getAttractors().getFirst().getPatch()));
                 }
                 else if ((amenity instanceof Light && ((Light) amenity).isOn())) {
@@ -627,6 +628,9 @@ public class RoutePlan {
                 for(int i = 0; i < environment.getSoloRooms().size(); i++) {
                     inspect(environment.getSoloRooms().get(i), environment, actions);
                 }
+                for (int i = 0; i < environment.getFloors().size(); i++) {
+                    inspect(environment.getFloors().get(i), environment, actions);
+                }
                 // Inspect MESA
                 for(int i = 0; i < environment.getMESAs().size(); i++) {
                     inspect(environment.getMESAs().get(i), environment, actions);
@@ -749,6 +753,10 @@ public class RoutePlan {
         return WORKING_CHANCE;
     }
 
+    public boolean isLeaving() {
+        return isLeaving;
+    }
+
     /***** SETTERS *****/
     public State setState(int i) {
         this.currentState = this.routePlan.get(i);
@@ -816,5 +824,9 @@ public class RoutePlan {
 
     public void setTakingLunch(boolean takingLunch) {
         isTakingLunch = takingLunch;
+    }
+
+    public void setLeaving(boolean leaving) {
+        isLeaving = leaving;
     }
 }

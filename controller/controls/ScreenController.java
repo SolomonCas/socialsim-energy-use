@@ -1050,7 +1050,7 @@ public class ScreenController extends Controller {
 
         Table2x2Mapper.draw(table2x2);
         ReceptionTableMapper.draw(receptionTable, "1x8");
-        DirectorTableMapper.draw(directorTable, "HORIZONTAL", "NORTH", true);
+        DirectorTableMapper.draw(directorTable, "HORIZONTAL", "SOUTH", true);
         HumanExpTableMapper.draw(humanExpTable, "5x1");
         DataCollTableMapper.draw(dataCollTable, "1x6");
         // Solo Tables
@@ -1504,7 +1504,7 @@ public class ScreenController extends Controller {
                 {41, 132}, {41, 139},
 
                 // Hallway
-                {72, 22}, {72, 62}, {72, 108}, {72, 120},
+                {72, 24}, {72, 62}, {72, 108}, {72, 120},
                 {72, 132}, {62, 147},
 
                 // Reception

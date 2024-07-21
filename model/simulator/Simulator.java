@@ -556,9 +556,11 @@ public class Simulator {
                 }
 
                 // Agents leave on their scheduled timeOut
-                if (time.getTime().equals(agent.getTimeOut())) {
+                if (time.getTime().isAfter(agent.getTimeOut()) && !agent.getAgentMovement().getRoutePlan().isLeaving()) {
+
                     int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.GOING_HOME);
                     if(index != -1) {
+                        agent.getAgentMovement().getRoutePlan().setLeaving(true);
                         agent.getAgentMovement().setCurrentState(index);
                         agent.getAgentMovement().setStateIndex(index);
                         agent.getAgentMovement().setActionIndex(0);
@@ -637,12 +639,6 @@ public class Simulator {
                 else {
                     if ((agentMovement.getCurrentState().getName() == State.Name.GOING_TO_EAT_OUTSIDE ||
                             agentMovement.getCurrentState().getName() == State.Name.GOING_HOME)) {
-                        if (agentMovement.getCurrentAmenity() instanceof Monitor) {
-                            if (!( (Monitor) agentMovement.getCurrentAmenity()).isOn()) {
-                                // System.out.println("Turn on Monitor");
-                                ((Monitor) agentMovement.getCurrentAmenity()).setOn(true);
-                            }
-                        }
 
                         agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
 
@@ -851,17 +847,22 @@ public class Simulator {
             agentMovement.setSimultaneousInteractionAllowed(false);
             if (agentMovement.getGoalAmenity() == null) {
 
-                double neutralChance = Simulator.roll();
+                double chance = Simulator.roll();
                 if (action.getName() == Action.Name.LEAVE_OFFICE &&
-                        agentMovement.getRoutePlan().isAtDesk() && (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN || (agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && neutralChance < 0.50))) {
+                        agentMovement.getRoutePlan().isAtDesk() && ((agent.getEnergyProfile() == Agent.EnergyProfile.GREEN && chance < 0.75) ||
+                        (agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && chance < 0.50) || (agent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN && chance < 0.25))) {
                     PatchField patchField = agentMovement.getCurrentPatch().getPatchField().getKey();
+                    String keyField = agentMovement.getCurrentPatch().getPatchField().getValue();
+                    System.out.println("PatchField: " + patchField);
+                    System.out.println("Key: " + keyField);
                     if (agentMovement.getCurrentState().findIndexAction(Action.Name.TURN_OFF_LIGHT) != -1) {
                         if (agentMovement.closestLight()) {
                             int closeAgentCount = 0;
                             for(Agent agent1 : environmentInstance.getMovableAgents()){
                                 for (Amenity.AmenityBlock attractor : agentMovement.getLightsToOpen().getAttractors()) {
                                     if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
-                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getValue().equals(keyField)) {
                                         double distanceToLight = Coordinates.distance(agent1.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
                                         if(distanceToLight < agentMovement.getLightsToOpen().getLightRange()){
                                             closeAgentCount++;
@@ -900,7 +901,8 @@ public class Simulator {
                             for(Agent agent1 : environmentInstance.getMovableAgents()){
                                 for (Amenity.AmenityBlock attractor : agentMovement.getAirconToChange().getAttractors()) {
                                     if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
-                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())
+                                            && agent1.getAgentMovement().getCurrentPatch().getPatchField().getValue().equals(keyField)) {
                                         double distanceToAircon = Coordinates.distance(agent1.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
                                         if(distanceToAircon < agentMovement.getAirconToChange().getCoolingRange()){
                                             closeAgentCount++;
@@ -1379,8 +1381,8 @@ public class Simulator {
                 // System.out.println("getting fridge wattage: "+ totalWattageCount);
             }
 
-            if (agentMovement.getDuration() <= 0 && !agentMovement.getCurrentState().getActions().isEmpty()) {
-                agentMovement.getGoalAttractor().setIsReserved(false); // Done using the toilet
+            if (agentMovement.getDuration() <= 0) {
+                agentMovement.getGoalAttractor().setIsReserved(false); // Done using amenity
                 agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
                 agentMovement.setActionIndex(0); // JIC needed
                 if(!agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -1395,29 +1397,9 @@ public class Simulator {
                     else if (state.getName() == State.Name.COFFEE && action.getName() == Action.Name.MAKE_COFFEE) {
                         currentCoffeeMakerCount++;
                     }
-                    agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+
                 }
-                else {
-                    if (agentMovement.getRoutePlan().isTakingLunch()) {
-                        int index = agentMovement.getRoutePlan().findIndexState(State.Name.EATING_LUNCH);
-                        if (index != -1) {
-                            agentMovement.setCurrentState(index);
-                            agentMovement.setStateIndex(index);
-                            agentMovement.setActionIndex(0);
-                            agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
-                            agentMovement.resetGoal();
-                        }
-                    }
-                    else {
-                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-                        agentMovement.setStateIndex(0); // JIC if needed
-                        agentMovement.setActionIndex(0); // JIC if needed
-                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-                        agentMovement.resetGoal();
-                    }
-                }
+                agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
                 agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                 agentMovement.resetGoal();
             }
@@ -1429,6 +1411,15 @@ public class Simulator {
                         agentMovement.setStateIndex(index);
                         agentMovement.setActionIndex(0);
                         agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                        agentMovement.resetGoal();
+                    }
+                    else {
+                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                        agentMovement.setStateIndex(0); // JIC if needed
+                        agentMovement.setActionIndex(0); // JIC if needed
+                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                         agentMovement.resetGoal();
                     }
                 }
@@ -2074,7 +2065,6 @@ public class Simulator {
                         for (Light light : environmentInstance.getLights()) {
 //                            System.out.println("Light: " + light.getAttractors().getFirst().getPatch());
                             for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-                                System.out.println("Light Patch: " + attractor.getPatch());
                                 if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
                                         attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
                                     light.setOn(true);
@@ -2481,13 +2471,15 @@ public class Simulator {
                                 }
                                 else {
                                     PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                    String keyField = agentMovement.getCurrentAction().getDestination().getPatchField().getValue();
                                     int closeAgentCount = 0;
                                     for(Agent agent1 : environmentInstance.getMovableAgents()){
                                         for (Amenity.AmenityBlock attractor : agentMovement.getLightsToOpen().getAttractors()) {
                                             if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
-                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())
+                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getValue().equals(keyField)) {
                                                 double distanceToLight = Coordinates.distance(agent1.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
-                                                if(distanceToLight < agentMovement.getLightsToOpen().getLightRange()){
+                                                if(distanceToLight < agentMovement.getLightsToOpen().getLightRange()) {
                                                     closeAgentCount++;
                                                     break;
                                                 }
@@ -2632,7 +2624,7 @@ public class Simulator {
                                 }
 
                                 if (agentMovement.getAirconToChange() == null) {
-                                    // System.out.println("WEIRD THERE SHOULD BE AIRCON");
+                                     System.out.println("WEIRD THERE SHOULD BE AIRCON");
                                     isFull = true;
                                     if (agentMovement.getAirconToChange() != null) {
                                         agentMovement.setAirconToChange(null);
@@ -2662,11 +2654,15 @@ public class Simulator {
                                 }
                                 else {
                                     PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                    String keyField = agentMovement.getCurrentAction().getDestination().getPatchField().getValue();
+                                    System.out.println("PatchField: " + patchField);
+                                    System.out.println("Key: " + keyField);
                                     int closeAgentCount = 0;
                                     for(Agent agent1 : environmentInstance.getMovableAgents()){
                                         for (Amenity.AmenityBlock attractor : agentMovement.getAirconToChange().getAttractors()) {
                                             if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
-                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())
+                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getValue().equals(keyField)) {
                                                 double distanceToAircon = Coordinates.distance(agent1.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
                                                 if(distanceToAircon < agentMovement.getAirconToChange().getCoolingRange()){
                                                     closeAgentCount++;
@@ -2676,10 +2672,10 @@ public class Simulator {
                                         }
                                     }
 
-                                    // System.out.println("closeAgentCount: " + closeAgentCount);
+                                     System.out.println("closeAgentCount: " + closeAgentCount);
 
                                     if (closeAgentCount != 0) {
-                                        // System.out.println("THERE IS AGENT");
+                                         System.out.println("THERE IS AGENT");
                                         isFull = true;
                                         if (agentMovement.getAirconToChange() != null) {
                                             agentMovement.setAirconToChange(null);
@@ -2712,7 +2708,7 @@ public class Simulator {
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
                                         else {
-                                            // System.out.println("IG NO AIRCON");
+                                             System.out.println("IG NO AIRCON");
                                             isFull = true;
                                             if (agentMovement.getAirconToChange() != null) {
                                                 agentMovement.setAirconToChange(null);
@@ -3062,11 +3058,13 @@ public class Simulator {
                                 }
                                 else {
                                     PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                    String keyField = agentMovement.getCurrentAction().getDestination().getPatchField().getValue();
                                     int closeAgentCount = 0;
                                     for(Agent agent1 : environmentInstance.getMovableAgents()){
                                         for (Amenity.AmenityBlock attractor : agentMovement.getLightsToOpen().getAttractors()) {
                                             if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
-                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())
+                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getValue().equals(keyField)) {
                                                 double distanceToLight = Coordinates.distance(agent1.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
                                                 if(distanceToLight < agentMovement.getLightsToOpen().getLightRange()){
                                                     closeAgentCount++;
@@ -3213,7 +3211,7 @@ public class Simulator {
                                 }
 
                                 if (agentMovement.getAirconToChange() == null) {
-                                    // System.out.println("WEIRD THERE SHOULD BE AIRCON");
+                                     System.out.println("WEIRD THERE SHOULD BE AIRCON");
                                     isFull = true;
                                     if (agentMovement.getAirconToChange() != null) {
                                         agentMovement.setAirconToChange(null);
@@ -3243,11 +3241,15 @@ public class Simulator {
                                 }
                                 else {
                                     PatchField patchField = agentMovement.getCurrentAction().getDestination().getPatchField().getKey();
+                                    String keyField = agentMovement.getCurrentAction().getDestination().getPatchField().getValue();
+                                    System.out.println("PatchField: " + patchField);
+                                    System.out.println("Key: " + keyField);
                                     int closeAgentCount = 0;
                                     for(Agent agent1 : environmentInstance.getMovableAgents()){
                                         for (Amenity.AmenityBlock attractor : agentMovement.getAirconToChange().getAttractors()) {
                                             if (agent1 != agent && agent1.getAgentMovement().getCurrentState().getName() != State.Name.GOING_HOME
-                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())) {
+                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getKey().toString().equals(patchField.toString())
+                                                    && agent1.getAgentMovement().getCurrentPatch().getPatchField().getValue().equals(keyField)) {
                                                 double distanceToAircon = Coordinates.distance(agent1.getAgentMovement().getCurrentPatch(), attractor.getPatch() );
                                                 if(distanceToAircon < agentMovement.getAirconToChange().getCoolingRange()){
                                                     closeAgentCount++;
@@ -3257,10 +3259,10 @@ public class Simulator {
                                         }
                                     }
 
-                                    // System.out.println("closeAgentCount: " + closeAgentCount);
+                                    System.out.println("closeAgentCount: " + closeAgentCount);
 
                                     if (closeAgentCount != 0) {
-                                        // System.out.println("THERE IS AGENT");
+                                         System.out.println("THERE IS AGENT");
                                         isFull = true;
                                         if (agentMovement.getAirconToChange() != null) {
                                             agentMovement.setAirconToChange(null);
@@ -3293,7 +3295,7 @@ public class Simulator {
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
                                         else {
-                                            // System.out.println("IG NO AIRCON");
+                                             System.out.println("IG NO AIRCON");
                                             isFull = true;
                                             if (agentMovement.getAirconToChange() != null) {
                                                 agentMovement.setAirconToChange(null);

@@ -1695,9 +1695,9 @@ public class Environment extends BaseObject implements Serializable {
                     List<Patch> area = patchField.getArea();
 
                     if (variation.equals("dimControlCenter") && !isLightOn){
-                        patchField.setVariation("");
+                        patchField.setVariation("controlCenter");
                     }
-                    else if (variation.isEmpty() && isLightOn){
+                    else if (variation.equals("controlCenter") && isLightOn){
                         patchField.setVariation("dimControlCenter");
                     }
 

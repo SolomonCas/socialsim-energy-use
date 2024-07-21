@@ -1436,7 +1436,7 @@ public class AgentMovement {
 
 
             // Agents are not allowed to work and eat their lunch on the couch
-            if(this.getCurrentState().getName() != State.Name.GOING_TO_LUNCH) {
+            if(this.getCurrentState().getName() != State.Name.GOING_TO_LUNCH && this.getCurrentState().getName() != State.Name.WORKING) {
                 temp.addAll(this.environment.getCouches());
             }
 
@@ -1514,20 +1514,20 @@ public class AgentMovement {
 
             }
             else if (Agent.Type.STUDENT == this.parent.getType()) {
-                for(ResearchTable researchTable: environment.getResearchTables()) {
-                    for (Chair researchChair : researchTable.getResearchChairs()) {
-                        int attractorCount = 0;
-                        // This part checks for amenities with more than 1 attractors
-                        for(int i = 0; i < researchChair.getAttractors().size(); i++) {
-                            if (researchChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
-                                attractorCount++;
-                            }
-                        }
-                        if(attractorCount == 0) {
-                            temp.add(researchChair);
-                        }
-                    }
-                }
+//                for(ResearchTable researchTable: environment.getResearchTables()) {
+//                    for (Chair researchChair : researchTable.getResearchChairs()) {
+//                        int attractorCount = 0;
+//                        // This part checks for amenities with more than 1 attractors
+//                        for(int i = 0; i < researchChair.getAttractors().size(); i++) {
+//                            if (researchChair.getAttractors().get(i).getPatch().getAmenityBlock().getIsReserved()) {
+//                                attractorCount++;
+//                            }
+//                        }
+//                        if(attractorCount == 0) {
+//                            temp.add(researchChair);
+//                        }
+//                    }
+//                }
 
                 // for people with no group
                 if (this.parent.getTeam() == 0) {
@@ -1722,7 +1722,7 @@ public class AgentMovement {
                 }
 
             }
-            return false;
+            return chooseBreakSeat();
         }
 
         return false;
