@@ -31,11 +31,9 @@ public class AgentMovement {
 
     public static final int MAX_COOL_DOWN_DURATION = 1440;
     public static final int MAX_BATHROOM_COOL_DOWN_DURATION = 1440;
-    public static final int MAX_BREAK_COOL_DOWN_DURATION = 1440;
     public static final int MAX_REFRIGERATOR_COOL_DOWN_DURATION = 1440;
     public static final int MAX_DISPENSER_COOL_DOWN_DURATION = 1440;
     public static final int MAX_INQUIRE_COOL_DOWN_DURATION = 1440;
-    public static final int MAX_AGENT_COOL_DOWN_DURATION = 1440;
     public static final int MAX_CHANGE_THERMAL_COOL_DOWN_DURATION = 1440;
     public static final int MAX_CHANGE_VISUAL_COOL_DOWN_DURATION = 1440;
     public static final int MAX_COFFEE_COOL_DOWN_DURATION = 4320;
@@ -723,6 +721,7 @@ public class AgentMovement {
                             }
                             else{
                                 //IF IT'S THE SAME, DO NOTHING
+                                this.thermalComfortCoolDown();
                                 return false;
                             }
                         }
@@ -739,6 +738,7 @@ public class AgentMovement {
                             }
                             else{
                                 //IF IT'S THE SAME, DO NOTHING
+                                this.thermalComfortCoolDown();
                                 return false;
                             }
                         }
@@ -787,6 +787,7 @@ public class AgentMovement {
                         }
                         else{
                             //IF IT'S THE SAME, DO NOTHING
+                            this.thermalComfortCoolDown();
                             return false;
                         }
                     }
@@ -802,6 +803,7 @@ public class AgentMovement {
                         }
                         else{
                             //IF IT'S THE SAME, DO NOTHING
+                            this.thermalComfortCoolDown();
                             return false;
                         }
                     }
@@ -911,6 +913,7 @@ public class AgentMovement {
                 PatchField patchField = distancesToAttractorEntry.getKey().getPatch().getPatchField().getKey();
                 if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(distancesToAttractorEntry.getKey().getPatch().getPatchField().getValue())) {
                     if (((WindowBlinds) distancesToAttractorEntry.getKey().getParent()).isOpened()) {
+                        this.visualComfortCoolDown();
                         return true;
                     }
                     else {
@@ -929,6 +932,7 @@ public class AgentMovement {
                 //if same patchfield, check if within the light range to do visual comfort logic
                 if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(distancesToLightEntry.getKey().getPatch().getPatchField().getValue())) {
                     if (( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
+                        this.visualComfortCoolDown();
                         return true;
                     }
                     else {

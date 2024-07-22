@@ -369,7 +369,7 @@ public class Environment extends BaseObject implements Serializable {
         for(int i = 0; i < numOfStudent; i++){
             double CHANCE = Simulator.roll();
             // Using the Shuttle for TimeIn
-            if (CHANCE < 0.8) {
+            if (CHANCE < 0.2) {
                 boolean shuttleTimeout = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
                 // Using the Shuttle for TimeOut
                 if (shuttleTimeout) {
@@ -405,6 +405,9 @@ public class Environment extends BaseObject implements Serializable {
                 Agent agent = AgentFactory.create(Type.FACULTY, true, team, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
                 this.getAgents().add(agent);
                 numOfFaculty--;
+                if (numOfFaculty <= 0) {
+                    break;
+                }
             }
         }
         for (int i = 0; i < numOfFaculty; i++) {
@@ -1541,10 +1544,13 @@ public class Environment extends BaseObject implements Serializable {
     }
 
     private String getNewVariation(String currentVariation, boolean isLightOn) {
-        if (!isLightOn) {
+        if (!isLightOn && currentVariation.contains("dim")) {
             return currentVariation.replace("dim", "");
         }
-        return "dim" + currentVariation;
+        else if (isLightOn && !currentVariation.contains("dim")) {
+            return "dim" + currentVariation;
+        }
+        return currentVariation;
     }
 
     /* Handle updates on visualization of lights turned on and off */
