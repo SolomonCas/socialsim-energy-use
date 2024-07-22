@@ -4803,11 +4803,11 @@ public class Simulator {
         }
 
         for (Aircon aircon : environment.getAircons()) {
-            if (aircon.isTurnedOn() && !aircon.isInActiveCycle() && airconWattage > airconWattageActive) {
+            if (aircon.isTurnedOn() && !aircon.isInActiveCycle() && airconWattage < airconWattageActive) {
                 totalWattageCount+= ((airconWattage * 5) / 3600);
                 activeAirConCount++;
             }
-            else if(aircon.isTurnedOn() && aircon.isInActiveCycle() && airconWattage > airconWattageActive){
+            else if(aircon.isTurnedOn() && aircon.isInActiveCycle() && airconWattage < airconWattageActive){
                 totalWattageCount+= ((RANDOM_NUMBER_GENERATOR.nextFloat(airconWattage, airconWattageActive) * 5) / 3600);
                 activeAirConCount++;
             }
