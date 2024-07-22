@@ -97,13 +97,13 @@ public class Simulator {
     //Fridge
     public static float fridgeWattage = 0.6F;
     public static float fridgeWattageInUse = 1.3F;
-    public static float fridgeWattageActive = 34.0F;
-    public static float fridgeWattageActiveHigh = 140.0F;
+    public static float fridgeWattageActive = 140.0F;//34.0F;
+    public static float fridgeWattageActiveHigh = 0.0F;//140.0F;
     //Water Dispenser
     public static float waterDispenserWattage = 0.7F;
     public static float waterDispenserWattageInUse = 6.8F;
     public static float waterDispenserWattageActive= 76.0F;
-    public static float waterDispenserWattageActiveHigh = 0.0F; //730.2F;
+    public static float waterDispenserWattageActiveHigh =  730.2F;//0.0F;
 
     //Monitor
     public static float monitorWattage = 16.0F;
@@ -1376,7 +1376,9 @@ public class Simulator {
             if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
                 // System.out.println("getting water initial wattage: "+ totalWattageCount);
                 if (agentMovement.getCurrentAmenity() != null && agentMovement.getCurrentAmenity() instanceof WaterDispenser) {
+                    System.out.println("WATER LEVEL: "+ ((WaterDispenser) agentMovement.getCurrentAmenity()).getWaterLevel());
                     ((WaterDispenser) agentMovement.getCurrentAmenity()).setWaterLevel(((WaterDispenser) agentMovement.getCurrentAmenity()).getWaterLevel() - 5);
+                    System.out.println("WATER LEVEL: "+ ((WaterDispenser) agentMovement.getCurrentAmenity()).getWaterLevel());
                 }
                 agentMovement.setUsingAppliance(true);
                 totalWattageCount+= ((waterDispenserWattageInUse * 5) / 3600);
@@ -4802,12 +4804,12 @@ public class Simulator {
         }
 
         for (Aircon aircon : environment.getAircons()) {
-            if (aircon.isTurnedOn() && !aircon.isInActiveCycle()) {
+            if (aircon.isTurnedOn() && !aircon.isInActiveCycle() && airconWattage > airconWattageActive) {
                 totalWattageCount+= ((airconWattage * 5) / 3600);
                 activeAirConCount++;
             }
-            else if(aircon.isTurnedOn() && aircon.isInActiveCycle()){
-                totalWattageCount+= ((airconWattageActive * 5) / 3600);
+            else if(aircon.isTurnedOn() && aircon.isInActiveCycle() && airconWattage > airconWattageActive){
+                totalWattageCount+= ((RANDOM_NUMBER_GENERATOR.nextFloat(airconWattage, airconWattageActive) * 5) / 3600);
                 activeAirConCount++;
             }
         }
@@ -4872,7 +4874,7 @@ public class Simulator {
                 if(ref.getDuration() > 0){
 //                    System.out.println("initial wattage: " + totalWattageCount);
 
-                    totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(fridgeWattage, fridgeWattageActiveHigh) * 5) / 3600);
+                    totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(fridgeWattage, fridgeWattageActive) * 5) / 3600);
 //                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
                     ref.setDuration((ref.getDuration() - 1));
                 }
@@ -4902,17 +4904,18 @@ public class Simulator {
             }
             //IF DISPENSER IS IN ACTIVE CYCLE
             if(dispenser.isActiveCycle()){
+                System.out.println("NAKA ACTIVE CYCLE");
                 //increase coolness level
                 dispenser.setCoolnessLevel((dispenser.getCoolnessLevel() + 1));
                 if(dispenser.getDuration() > 0){
 //                    System.out.println("initial wattage: " + totalWattageCount);
 
                     // Check if in high wattage active cycle
-                    if(dispenser.isHighActiveCycle()){
-                        totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(waterDispenserWattageActive, waterDispenserWattageActiveHigh) * 5) / 3600);
-                        dispenser.setWaterLevel(dispenser.getWaterLevel() + 10);
-//                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
-                    } else {
+                    if(dispenser.isHighActiveCycle() && dispenser.getWaterLevel() < 80){
+                        totalWattageCount += (waterDispenserWattageActiveHigh * 5) / 3600;
+                        dispenser.setWaterLevel(dispenser.getWaterLevel() + 1);
+                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
+                    } else if(dispenser.isActiveCycle()){
                         totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(waterDispenserWattage, waterDispenserWattageActive) * 5) / 3600);
 //                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
                     }
@@ -4923,7 +4926,7 @@ public class Simulator {
                     dispenser.setHighActiveCycle(false);
                     dispenser.setDuration((240 + rand.nextInt(61) - 5));
                 }
-                else{
+                else if(dispenser.getDuration() <= 0 && dispenser.isActiveCycle()){
                     dispenser.setActiveCycle(false);
                     dispenser.setHighActiveCycle(false);
                 }
@@ -4937,22 +4940,24 @@ public class Simulator {
                     double activeCycleChance = max(0,(100 - dispenser.getCoolnessLevel()) / 100);
 //                    System.out.println("ACTIVE CHANCE: "+ activeCycleChance);
                     double CHANCE = Simulator.roll();
-                    double lowWater_Threshold = 50;
-                    // Check if water level is low to trigger high wattage active cycle
-                    if(dispenser.getWaterLevel() < lowWater_Threshold){
-                        double highActiveCycleChance = (lowWater_Threshold - dispenser.getWaterLevel()) / lowWater_Threshold;
-//                        System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
 
-                        if(CHANCE < highActiveCycleChance){
-                            dispenser.setActiveCycle(true);
-                            dispenser.setHighActiveCycle(true); // Set high wattage cycle flag
-                            dispenser.setDuration(4 + rand.nextInt(2)); // Duration 4 to 6 ticks
-                        }
-                    }
 
                     if(CHANCE < activeCycleChance && !dispenser.isHighActiveCycle()){
                         dispenser.setActiveCycle(true);
                         dispenser.setDuration(240 + rand.nextInt(61) - 5); // Duration 235 to 245 ticks
+                    }
+                }
+                double CHANCE = Simulator.roll();
+                double lowWater_Threshold = 50;
+                // Check if water level is low to trigger high wattage active cycle
+                if(dispenser.getWaterLevel() < lowWater_Threshold){
+                    double highActiveCycleChance = (lowWater_Threshold - dispenser.getWaterLevel()) / lowWater_Threshold;
+//                        System.out.println("HIGH WATTAGE CYCLE CHANCE: " + highActiveCycleChance);
+
+                    if(CHANCE < highActiveCycleChance){
+                        dispenser.setActiveCycle(true);
+                        dispenser.setHighActiveCycle(true); // Set high wattage cycle flag
+                        dispenser.setDuration((int) (100 - dispenser.getWaterLevel())); // Duration depends on water level
                     }
                 }
             }
