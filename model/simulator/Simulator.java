@@ -89,10 +89,10 @@ public class Simulator {
     public static float totalWattageCount = 0;
 
     //Aircon
-    public static float airconWattage = 40.0F;
-    public static float airconWattageActive = 60.0F;
+    public static float airconWattage = 20.0F;
+    public static float airconWattageActive = 2800.0F;
     //Light
-    public static float lightWattage = 3.0F;
+    public static float lightWattage = 15.0F;
 
     //Fridge
     public static float fridgeWattage = 0.6F;
@@ -4780,7 +4780,6 @@ public class Simulator {
     }
 
     public void runWattageCount(long currentTick){
-        Random rand = new Random();
         // System.out.println("CURRENT TICK: "+currentTick);
         //PUT RANDOM TIMES OF FLUCTUATION
         //multiplied to 5 since 5 seconds per tick?
@@ -4817,12 +4816,12 @@ public class Simulator {
         //set current switched on aircon
         currentAirconCount = activeAirConCount;
 
-        int count = 0;
-        for (Aircon aircon : environment.getAircons()) {
-            if (aircon.isTurnedOn()) {
-                count++;
-            }
-        }
+//        int count = 0;
+//        for (Aircon aircon : environment.getAircons()) {
+//            if (aircon.isTurnedOn()) {
+//                count++;
+//            }
+//        }
         // // System.out.println("Number of Aircon: " + count);
 
         for (Light light : environment.getLights()) {
@@ -4924,7 +4923,7 @@ public class Simulator {
                 }
                 else if(dispenser.getDuration() <= 0 && dispenser.isHighActiveCycle()){
                     dispenser.setHighActiveCycle(false);
-                    dispenser.setDuration((240 + rand.nextInt(61) - 5));
+                    dispenser.setDuration((240 + RANDOM_NUMBER_GENERATOR.nextInt(61) - 5));
                 }
                 else if(dispenser.getDuration() <= 0 && dispenser.isActiveCycle()){
                     dispenser.setActiveCycle(false);
@@ -4944,7 +4943,7 @@ public class Simulator {
 
                     if(CHANCE < activeCycleChance && !dispenser.isHighActiveCycle()){
                         dispenser.setActiveCycle(true);
-                        dispenser.setDuration(240 + rand.nextInt(61) - 5); // Duration 235 to 245 ticks
+                        dispenser.setDuration(240 + RANDOM_NUMBER_GENERATOR.nextInt(61) - 5); // Duration 235 to 245 ticks
                     }
                 }
                 double CHANCE = Simulator.roll();
