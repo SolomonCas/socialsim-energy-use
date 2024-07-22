@@ -35,14 +35,13 @@ public class RoutePlan {
     /*** Responsible for doing Urgent Task ***/
     private boolean canUrgent = true;
     private int BATH_AM = 1, BATH_PM = 1, BATH_LUNCH = 1;
-    private int BREAK_COUNT = 2, COFFEE_COUNT = 2;
+    private int COFFEE_COUNT = 2;
     private int DISPENSER_LUNCH = 1, DISPENSER = 1;
     private int REFRIGERATOR_LUNCH = 1, REFRIGERATOR = 1;
     private double  BATHROOM_CHANCE,
             WORKING_CHANCE,
             DISPENSER_CHANCE,
             REFRIGERATOR_CHANCE,
-            BREAK_CHANCE,
             COFFEE_CHANCE,
             EAT_OUTSIDE_CHANCE,
             EAT_FROM_WORKPLACE,
@@ -67,7 +66,6 @@ public class RoutePlan {
             INQUIRE_GUARD_CHANCE = 0.0;
             INQUIRE_MAINTENANCE_CHANCE = 0.0;
             BATHROOM_CHANCE = 0.15;
-            BREAK_CHANCE = 0.05;
             COFFEE_CHANCE = 0.0;
 
             DISPENSER_CHANCE = 0.02;
@@ -113,7 +111,6 @@ public class RoutePlan {
             INQUIRE_GUARD_CHANCE = 0.07;
             INQUIRE_MAINTENANCE_CHANCE = 0.02;
             BATHROOM_CHANCE = 0.10;
-            BREAK_CHANCE = 0.01;
             COFFEE_CHANCE = 0.0;
 
             DISPENSER_CHANCE = 0.02;
@@ -240,7 +237,6 @@ public class RoutePlan {
             INQUIRE_GUARD_CHANCE = 0.0;
             INQUIRE_MAINTENANCE_CHANCE = 0.0;
             BATHROOM_CHANCE = 0.15;
-            BREAK_CHANCE = 0.01;
             COFFEE_CHANCE = 0.04;
 
             DISPENSER_CHANCE = 0.02;
@@ -274,7 +270,6 @@ public class RoutePlan {
 
             WORKING_CHANCE = 0.8;
             BATHROOM_CHANCE = 0.15;
-            BREAK_CHANCE = 0.02;
             COFFEE_CHANCE = 0.02;
 
             DISPENSER_CHANCE = 0.13;
@@ -324,7 +319,6 @@ public class RoutePlan {
 
             WORKING_CHANCE = 0.8;
             BATHROOM_CHANCE = 0.14;
-            BREAK_CHANCE = 0.03;
             COFFEE_CHANCE = 0.01;
 
             DISPENSER_CHANCE = 0.25;
@@ -489,12 +483,6 @@ public class RoutePlan {
                 else if(agent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL){ actions.add(new Action(Action.Name.GETTING_FOOD, 1, 5)); }
 
                 officeState = new State(State.Name.REFRIGERATOR, this, agent, actions);
-            }
-            case "BREAK" -> {
-                actions = new ArrayList<>();
-                actions.add(new Action(Action.Name.GO_TO_BREAK));
-                actions.add(new Action(Action.Name.TAKING_BREAK, 120, 240));
-                officeState = new State(State.Name.BREAK_TIME, this, agent, actions);
             }
             case "FIX_THERMAL_COMFORT" -> {
                 // TODO: MAINTENANCE THERMAL COMFORT
@@ -689,20 +677,12 @@ public class RoutePlan {
     public boolean isAtDesk() {
         return isAtDesk;
     }
-    public int getBREAK_COUNT() {
-        return BREAK_COUNT;
-    }
-
     public boolean isTakingLunch() {
         return isTakingLunch;
     }
 
     public double getBATHROOM_CHANCE() {
         return BATHROOM_CHANCE;
-    }
-
-    public double getBREAK_CHANCE() {
-        return BREAK_CHANCE;
     }
 
     public double getDISPENSER_CHANCE() {
@@ -817,9 +797,6 @@ public class RoutePlan {
     }
     public void setAtDesk(boolean atDesk) {
         isAtDesk = atDesk;
-    }
-    public void setBREAK_COUNT(int BREAK_COUNT) {
-        this.BREAK_COUNT -= BREAK_COUNT;
     }
 
     public void setTakingLunch(boolean takingLunch) {

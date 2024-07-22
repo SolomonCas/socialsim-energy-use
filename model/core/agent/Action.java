@@ -79,7 +79,6 @@ public class Action {
         LEAVE_OFFICE(),
         GO_TO_LUNCH(),
         EAT_LUNCH(),
-        GO_TO_BREAK(),
         EXIT_LUNCH(),
         GOING_TO_RECEPTION_QUEUE(),
         FILL_UP_NAME(),
@@ -124,7 +123,6 @@ public class Action {
         USE_MICROWAVE(),
         GOING_COFFEEMAKER(),
         MAKE_COFFEE(),
-        TAKING_BREAK(),
         GO_TO_WAIT_AREA(),
         WAIT_FOR_VACANT(),
         WAIT_FOR_COLLEAGUE();
