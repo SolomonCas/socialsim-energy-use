@@ -3433,7 +3433,7 @@ public class ScreenController extends Controller {
 
         Table2x2Mapper.draw(table2x2);
         ReceptionTableMapper.draw(receptionTable, "1x8");
-        DirectorTableMapper.draw(directorTable, "HORIZONTAL", "NORTH", true);
+        DirectorTableMapper.draw(directorTable, "HORIZONTAL", "SOUTH", true);
         HumanExpTableMapper.draw(humanExpTable, "5x1");
         DataCollTableMapper.draw(dataCollTable, "1x6");
         // Solo Tables

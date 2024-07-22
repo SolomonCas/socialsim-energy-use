@@ -170,7 +170,7 @@ public class GraphicsController extends Controller {
                 if (patchPatchField.getClass() == Floor.class) {
 
                     // Floor
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("Hallway")) {
                         patchColor = Color.rgb(132, 132, 132);
                     }
 
@@ -241,7 +241,7 @@ public class GraphicsController extends Controller {
                         patchColor = Color.rgb(230, 169, 180);
 
                     // Director bathroom
-                    } else if (patchStrPair.getValue().equals("directorBathroom")) {
+                    } else if (patchStrPair.getValue().equals("directorBathroom") || patchStrPair.getValue().equals("DirectorBathroom")) {
                         patchColor = Color.rgb(196, 201, 203);
 
                     // Dim
@@ -258,7 +258,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == Reception.class) {
 
                     // Reception
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("Reception")) {
                         patchColor = Color.rgb(189, 182, 205);
                     }
 
@@ -316,7 +316,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == DataCenter.class) {
 
                     // Data Center
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("DataCenter")) {
                         patchColor = Color.rgb(157, 162, 164);
                     }
 
@@ -335,7 +335,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == ControlCenter.class) {
 
                     // Control Center
-                    if (patchStrPair.getValue().equals("controlCenter")) {
+                    if (patchStrPair.getValue().equals("controlCenter") || patchStrPair.getValue().equals("ControlCenter")) {
                         patchColor = Color.rgb(234, 210, 213);
                     }
 
@@ -404,7 +404,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == BreakerRoom.class) {
 
                     // Control Center
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("BreakerRoom")) {
                         patchColor = Color.rgb(111, 156, 166);
                     }
 
@@ -422,7 +422,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == MeetingRoom.class) {
 
                     // Meeting Room
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("MeetingRoom")) {
                         patchColor = Color.rgb(233, 212, 220);
                     }
 
@@ -440,7 +440,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == ConferenceRoom.class) {
 
                     // Conference Room
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("ConferenceRoom")) {
                         patchColor = Color.rgb(235, 230, 251);
                     }
 
@@ -458,7 +458,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == StorageRoom.class) {
 
                     // Storage Room
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("StorageRoom")) {
                         patchColor = Color.rgb(219, 203, 221);
                     }
 
@@ -476,7 +476,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == Clinic.class) {
 
                     // Clinic
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("Clinic")) {
                         patchColor = Color.rgb(179, 199, 220);
                     }
 
@@ -494,7 +494,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == FacultyRoom.class) {
 
                     // Faculty Room
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("FacultyRoom")) {
                         patchColor = Color.rgb(224, 238, 233);
                     }
 
@@ -504,7 +504,7 @@ public class GraphicsController extends Controller {
                     }
 
                     // Joint Faculty Space
-                    else if (patchStrPair.getValue().equals("facultySpace")) {
+                    else if (patchStrPair.getValue().equals("facultySpace") || patchStrPair.getValue().equals("FacultySpace")) {
                         patchColor = Color.rgb(229, 215, 236);
                     }
 
@@ -554,7 +554,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == ResearchCenter.class) {
 
                     // Research Center
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("ResearchCenter")) {
                         patchColor = Color.rgb(217, 198, 213);
                     }
 
@@ -606,7 +606,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == MESA.class) {
 
                     // MESA
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("MESA")) {
                         patchColor = Color.rgb(209, 191, 213);
                     }
 
@@ -624,7 +624,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == DataCollectionRoom.class) {
 
                     // Data Collection
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("DataCollRoom")) {
                         patchColor = Color.rgb(232, 231, 244);
                     }
 
@@ -642,7 +642,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == HumanExpRoom.class) {
 
                     // Human Experience Room
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("HumExpRoom")) {
                         patchColor = Color.rgb(241, 223, 255);
                     }
 
@@ -660,7 +660,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == DirectorRoom.class) {
 
                     // Director Room
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("DirectorRoom")) {
                         patchColor = Color.rgb(206, 198, 207);
                     }
 
@@ -678,7 +678,7 @@ public class GraphicsController extends Controller {
                 else if (patchPatchField.getClass() == Pantry.class) {
 
                     // Pantry
-                    if (patchStrPair.getValue().isEmpty()) {
+                    if (patchStrPair.getValue().isEmpty() || patchStrPair.getValue().equals("Pantry")) {
                         patchColor = Color.rgb(220, 216, 208);
                     }
 

@@ -115,7 +115,7 @@ public class ReceptionTableMapper extends AmenityMapper {
                 // THE REST OF THE TABLE'S PATCHES
                 for (int j = 1; j <= 7; j++) {
                     Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + j);
-                    if (j == 5) {
+                    if (j == 2) {
                         Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, true, false);
                         amenityBlocks.add(nextAmenityBlock);
                         nextPatch.setAmenityBlock(nextAmenityBlock);

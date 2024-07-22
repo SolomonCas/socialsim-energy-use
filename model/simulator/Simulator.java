@@ -1401,7 +1401,9 @@ public class Simulator {
             }
 
             if (agentMovement.getDuration() <= 0) {
-                agentMovement.getGoalAttractor().setIsReserved(false); // Done using amenity
+                if (agentMovement.getGoalAttractor() != null) {
+                    agentMovement.getGoalAttractor().setIsReserved(false); // Done using amenity
+                }
                 agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
                 agentMovement.setActionIndex(0); // JIC needed
                 // This is to confirm if the agent is interacting with the electric appliance

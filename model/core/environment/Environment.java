@@ -1540,6 +1540,12 @@ public class Environment extends BaseObject implements Serializable {
         }
     }
 
+    private String getNewVariation(String currentVariation, boolean isLightOn) {
+        if (!isLightOn) {
+            return currentVariation.replace("dim", "");
+        }
+        return "dim" + currentVariation;
+    }
 
     /* Handle updates on visualization of lights turned on and off */
     public void updatePatchfieldVariation(Pair<PatchField, String> patchfieldClass, boolean isLightOn) {
@@ -1548,15 +1554,9 @@ public class Environment extends BaseObject implements Serializable {
         if (patchfieldClass.getKey().getClass() == Bathroom.class) {
             for (Bathroom patchField: getBathrooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
-
-                    if (variation.equals("dimDirectorBathroom") && !isLightOn){
-                        patchField.setVariation("directorBathroom");
-                    }
-                    else if (variation.equals("directorBathroom") && isLightOn){
-                        patchField.setVariation("dimDirectorBathroom");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getBathrooms().remove(patchField);
                     simulator.getEnvironment().getBathrooms().add(Bathroom.bathroomFactory.create(area, patchField.getVariation()));
@@ -1580,15 +1580,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == BreakerRoom.class) {
             for (BreakerRoom patchField: getBreakerRooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimBreakerRoom") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimBreakerRoom");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getBreakerRooms().remove(patchField);
                     simulator.getEnvironment().getBreakerRooms().add(BreakerRoom.breakerRoomFactory.create(area, patchField.getVariation()));
@@ -1612,15 +1607,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == Clinic.class) {
             for (Clinic patchField: getClinics()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimClinic") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimClinic");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getClinics().remove(patchField);
                     simulator.getEnvironment().getClinics().add(Clinic.clinicFactory.create(area, patchField.getVariation()));
@@ -1644,15 +1634,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == ConferenceRoom.class) {
             for (ConferenceRoom patchField: getConferenceRooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimConferenceRoom") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimConferenceRoom");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
 
                     simulator.getEnvironment().getConferenceRooms().remove(patchField);
@@ -1677,15 +1662,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == ControlCenter.class) {
             for (ControlCenter patchField: getControlCenters()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimControlCenter") && !isLightOn){
-                        patchField.setVariation("controlCenter");
-                    }
-                    else if (variation.equals("controlCenter") && isLightOn){
-                        patchField.setVariation("dimControlCenter");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getControlCenters().remove(patchField);
                     simulator.getEnvironment().getControlCenters().add(ControlCenter.controlCenterFactory.create(area, patchField.getVariation()));
@@ -1709,21 +1689,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == DataCenter.class) {
             for (DataCenter patchField: getDataCenters()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimDataCenter") && !isLightOn){
-                        patchField.setVariation("dataCenter");
-                    }
-                    else if (variation.equals("dimCCTV") && !isLightOn){
-                        patchField.setVariation("CCTV");
-                    }
-                    else if (variation.equals("CCTV") && isLightOn){
-                        patchField.setVariation("dimCCTV");
-                    }
-                    else if (variation.equals("dataCenter") && isLightOn){
-                        patchField.setVariation("dimDataCenter");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getDataCenters().remove(patchField);
                     simulator.getEnvironment().getDataCenters().add(DataCenter.dataCenterFactory.create(area, patchField.getVariation()));
@@ -1747,15 +1716,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == DataCollectionRoom.class) {
             for (DataCollectionRoom patchField: getDataCollectionRooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimDataCollRoom") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimDataCollRoom");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getDataCollectionRooms().remove(patchField);
                     simulator.getEnvironment().getDataCollectionRooms().add(DataCollectionRoom.dataCollectionRoomFactory.create(area, patchField.getVariation()));
@@ -1779,15 +1743,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == DirectorRoom.class) {
             for (DirectorRoom patchField: getDirectorRooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimDirectorRoom") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimDirectorRoom");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getDirectorRooms().remove(patchField);
                     simulator.getEnvironment().getDirectorRooms().add(DirectorRoom.directorRoomFactory.create(area, patchField.getVariation()));
@@ -1811,15 +1770,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == FacultyRoom.class) {
             for (FacultyRoom patchField: getFacultyRooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimFacultyRoom") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimFacultyRoom");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getFacultyRooms().remove(patchField);
                     simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(area, patchField.getVariation()));
@@ -1843,15 +1797,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == Floor.class) {
             for (Floor patchField: getFloors()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimHallway") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimHallway");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getFloors().remove(patchField);
                     simulator.getEnvironment().getFloors().add(Floor.floorFactory.create(area, patchField.getVariation()));
@@ -1875,15 +1824,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == HumanExpRoom.class) {
             for (HumanExpRoom patchField: getHumanExpRooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimHumanExpRoom") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimHumanExpRoom");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getHumanExpRooms().remove(patchField);
                     simulator.getEnvironment().getHumanExpRooms().add(HumanExpRoom.humanExpRoomFactory.create(area, patchField.getVariation()));
@@ -1907,33 +1851,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == LearningSpace.class) {
             for (LearningSpace patchField: getLearningSpaces()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimLS1") && !isLightOn){
-                        patchField.setVariation("LS1");
-                    }
-                    else if (variation.equals("dimLS2") && !isLightOn){
-                        patchField.setVariation("LS2");
-                    }
-                    else if (variation.equals("dimLS3") && !isLightOn){
-                        patchField.setVariation("LS3");
-                    }
-                    else if (variation.equals("dimLS4") && !isLightOn){
-                        patchField.setVariation("LS4");
-                    }
-                    else if (variation.equals("LS1") && isLightOn){
-                        patchField.setVariation("dimLS1");
-                    }
-                    else if (variation.equals("LS2") && isLightOn){
-                        patchField.setVariation("dimLS2");
-                    }
-                    else if (variation.equals("LS3") && isLightOn){
-                        patchField.setVariation("dimLS3");
-                    }
-                    else if (variation.equals("LS4") && isLightOn){
-                        patchField.setVariation("dimLS4");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
 
                     simulator.getEnvironment().getLearningSpaces().remove(patchField);
@@ -1958,15 +1879,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == MeetingRoom.class) {
             for (MeetingRoom patchField: getMeetingRooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimMeetingRoom") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimMeetingRoom");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
 
                     simulator.getEnvironment().getMeetingRooms().remove(patchField);
@@ -1991,15 +1907,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == MESA.class) {
             for (MESA patchField: getMESAs()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimMESA") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimMESA");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getMESAs().remove(patchField);
                     simulator.getEnvironment().getMESAs().add(MESA.MESAFactory.create(area, patchField.getVariation()));
@@ -2023,15 +1934,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == Pantry.class) {
             for (Pantry patchField: getPantries()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimPantry") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimPantry");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getPantries().remove(patchField);
                     simulator.getEnvironment().getPantries().add(Pantry.pantryFactory.create(area, patchField.getVariation()));
@@ -2055,15 +1961,11 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == Reception.class) {
             for (Reception patchField: getReceptions()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
-
-                    if (variation.equals("dimReception") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimReception");
-                    }
+                    System.out.println("Patch Field Variation: " + patchField.getVariation());
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    System.out.println("New Variation: " + newVariation);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getReceptions().remove(patchField);
                     simulator.getEnvironment().getReceptions().add(Reception.receptionFactory.create(area, patchField.getVariation()));
@@ -2087,15 +1989,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == ResearchCenter.class) {
             for (ResearchCenter patchField: getResearchCenters()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimResearchCenter") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimResearchCenter");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getResearchCenters().remove(patchField);
                     simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(area, patchField.getVariation()));
@@ -2119,33 +2016,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == SoloRoom.class) {
             for (SoloRoom patchField: getSoloRooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())){
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimSR1") && !isLightOn){
-                        patchField.setVariation("SR1");
-                    }
-                    else if (variation.equals("dimSR2") && !isLightOn){
-                        patchField.setVariation("SR2");
-                    }
-                    else if (variation.equals("dimSR3") && !isLightOn){
-                        patchField.setVariation("SR3");
-                    }
-                    else if (variation.equals("dimSR4") && !isLightOn){
-                        patchField.setVariation("SR4");
-                    }
-                    else if (variation.equals("SR1") && isLightOn){
-                        patchField.setVariation("dimSR1");
-                    }
-                    else if (variation.equals("SR2") && isLightOn){
-                        patchField.setVariation("dimSR2");
-                    }
-                    else if (variation.equals("SR3") && isLightOn){
-                        patchField.setVariation("dimSR3");
-                    }
-                    else if (variation.equals("SR4") && isLightOn){
-                        patchField.setVariation("dimSR4");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getSoloRooms().remove(patchField);
                     simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(area, patchField.getVariation()));
@@ -2169,15 +2043,10 @@ public class Environment extends BaseObject implements Serializable {
         else if (patchfieldClass.getKey().getClass() == StorageRoom.class) {
             for (StorageRoom patchField: getStorageRooms()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
-                    String variation = patchField.getVariation();
                     List<Patch> area = patchField.getArea();
 
-                    if (variation.equals("dimStorageRoom") && !isLightOn){
-                        patchField.setVariation("");
-                    }
-                    else if (variation.isEmpty() && isLightOn){
-                        patchField.setVariation("dimStorageRoom");
-                    }
+                    String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
+                    patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getStorageRooms().remove(patchField);
                     simulator.getEnvironment().getStorageRooms().add(StorageRoom.storageRoomFactory.create(area, patchField.getVariation()));
