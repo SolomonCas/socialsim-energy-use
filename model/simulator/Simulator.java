@@ -97,13 +97,13 @@ public class Simulator {
     //Fridge
     public static float fridgeWattage = 0.6F;
     public static float fridgeWattageInUse = 1.3F;
-    public static float fridgeWattageActive = 140.0F;//34.0F;
-    public static float fridgeWattageActiveHigh = 0.0F;//140.0F;
+    public static float fridgeWattageActive = 140.0F;
+    public static float fridgeWattageActiveHigh = 0.0F;
     //Water Dispenser
     public static float waterDispenserWattage = 0.7F;
     public static float waterDispenserWattageInUse = 6.8F;
     public static float waterDispenserWattageActive= 76.0F;
-    public static float waterDispenserWattageActiveHigh =  730.2F;//0.0F;
+    public static float waterDispenserWattageActiveHigh =  730.2F;
 
     //Monitor
     public static float monitorWattage = 16.0F;
@@ -150,13 +150,13 @@ public class Simulator {
     public static int currentGuardGuardCount = 0;
     
     // AGENT CHANCES
-    public static double greenChance = 0.74;
-    public static double nonGreenChance = 0.11;
-    public static double neutralChance = 0.15;
+    public static double greenChance = 0.8;
+    public static double nonGreenChance = 0.1;
+    public static double neutralChance = 0.1;
 
-    public static int studentNum = 6;
-    public static int facultyNum = 2;
-    public static int teamNum = 1;
+    public static int studentNum = 44;
+    public static int facultyNum = 3;
+    public static int teamNum = 10;
     /** COMPILED **/
 
     // Current Agent Count Per Type
@@ -397,7 +397,7 @@ public class Simulator {
     }
 
     public static void updateEnvironment (Environment environment, long currentTick, SimulationTime time) {
-        // System.out.println("CURRENT TICK: "+currentTick);
+         System.out.println("CURRENT TICK: "+currentTick);
         // System.out.println("Number of used amenities: " + environment.getUsedAmenities().size());
         // Change to night
         if (time.getTime().isAfter(LocalTime.of(16,30))) {
@@ -513,7 +513,7 @@ public class Simulator {
                 // Lunch Time for Anyone except for Maintenance
                 int randomHour = RANDOM_NUMBER_GENERATOR.nextInt(11, 14);
                 int randomMinute = RANDOM_NUMBER_GENERATOR.nextInt(0, 59);
-                if (time.getTime().equals(LocalTime.of(randomHour, randomMinute)) && agent.getType() != Agent.Type.MAINTENANCE) {
+                if (agent.getAgentMovement().getRoutePlan().isAtDesk() && time.getTime().equals(LocalTime.of(randomHour, randomMinute)) && agent.getType() != Agent.Type.MAINTENANCE) {
                     int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.EATING_LUNCH);
                     if (index != -1) {
                         agent.getAgentMovement().getRoutePlan().setTakingLunch(true);
@@ -583,10 +583,64 @@ public class Simulator {
                         agent.getAgentMovement().getRoutePlan().setAtDesk(false);
                     }
                 }
+                else if (((Agent.Type.STUDENT == agent.getType() && time.getTime().isAfter(LocalTime.of(19,0))) ||
+                        (Agent.Type.MAINTENANCE == agent.getType() && time.getTime().isAfter(LocalTime.of(20,0))) ||
+                        (Agent.Type.FACULTY == agent.getType() && time.getTime().isAfter(LocalTime.of(22,0))) ||
+                        (Agent.Type.GUARD == agent.getType() && time.getTime().isAfter(LocalTime.of(22,0)))) && !agent.getAgentMovement().getRoutePlan().isLeaving()) {
+                    agent.getAgentMovement().getRoutePlan().setLeaving(true);
+                    int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.GOING_HOME);
+                    if(index != -1) {
+                        agent.getAgentMovement().setCurrentState(index);
+                        agent.getAgentMovement().setStateIndex(index);
+                        agent.getAgentMovement().setActionIndex(0);
+                        agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                        agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration());
+                        agent.getAgentMovement().resetGoal();
+                        agent.getAgentMovement().getRoutePlan().setAtDesk(false);
+                    }
+
+                }
 
                 moveOne(agent, currentTick, time);
             } catch (Throwable ex) {
-                ex.printStackTrace();
+                System.out.println("Error in moveAll");
+                System.out.println("Type: " + agent.getType() + " Persona: " + agent.getPersona()
+                        + " State: " + agent.getAgentMovement().getCurrentState().getName() +
+                        " Action: " + agent.getAgentMovement().getCurrentAction().getName());
+                System.out.println("Team: " + agent.getTeam());
+                System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
+                if (agent.getAgentMovement().getCurrentState().getActions().isEmpty()) {
+                    agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().remove(agent.getAgentMovement().getStateIndex()); // removing finished state
+                }
+                if (time.getTime().isAfter(agent.getTimeOut()) || (Agent.Type.STUDENT == agent.getType() && time.getTime().equals(LocalTime.of(19,0))) ||
+                        (Agent.Type.MAINTENANCE == agent.getType() && time.getTime().equals(LocalTime.of(20,0))) ||
+                        (Agent.Type.FACULTY == agent.getType() && time.getTime().equals(LocalTime.of(22,0))) ||
+                        (Agent.Type.GUARD == agent.getType() && time.getTime().equals(LocalTime.of(22,0)))) {
+                    agent.getAgentMovement().getRoutePlan().setLeaving(true);
+                    int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.GOING_HOME);
+                    if(index != -1) {
+                        agent.getAgentMovement().setCurrentState(index);
+                        agent.getAgentMovement().setStateIndex(index);
+                        agent.getAgentMovement().setActionIndex(0);
+                        agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                        agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration());
+                        agent.getAgentMovement().resetGoal();
+                        agent.getAgentMovement().getRoutePlan().setAtDesk(false);
+                    }
+
+                }
+                else {
+                    int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.WORKING);
+                    if(index != -1) {
+                        agent.getAgentMovement().setCurrentState(index);
+                        agent.getAgentMovement().setStateIndex(index);
+                        agent.getAgentMovement().setActionIndex(0);
+                        agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                        agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration());
+                        agent.getAgentMovement().resetGoal();
+                        agent.getAgentMovement().getRoutePlan().setAtDesk(false);
+                    }
+                }
             }
         }
     }
@@ -1028,16 +1082,6 @@ public class Simulator {
                     if(action.getName() == Action.Name.EXIT_LUNCH){
                         agentMovement.getCurrentPatch().getAgents().add(agent); // add the agent in the GUI again
                     }
-                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                    agentMovement.setActionIndex(0); // JIC if needed to set the new action
-                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-                    }
-
-                    agentMovement.resetGoal();
-                }
-                if (agentMovement.getCurrentState().getActions().isEmpty()){
                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                     agentMovement.setStateIndex(0); // JIC if needed
@@ -1206,7 +1250,7 @@ public class Simulator {
             }
         }
         else if (action.getName() == Action.Name.FILL_UP_NAME) {
-            agentMovement.setSimultaneousInteractionAllowed(true);
+            agentMovement.setSimultaneousInteractionAllowed(false);
 
             if(agentMovement.chooseNextPatchInPath()) {
                 agentMovement.faceNextPosition();
@@ -1445,8 +1489,55 @@ public class Simulator {
             }
         }
 
-        else if (action.getName()==Action.Name.RELIEVE_IN_CUBICLE || action.getName() == Action.Name.WASH_IN_SINK ||
-                action.getName() == Action.Name.GETTING_WATER || action.getName() == Action.Name.GETTING_FOOD || action.getName() == Action.Name.MAKE_COFFEE) {
+        else if (action.getName()==Action.Name.RELIEVE_IN_CUBICLE) {
+            agentMovement.setDuration(agentMovement.getDuration() - 1);
+
+            agentMovement.setSimultaneousInteractionAllowed(true);
+            if (agentMovement.getDuration() <= 0) {
+                agentMovement.getGoalAttractor().setIsReserved(false); // Done using amenity
+                agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+                agentMovement.setActionIndex(0); // JIC needed
+                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                }
+                agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                agentMovement.resetGoal();
+            }
+            if (agentMovement.getCurrentState().getActions().isEmpty()) {
+                if (agentMovement.getRoutePlan().isTakingLunch()) {
+                    int index = agentMovement.getRoutePlan().findIndexState(State.Name.EATING_LUNCH);
+                    if (index != -1) {
+                        agentMovement.setCurrentState(index);
+                        agentMovement.setStateIndex(index);
+                        agentMovement.setActionIndex(0);
+                        agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                        agentMovement.resetGoal();
+                    }
+                    else {
+                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                        agentMovement.setStateIndex(0); // JIC if needed
+                        agentMovement.setActionIndex(0); // JIC if needed
+                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                        agentMovement.resetGoal();
+                    }
+                }
+                else {
+                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                    agentMovement.setStateIndex(0); // JIC if needed
+                    agentMovement.setActionIndex(0); // JIC if needed
+                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                    agentMovement.resetGoal();
+                }
+            }
+
+        }
+
+        else if (action.getName() == Action.Name.WASH_IN_SINK || action.getName() == Action.Name.GETTING_WATER || action.getName() == Action.Name.GETTING_FOOD || action.getName() == Action.Name.MAKE_COFFEE) {
             agentMovement.setDuration(agentMovement.getDuration() - 1);
 
             agentMovement.setSimultaneousInteractionAllowed(true);
@@ -1482,30 +1573,7 @@ public class Simulator {
             }
 
             if (agentMovement.getDuration() <= 0) {
-                if (agentMovement.getGoalAttractor() != null) {
-                    agentMovement.getGoalAttractor().setIsReserved(false); // Done using amenity
-                }
-                agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                agentMovement.setActionIndex(0); // JIC needed
-                // This is to confirm if the agent is interacting with the electric appliance
-                agentMovement.setUsingAppliance(false);
-                if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
-                    currentWaterDispenserInteractionCount++;
-                }
-                else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
-                    currentFridgeInteractionCount++;
-                }
-                else if (state.getName() == State.Name.COFFEE && action.getName() == Action.Name.MAKE_COFFEE) {
-                    currentCoffeeMakerCount++;
-                }
-                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                }
-                agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
-                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-                agentMovement.resetGoal();
-            }
-            if (agentMovement.getCurrentState().getActions().isEmpty()){
+                agentMovement.getGoalAttractor().setIsReserved(false); // Done using amenity
                 agentMovement.setUsingAppliance(false);
                 if (agentMovement.getRoutePlan().isTakingLunch()) {
                     int index = agentMovement.getRoutePlan().findIndexState(State.Name.EATING_LUNCH);
@@ -1536,6 +1604,15 @@ public class Simulator {
                     agentMovement.resetGoal();
                 }
 
+                if (state.getName() == State.Name.DISPENSER && action.getName() == Action.Name.GETTING_WATER) {
+                    currentWaterDispenserInteractionCount++;
+                }
+                else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
+                    currentFridgeInteractionCount++;
+                }
+                else if (state.getName() == State.Name.COFFEE && action.getName() == Action.Name.MAKE_COFFEE) {
+                    currentCoffeeMakerCount++;
+                }
                 agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
             }
         }
@@ -2469,7 +2546,7 @@ public class Simulator {
         Environment environmentInstance = agentMovement.getEnvironment();
 
          System.out.println("Type: " + type + " Persona: " + persona + " State: " + state.getName() + " Action: " + action.getName());
-         System.out.println("Team: " + agent.getTeam() + " CanUrgent: " + agentMovement.getRoutePlan().getCanUrgent());
+         System.out.println("Team: " + agent.getTeam());
          System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
         boolean isFull = false;
 
@@ -3169,49 +3246,26 @@ public class Simulator {
 
 
                                 if (agentMovement.getDuration() <= 0) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
+                                    // faculties.
+                                    if (agentMovement.getAgentToInquire() != null) {
+                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
+                                    }
                                     agentMovement.resetGoal();
                                 }
                             }
                             else {
-                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-                                    agentMovement.setStateIndex(0); // JIC if needed
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                }
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
                             }
                         }
                     }
@@ -3270,49 +3324,26 @@ public class Simulator {
 
 
                                 if (agentMovement.getDuration() <= 0) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
+                                    // faculties.
+                                    if (agentMovement.getAgentToInquire() != null) {
+                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
+                                    }
                                     agentMovement.resetGoal();
                                 }
                             }
                             else {
-                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-                                    agentMovement.setStateIndex(0); // JIC if needed
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                }
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
                             }
                         }
                     }
@@ -4286,49 +4317,26 @@ public class Simulator {
 
 
                                 if (agentMovement.getDuration() <= 0) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
+                                    // faculties.
+                                    if (agentMovement.getAgentToInquire() != null) {
+                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
+                                    }
                                     agentMovement.resetGoal();
                                 }
                             }
                             else {
-                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-                                    agentMovement.setStateIndex(0); // JIC if needed
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                }
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
                             }
                         }
                     }
@@ -4387,49 +4395,26 @@ public class Simulator {
 
 
                                 if (agentMovement.getDuration() <= 0) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
+                                    // faculties.
+                                    if (agentMovement.getAgentToInquire() != null) {
+                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
+                                    }
                                     agentMovement.resetGoal();
                                 }
                             }
                             else {
-                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-                                    agentMovement.setStateIndex(0); // JIC if needed
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                }
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
                             }
                         }
                     }
@@ -4606,49 +4591,26 @@ public class Simulator {
 
 
                                 if (agentMovement.getDuration() <= 0) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
+                                    // faculties.
+                                    if (agentMovement.getAgentToInquire() != null) {
+                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
+                                    }
                                     agentMovement.resetGoal();
                                 }
                             }
                             else {
-                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-                                    agentMovement.setStateIndex(0); // JIC if needed
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                }
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
                             }
                         }
                     }
@@ -4707,49 +4669,26 @@ public class Simulator {
 
 
                                 if (agentMovement.getDuration() <= 0) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
+                                    // faculties.
+                                    if (agentMovement.getAgentToInquire() != null) {
+                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
+                                    }
                                     agentMovement.resetGoal();
                                 }
                             }
                             else {
-                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-                                    agentMovement.setStateIndex(0); // JIC if needed
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                }
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
                             }
                         }
                     }
@@ -4814,49 +4753,26 @@ public class Simulator {
 
 
                                 if (agentMovement.getDuration() <= 0) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
+                                    // faculties.
+                                    if (agentMovement.getAgentToInquire() != null) {
+                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
+                                    }
                                     agentMovement.resetGoal();
                                 }
                             }
                             else {
-                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-                                    agentMovement.setStateIndex(0); // JIC if needed
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                }
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
                             }
                         }
                     }
@@ -4915,49 +4831,26 @@ public class Simulator {
 
 
                                 if (agentMovement.getDuration() <= 0) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
                                     agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
                                     agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                                     agentMovement.setStateIndex(0); // JIC if needed
                                     agentMovement.setActionIndex(0);
                                     agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
+                                    // faculties.
+                                    if (agentMovement.getAgentToInquire() != null) {
+                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
+                                    }
                                     agentMovement.resetGoal();
                                 }
                             }
                             else {
-                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                                    agentMovement.setActionIndex(0); // JIC needed
-                                    if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    }
-                                    // Set faculty's canUrgent to true. Expecting that the director is done inquiring to all
-                                    // faculties.
-                                    if (agentMovement.getAgentToInquire() != null) {
-                                        agentMovement.getAgentToInquire().getAgentMovement().getRoutePlan().setCanUrgent(true);
-                                    }
-                                    agentMovement.resetGoal();
-                                }
-                                if (agentMovement.getCurrentState().getActions().isEmpty()) {
-                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-                                    agentMovement.setStateIndex(0); // JIC if needed
-                                    agentMovement.setActionIndex(0);
-                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                                    agentMovement.resetGoal();
-                                }
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0);
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
                             }
                         }
                     }

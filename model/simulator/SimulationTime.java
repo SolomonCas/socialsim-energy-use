@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimulationTime {
 
-    private static final int DEFAULT_SLEEP_TIME_IN_MILLISECONDS = 1000;
+    private static final int DEFAULT_SLEEP_TIME_IN_MILLISECONDS = 5000;
     public static final AtomicInteger SLEEP_TIME_MILLISECONDS = new AtomicInteger(DEFAULT_SLEEP_TIME_IN_MILLISECONDS);
     private final LocalTime startTime;
     private LocalTime time;
