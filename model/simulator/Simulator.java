@@ -557,10 +557,9 @@ public class Simulator {
 
                 // Agents leave on their scheduled timeOut
                 if (time.getTime().isAfter(agent.getTimeOut()) && !agent.getAgentMovement().getRoutePlan().isLeaving()) {
-
+                    agent.getAgentMovement().getRoutePlan().setLeaving(true);
                     int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.GOING_HOME);
                     if(index != -1) {
-                        agent.getAgentMovement().getRoutePlan().setLeaving(true);
                         agent.getAgentMovement().setCurrentState(index);
                         agent.getAgentMovement().setStateIndex(index);
                         agent.getAgentMovement().setActionIndex(0);
@@ -1096,6 +1095,16 @@ public class Simulator {
                     agentMovement.chooseFridgeQueue();
                 } else if (state.getName() == State.Name.COFFEE) {
                     agentMovement.chooseCoffeeQueue();
+                }
+                else {
+                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                    agentMovement.setStateIndex(0); // JIC if needed
+                    agentMovement.setActionIndex(0); // JIC if needed
+                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                    agentMovement.getRoutePlan().setAtDesk(false);
+                    agentMovement.resetGoal();
                 }
             }
             else if (agentMovement.chooseNextPatchInPath()) {
