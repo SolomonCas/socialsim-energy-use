@@ -326,7 +326,7 @@ public class Environment extends BaseObject implements Serializable {
 
                 double CHANCE = Simulator.roll();
                 // Using the Shuttle for TimeIn
-                if (CHANCE < 0.8) {
+                if (CHANCE < 0.2) {
                     boolean shuttleTimeout = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
                     if (shuttleTimeout) {
                         for (int i = 0; i < studentsInThisTeam; i++) {

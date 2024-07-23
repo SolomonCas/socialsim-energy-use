@@ -485,7 +485,6 @@ public class RoutePlan {
                 officeState = new State(State.Name.REFRIGERATOR, this, agent, actions);
             }
             case "FIX_THERMAL_COMFORT" -> {
-                // TODO: MAINTENANCE THERMAL COMFORT
                 actions = new ArrayList<>();
                 if  (!agent.getAgentMovement().getAirconToChange().isTurnedOn())
                     actions.add(new Action(Action.Name.TURN_ON_AC));

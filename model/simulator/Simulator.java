@@ -1159,7 +1159,17 @@ public class Simulator {
                 }
             }
             else {
-                if (agentMovement.isFirstInLine() && !agentMovement.getGoalAttractor().getIsReserved()) {
+                if (agentMovement.getGoalQueueingPatchField() == null) {
+                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                    agentMovement.setStateIndex(0); // JIC if needed
+                    agentMovement.setActionIndex(0); // JIC if needed
+                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                    agentMovement.getRoutePlan().setAtDesk(false);
+                    agentMovement.resetGoal();
+                }
+                else if (agentMovement.isFirstInLine() && !agentMovement.getGoalAttractor().getIsReserved()) {
                     agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
                     agentMovement.setActionIndex(0); // JIC needed
                     if(!agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -1168,7 +1178,6 @@ public class Simulator {
                         agentMovement.leaveQueue();
                     }
                     agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-
                 }
             }
         }
