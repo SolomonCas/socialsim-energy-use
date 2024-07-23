@@ -417,10 +417,10 @@ public class Environment extends BaseObject implements Serializable {
             this.getAgents().add(agent);
         }
 
-        for (int i = 0; i < 1; i++) {
-            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(7,30, i), LocalTime.of(11,0), Agent.energyProfilePicker(green, nonGreen, neutral));
-            this.getAgents().add(agent);
-        }
+//        for (int i = 0; i < 1; i++) {
+//            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(7,30, i), LocalTime.of(11,0), Agent.energyProfilePicker(green, nonGreen, neutral));
+//            this.getAgents().add(agent);
+//        }
 
         for (int i = 0; i < 1; i++) {
             LocalTime randomizeTimeIn = LocalTime.of(7,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 16));
@@ -557,24 +557,24 @@ public class Environment extends BaseObject implements Serializable {
 
                     case MAINTENANCE -> {
                         switch (persona2){
-                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case STRICT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case APP_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case INT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case EXT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1,2,3)));
-                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3)));
+                            case STRICT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 5)));
+                            case APP_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 5)));
+                            case INT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case EXT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 4)));
+                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(5)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(6)));
                         }
                     }
 
                     case GUARD -> {
                         switch (persona2){
-                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case STRICT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case APP_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case INT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case EXT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
+                            case STRICT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 5)));
+                            case APP_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6)));
+                            case INT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 3)));
+                            case EXT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 3)));
+                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6)));
                             case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1,2,3)));
                         }
                     }
