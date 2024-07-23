@@ -918,6 +918,11 @@ public class Simulator {
                                     agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                                     agentMovement.resetGoal();
                                 }
+                                else{
+                                    // Use destination in route plan
+                                    agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                    agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                                }
                             }
                         }
                         else {
@@ -956,6 +961,11 @@ public class Simulator {
                                     agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                                     agentMovement.resetGoal();
                                 }
+                                else{
+                                    // Use destination in route plan
+                                    agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                                    agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
+                                }
                             }
                         }
                         else {
@@ -979,6 +989,11 @@ public class Simulator {
                         agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                         agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                         agentMovement.resetGoal();
+                    }
+                    else{
+                        // Use destination in route plan
+                        agentMovement.setGoalAmenity(agentMovement.getCurrentAction().getDestination().getAmenityBlock().getParent());
+                        agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
                     }
                 }
                 else{
@@ -1250,6 +1265,16 @@ public class Simulator {
                             agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                             agentMovement.resetGoal();
                         }
+                        else {
+                            agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex());
+                            agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("BATHROOM", agent, environmentInstance));
+                            agentMovement.setCurrentState(0);
+                            agentMovement.setStateIndex(0);
+                            agentMovement.setActionIndex(0);
+                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                            agentMovement.resetGoal();
+                        }
                     }
                     else {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex());
@@ -1295,6 +1320,16 @@ public class Simulator {
                                         agentMovement.setActionIndex(0);
                                         agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                                         agentMovement.resetGoal();
+                                    }
+                                    else {
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
                                     }
                                 }
                                 else {
@@ -1381,6 +1416,16 @@ public class Simulator {
                                         agentMovement.setActionIndex(0);
                                         agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                                         agentMovement.resetGoal();
+                                    }
+                                    else {
+                                        agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                        agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                        agentMovement.setStateIndex(0); // JIC if needed
+                                        agentMovement.setActionIndex(0); // JIC if needed
+                                        agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                        agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                        agentMovement.resetGoal();
+                                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
                                     }
                                 }
                                 else {
@@ -1509,16 +1554,26 @@ public class Simulator {
                             agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                             agentMovement.resetGoal();
                         }
+                        else {
+                            agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                            agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                            agentMovement.setStateIndex(0); // JIC if needed
+                            agentMovement.setActionIndex(0); // JIC if needed
+                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                            agentMovement.resetGoal();
+                            agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                        }
                     }
                     else {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("REFRIGERATOR", agent, environmentInstance));
                         agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                         agentMovement.setStateIndex(0); // JIC if needed
                         agentMovement.setActionIndex(0); // JIC if needed
                         agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                         agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                         agentMovement.resetGoal();
+                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
                     }
 
                 }
@@ -1555,6 +1610,16 @@ public class Simulator {
                                 agentMovement.setActionIndex(0);
                                 agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                                 agentMovement.resetGoal();
+                            }
+                            else {
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
                             }
                         }
                         else {
@@ -1586,16 +1651,26 @@ public class Simulator {
                             agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                             agentMovement.resetGoal();
                         }
+                        else {
+                            agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                            agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                            agentMovement.setStateIndex(0); // JIC if needed
+                            agentMovement.setActionIndex(0); // JIC if needed
+                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                            agentMovement.resetGoal();
+                            agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                        }
                     }
                     else {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("COFFEE", agent, environmentInstance));
                         agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                         agentMovement.setStateIndex(0); // JIC if needed
                         agentMovement.setActionIndex(0); // JIC if needed
                         agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
                         agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                         agentMovement.resetGoal();
+                        agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
                     }
 
                 }
@@ -1633,6 +1708,17 @@ public class Simulator {
                                 agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                                 agentMovement.resetGoal();
                             }
+                            else {
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false); // JIC if needed
+                            }
+
                         }
                         else {
                             agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
@@ -1663,10 +1749,18 @@ public class Simulator {
                             agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                             agentMovement.resetGoal();
                         }
+                        else {
+                            agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                            agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                            agentMovement.setStateIndex(0); // JIC if needed
+                            agentMovement.setActionIndex(0); // JIC if needed
+                            agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                            agentMovement.resetGoal();
+                        }
                     }
                     else {
                         agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-                        agentMovement.getRoutePlan().getCurrentRoutePlan().add(0, agentMovement.getRoutePlan().addUrgentRoute("DISPENSER", agent, environmentInstance));
                         agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
                         agentMovement.setStateIndex(0); // JIC if needed
                         agentMovement.setActionIndex(0); // JIC if needed
@@ -1709,6 +1803,15 @@ public class Simulator {
                                 agentMovement.setStateIndex(index);
                                 agentMovement.setActionIndex(0);
                                 agentMovement.setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                                agentMovement.resetGoal();
+                            }
+                            else {
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                agentMovement.setStateIndex(0); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                                 agentMovement.resetGoal();
                             }
                         }
@@ -1765,9 +1868,6 @@ public class Simulator {
                                         agent1.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
                                         agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
                                         agent1.getAgentMovement().resetGoal();
-                                    }
-                                    else {
-                                        // System.out.println(type + " does not have EATING_LUNCH in their Route Plan or done eating");
                                     }
                                 }
                             }
