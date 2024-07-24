@@ -63,7 +63,7 @@ public class Agent extends PatchObject {
             this.persona = Persona.DIRECTOR;
             this.personaActionGroup = PersonaActionGroup.DIRECTOR;
             this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
-            this.energyProfile = energyProfile;
+            this.energyProfile = EnergyProfile.GREEN;
         }
 
 
