@@ -3,8 +3,10 @@ package com.socialsim.model.simulator;
 import java.io.PrintWriter;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -30,6 +32,7 @@ public class Simulator {
     private final AtomicBoolean running;
     private final SimulationTime time;
     private final Semaphore playSemaphore;
+
 
     // Maximum Time of the simulation
     // Developer Note: The model won't stop on this tick.
@@ -4920,6 +4923,7 @@ public class Simulator {
         agent.getAgentGraphic().change();
     }
 
+    Set<Monitor> countedMonitors = new HashSet<>();
     public void runWattageCount(long currentTick){
         // System.out.println("CURRENT TICK: "+currentTick);
         //PUT RANDOM TIMES OF FLUCTUATION
@@ -4978,6 +4982,10 @@ public class Simulator {
             for (Monitor monitor : cubicle.getMonitors()) {
                 if (monitor.isOn()) {
                     activeMonitorCount++;
+                    if(!countedMonitors.contains(monitor)){
+                        totalMonitorInteractionCount++;
+                    }
+                    countedMonitors.add(monitor);
                 }
             }
         }
@@ -4986,6 +4994,10 @@ public class Simulator {
             for (Monitor monitor : directorTable.getMonitors()) {
                 if (monitor.isOn()) {
                     activeMonitorCount++;
+                    if(!countedMonitors.contains(monitor)){
+                        totalMonitorInteractionCount++;
+                    }
+                    countedMonitors.add(monitor);
                 }
             }
         }
@@ -4994,12 +5006,16 @@ public class Simulator {
             for (Monitor monitor : researchTable.getMonitors()) {
                 if (monitor.isOn()) {
                     activeMonitorCount++;
+                    if(!countedMonitors.contains(monitor)){
+                        totalMonitorInteractionCount++;
+                    }
+                    countedMonitors.add(monitor);
                 }
             }
         }
 
         currentMonitorCount = activeMonitorCount;
-        totalMonitorInteractionCount = activeMonitorCount;
+
         // System.out.println("Number of Monitor: " + activeMonitorCount);
 
         //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
