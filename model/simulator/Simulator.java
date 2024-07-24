@@ -150,13 +150,13 @@ public class Simulator {
     public static int currentGuardGuardCount = 0;
     
     // AGENT CHANCES
-    public static double greenChance = 0.8;
+    public static double greenChance = 0.1;
     public static double nonGreenChance = 0.1;
-    public static double neutralChance = 0.1;
+    public static double neutralChance = 0.8;
 
-    public static int studentNum = 44;
-    public static int facultyNum = 3;
-    public static int teamNum = 10;
+    public static int studentNum = 6;
+    public static int facultyNum = 1;
+    public static int teamNum = 1;
     /** COMPILED **/
 
     // Current Agent Count Per Type
@@ -549,10 +549,21 @@ public class Simulator {
                     agent.getAgentMovement().setCurrentState(0);
                     agent.getAgentMovement().setStateIndex(0);
                     agent.getAgentMovement().setActionIndex(0);
-                    agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
-                    agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration()); // setting the new duration of the action
-                    agent.getAgentMovement().resetGoal();
-                    agent.getAgentMovement().getRoutePlan().setAtDesk(false); // JIC needed
+                    if (!agent.getAgentMovement().getCurrentState().getActions().isEmpty()) {
+                        agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                        agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration()); // setting the new duration of the action
+                        agent.getAgentMovement().resetGoal();
+                        agent.getAgentMovement().getRoutePlan().setAtDesk(false); // JIC needed
+                    }
+                    else {
+                        agent.getAgentMovement().setCurrentState(0);
+                        agent.getAgentMovement().setStateIndex(0);
+                        agent.getAgentMovement().setActionIndex(0);
+                        agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                        agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration());
+                        agent.getAgentMovement().resetGoal();
+                        agent.getAgentMovement().getRoutePlan().setAtDesk(false);
+                    }
                 }
 
                 // Agents leave on their scheduled timeOut
