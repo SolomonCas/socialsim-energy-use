@@ -106,6 +106,7 @@ public class ScreenController extends Controller {
     @FXML private Label currentFridgeInteractionCount;
     @FXML private Label currentWaterDispenserInteractionCount;
     @FXML private Label currentMonitorCount;
+    @FXML private Label totalMonitorInteractionCount;
     @FXML private Label currentCoffeeMakerCount;
 
     //AIRCON and LIGHT SWITCH INTERACTIONS
@@ -248,6 +249,7 @@ public class ScreenController extends Controller {
         currentAirconCount.setText(String.valueOf(Simulator.currentAirconCount));
         currentLightCount.setText(String.valueOf(Simulator.currentLightCount));
         currentMonitorCount.setText(String.valueOf(Simulator.currentMonitorCount));
+        totalMonitorInteractionCount.setText(String.valueOf(Simulator.totalMonitorInteractionCount));
 
         currentCoffeeMakerCount.setText(String.valueOf(Simulator.currentCoffeeMakerCount));
 
@@ -4105,6 +4107,7 @@ public class ScreenController extends Controller {
         currentAirconCount.setText(String.valueOf(Simulator.currentAirconCount));
         currentLightCount.setText(String.valueOf(Simulator.currentLightCount));
         currentMonitorCount.setText(String.valueOf(Simulator.currentMonitorCount));
+        totalMonitorInteractionCount.setText(String.valueOf(Simulator.totalMonitorInteractionCount));
         currentCoffeeMakerCount.setText(String.valueOf(Simulator.currentCoffeeMakerCount));
 
         currentAirconTurnOnCount.setText(String.valueOf(Simulator.currentAirconTurnOnCount));

@@ -39,7 +39,13 @@ public class Simulator {
 
     // Change
     static {
-        RANDOM_NUMBER_GENERATOR = new Random(12345L);
+        long seed =
+//                12345L;
+                67890L;
+//         11121L;
+//         22232L;
+//         33343L;
+        RANDOM_NUMBER_GENERATOR = new Random(seed);
     }
     public static double roll(){
         return RANDOM_NUMBER_GENERATOR.nextDouble();
@@ -74,6 +80,7 @@ public class Simulator {
     public static int currentAirconCount = 0;
     public static int currentLightCount = 0;
     public static int currentMonitorCount = 0;
+    public static int totalMonitorInteractionCount = 0;
 
     public static int currentCoffeeMakerCount = 0;
 
@@ -145,19 +152,19 @@ public class Simulator {
     // Current Maintenance to ____ Interaction Count
     public static int currentMaintenanceMaintenanceCount = 0;
     public static int currentMaintenanceGuardCount = 0;
-    
+
 
     // Current Guard to Guard Interaction Count
     public static int currentGuardGuardCount = 0;
-    
-    // AGENT CHANCES
-    public static double greenChance = 0.33;
-    public static double nonGreenChance = 0.33;
-    public static double neutralChance = 0.34;
 
-    public static int studentNum = 6;
-    public static int facultyNum = 1;
-    public static int teamNum = 1;
+    // AGENT CHANCES
+    public static double greenChance = 0.1;
+    public static double nonGreenChance = 0.8;
+    public static double neutralChance = 0.1;
+
+    public static int studentNum = 44;//6;
+    public static int facultyNum = 3;//1;
+    public static int teamNum = 10;//1;
     /** COMPILED **/
 
     // Current Agent Count Per Type
@@ -176,6 +183,7 @@ public class Simulator {
     public static int[] compiledCurrentAirconCount;
     public static int[] compiledCurrentLightCount;
     public static int[] compiledCurrentMonitorCount;
+    public static int[] compiledTotalMonitorInteractionCount;
 
 
     public static int[] compiledCurrentAirconTurnOnCount;
@@ -237,7 +245,7 @@ public class Simulator {
 
 
 
-    
+
 
     /***** CONSTRUCTOR ******/
     public Simulator() {
@@ -248,9 +256,9 @@ public class Simulator {
         this.start();
     }
 
-    
-    
-    
+
+
+
 
 
     /***** METHODS ******/
@@ -305,7 +313,7 @@ public class Simulator {
     public void reset() {
         this.time.reset();
     }
-    
+
     /** Environment **/
 
 
@@ -398,7 +406,7 @@ public class Simulator {
     }
 
     public static void updateEnvironment (Environment environment, long currentTick, SimulationTime time) {
-         System.out.println("CURRENT TICK: "+currentTick);
+        System.out.println("CURRENT TICK: "+currentTick);
         // System.out.println("Number of used amenities: " + environment.getUsedAmenities().size());
         // Change to night
         if (time.getTime().isAfter(LocalTime.of(16,30))) {
@@ -431,6 +439,7 @@ public class Simulator {
         compiledCurrentAirconCount[(int) currentTick] = currentAirconCount;
         compiledCurrentLightCount[(int) currentTick] = currentLightCount;
         compiledCurrentMonitorCount[(int) currentTick] = currentMonitorCount;
+        compiledTotalMonitorInteractionCount[(int) currentTick] = totalMonitorInteractionCount;
 
         compiledCurrentAirconTurnOnCount[(int) currentTick] = currentAirconTurnOnCount;
         compiledCurrentAirconTurnOffCount[(int) currentTick] = currentAirconTurnOffCount;
@@ -658,7 +667,7 @@ public class Simulator {
     }
 
     private static void doCommonAction(AgentMovement agentMovement, State state, Action action, Agent agent, Agent.Type type,
-                          Agent.Persona persona, Environment environmentInstance, long currentTick, SimulationTime time) {
+                                       Agent.Persona persona, Environment environmentInstance, long currentTick, SimulationTime time) {
         boolean isFull = false;
         // is this where isAtDesk is set to true
         // Mainly used by Director, Faculty, and Student agents
@@ -1140,12 +1149,12 @@ public class Simulator {
 //                }
 //            }
 //            else {
-                agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
-                agentMovement.setActionIndex(0); // JIC needed
-                if(!agentMovement.getCurrentState().getActions().isEmpty()) {
-                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-                }
-                agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+            agentMovement.getCurrentState().getActions().remove(agentMovement.getActionIndex()); // removing finished action
+            agentMovement.setActionIndex(0); // JIC needed
+            if(!agentMovement.getCurrentState().getActions().isEmpty()) {
+                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+            }
+            agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
 //            }
         }
 
@@ -2544,7 +2553,7 @@ public class Simulator {
             }
         }
         else {
-             System.out.println(type + " does not have that action");
+            System.out.println(type + " does not have that action");
         }
     }
 
@@ -2557,9 +2566,9 @@ public class Simulator {
         Action action = agentMovement.getCurrentAction();
         Environment environmentInstance = agentMovement.getEnvironment();
 
-         System.out.println("Type: " + type + " Persona: " + persona + " State: " + state.getName() + " Action: " + action.getName());
-         System.out.println("Team: " + agent.getTeam());
-         System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
+        System.out.println("Type: " + type + " Persona: " + persona + " State: " + state.getName() + " Action: " + action.getName());
+        System.out.println("Team: " + agent.getTeam());
+        System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
         boolean isFull = false;
 
         if (!agentMovement.isInteracting() || agentMovement.isSimultaneousInteractionAllowed()) {
@@ -3034,7 +3043,7 @@ public class Simulator {
                                 }
 
                                 if (agentMovement.getAirconToChange() == null) {
-                                     System.out.println("WEIRD THERE SHOULD BE AIRCON");
+                                    System.out.println("WEIRD THERE SHOULD BE AIRCON");
                                     isFull = true;
                                     if (agentMovement.getAirconToChange() != null) {
                                         agentMovement.setAirconToChange(null);
@@ -3082,10 +3091,10 @@ public class Simulator {
                                         }
                                     }
 
-                                     System.out.println("closeAgentCount: " + closeAgentCount);
+                                    System.out.println("closeAgentCount: " + closeAgentCount);
 
                                     if (closeAgentCount != 0) {
-                                         System.out.println("THERE IS AGENT");
+                                        System.out.println("THERE IS AGENT");
                                         isFull = true;
                                         if (agentMovement.getAirconToChange() != null) {
                                             agentMovement.setAirconToChange(null);
@@ -3119,7 +3128,7 @@ public class Simulator {
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
                                         else {
-                                             System.out.println("IG NO AIRCON");
+                                            System.out.println("IG NO AIRCON");
                                             isFull = true;
                                             if (agentMovement.getAirconToChange() != null) {
                                                 agentMovement.setAirconToChange(null);
@@ -3784,7 +3793,7 @@ public class Simulator {
                                 }
 
                                 if (agentMovement.getAirconToChange() == null) {
-                                     System.out.println("WEIRD THERE SHOULD BE AIRCON");
+                                    System.out.println("WEIRD THERE SHOULD BE AIRCON");
                                     isFull = true;
                                     if (agentMovement.getAirconToChange() != null) {
                                         agentMovement.setAirconToChange(null);
@@ -3835,7 +3844,7 @@ public class Simulator {
                                     System.out.println("closeAgentCount: " + closeAgentCount);
 
                                     if (closeAgentCount != 0) {
-                                         System.out.println("THERE IS AGENT");
+                                        System.out.println("THERE IS AGENT");
                                         isFull = true;
                                         if (agentMovement.getAirconToChange() != null) {
                                             agentMovement.setAirconToChange(null);
@@ -3868,7 +3877,7 @@ public class Simulator {
                                             agentMovement.getRoutePlan().setAtDesk(false);
                                         }
                                         else {
-                                             System.out.println("IG NO AIRCON");
+                                            System.out.println("IG NO AIRCON");
                                             isFull = true;
                                             if (agentMovement.getAirconToChange() != null) {
                                                 agentMovement.setAirconToChange(null);
@@ -4237,7 +4246,7 @@ public class Simulator {
 
                                 }
                                 else if (agentMovement.getCurrentState().getName() == State.Name.GOING_TO_EAT_OUTSIDE ||
-                                            agentMovement.getCurrentState().getName() == State.Name.GOING_HOME || agentMovement.getDuration() > -1) {
+                                        agentMovement.getCurrentState().getName() == State.Name.GOING_HOME || agentMovement.getDuration() > -1) {
 
                                     agentMovement.getRoutePlan().setAtDesk(true); // signalling that the agent is in his/her desk
 
@@ -4446,12 +4455,12 @@ public class Simulator {
                                     agentMovement.setGoalAttractor(agentMovement.getGoalAmenity().getAttractors().getFirst());
 
                                     for (Agent agent1 : environmentInstance.getMovableAgents()) {
-                                         if (agent1 != agent && agent1.getAgentMovement().getAssignedSeat() != null &&
-                                                 agentMovement.getGoalAttractor().getPatch().equals(agent1.getAgentMovement().getAssignedSeat().getAttractors().getFirst().getPatch())) {
+                                        if (agent1 != agent && agent1.getAgentMovement().getAssignedSeat() != null &&
+                                                agentMovement.getGoalAttractor().getPatch().equals(agent1.getAgentMovement().getAssignedSeat().getAttractors().getFirst().getPatch())) {
 //                                             // System.out.println("SEEN AGENT");
-                                             agentMovement.setAgentToInquire(agent1);
-                                             break;
-                                         }
+                                            agentMovement.setAgentToInquire(agent1);
+                                            break;
+                                        }
                                     }
                                 }
                                 else if (currentFacultyCount <= 0) { // no faculty
@@ -4990,6 +4999,7 @@ public class Simulator {
         }
 
         currentMonitorCount = activeMonitorCount;
+        totalMonitorInteractionCount = activeMonitorCount;
         // System.out.println("Number of Monitor: " + activeMonitorCount);
 
         //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
@@ -5120,6 +5130,7 @@ public class Simulator {
         currentAirconCount = 0;
         currentLightCount = 0;
         currentMonitorCount = 0;
+        totalMonitorInteractionCount = 0;
 
         currentAirconTurnOnCount = 0;
         currentAirconTurnOffCount = 0;
@@ -5183,6 +5194,7 @@ public class Simulator {
         compiledCurrentAirconCount = new int[MAX_CURRENT_TICKS];
         compiledCurrentLightCount = new int[MAX_CURRENT_TICKS];
         compiledCurrentMonitorCount = new int[MAX_CURRENT_TICKS];
+        compiledTotalMonitorInteractionCount = new int[MAX_CURRENT_TICKS];
 
         compiledCurrentAirconTurnOnCount = new int[MAX_CURRENT_TICKS];
         compiledCurrentAirconTurnOffCount = new int[MAX_CURRENT_TICKS];
@@ -5265,6 +5277,8 @@ public class Simulator {
         sb.append(",");
         sb.append("Current Monitor Count");
         sb.append(",");
+        sb.append("Total Monitor Interaction Count");
+        sb.append(",");
         sb.append("Current Aircon Turn On Count");
         sb.append(",");
         sb.append("Current Aircon Turn Off Count");
@@ -5333,6 +5347,8 @@ public class Simulator {
             sb.append(compiledCurrentLightCount[i]);
             sb.append(",");
             sb.append(compiledCurrentMonitorCount[i]);
+            sb.append(",");
+            sb.append(compiledTotalMonitorInteractionCount[i]);
             sb.append(",");
             sb.append(compiledCurrentAirconTurnOnCount[i]);
             sb.append(",");

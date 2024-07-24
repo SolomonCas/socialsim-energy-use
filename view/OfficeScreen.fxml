@@ -268,6 +268,12 @@
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                         <children>
+                                            <Label style="-fx-font-size: 10px;" prefHeight="26.0" prefWidth="150.0" text="Total Monitor Interaction Count" />
+                                            <Label fx:id="totalMonitorInteractionCount" alignment="CENTER_RIGHT" layoutX="167.0" prefHeight="26.0" prefWidth="50.0" />
+                                        </children>
+                                    </AnchorPane>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                        <children>
                                             <Label style="-fx-font-size: 10px;" prefHeight="26.0" prefWidth="150.0" text="Current Coffee Maker Interaction Count" />
                                             <Label fx:id="currentCoffeeMakerCount" alignment="CENTER_RIGHT" layoutX="167.0" prefHeight="26.0" prefWidth="50.0" />
                                         </children>
