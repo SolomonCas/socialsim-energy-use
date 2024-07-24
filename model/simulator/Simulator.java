@@ -39,16 +39,10 @@ public class Simulator {
     private final static int MAX_CURRENT_TICKS = 17280;
 
     public static final Random RANDOM_NUMBER_GENERATOR;
-
     // Change
     static {
-        long seed =
-//                12345L;
-                67890L;
-//         11121L;
-//         22232L;
-//         33343L;
-        RANDOM_NUMBER_GENERATOR = new Random(seed);
+        //12345L; 67890L; //11121L; //22232L; //33343L;
+        RANDOM_NUMBER_GENERATOR = new Random(67890L);
     }
     public static double roll(){
         return RANDOM_NUMBER_GENERATOR.nextDouble();
@@ -633,9 +627,6 @@ public class Simulator {
                         " Action: " + agent.getAgentMovement().getCurrentAction().getName());
                 System.out.println("Team: " + agent.getTeam());
                 System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
-                if (agent.getAgentMovement().getCurrentState().getActions().isEmpty()) {
-                    agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().remove(agent.getAgentMovement().getStateIndex()); // removing finished state
-                }
                 if (time.getTime().isAfter(agent.getTimeOut()) || (Agent.Type.STUDENT == agent.getType() && time.getTime().equals(LocalTime.of(19,0))) ||
                         (Agent.Type.MAINTENANCE == agent.getType() && time.getTime().equals(LocalTime.of(20,0))) ||
                         (Agent.Type.FACULTY == agent.getType() && time.getTime().equals(LocalTime.of(22,0))) ||
@@ -654,16 +645,14 @@ public class Simulator {
 
                 }
                 else {
-                    int index = agent.getAgentMovement().getRoutePlan().findIndexState(State.Name.WORKING);
-                    if(index != -1) {
-                        agent.getAgentMovement().setCurrentState(index);
-                        agent.getAgentMovement().setStateIndex(index);
-                        agent.getAgentMovement().setActionIndex(0);
-                        agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
-                        agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration());
-                        agent.getAgentMovement().resetGoal();
-                        agent.getAgentMovement().getRoutePlan().setAtDesk(false);
-                    }
+                    agent.getAgentMovement().getRoutePlan().getCurrentRoutePlan().remove(agent.getAgentMovement().getStateIndex()); // removing finished state
+                    agent.getAgentMovement().setCurrentState(0);
+                    agent.getAgentMovement().setStateIndex(0);
+                    agent.getAgentMovement().setActionIndex(0);
+                    agent.getAgentMovement().setCurrentAction(agent.getAgentMovement().getCurrentState().getActions().get(agent.getAgentMovement().getActionIndex()));
+                    agent.getAgentMovement().setDuration(agent.getAgentMovement().getCurrentAction().getDuration());
+                    agent.getAgentMovement().resetGoal();
+                    agent.getAgentMovement().getRoutePlan().setAtDesk(false);
                 }
             }
         }

@@ -408,7 +408,7 @@ public class RoutePlan {
         allAmenities.addAll(environment.getMeetingTables());
         allAmenities.addAll(environment.getSoloTables());
 
-        Collections.shuffle(allAmenities);
+        Collections.shuffle(allAmenities, Simulator.RANDOM_NUMBER_GENERATOR);
 
         int ctr = 0;
         for (Amenity amenity : allAmenities) {
