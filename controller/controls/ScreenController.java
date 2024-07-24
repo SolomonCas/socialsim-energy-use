@@ -4120,7 +4120,7 @@ public class ScreenController extends Controller {
         currentWaterDispenserInteractionCount.setText(String.valueOf(Simulator.currentWaterDispenserInteractionCount));
 
         // WATTAGE
-        totalWattageCountText.setText("Total Watts: " + String.format("%.03f",Simulator.totalWattageCount) + " W");
+        totalWattageCountText.setText("Total Watthours: " + String.format("%.03f",Simulator.totalWattageCount) + " Wh");
 
     }
 
