@@ -2071,8 +2071,6 @@ public class ScreenController extends Controller {
                 // Type C
                 {westCubicleC, 29, 120}, {westCubicleC, 33, 120},
                 {eastCubicleC, 29, 116}, {eastCubicleC, 33, 116},
-                {northCubicleC, 59, 36}, {northCubicleC, 59, 92},
-                {southCubicleC, 59, 45}, {southCubicleC, 59, 83},
         };
 
         for (Object[] range : cubicleRanges) {
@@ -2109,13 +2107,21 @@ public class ScreenController extends Controller {
                 rightLargeHorizontalMeetingTables = new ArrayList<>(), smallVerticalMeetingTables = new ArrayList<>(),
                 // Pantry Tables & Chairs
                 typeApantryTables = new ArrayList<>(), typeBpantryTables = new ArrayList<>(),
-                typeApantryChairs = new ArrayList<>(), typeBpantryChairs = new ArrayList<>();
+                typeApantryChairs = new ArrayList<>(), typeBpantryChairs = new ArrayList<>(),
+                //Solo room Tables and Chairs
+                topSoloTables = new ArrayList<>(), bottomSoloTables = new ArrayList<>();
+
 
         table2x2.add(environment.getPatch(53,124));
         receptionTable.add(environment.getPatch(69,170));
         directorTable.add(environment.getPatch(40,12));
         humanExpTable.add(environment.getPatch(77,5));
         dataCollTable.add(environment.getPatch(91,2));
+        bottomSoloTables.add(environment.getPatch(60,36));
+        topSoloTables.add(environment.getPatch(59, 45));
+        topSoloTables.add(environment.getPatch(60,92));
+        bottomSoloTables.add(environment.getPatch(59,83));
+
 
         // Research Tables
         Object[][] researchTableRanges =  {
@@ -2210,6 +2216,8 @@ public class ScreenController extends Controller {
         DirectorTableMapper.draw(directorTable, "HORIZONTAL", "NORTH", true);
         HumanExpTableMapper.draw(humanExpTable, "5x1");
         DataCollTableMapper.draw(dataCollTable, "1x6");
+        SoloTableMapper.draw(topSoloTables, "1x3", "TOP");
+        SoloTableMapper.draw(bottomSoloTables, "1x3", "BOTTOM");
         // Research Table
         ResearchTableMapper.draw(westResearchTable, "WEST", false);
         ResearchTableMapper.draw(eastResearchTable, "EAST", false);
@@ -2227,6 +2235,7 @@ public class ScreenController extends Controller {
         PantryTableMapper.draw(typeBpantryTables, "TYPE_B");
         ChairMapper.draw(typeApantryChairs, 0, "SOUTH","PANTRY_TYPE_A", "");
         ChairMapper.draw(typeBpantryChairs, 0, "SOUTH","PANTRY_TYPE_B", "");
+
 
 
         /* Layout A: Plants, Trash Cans, Pantry Cabinets, Coffee Maker Bar, Kettle Bar, Microwave Bar, Water Dispenser, Refrigerator, Couch */
@@ -2449,7 +2458,7 @@ public class ScreenController extends Controller {
 
                 // Solo Rooms
                 {westLightSwitches, 60, 35}, {eastLightSwitches, 59, 48},
-                {westLightSwitches, 59, 86}, {eastLightSwitches, 59, 86},
+                {westLightSwitches, 60, 91}, {eastLightSwitches, 59, 86},
 
 
         };

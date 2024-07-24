@@ -57,8 +57,35 @@ public class SoloTableMapper extends AmenityMapper {
                     soloChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 2));
                     ChairMapper.draw(soloChairNorthPatches, index, "SOUTH", "OFFICE", "SoloTable");
                 }
+            } else if (dimensions.equals("1x3")) {
+
+                // THE REST OF THE TABLE'S PATCHES
+                for (int j = 1; j <= 2; j++) {
+                    Patch nextPatch = Main.simulator.getEnvironment().getPatch(origPatchRow, origPatchCol + j);
+                    Amenity.AmenityBlock nextAmenityBlock = amenityBlockFactory.create(nextPatch, false, false);
+                    amenityBlocks.add(nextAmenityBlock);
+                    nextPatch.setAmenityBlock(nextAmenityBlock);
+                }
+
+                if (position.equals("TOP")) {
+                    soloTableToAdd = SoloTable.SoloTableFactory.create(amenityBlocks, true, "1x3", "TOP");
+                    soloTables.add(soloTableToAdd);
+                    index = soloTables.indexOf(soloTableToAdd);
+
+                    // CHAIR
+                    soloChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow + 1, origPatchCol + 1));
+                    ChairMapper.draw(soloChairNorthPatches, index, "NORTH", "OFFICE", "SoloTable");
+                }
+                else if (position.equals("BOTTOM")) {
+                    soloTableToAdd = SoloTable.SoloTableFactory.create(amenityBlocks, true, "1x3", "BOTTOM");
+                    soloTables.add(soloTableToAdd);
+                    index = soloTables.indexOf(soloTableToAdd);
+
+                    // CHAIR
+                    soloChairNorthPatches.add(Main.simulator.getEnvironment().getPatch(origPatchRow - 1, origPatchCol + 1));
+                    ChairMapper.draw(soloChairNorthPatches, index, "SOUTH", "OFFICE", "SoloTable");
+                }
             }
-            
             amenityBlocks.forEach(ab -> ab.getPatch().getEnvironment().getAmenityPatchSet().add(ab.getPatch()));
         }
     }

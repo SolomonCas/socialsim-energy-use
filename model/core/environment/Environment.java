@@ -450,107 +450,107 @@ public class Environment extends BaseObject implements Serializable {
                     case DIRECTOR -> {
                         switch (persona2) {
                             case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case STRICT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case APP_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case INT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
-                            case EXT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
-                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case STRICT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(5)));
+                            case APP_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(5)));
+                            case INT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
+                            case EXT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
+                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
                         }
                     }
                     case STRICT_FACULTY -> {
                         switch (persona2) {
-                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6)));
                             case STRICT_FACULTY -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                             }
                             case APP_FACULTY -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                             }
                             case INT_STUDENT -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4, 5)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4, 5)));
                             }
                             case EXT_STUDENT -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4, 5)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4, 5)));
                             }
-                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4)));
                         }
                     }
                     case APP_FACULTY -> {
                         switch (persona2) {
-                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6)));
                             case STRICT_FACULTY -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                             }
                             case APP_FACULTY -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4, 5)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                             }
                             case INT_STUDENT -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4, 5)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4, 5)));
                             }
                             case EXT_STUDENT -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5, 6)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4, 5)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4, 5)));
                             }
-                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4)));
                         }
                     }
 
                     case INT_STUDENT -> {
                         switch (persona2){
-                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
+                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
                             case STRICT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
                             }
                             case APP_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
                             }
                             case INT_STUDENT -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7)));
                             }
                             case EXT_STUDENT -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 5, 6)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7)));
                             }
-                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
                         }
                     }
 
 
                     case EXT_STUDENT -> {
                         switch (persona2){
-                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4, 5)));
+                            case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
                             case STRICT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
                             }
                             case APP_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
                             }
                             case INT_STUDENT -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 4, 5)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1,2,3,4,5,6,7)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1,2,3,4,5,6,7)));
                             }
                             case EXT_STUDENT -> {
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(4, 5, 6)));
-                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1,2,3,4,5,6,7)));
+                                personaIOS.add(new CopyOnWriteArrayList<>(List.of(1,2,3,4,5,6,7)));
                             }
-                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
+                            case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 4)));
+                            case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
                         }
                     }
 
