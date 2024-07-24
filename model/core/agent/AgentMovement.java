@@ -758,6 +758,7 @@ public class AgentMovement {
             }
 
             if (nearestAirconFound) {
+                this.thermalComfortCoolDown();
                 return false;
             }
 
@@ -765,9 +766,9 @@ public class AgentMovement {
             // for each attractor get the aircon near the agent
             System.out.println("@not side patchfield");
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
-             System.out.println("hello preference: "+ this.parent.getTempPreference() + " hello room temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() + "hello aircon temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp());
 
                 if(((Aircon) distancesToAirconEntry.getKey().getParent()).isTurnedOn()){
+                    System.out.println("hello preference: "+ this.parent.getTempPreference() + " hello room temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() + "hello aircon temp: "+ ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp());
                     //SETS TEMP PREFERENCE RANGE TO COMPROMISE WITH OTHER AGENTS TEMP PREFERENCE
                     boolean withinRange = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) <= 2;
                     boolean withinRangeWithACTemp = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()) <= 2;
@@ -807,7 +808,8 @@ public class AgentMovement {
                             return false;
                         }
                     }
-                    else if (this.parent.getTempPreference() == ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) {
+                    else {
+                        this.thermalComfortCoolDown();
                         return false;
                     }
                 }
