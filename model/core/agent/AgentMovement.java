@@ -1461,7 +1461,7 @@ public class AgentMovement {
             }
             list =
                     new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(amenityAndHeading.entrySet());
-            Collections.shuffle(list);
+            Collections.shuffle(list, Simulator.RANDOM_NUMBER_GENERATOR);
 
             for (Map.Entry<Amenity.AmenityBlock, Double> candidateAttractors: list) {
                 for (Amenity amenity : temp) {
@@ -1561,7 +1561,7 @@ public class AgentMovement {
                 }
                 list =
                         new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(amenityAndHeading.entrySet());
-                Collections.shuffle(list);
+                Collections.shuffle(list, Simulator.RANDOM_NUMBER_GENERATOR);
             }
             else if (this.team > 0){
                 // Get the groupmate that already chosen a seat
@@ -1587,7 +1587,7 @@ public class AgentMovement {
                     }
                     list =
                             new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >(amenityAndHeading.entrySet());
-                    Collections.shuffle(list);
+                    Collections.shuffle(list, Simulator.RANDOM_NUMBER_GENERATOR);
                 }
                 else {
                     for (Chair amenity : temp) {
@@ -1741,7 +1741,7 @@ public class AgentMovement {
                         candidateAgents.add(agent);
                     }
                 }
-                Collections.shuffle(candidateAgents);
+                Collections.shuffle(candidateAgents, Simulator.RANDOM_NUMBER_GENERATOR);
             }
             else if (this.currentState.getName() == State.Name.INQUIRE_FACULTY) {
                 // if agent is a student and is in a team inquire with the faculty handling the team
@@ -1760,7 +1760,7 @@ public class AgentMovement {
                         }
                     }
                 }
-                Collections.shuffle(candidateAgents);
+                Collections.shuffle(candidateAgents, Simulator.RANDOM_NUMBER_GENERATOR);
             }
             else if (this.currentState.getName() == State.Name.INQUIRE_STUDENT) {
                 if (this.parent.getTeam() == 0) {
@@ -1771,7 +1771,7 @@ public class AgentMovement {
                     }
                 }
 
-                Collections.shuffle(candidateAgents);
+                Collections.shuffle(candidateAgents, Simulator.RANDOM_NUMBER_GENERATOR);
             }
             else if (this.currentState.getName() == State.Name.INQUIRE_MAINTENANCE) {
                 for (Agent agent : environment.getMovableAgents()) {
@@ -1779,7 +1779,7 @@ public class AgentMovement {
                         candidateAgents.add(agent);
                     }
                 }
-                Collections.shuffle(candidateAgents);
+                Collections.shuffle(candidateAgents, Simulator.RANDOM_NUMBER_GENERATOR);
             }
 
 

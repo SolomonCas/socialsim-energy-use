@@ -37,8 +37,9 @@ public class Simulator {
 
     public static final Random RANDOM_NUMBER_GENERATOR;
 
+    // Change
     static {
-        RANDOM_NUMBER_GENERATOR = new Random();
+        RANDOM_NUMBER_GENERATOR = new Random(12345L);
     }
     public static double roll(){
         return RANDOM_NUMBER_GENERATOR.nextDouble();
@@ -150,9 +151,9 @@ public class Simulator {
     public static int currentGuardGuardCount = 0;
     
     // AGENT CHANCES
-    public static double greenChance = 0.1;
-    public static double nonGreenChance = 0.1;
-    public static double neutralChance = 0.8;
+    public static double greenChance = 0.33;
+    public static double nonGreenChance = 0.33;
+    public static double neutralChance = 0.34;
 
     public static int studentNum = 6;
     public static int facultyNum = 1;
@@ -5258,9 +5259,19 @@ public class Simulator {
         sb.append(",");
         sb.append("Current Exchange Count");
         sb.append(",");
-        sb.append("Current Aircon Interaction Count");
+        sb.append("Current Aircon Count");
         sb.append(",");
-        sb.append("Current Light Interaction Count");
+        sb.append("Current Light Count");
+        sb.append(",");
+        sb.append("Current Monitor Count");
+        sb.append(",");
+        sb.append("Current Aircon Turn On Count");
+        sb.append(",");
+        sb.append("Current Aircon Turn Off Count");
+        sb.append(",");
+        sb.append("Current Light Turn On Count");
+        sb.append(",");
+        sb.append("Current Light Turn Off Count");
         sb.append(",");
         sb.append("Current Fridge Interaction Count");
         sb.append(",");
@@ -5271,14 +5282,6 @@ public class Simulator {
         sb.append("Average Cooperative Duration");
         sb.append(",");
         sb.append("Average Exchange Duration");
-        sb.append(",");
-        sb.append("Current Team 1 Count");
-        sb.append(",");
-        sb.append("Current Team 2 Count");
-        sb.append(",");
-        sb.append("Current Team 3 Count");
-        sb.append(",");
-        sb.append("Current Team 4 Count");
         sb.append(",");
         sb.append("Current Director Faculty Count");
         sb.append(",");
@@ -5306,7 +5309,7 @@ public class Simulator {
         sb.append(",");
         sb.append("Current Maintenance Guard Count");
         sb.append(",");
-        sb.append("Current Guard Guard Count");;
+        sb.append("Current Guard Guard Count");
         sb.append("\n");
         for (int i = 0; i < MAX_CURRENT_TICKS; i++){
             sb.append(compiledCurrentDirectorCount[i]);
