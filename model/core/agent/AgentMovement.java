@@ -742,7 +742,7 @@ public class AgentMovement {
                                 return false;
                             }
                         }
-                        else if (this.parent.getTempPreference() == ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) {
+                        else {
                             return false;
                         }
                     }
@@ -752,14 +752,7 @@ public class AgentMovement {
                         isToHeat = false;
                         return true;
                     }
-                    nearestAirconFound = true;
-                    break;
                 }
-            }
-
-            if (nearestAirconFound) {
-                this.thermalComfortCoolDown();
-                return false;
             }
 
             //if not in same field, find the closest to the agent within the aircon cooling range and do the thermal comfort logic
