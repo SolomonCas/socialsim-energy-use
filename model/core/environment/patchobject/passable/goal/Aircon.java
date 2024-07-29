@@ -22,7 +22,7 @@ public class Aircon extends Goal {
     private boolean isInActiveCycle;
     private boolean isTurnedOn;
     private int coolingRange;
-
+    private boolean isCoolingStarted;
     static {
         airconFactory = new AirconFactory();
     }
@@ -38,6 +38,7 @@ public class Aircon extends Goal {
         this.airconTemp = 26;
         this.coolingTimeInTicks = 0;
         this.coolingRange = 25;
+        this.isCoolingStarted = false;
 
         this.airconGraphic = new AirconGraphic(this, isTurnedOn);
     }
@@ -71,6 +72,10 @@ public class Aircon extends Goal {
         return coolingRange;
     }
 
+    public boolean isCoolingStarted() {
+        return isCoolingStarted;
+    }
+
     /***** SETTER *****/
     public void setOn(boolean on) {
         isTurnedOn = on;
@@ -96,6 +101,9 @@ public class Aircon extends Goal {
         this.coolingRange = coolingRange;
     }
 
+    public void setCoolingStarted(boolean coolingStarted) {
+        isCoolingStarted = coolingStarted;
+    }
     /***** OVERRIDE *****/
     @Override
     public String toString() {
@@ -111,6 +119,8 @@ public class Aircon extends Goal {
     public AmenityGraphicLocation getGraphicLocation() {
         return this.airconGraphic.getGraphicLocation();
     }
+
+
 
     /***** INNER STATIC CLASS *****/
     public static class AirconBlock extends AmenityBlock {
