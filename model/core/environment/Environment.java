@@ -1191,7 +1191,7 @@ public class Environment extends BaseObject implements Serializable {
                     }
                 }
             } else if (aircon.getAirconTemp() == aircon.getRoomTemp() && aircon.isTurnedOn()) {
-                if (CHANCE < 0.1) {
+                if (CHANCE < 0.1 && (aircon.getAirconTemp() + 1) <= 27) {
                     aircon.setRoomTemp(aircon.getRoomTemp() + Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 2));
                 }
                 aircon.setInActiveCycle(false);
