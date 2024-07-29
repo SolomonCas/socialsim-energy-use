@@ -33,8 +33,9 @@ public class Aircon extends Goal {
         this.isTurnedOn = isTurnedOn;
         this.isInActiveCycle = false;
 
-        this.roomTemp = 19;
-        this.airconTemp = 25;
+        /***** TODO: Revert back to Original when done testing *****/
+        this.roomTemp = 25;
+        this.airconTemp = 26;
         this.coolingTimeInTicks = 0;
         this.coolingRange = 25;
 

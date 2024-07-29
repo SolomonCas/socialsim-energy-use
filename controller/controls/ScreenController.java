@@ -797,7 +797,9 @@ public class ScreenController extends Controller {
                 {16, 23, 55},
 
                 // Learning Spaces
-                {22, 23, 56}, {43, 23, 56}, {64, 23, 56}, {85, 23, 56}, {106, 23, 56},
+                {22, 23, 56},
+//                {43, 23, 56}, {64, 23, 56},
+                {85, 23, 56}, {106, 23, 56},
 
                 // Solo Rooms
                 {38, 68, 75}, {47, 68, 75}, {56, 68, 75}, {84, 68, 75}, {93, 68, 75}, {102, 68, 75},
@@ -1541,7 +1543,10 @@ public class ScreenController extends Controller {
         for (Object[] range : airconRanges) {
             int row = (int) range[0];
             int column = (int) range[1];
-            if (row != 93 && column != 9)
+            if ((row != 28 && column != 35)
+                    || (row != 50 && column != 25)
+                    || (row != 50 && column != 48)
+                    || (row != 50 && column != 56))
                 aircons.add(environment.getPatch(row, column));
         }
 

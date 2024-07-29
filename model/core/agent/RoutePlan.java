@@ -38,18 +38,18 @@ public class RoutePlan {
     private int COFFEE_COUNT = 2;
     private int DISPENSER_LUNCH = 1, DISPENSER = 1;
     private int REFRIGERATOR_LUNCH = 1, REFRIGERATOR = 1;
-    private double  BATHROOM_CHANCE,
-            WORKING_CHANCE,
-            DISPENSER_CHANCE,
-            REFRIGERATOR_CHANCE,
-            COFFEE_CHANCE,
-            EAT_OUTSIDE_CHANCE,
-            EAT_FROM_WORKPLACE,
-            INQUIRE_STUDENT_CHANCE,
-            INQUIRE_FACULTY_CHANCE,
-            INQUIRE_DIRECTOR_CHANCE,
-            INQUIRE_GUARD_CHANCE,
-            INQUIRE_MAINTENANCE_CHANCE;
+    private double  BATHROOM_CHANCE = 0.0,
+            WORKING_CHANCE = 0.0,
+            DISPENSER_CHANCE = 0.0,
+            REFRIGERATOR_CHANCE = 0.0,
+            COFFEE_CHANCE = 0.0,
+            EAT_OUTSIDE_CHANCE = 0.0,
+            EAT_FROM_WORKPLACE = 0.0,
+            INQUIRE_STUDENT_CHANCE = 0.0,
+            INQUIRE_FACULTY_CHANCE = 0.0,
+            INQUIRE_DIRECTOR_CHANCE = 0.0,
+            INQUIRE_GUARD_CHANCE = 0.0,
+            INQUIRE_MAINTENANCE_CHANCE = 0.0;
     public static ArrayList<ArrayList<Long>> meetingTimes = new ArrayList<>();
 
     /***** CONSTRUCTOR *****/
@@ -317,53 +317,55 @@ public class RoutePlan {
             setBathPM(false);
             setAtDesk(false);
 
-            WORKING_CHANCE = 0.8;
-            BATHROOM_CHANCE = 0.14;
-            COFFEE_CHANCE = 0.01;
+            /***** TODO: Uncomment when done testing *****/
+//            WORKING_CHANCE = 0.8;
+//            BATHROOM_CHANCE = 0.14;
+//            COFFEE_CHANCE = 0.01;
+//
+//            DISPENSER_CHANCE = 0.25;
+//            REFRIGERATOR_CHANCE = 0.1;
+//
+//            EAT_OUTSIDE_CHANCE = 0.8;
+//            EAT_FROM_WORKPLACE = 0.1;
+//
+//            if (agent.getPersona() == Agent.Persona.INT_STUDENT) {
+//                INQUIRE_STUDENT_CHANCE = 0.0;
+//                INQUIRE_FACULTY_CHANCE = 0.0;
+//                INQUIRE_DIRECTOR_CHANCE = 0.0;
+//                INQUIRE_GUARD_CHANCE = 0.0;
+//                INQUIRE_MAINTENANCE_CHANCE = 0.0;
+//            }
+//            else if (agent.getPersona() == Agent.Persona.EXT_STUDENT) {
+//                INQUIRE_STUDENT_CHANCE = 0.1;
+//                INQUIRE_FACULTY_CHANCE = 0.1;
+//                INQUIRE_DIRECTOR_CHANCE = 0.0;
+//                INQUIRE_GUARD_CHANCE = 0.0;
+//                INQUIRE_MAINTENANCE_CHANCE = 0.0;
+//            }
 
-            DISPENSER_CHANCE = 0.25;
-            REFRIGERATOR_CHANCE = 0.1;
-
-            EAT_OUTSIDE_CHANCE = 0.8;
-            EAT_FROM_WORKPLACE = 0.1;
-
-            if (agent.getPersona() == Agent.Persona.INT_STUDENT) {
-                INQUIRE_STUDENT_CHANCE = 0.0;
-                INQUIRE_FACULTY_CHANCE = 0.0;
-                INQUIRE_DIRECTOR_CHANCE = 0.0;
-                INQUIRE_GUARD_CHANCE = 0.0;
-                INQUIRE_MAINTENANCE_CHANCE = 0.0;
-            }
-            else if (agent.getPersona() == Agent.Persona.EXT_STUDENT) {
-                INQUIRE_STUDENT_CHANCE = 0.1;
-                INQUIRE_FACULTY_CHANCE = 0.1;
-                INQUIRE_DIRECTOR_CHANCE = 0.0;
-                INQUIRE_GUARD_CHANCE = 0.0;
-                INQUIRE_MAINTENANCE_CHANCE = 0.0;
-            }
-
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
-            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+//            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-            actions = new ArrayList<>();
-            actions.add(new Action(Action.Name.GO_TO_LUNCH));
-            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
-            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+            /***** TODO: Uncomment when done testing *****/
+//            actions = new ArrayList<>();
+//            actions.add(new Action(Action.Name.GO_TO_LUNCH));
+//            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
+//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
-            actions = new ArrayList<>();
-            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
-            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
-            actions.add(new Action(Action.Name.TURN_OFF_AC));
-            actions.add(new Action(Action.Name.TURN_OFF_LIGHT));
-            actions.add(new Action(Action.Name.GO_TO_STATION, 2));
-            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
+//            actions = new ArrayList<>();
+//            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+//            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
+//            actions.add(new Action(Action.Name.TURN_OFF_AC));
+//            actions.add(new Action(Action.Name.TURN_OFF_LIGHT));
+//            actions.add(new Action(Action.Name.GO_TO_STATION, 2));
+//            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
 
         setNextState(-1);
