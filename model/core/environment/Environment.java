@@ -417,10 +417,10 @@ public class Environment extends BaseObject implements Serializable {
             this.getAgents().add(agent);
         }
 
-//        for (int i = 0; i < 1; i++) {
-//            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(7,30, i), LocalTime.of(11,0), Agent.energyProfilePicker(green, nonGreen, neutral));
-//            this.getAgents().add(agent);
-//        }
+        for (int i = 0; i < 1; i++) {
+            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(7,30, i), LocalTime.of(18,0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
 
         for (int i = 0; i < 1; i++) {
             LocalTime randomizeTimeIn = LocalTime.of(7,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 16));
@@ -1178,9 +1178,9 @@ public class Environment extends BaseObject implements Serializable {
                 else{
                     CHANCE = Simulator.roll();
                     if(CHANCE < 0.1){
-                        System.out.println("random decrease in cooling time ticks before: "+ aircon.getCoolingTimeInTicks());
+//                        System.out.println("random decrease in cooling time ticks before: "+ aircon.getCoolingTimeInTicks());
                         aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - numWalking);
-                        System.out.println("random decrease in cooling time ticks after: "+ aircon.getCoolingTimeInTicks());
+//                        System.out.println("random decrease in cooling time ticks after: "+ aircon.getCoolingTimeInTicks());
                     }
                 }
 //                System.out.println("I am in heating "+aircon.getCoolingTimeInTicks());
@@ -1199,9 +1199,9 @@ public class Environment extends BaseObject implements Serializable {
                 else{
                     CHANCE = Simulator.roll();
                     if(CHANCE < 0.1){
-                        System.out.println("random decrease in cooling time ticks before: "+ aircon.getCoolingTimeInTicks());
+//                        System.out.println("random decrease in cooling time ticks before: "+ aircon.getCoolingTimeInTicks());
                         aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() + numWalking);
-                        System.out.println("random increase in cooling time ticks after: "+ aircon.getCoolingTimeInTicks());
+//                        System.out.println("random increase in cooling time ticks after: "+ aircon.getCoolingTimeInTicks());
                     }
                 }
 //                System.out.println("I am in cooling "+aircon.getCoolingTimeInTicks());
@@ -1968,9 +1968,9 @@ public class Environment extends BaseObject implements Serializable {
             for (Reception patchField: getReceptions()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
                     List<Patch> area = patchField.getArea();
-                    System.out.println("Patch Field Variation: " + patchField.getVariation());
+//                    System.out.println("Patch Field Variation: " + patchField.getVariation());
                     String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
-                    System.out.println("New Variation: " + newVariation);
+//                    System.out.println("New Variation: " + newVariation);
                     patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getReceptions().remove(patchField);

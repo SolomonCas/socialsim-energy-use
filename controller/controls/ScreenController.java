@@ -5,6 +5,7 @@ import com.socialsim.controller.graphics.amenity.mapper.*;
 import com.socialsim.model.core.agent.AgentMovement;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
+import com.socialsim.model.core.environment.patchobject.passable.goal.Aircon;
 import com.socialsim.model.simulator.Simulator;
 
 import com.socialsim.model.core.environment.Patch;
@@ -439,7 +440,7 @@ public class ScreenController extends Controller {
     public void initializeEnvironment(Environment environment) {
         GraphicsController.tileSize = backgroundCanvas.getHeight() / simulator.getEnvironment().getRows();
         mapEnvironment();
-        simulator.spawnInitialAgents(environment);
+//        simulator.spawnInitialAgents(environment);
         drawInterface();
     }
 
@@ -1540,10 +1541,15 @@ public class ScreenController extends Controller {
         for (Object[] range : airconRanges) {
             int row = (int) range[0];
             int column = (int) range[1];
-            aircons.add(environment.getPatch(row, column));
+            if (row != 93 && column != 9)
+                aircons.add(environment.getPatch(row, column));
         }
 
         AirconMapper.draw(aircons, false);
+
+        List<Patch> aircons1 = new ArrayList<>();
+        aircons1.add(environment.getPatch(93, 9));
+        AirconMapper.draw(aircons1, true);
 
 
         /* Original Layout: Windows and Blinds */

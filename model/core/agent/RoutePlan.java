@@ -232,18 +232,18 @@ public class RoutePlan {
 
             WORKING_CHANCE = 0.8;
             INQUIRE_STUDENT_CHANCE = 0.0;
-            INQUIRE_FACULTY_CHANCE = 0.0;
+            INQUIRE_FACULTY_CHANCE = 0.03;
             INQUIRE_DIRECTOR_CHANCE = 0.0;
             INQUIRE_GUARD_CHANCE = 0.0;
             INQUIRE_MAINTENANCE_CHANCE = 0.0;
-            BATHROOM_CHANCE = 0.15;
+            BATHROOM_CHANCE = 0.12;
             COFFEE_CHANCE = 0.04;
 
             DISPENSER_CHANCE = 0.02;
             REFRIGERATOR_CHANCE = 0.03;
 
-            EAT_OUTSIDE_CHANCE = 0.5;
-            EAT_FROM_WORKPLACE = 0.4;
+            EAT_OUTSIDE_CHANCE = 0.0;
+            EAT_FROM_WORKPLACE = 1.0;
 
 
             actions = new ArrayList<>();
@@ -371,13 +371,13 @@ public class RoutePlan {
 
     /***** METHODS *****/
     public void inspect(PatchField room, Environment environment, ArrayList<Action> actions) {
-        System.out.println("@inspect");
+//        System.out.println("@inspect");
         for (Amenity amenity : environment.getUsedAmenities()) {
             // Check if the amenity is in the selected room
             if (amenity.getAmenityBlocks().get(0).getPatch().getPatchField() != null && amenity.getAmenityBlocks().get(0).getPatch().getPatchField().getKey() == room) {
                 // Add an action if the amenity is in the selected room
                 if ((amenity instanceof Aircon && ((Aircon) amenity).isTurnedOn())) {
-                    System.out.println("ac is on");
+//                    System.out.println("ac is on");
                     actions.add(new Action(Action.Name.TURN_OFF_AC, amenity.getAttractors().getFirst().getPatch()));
                 }
                 else if ((amenity instanceof Light && ((Light) amenity).isOn())) {
