@@ -1125,7 +1125,7 @@ public class Environment extends BaseObject implements Serializable {
             int nearbyAircons = 0;
             int nearbyWalkingAgentCount = 0;
 
-            // Count nearby agents and aircons
+            // Count nearby agents
             for (Agent agent : this.getMovableAgents()) {
                 boolean isAtDesk = agent.getAgentMovement() != null && agent.getAgentMovement().getRoutePlan().isAtDesk();
                 for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
@@ -1145,7 +1145,7 @@ public class Environment extends BaseObject implements Serializable {
                     }
                 }
             }
-
+            // Count nearby aircons
             for (Aircon otherAircon : this.getAircons()) {
                 if (otherAircon != aircon) {
                     boolean isFound = false;
@@ -1201,7 +1201,8 @@ public class Environment extends BaseObject implements Serializable {
                     int newTemp = aircon.getRoomTemp();
                     newTemp+= heatingTemp;
                     aircon.setRoomTemp(newTemp);
-                    updateNearbyAirconTemps(aircon, false);
+                    if (aircon.isTurnedOn())
+                        updateNearbyAirconTemps(aircon, false);
                 } else {
                     if (CHANCE < 0.1) {
                         aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - numWalkingTeams);
@@ -1239,7 +1240,7 @@ public class Environment extends BaseObject implements Serializable {
 
     private void updateNearbyAirconTemps(Aircon aircon, boolean isCooling) {
         for (Aircon otherAircon : this.getAircons()) {
-            if (otherAircon != aircon) {
+            if (otherAircon != aircon ) {
                 boolean isFound = false;
                 // Check each attractors of aircon
                 for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
