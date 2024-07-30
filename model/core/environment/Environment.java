@@ -1107,13 +1107,13 @@ public class Environment extends BaseObject implements Serializable {
     int baseTemp = 28; // highest temp or base room temp
     public void tempChanger() {
         // Coefficients for the linear regression formula
-        double beta0Cooling = 20.0; // Base cooling ticks when cooling
+        double beta0Cooling = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble(20.0, 108.0); // Base cooling ticks when cooling
         double beta1Cooling = 1.0; // Effect of the number of teams on cooling ticks
         double beta2Cooling = -1.0; // Effect of the number of nearby aircons on cooling ticks
         double beta3Cooling = -0.5; // Effect of the number of walking teams on cooling ticks
         double beta4Cooling = 0.5; // Effect of the room size
 
-        double beta0Heating = 120.0; //24.0; //<-original // Base heating ticks when heating
+        double beta0Heating = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble(24.0, 120.0); //24.0; //<-original // Base heating ticks when heating
         double beta1Heating = -1.0; // Effect of the number of teams on heating ticks
         double beta2Heating = 0.5; // Effect of the number of nearby aircons on heating ticks
         double beta3Heating = -0.5; // Effect of the number of walking teams on heating ticks
