@@ -1215,19 +1215,25 @@ public class Environment extends BaseObject implements Serializable {
 
     private void updateNearbyAirconTemps(Aircon aircon, boolean isCooling) {
         for (Aircon otherAircon : this.getAircons()) {
-            if (otherAircon != aircon && (otherAircon.getAirconTemp() + 1) <= baseTemp) {
-                double distanceToAircon = Coordinates.distance(aircon.getAttractors().getFirst().getPatch(), otherAircon.getAttractors().getFirst().getPatch());
-                if (distanceToAircon < aircon.getCoolingRange()) {
-                    int newTemp = aircon.getRoomTemp();
-                    if(isCooling){
-                        newTemp-= coolingTemp;
-                    }
-                    else{
-                        newTemp+= heatingTemp;
-                    }
+            if (otherAircon != aircon) {
+                PatchField patchField = aircon.getAttractors().getFirst().getPatch().getPatchField().getKey();
+                String keyField = aircon.getAttractors().getFirst().getPatch().getPatchField().getValue();
+                if (otherAircon.getAttractors().getFirst().getPatch().getPatchField().getKey().equals(patchField) &&
+                        otherAircon.getAttractors().getFirst().getPatch().getPatchField().getValue().equals(keyField)) {
+                    double distanceToAircon = Coordinates.distance(aircon.getAttractors().getFirst().getPatch(), otherAircon.getAttractors().getFirst().getPatch());
+                    if (distanceToAircon < aircon.getCoolingRange()) {
+                        int newTemp = aircon.getRoomTemp();
+                        if(isCooling){
+                            newTemp-= coolingTemp;
+                        }
+                        else{
+                            newTemp+= heatingTemp;
+                        }
 
-                    otherAircon.setRoomTemp(newTemp);
+                        otherAircon.setRoomTemp(newTemp);
+                    }
                 }
+
             }
         }
     }
