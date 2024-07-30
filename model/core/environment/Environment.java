@@ -1107,7 +1107,7 @@ public class Environment extends BaseObject implements Serializable {
     int baseTemp = 28; // highest temp or base room temp
     public void tempChanger() {
         // Coefficients for the linear regression formula
-        double beta0Cooling = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble(20.0, 108.0); // Base cooling ticks when cooling
+        double beta0Cooling = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble(20.0, 36.0); // Base cooling ticks when cooling
         double beta1Cooling = 1.0; // Effect of the number of teams on cooling ticks
         double beta2Cooling = -1.0; // Effect of the number of nearby aircons on cooling ticks
         double beta3Cooling = -0.5; // Effect of the number of walking teams on cooling ticks
@@ -1148,14 +1148,31 @@ public class Environment extends BaseObject implements Serializable {
 
             for (Aircon otherAircon : this.getAircons()) {
                 if (otherAircon != aircon) {
-                    PatchField patchField = aircon.getAttractors().getFirst().getPatch().getPatchField().getKey();
-                    String keyField = aircon.getAttractors().getFirst().getPatch().getPatchField().getValue();
-                    if (otherAircon.getAttractors().getFirst().getPatch().getPatchField().getKey().equals(patchField) &&
-                            otherAircon.getAttractors().getFirst().getPatch().getPatchField().getValue().equals(keyField)) {
-                        double distanceToAircon = Coordinates.distance(aircon.getAttractors().getFirst().getPatch(), otherAircon.getAttractors().getFirst().getPatch());
-                        if (distanceToAircon < aircon.getCoolingRange() && otherAircon.isTurnedOn()) {
-                            nearbyAircons++;
+                    boolean isFound = false;
+                    // Check each attractors of aircon
+                    for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
+                        PatchField patchField = attractor.getPatch().getPatchField().getKey();
+                        String keyField = attractor.getPatch().getPatchField().getValue();
+
+                        // Check each attractors of otherAircon
+                        for (Amenity.AmenityBlock attractor2: otherAircon.getAttractors()) {
+
+                            // Check if both are in the same patchfield
+                            if (attractor2.getPatch().getPatchField().getKey().equals(patchField) &&
+                                    attractor2.getPatch().getPatchField().getValue().equals(keyField)) {
+                                double distanceToAircon = Coordinates.distance(aircon.getAttractors().getFirst().getPatch(), otherAircon.getAttractors().getFirst().getPatch());
+                                // if other aircon is in range with the aircon, then it is a nearby aircon
+                                if (distanceToAircon < aircon.getCoolingRange() && otherAircon.isTurnedOn()) {
+                                    nearbyAircons++;
+                                    isFound = true;
+                                    break;
+                                }
+                            }
                         }
+
+                        if (isFound)
+                            break;
+
                     }
                 }
             }
@@ -1167,9 +1184,12 @@ public class Environment extends BaseObject implements Serializable {
             int coolingTicks = 0;
             double CHANCE = Simulator.roll();
 
+
             if (aircon.getAirconTemp() != baseTemp && !aircon.isTurnedOn()) {
                 aircon.setAirconTemp(baseTemp);
             }
+
+            // Make Room Temp Warmer
             if (aircon.getRoomTemp() < aircon.getAirconTemp()) {
                 aircon.setInActiveCycle(false);
                 if (CHANCE < 0.1 && aircon.isTurnedOn()) {
@@ -1187,7 +1207,9 @@ public class Environment extends BaseObject implements Serializable {
                         aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - numWalkingTeams);
                     }
                 }
-            } else if (aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()) {
+            }
+            // Make Room Temp Colder
+            else if (aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()) {
                 aircon.setInActiveCycle(true);
                 if (CHANCE < 0.1) {
                     aircon.setInActiveCycle(false);
@@ -1204,8 +1226,10 @@ public class Environment extends BaseObject implements Serializable {
                         aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() + numWalkingTeams);
                     }
                 }
-            } else if (aircon.getAirconTemp() == aircon.getRoomTemp() && aircon.isTurnedOn()) {
-                if (CHANCE < 0.1 && (aircon.getAirconTemp() + 1) <= baseTemp) {
+            }
+            // Make Room Fluctuate
+            else if (aircon.getAirconTemp() == aircon.getRoomTemp() && aircon.isTurnedOn()) {
+                if (CHANCE < 0.1 && (aircon.getRoomTemp() + 1) <= baseTemp) {
                     aircon.setRoomTemp(aircon.getRoomTemp() + Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 2));
                 }
                 aircon.setInActiveCycle(false);
@@ -1216,22 +1240,38 @@ public class Environment extends BaseObject implements Serializable {
     private void updateNearbyAirconTemps(Aircon aircon, boolean isCooling) {
         for (Aircon otherAircon : this.getAircons()) {
             if (otherAircon != aircon) {
-                PatchField patchField = aircon.getAttractors().getFirst().getPatch().getPatchField().getKey();
-                String keyField = aircon.getAttractors().getFirst().getPatch().getPatchField().getValue();
-                if (otherAircon.getAttractors().getFirst().getPatch().getPatchField().getKey().equals(patchField) &&
-                        otherAircon.getAttractors().getFirst().getPatch().getPatchField().getValue().equals(keyField)) {
-                    double distanceToAircon = Coordinates.distance(aircon.getAttractors().getFirst().getPatch(), otherAircon.getAttractors().getFirst().getPatch());
-                    if (distanceToAircon < aircon.getCoolingRange()) {
-                        int newTemp = aircon.getRoomTemp();
-                        if(isCooling){
-                            newTemp-= coolingTemp;
-                        }
-                        else{
-                            newTemp+= heatingTemp;
-                        }
+                boolean isFound = false;
+                // Check each attractors of aircon
+                for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
+                    PatchField patchField = attractor.getPatch().getPatchField().getKey();
+                    String keyField = attractor.getPatch().getPatchField().getValue();
 
-                        otherAircon.setRoomTemp(newTemp);
+                    // Check each attractors of otherAircon
+                    for (Amenity.AmenityBlock attractor2: otherAircon.getAttractors()) {
+
+                        // Check if both are in the same patchfield
+                        if (attractor2.getPatch().getPatchField().getKey().equals(patchField) &&
+                                attractor2.getPatch().getPatchField().getValue().equals(keyField)) {
+                            double distanceToAircon = Coordinates.distance(aircon.getAttractors().getFirst().getPatch(), otherAircon.getAttractors().getFirst().getPatch());
+                            if (distanceToAircon < aircon.getCoolingRange()) {
+                                int newTemp = aircon.getRoomTemp();
+                                if(isCooling){
+                                    newTemp-= coolingTemp;
+                                }
+                                else{
+                                    newTemp+= heatingTemp;
+                                }
+
+                                otherAircon.setRoomTemp(newTemp);
+                                isFound= true;
+                                break;
+                            }
+                        }
                     }
+
+                    if (isFound)
+                        break;
+
                 }
 
             }
