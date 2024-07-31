@@ -1104,7 +1104,8 @@ public class Environment extends BaseObject implements Serializable {
     //DONE CHANCE FOR TEMPERATURE TO GO UP WHEN ROOM TEMPERATURE ALREADY REACHED AIRCON TEMPERATURE
     int coolingTemp = 1; // high to low temp
     int heatingTemp = 1; // low temp to high temp
-    int baseTemp = 28; // highest temp or base room temp
+    int baseHighTemp = 28; // highest temp
+    int baseLowTemp = 19; // lowest temp
     public void tempChanger() {
         // Coefficients for the linear regression formula
         double beta0Cooling = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble(20.0, 36.0); // Base cooling ticks when cooling
@@ -1185,14 +1186,10 @@ public class Environment extends BaseObject implements Serializable {
             double CHANCE = Simulator.roll();
 
 
-            if (aircon.getAirconTemp() != baseTemp && !aircon.isTurnedOn()) {
-                aircon.setAirconTemp(baseTemp);
-            }
-
             // Make Room Temp Warmer
             if (aircon.getRoomTemp() < aircon.getAirconTemp()) {
                 aircon.setInActiveCycle(false);
-                if (CHANCE < 0.1 && aircon.isTurnedOn()) {
+                if (CHANCE < 0.1  && aircon.isTurnedOn()) {
                     aircon.setInActiveCycle(true);
                 }
 
@@ -1201,8 +1198,7 @@ public class Environment extends BaseObject implements Serializable {
                     int newTemp = aircon.getRoomTemp();
                     newTemp+= heatingTemp;
                     aircon.setRoomTemp(newTemp);
-                    if (aircon.isTurnedOn())
-                        updateNearbyAirconTemps(aircon, false);
+                    updateNearbyAirconTemps(aircon, false);
                 } else {
                     if (CHANCE < 0.1) {
                         aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - numWalkingTeams);
@@ -1210,9 +1206,9 @@ public class Environment extends BaseObject implements Serializable {
                 }
             }
             // Make Room Temp Colder
-            else if (aircon.getRoomTemp() > aircon.getAirconTemp() && aircon.isTurnedOn()) {
+            else if (aircon.getRoomTemp() > aircon.getAirconTemp()) {
                 aircon.setInActiveCycle(true);
-                if (CHANCE < 0.1) {
+                if (CHANCE < 0.1 && aircon.isTurnedOn()) {
                     aircon.setInActiveCycle(false);
                 }
 
@@ -1229,18 +1225,34 @@ public class Environment extends BaseObject implements Serializable {
                 }
             }
             // Make Room Fluctuate
-            else if (aircon.getAirconTemp() == aircon.getRoomTemp() && aircon.isTurnedOn()) {
-                if (CHANCE < 0.1 && (aircon.getRoomTemp() + 1) <= baseTemp) {
+            else if ((aircon.getAirconTemp() == aircon.getRoomTemp() && aircon.isTurnedOn())) {
+                if (CHANCE < 0.1 && (aircon.getRoomTemp() + 1) <= baseHighTemp) {
                     aircon.setRoomTemp(aircon.getRoomTemp() + Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 2));
                 }
                 aircon.setInActiveCycle(false);
+            }
+            else if (!aircon.isTurnedOn() && aircon.getRoomTemp() < baseHighTemp) {
+                aircon.setInActiveCycle(false);
+
+                coolingTicks = (int) (beta0Heating + beta1Heating * numTeams + beta2Heating * nearbyAircons + beta3Heating * numWalkingTeams);
+                if (coolingTimer(aircon, coolingTicks)) {
+                    int newTemp = aircon.getRoomTemp();
+                    newTemp+= heatingTemp;
+                    aircon.setRoomTemp(newTemp);
+                }
+                else {
+                    if (CHANCE < 0.1) {
+                        aircon.setCoolingTimeInTicks(aircon.getCoolingTimeInTicks() - numWalkingTeams);
+                    }
+                }
             }
         }
     }
 
     private void updateNearbyAirconTemps(Aircon aircon, boolean isCooling) {
         for (Aircon otherAircon : this.getAircons()) {
-            if (otherAircon != aircon ) {
+            // Only change room temp for aircon that are turned off
+            if (otherAircon != aircon && !otherAircon.isTurnedOn()) {
                 boolean isFound = false;
                 // Check each attractors of aircon
                 for (Amenity.AmenityBlock attractor : aircon.getAttractors()) {
@@ -1255,15 +1267,19 @@ public class Environment extends BaseObject implements Serializable {
                                 attractor2.getPatch().getPatchField().getValue().equals(keyField)) {
                             double distanceToAircon = Coordinates.distance(aircon.getAttractors().getFirst().getPatch(), otherAircon.getAttractors().getFirst().getPatch());
                             if (distanceToAircon < aircon.getCoolingRange()) {
-                                int newTemp = aircon.getRoomTemp();
+
                                 if(isCooling){
-                                    newTemp-= coolingTemp;
+                                    if (aircon.getRoomTemp() < otherAircon.getRoomTemp()) {
+                                        otherAircon.setAirconTemp(aircon.getRoomTemp());
+                                    }
                                 }
                                 else{
-                                    newTemp+= heatingTemp;
+                                    if (aircon.getRoomTemp() > otherAircon.getRoomTemp()) {
+                                        otherAircon.setAirconTemp(aircon.getRoomTemp());
+                                    }
                                 }
 
-                                otherAircon.setRoomTemp(newTemp);
+
                                 isFound= true;
                                 break;
                             }
