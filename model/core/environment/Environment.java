@@ -15,6 +15,7 @@ import javafx.util.Pair;
 
 import static com.socialsim.controller.Main.simulator;
 import static com.socialsim.model.core.agent.Agent.*;
+import static java.lang.Math.max;
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -1220,15 +1221,17 @@ public class Environment extends BaseObject implements Serializable {
             int numWalkingTeams = nearbyWalkingAgentCount / 4;
 
 
-
             int coolingTicks = 0;
+            double tempDifference = aircon.getRoomTemp() - aircon.getAirconTemp();
+            double k = 0.8;
+            double activeCycleChance = 1.0 / (1.0 + Math.exp(-k * tempDifference));
             double CHANCE = Simulator.roll();
 
 
             // Make Room Temp Warmer
             if (aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.getAirconTemp() != baseHighTemp) {
                 aircon.setInActiveCycle(false);
-                if (CHANCE < 0.1  && aircon.isTurnedOn()) {
+                if (CHANCE < activeCycleChance  && aircon.isTurnedOn()) {
                     aircon.setInActiveCycle(true);
                 }
 
@@ -1250,9 +1253,9 @@ public class Environment extends BaseObject implements Serializable {
             }
             // Make Room Temp Colder
             else if (aircon.getRoomTemp() > aircon.getAirconTemp()) {
-                aircon.setInActiveCycle(true);
-                if (CHANCE < 0.1 && aircon.isTurnedOn()) {
-                    aircon.setInActiveCycle(false);
+                aircon.setInActiveCycle(false);
+                if (CHANCE < activeCycleChance && aircon.isTurnedOn()) {
+                    aircon.setInActiveCycle(true);
                 }
 
                 if (aircon.getAttractors().getFirst().getPatch().isRoomBig()) {
@@ -1297,6 +1300,7 @@ public class Environment extends BaseObject implements Serializable {
                     }
                 }
             }
+            System.out.println("is it active? "+ aircon.isInActiveCycle());
         }
     }
 
