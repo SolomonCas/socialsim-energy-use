@@ -319,53 +319,83 @@ public class Environment extends BaseObject implements Serializable {
         // Calculate the number of students per team
         int studentsPerTeam = 4;
 
-
-        if(numOfTeams > 0){
-            for (int team = 1; team <= numOfTeams; team++) {
-                int studentsInThisTeam = Math.min(numOfStudent, studentsPerTeam);
-
-                double CHANCE = Simulator.roll();
-                // Using the Shuttle for TimeIn
-                if (CHANCE < 0.2) {
-                    boolean shuttleTimeout = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
-                    if (shuttleTimeout) {
-                        for (int i = 0; i < studentsInThisTeam; i++) {
-                            Agent agent = AgentFactory.create(Type.STUDENT, true, team, LocalTime.of(9, 0), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
-                            this.getAgents().add(agent);
-                            numOfStudent--;
-                        }
-                    }
-                    else {
-                        for (int i = 0; i < studentsInThisTeam; i++) {
-                            Agent agent = AgentFactory.create(Type.STUDENT, true, team, LocalTime.of(9, 0), LocalTime.of(13, Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60)), Agent.energyProfilePicker(green, nonGreen, neutral));
-                            this.getAgents().add(agent);
-                            numOfStudent--;
-                        }
-                    }
-                }
-                else {
-                    LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(8, 14),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
-                    LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(randomizeTimeIn.getHour() + 4, 20), 0);
-                    boolean shuttleTimeout = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
-                    if (shuttleTimeout) {
-                        for (int i = 0; i < studentsInThisTeam; i++) {
-                            Agent agent = AgentFactory.create(Type.STUDENT, true, team, randomizeTimeIn, LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
-                            this.getAgents().add(agent);
-                            numOfStudent--;
-                        }
-                    }
-                    else {
-                        for (int i = 0; i < studentsInThisTeam; i++) {
-                            Agent agent = AgentFactory.create(Type.STUDENT, true, team, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
-                            this.getAgents().add(agent);
-                            numOfStudent--;
-                        }
-                    }
-                }
+        for (int i = 0; i < 2; i++) {
+            if (i == 0) {
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(7, 30), LocalTime.of(17, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
             }
-
+            else {
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(7, 30, 15), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
         }
-        /***** TODO: Uncomment when done testing *****/
+
+        for (int i = 0; i < 2; i++) {
+            if (i == 0) {
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(9, 0), LocalTime.of(17, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+            else {
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(9, 0), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            Agent agent = AgentFactory.create(Type.STUDENT, true, 2, LocalTime.of(10, 30), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
+
+        for (int i = 0; i < 4; i++) {
+            Agent agent = AgentFactory.create(Type.STUDENT, true, 3, LocalTime.of(11, 30), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
+
+//        if(numOfTeams > 0){
+//            for (int team = 1; team <= numOfTeams; team++) {
+//                int studentsInThisTeam = Math.min(numOfStudent, studentsPerTeam);
+//
+//                double CHANCE = Simulator.roll();
+//                // Using the Shuttle for TimeIn
+//                if (CHANCE < 0.2) {
+//                    boolean shuttleTimeout = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
+//                    if (shuttleTimeout) {
+//                        for (int i = 0; i < studentsInThisTeam; i++) {
+//                            Agent agent = AgentFactory.create(Type.STUDENT, true, team, LocalTime.of(9, 0), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+//                            this.getAgents().add(agent);
+//                            numOfStudent--;
+//                        }
+//                    }
+//                    else {
+//                        for (int i = 0; i < studentsInThisTeam; i++) {
+//                            Agent agent = AgentFactory.create(Type.STUDENT, true, team, LocalTime.of(9, 0), LocalTime.of(13, Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60)), Agent.energyProfilePicker(green, nonGreen, neutral));
+//                            this.getAgents().add(agent);
+//                            numOfStudent--;
+//                        }
+//                    }
+//                }
+//                else {
+//                    LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(8, 14),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+//                    LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(randomizeTimeIn.getHour() + 4, 20), 0);
+//                    boolean shuttleTimeout = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
+//                    if (shuttleTimeout) {
+//                        for (int i = 0; i < studentsInThisTeam; i++) {
+//                            Agent agent = AgentFactory.create(Type.STUDENT, true, team, randomizeTimeIn, LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+//                            this.getAgents().add(agent);
+//                            numOfStudent--;
+//                        }
+//                    }
+//                    else {
+//                        for (int i = 0; i < studentsInThisTeam; i++) {
+//                            Agent agent = AgentFactory.create(Type.STUDENT, true, team, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+//                            this.getAgents().add(agent);
+//                            numOfStudent--;
+//                        }
+//                    }
+//                }
+//            }
+//
+//        }
 //        for(int i = 0; i < numOfStudent; i++){
 //            double CHANCE = Simulator.roll();
 //            // Using the Shuttle for TimeIn
@@ -398,7 +428,7 @@ public class Environment extends BaseObject implements Serializable {
 //
 //        }
 //
-//        if(numOfTeams > 0){
+//        if(numOfTeams > 0) {
 //            for (int team = 1; team <= numOfTeams; team++) {
 //                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(9, 11),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
 //                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(21, 23), 0);
@@ -410,28 +440,28 @@ public class Environment extends BaseObject implements Serializable {
 //                }
 //            }
 //        }
-//        for (int i = 0; i < numOfFaculty; i++) {
-//            LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(9, 11),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
-//            LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(21, 23), 0);
-//            Agent agent = AgentFactory.create(Type.FACULTY, true, 0, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
-//            this.getAgents().add(agent);
-//        }
+        for (int i = 0; i < numOfFaculty; i++) {
+            LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(9, 11),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+            LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(21, 23), 0);
+            Agent agent = AgentFactory.create(Type.FACULTY, true, 1, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
 //
 //        for (int i = 0; i < 1; i++) {
 //            Agent agent = AgentFactory.create(Type.DIRECTOR, true, 0, LocalTime.of(7,30, i), LocalTime.of(18,0), Agent.energyProfilePicker(green, nonGreen, neutral));
 //            this.getAgents().add(agent);
 //        }
-//
-//        for (int i = 0; i < 1; i++) {
-//            LocalTime randomizeTimeIn = LocalTime.of(7,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 16));
-//            Agent agent = AgentFactory.create(Type.MAINTENANCE, true, 0, randomizeTimeIn, LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
-//            this.getAgents().add(agent);
-//        }
-//
-//        for (int i = 0; i < 1; i++) {
-//            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(22,0), Agent.energyProfilePicker(green, nonGreen, neutral));
-//            this.getAgents().add(agent);
-//        }
+
+        for (int i = 0; i < 1; i++) {
+            LocalTime randomizeTimeIn = LocalTime.of(7,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 16));
+            Agent agent = AgentFactory.create(Type.MAINTENANCE, true, 0, randomizeTimeIn, LocalTime.of(20,0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
+
+        for (int i = 0; i < 1; i++) {
+            Agent agent = AgentFactory.create(Type.GUARD, true, 0, LocalTime.of(7,0, i), LocalTime.of(22,0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
 
     }
 
@@ -1099,32 +1129,39 @@ public class Environment extends BaseObject implements Serializable {
 
     //WITH LINEAR REGRESSION
     // Number of Agents, Interactions, Room Size
-
-    //DONE BY CHANCE ACTIVE CYCLE (HIGHER CHANCE IF COOLING, LOWER CHANCE IF HEATING)
-    //DONE CHANCE FOR TEMPERATURE TO GO UP WHEN ROOM TEMPERATURE ALREADY REACHED AIRCON TEMPERATURE
     int coolingTemp = 1; // high to low temp
     int heatingTemp = 1; // low temp to high temp
     int baseHighTemp = 28; // highest temp
     int baseLowTemp = 19; // lowest temp
+    //DONE BY CHANCE ACTIVE CYCLE (HIGHER CHANCE IF COOLING, LOWER CHANCE IF HEATING)
+    //DONE CHANCE FOR TEMPERATURE TO GO UP WHEN ROOM TEMPERATURE ALREADY REACHED AIRCON TEMPERATURE
     public void tempChanger() {
+
+
+
         // Coefficients for the linear regression formula
         double beta0Cooling = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble(20.0, 36.0); // Base cooling ticks when cooling
         double beta1Cooling = 1.0; // Effect of the number of teams on cooling ticks
         double beta2Cooling = -1.0; // Effect of the number of nearby aircons on cooling ticks
-        double beta3Cooling = -0.5; // Effect of the number of walking teams on cooling ticks
-        double beta4Cooling = 0.5; // Effect of the room size
+        double beta3Cooling = 0.5; // Effect of the number of walking teams on cooling ticks
+        double beta4Cooling = 0.3; // Effect of the room size
 
-        double beta0Heating = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble(24.0, 120.0); //24.0; //<-original // Base heating ticks when heating
+        int bigRoomCoolingTicks = 120;
+
+        double beta0Heating = Simulator.RANDOM_NUMBER_GENERATOR.nextDouble(36.0, 144.0); //24.0; //<-original // Base heating ticks when heating
         double beta1Heating = -1.0; // Effect of the number of teams on heating ticks
         double beta2Heating = 0.5; // Effect of the number of nearby aircons on heating ticks
         double beta3Heating = -0.5; // Effect of the number of walking teams on heating ticks
-        double beta4Heating = 0.5; // Effect of the room size
+        double beta4Heating = 0.3; // Effect of the room size
+
+        int bigRoomHeatingTicks = 120;
 
 
         for (Aircon aircon : this.getAircons()) {
             int closeAgentCount = 0;
             int nearbyAircons = 0;
             int nearbyWalkingAgentCount = 0;
+            int roomTick = 0;
 
             // Count nearby agents
             for (Agent agent : this.getMovableAgents()) {
@@ -1182,18 +1219,24 @@ public class Environment extends BaseObject implements Serializable {
             int numTeams = closeAgentCount / 4;
             int numWalkingTeams = nearbyWalkingAgentCount / 4;
 
+
+
             int coolingTicks = 0;
             double CHANCE = Simulator.roll();
 
 
             // Make Room Temp Warmer
-            if (aircon.getRoomTemp() < aircon.getAirconTemp()) {
+            if (aircon.getRoomTemp() < aircon.getAirconTemp() && aircon.getAirconTemp() != baseHighTemp) {
                 aircon.setInActiveCycle(false);
                 if (CHANCE < 0.1  && aircon.isTurnedOn()) {
                     aircon.setInActiveCycle(true);
                 }
 
-                coolingTicks = (int) (beta0Heating + beta1Heating * numTeams + beta2Heating * nearbyAircons + beta3Heating * numWalkingTeams);
+                if (aircon.getAttractors().getFirst().getPatch().isRoomBig()) {
+                    roomTick = bigRoomHeatingTicks;
+                }
+
+                coolingTicks = (int) (beta0Heating + beta1Heating * numTeams + beta2Heating * nearbyAircons + beta3Heating * numWalkingTeams + beta4Heating * roomTick);
                 if (coolingTimer(aircon, coolingTicks)) {
                     int newTemp = aircon.getRoomTemp();
                     newTemp+= heatingTemp;
@@ -1212,7 +1255,11 @@ public class Environment extends BaseObject implements Serializable {
                     aircon.setInActiveCycle(false);
                 }
 
-                coolingTicks = (int) (beta0Cooling + beta1Cooling * numTeams + beta2Cooling * nearbyAircons + beta3Cooling * numWalkingTeams);
+                if (aircon.getAttractors().getFirst().getPatch().isRoomBig()) {
+                    roomTick = bigRoomCoolingTicks;
+                }
+
+                coolingTicks = (int) (beta0Cooling + beta1Cooling * numTeams + beta2Cooling * nearbyAircons + beta3Cooling * numWalkingTeams + beta4Cooling * roomTick);
                 if (coolingTimer(aircon, coolingTicks)) {
                     int newTemp = aircon.getRoomTemp();
                     newTemp-= coolingTemp;
@@ -1232,9 +1279,13 @@ public class Environment extends BaseObject implements Serializable {
                 aircon.setInActiveCycle(false);
             }
             else if (!aircon.isTurnedOn() && aircon.getRoomTemp() < baseHighTemp) {
-                aircon.setInActiveCycle(false);
 
-                coolingTicks = (int) (beta0Heating + beta1Heating * numTeams + beta2Heating * nearbyAircons + beta3Heating * numWalkingTeams);
+                aircon.setInActiveCycle(false);
+                aircon.setAirconTemp(baseHighTemp);
+                if (aircon.getAttractors().getFirst().getPatch().isRoomBig()) {
+                    roomTick = bigRoomHeatingTicks;
+                }
+                coolingTicks = (int) (beta0Heating + beta1Heating * numTeams + beta2Heating * nearbyAircons + beta3Heating * numWalkingTeams + beta4Heating * roomTick);
                 if (coolingTimer(aircon, coolingTicks)) {
                     int newTemp = aircon.getRoomTemp();
                     newTemp+= heatingTemp;
@@ -1265,17 +1316,23 @@ public class Environment extends BaseObject implements Serializable {
                         // Check if both are in the same patchfield
                         if (attractor2.getPatch().getPatchField().getKey().equals(patchField) &&
                                 attractor2.getPatch().getPatchField().getValue().equals(keyField)) {
-                            double distanceToAircon = Coordinates.distance(aircon.getAttractors().getFirst().getPatch(), otherAircon.getAttractors().getFirst().getPatch());
+                            double distanceToAircon = Coordinates.distance(attractor.getPatch(), attractor2.getPatch());
                             if (distanceToAircon < aircon.getCoolingRange()) {
 
                                 if(isCooling){
                                     if (aircon.getRoomTemp() < otherAircon.getRoomTemp()) {
                                         otherAircon.setAirconTemp(aircon.getRoomTemp());
                                     }
+                                    else {
+                                        otherAircon.setAirconTemp(aircon.getAirconTemp());
+                                    }
                                 }
                                 else{
-                                    if (aircon.getRoomTemp() > otherAircon.getRoomTemp()) {
+                                    if (aircon.getRoomTemp() < otherAircon.getRoomTemp()) {
                                         otherAircon.setAirconTemp(aircon.getRoomTemp());
+                                    }
+                                    else {
+                                        otherAircon.setAirconTemp(aircon.getAirconTemp());
                                     }
                                 }
 

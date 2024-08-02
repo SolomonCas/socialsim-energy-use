@@ -209,8 +209,6 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GO_TO_WAIT_AREA)); // The destination is set on the Simulator.java
             routePlan.add(new State(State.Name.WAIT_FOR_ACTIVITY, this, agent, actions));
 
-
-
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_LUNCH)); // Maintenance does not have an assigned seat in the model
             actions.add(new Action(Action.Name.EAT_LUNCH, 720));
@@ -232,18 +230,18 @@ public class RoutePlan {
 
             WORKING_CHANCE = 0.8;
             INQUIRE_STUDENT_CHANCE = 0.0;
-            INQUIRE_FACULTY_CHANCE = 0.03;
+            INQUIRE_FACULTY_CHANCE = 0.05;
             INQUIRE_DIRECTOR_CHANCE = 0.0;
             INQUIRE_GUARD_CHANCE = 0.0;
             INQUIRE_MAINTENANCE_CHANCE = 0.0;
-            BATHROOM_CHANCE = 0.12;
+            BATHROOM_CHANCE = 0.1;
             COFFEE_CHANCE = 0.04;
 
             DISPENSER_CHANCE = 0.02;
             REFRIGERATOR_CHANCE = 0.03;
 
             EAT_OUTSIDE_CHANCE = 0.0;
-            EAT_FROM_WORKPLACE = 1.0;
+            EAT_FROM_WORKPLACE = 0.4;
 
 
             actions = new ArrayList<>();
@@ -269,10 +267,10 @@ public class RoutePlan {
             setAtDesk(false);
 
             WORKING_CHANCE = 0.8;
-            BATHROOM_CHANCE = 0.15;
+            BATHROOM_CHANCE = 0.13;
             COFFEE_CHANCE = 0.02;
 
-            DISPENSER_CHANCE = 0.13;
+            DISPENSER_CHANCE = 0.1;
             REFRIGERATOR_CHANCE = 0.1;
 
             EAT_OUTSIDE_CHANCE = 0.8;
@@ -286,7 +284,7 @@ public class RoutePlan {
                 INQUIRE_MAINTENANCE_CHANCE = 0.0;
             }
             else if (agent.getPersona() == Agent.Persona.APP_FACULTY) {
-                INQUIRE_STUDENT_CHANCE = 0.1;
+                INQUIRE_STUDENT_CHANCE = 0.16;
                 INQUIRE_FACULTY_CHANCE = 0.1;
                 INQUIRE_DIRECTOR_CHANCE = 0.0;
                 INQUIRE_GUARD_CHANCE = 0.0;
@@ -317,55 +315,53 @@ public class RoutePlan {
             setBathPM(false);
             setAtDesk(false);
 
-            /***** TODO: Uncomment when done testing *****/
-//            WORKING_CHANCE = 0.8;
-//            BATHROOM_CHANCE = 0.14;
-//            COFFEE_CHANCE = 0.01;
-//
-//            DISPENSER_CHANCE = 0.25;
-//            REFRIGERATOR_CHANCE = 0.1;
-//
-//            EAT_OUTSIDE_CHANCE = 0.8;
-//            EAT_FROM_WORKPLACE = 0.1;
-//
-//            if (agent.getPersona() == Agent.Persona.INT_STUDENT) {
-//                INQUIRE_STUDENT_CHANCE = 0.0;
-//                INQUIRE_FACULTY_CHANCE = 0.0;
-//                INQUIRE_DIRECTOR_CHANCE = 0.0;
-//                INQUIRE_GUARD_CHANCE = 0.0;
-//                INQUIRE_MAINTENANCE_CHANCE = 0.0;
-//            }
-//            else if (agent.getPersona() == Agent.Persona.EXT_STUDENT) {
-//                INQUIRE_STUDENT_CHANCE = 0.1;
-//                INQUIRE_FACULTY_CHANCE = 0.1;
-//                INQUIRE_DIRECTOR_CHANCE = 0.0;
-//                INQUIRE_GUARD_CHANCE = 0.0;
-//                INQUIRE_MAINTENANCE_CHANCE = 0.0;
-//            }
+            WORKING_CHANCE = 0.8;
+            BATHROOM_CHANCE = 0.14;
+            COFFEE_CHANCE = 0.01;
 
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
-//            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
-//            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
-//            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
+            DISPENSER_CHANCE = 0.25;
+            REFRIGERATOR_CHANCE = 0.1;
+
+            EAT_OUTSIDE_CHANCE = 0.8;
+            EAT_FROM_WORKPLACE = 0.1;
+
+            if (agent.getPersona() == Agent.Persona.INT_STUDENT) {
+                INQUIRE_STUDENT_CHANCE = 0.0;
+                INQUIRE_FACULTY_CHANCE = 0.0;
+                INQUIRE_DIRECTOR_CHANCE = 0.0;
+                INQUIRE_GUARD_CHANCE = 0.0;
+                INQUIRE_MAINTENANCE_CHANCE = 0.0;
+            }
+            else if (agent.getPersona() == Agent.Persona.EXT_STUDENT) {
+                INQUIRE_STUDENT_CHANCE = 0.1;
+                INQUIRE_FACULTY_CHANCE = 0.1;
+                INQUIRE_DIRECTOR_CHANCE = 0.0;
+                INQUIRE_GUARD_CHANCE = 0.0;
+                INQUIRE_MAINTENANCE_CHANCE = 0.0;
+            }
+
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GOING_TO_RECEPTION_QUEUE));
+            actions.add(new Action(Action.Name.WAIT_FOR_VACANT));
+            actions.add(new Action(Action.Name.FILL_UP_NAME, 2));
+            routePlan.add(new State(State.Name.GOING_TO_RECEPTION, this, agent, actions));
 
             actions = new ArrayList<>();
             actions.add(new Action(Action.Name.GO_TO_STATION));
             routePlan.add(new State(State.Name.WORKING, this, agent, actions));
 
-            /***** TODO: Uncomment when done testing *****/
-//            actions = new ArrayList<>();
-//            actions.add(new Action(Action.Name.GO_TO_LUNCH));
-//            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
-//            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
+            actions = new ArrayList<>();
+            actions.add(new Action(Action.Name.GO_TO_LUNCH));
+            actions.add(new Action(Action.Name.EAT_LUNCH, 720));
+            routePlan.add(new State(State.Name.EATING_LUNCH, this, agent, actions));
 
-//            actions = new ArrayList<>();
-//            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
-//            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
-//            actions.add(new Action(Action.Name.TURN_OFF_AC));
-//            actions.add(new Action(Action.Name.TURN_OFF_LIGHT));
-//            actions.add(new Action(Action.Name.GO_TO_STATION, 2));
-//            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
+            actions = new ArrayList<>();
+            int exit = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(environment.getElevators().size());
+            actions.add(new Action(Action.Name.LEAVE_OFFICE, environment.getElevators().get(exit).getAmenityBlocks().getFirst().getPatch()));
+            actions.add(new Action(Action.Name.TURN_OFF_AC));
+            actions.add(new Action(Action.Name.TURN_OFF_LIGHT));
+            actions.add(new Action(Action.Name.GO_TO_STATION, 2));
+            routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
 
         setNextState(-1);
@@ -529,13 +525,13 @@ public class RoutePlan {
                         if (agent1 != agent && agent1.getType() == Agent.Type.FACULTY && agent1.getAgentMovement().getRoutePlan().isAtDesk()) { // for director inquire to all directors
                             agent1.getAgentMovement().getRoutePlan().setCanUrgent(false); // turn off urgent so faculties will wait for the director
                             actions.add(new Action(Action.Name.GO_TO_FACULTY, agent1.getAgentMovement().getAssignedSeat().getAttractors().getFirst().getPatch()));
-                            actions.add(new Action(Action.Name.ASK_FACULTY, 5));
+                            actions.add(new Action(Action.Name.ASK_FACULTY, 12, 36));
                         }
                     }
                 }
                 else { // otherwise go to chooseAgentAsGoal for which faculty to inquire
                     actions.add(new Action(Action.Name.GO_TO_FACULTY));
-                    actions.add(new Action(Action.Name.ASK_FACULTY, 12, 32));
+                    actions.add(new Action(Action.Name.ASK_FACULTY, 12, 36));
                 }
                 officeState = new State(State.Name.INQUIRE_FACULTY, this, agent, actions);
             }
@@ -543,14 +539,14 @@ public class RoutePlan {
                 actions = new ArrayList<>();
                 // go to chooseAgentAsGoal for which student to inquire
                 actions.add(new Action(Action.Name.GO_TO_STUDENT));
-                actions.add(new Action(Action.Name.ASK_STUDENT, 12, 32));
+                actions.add(new Action(Action.Name.ASK_STUDENT, 12, 36));
                 officeState = new State(State.Name.INQUIRE_STUDENT, this, agent, actions);
             }
             case "INQUIRE_GUARD" -> {
                 actions = new ArrayList<>();
                 // go to chooseAgentAsGoal for which guard to inquire
                 actions.add(new Action(Action.Name.GO_TO_GUARD));
-                actions.add(new Action(Action.Name.ASK_GUARD, 12, 40));
+                actions.add(new Action(Action.Name.ASK_GUARD, 12, 32));
                 officeState = new State(State.Name.INQUIRE_GUARD, this, agent, actions);
             }
             case "OPEN_HALLWAY_LIGHTS" -> {

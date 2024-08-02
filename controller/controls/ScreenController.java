@@ -440,7 +440,7 @@ public class ScreenController extends Controller {
     public void initializeEnvironment(Environment environment) {
         GraphicsController.tileSize = backgroundCanvas.getHeight() / simulator.getEnvironment().getRows();
         mapEnvironment();
-//        simulator.spawnInitialAgents(environment);
+        simulator.spawnInitialAgents(environment);
         drawInterface();
     }
 
@@ -485,7 +485,9 @@ public class ScreenController extends Controller {
                 {controlCenter, 38, 59, 107, 125}, {controlCenterCCTV, 26, 37, 107, 125},
                 {dataCenter, 38, 59, 127, 145}, {mesa, 67, 80, 144, 160},
                 {SR1, 67, 79, 94, 101}, {SR2, 67, 79, 85, 92}, {SR3, 67, 79, 48, 55}, {SR4, 67, 79, 39, 46},
-                {LS1, 26, 59, 86, 105}, {LS2, 26, 59, 65, 84}, {LS3, 26, 59, 44, 63}, {LS4, 26, 59, 22, 42},
+//                {LS1, 26, 59, 86, 105}, {LS2, 26, 59, 65, 84}, {LS3, 26, 59, 44, 63},
+                {LS1, 26, 59, 44, 105},
+                {LS4, 26, 59, 22, 42},
                 {researchCenter, 87, 106, 24, 98}, {facultyRoom, 87, 106, 99, 127},
                 {humanExpRoom, 67, 86, 1, 15}, {dataCollectionRoom, 87, 104, 1, 22},
                 {storageRoom, 89, 106, 129, 141}, {clinic, 80, 91, 186, 193}
@@ -523,9 +525,10 @@ public class ScreenController extends Controller {
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR2, "dimSR2"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR3, "dimSR3"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR4, "dimSR4"));
+        /***** Uncomment when done testing *****/
         simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS1, "dimLS1"));
-        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS2, "dimLS2"));
-        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS3, "dimLS3"));
+//        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS2, "dimLS2"));
+//        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS3, "dimLS3"));
         simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS4, "dimLS4"));
         simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(researchCenter, "dimResearchCenter"));
         simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(facultyRoom, "dimFacultyRoom"));
@@ -798,8 +801,9 @@ public class ScreenController extends Controller {
 
                 // Learning Spaces
                 {22, 23, 56},
-//                {43, 23, 56}, {64, 23, 56},
-                {85, 23, 56}, {106, 23, 56},
+                {43, 23, 56},
+//                {64, 23, 56}, {85, 23, 56},
+                {106, 23, 56},
 
                 // Solo Rooms
                 {38, 68, 75}, {47, 68, 75}, {56, 68, 75}, {84, 68, 75}, {93, 68, 75}, {102, 68, 75},
@@ -1497,9 +1501,13 @@ public class ScreenController extends Controller {
                 {42, 7},
 
                 // Learning Spaces
-                {28, 35}, {50, 25},
-                {27, 55}, {50, 48}, {50, 56},
-                {27, 78}, {47, 70},
+                {28, 35},
+                {50, 25},
+                {27, 55},
+                {50, 48},
+                {50, 56},
+                {27, 78},
+                {47, 70},
                 {27, 99}, {47, 91},
 
                 // Control Center
@@ -1543,19 +1551,10 @@ public class ScreenController extends Controller {
         for (Object[] range : airconRanges) {
             int row = (int) range[0];
             int column = (int) range[1];
-            if ((row != 28 && column != 35)
-                    || (row != 50 && column != 25)
-                    || (row != 50 && column != 48)
-                    || (row != 50 && column != 56))
-                aircons.add(environment.getPatch(row, column));
+            aircons.add(environment.getPatch(row, column));
         }
 
         AirconMapper.draw(aircons, false);
-
-        List<Patch> aircons1 = new ArrayList<>();
-        aircons1.add(environment.getPatch(93, 9));
-        AirconMapper.draw(aircons1, true);
-
 
         /* Original Layout: Windows and Blinds */
         List<Patch> glass = new ArrayList<>(), southFacultyClosedBlinds = new ArrayList<>(),
@@ -2857,7 +2856,8 @@ public class ScreenController extends Controller {
                 {controlCenter, 38, 59, 107, 125}, {controlCenterCCTV, 26, 37, 107, 125},
                 {dataCenter, 38, 59, 127, 145}, {mesa, 67, 80, 144, 160},
                 {SR1, 67, 79, 94, 101}, {SR2, 67, 79, 85, 92}, {SR3, 67, 79, 48, 55}, {SR4, 67, 79, 39, 46},
-                {LS1, 26, 59, 86, 105}, {LS2, 26, 59, 65, 84}, {LS3, 26, 59, 44, 63}, {LS4, 26, 59, 22, 42},
+                {LS1, 26, 59, 86, 105},
+                {LS2, 26, 59, 65, 84}, {LS3, 26, 59, 44, 63}, {LS4, 26, 59, 22, 42},
                 {RC1, 87, 106, 24, 37}, {RC2, 87, 106, 39, 52}, {RC3, 87, 106, 54, 67}, {RC4, 87, 106, 69, 82},
                 {FR1, 87, 106, 84, 97}, {FR2, 87, 106, 99, 112}, {FR3, 87, 106, 114, 127},
                 {humanExpRoom, 67, 86, 1, 15}, {dataCollectionRoom, 87, 104, 1, 22},

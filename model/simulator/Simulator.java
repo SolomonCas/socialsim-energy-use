@@ -3,10 +3,7 @@ package com.socialsim.model.simulator;
 import java.io.PrintWriter;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -15,6 +12,7 @@ import com.socialsim.controller.controls.ScreenController;
 import com.socialsim.model.core.agent.*;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
+import com.socialsim.model.core.environment.patchfield.LearningSpace;
 import com.socialsim.model.core.environment.patchfield.PatchField;
 import com.socialsim.model.core.environment.patchobject.Amenity;
 import com.socialsim.model.core.environment.patchobject.passable.elevator.Elevator;
@@ -91,31 +89,35 @@ public class Simulator {
     public static int currentWaterDispenserInteractionCount = 0;
 
     // Total Wattage Count
-    public static float totalWattageCount = 0;
+    public static float totalWattageCount = 0.0f;
+    public static float miscWattageCount = 12.5f;
+
+    public static int currentAirconChangeTempInteraction = 0;
+
+    public static float currentPowerConsumption = 0.0f;
 
     //Aircon
-    public static float airconWattage = 20.0F;
-    public static float airconWattageActive = 2800.0F;
+    public static float airconWattage = 0.7F;
+    public static float airconWattageActive = 40.5f;
     //Light
-    public static float lightWattage = 15.0F;
+    public static float lightWattage = 0.7F;
 
     //Fridge
-    public static float fridgeWattage = 0.6F;
-    public static float fridgeWattageInUse = 1.3F;
-    public static float fridgeWattageActive = 140.0F;
-    public static float fridgeWattageActiveHigh = 0.0F;
+    public static float fridgeWattage = 0.1F;
+    public static float fridgeWattageInUse = 0.1F;
+    public static float fridgeWattageActive = 1.3F;
     //Water Dispenser
-    public static float waterDispenserWattage = 0.7F;
-    public static float waterDispenserWattageInUse = 6.8F;
-    public static float waterDispenserWattageActive= 76.0F;
-    public static float waterDispenserWattageActiveHigh =  730.2F;
+    public static float waterDispenserWattage = 0.1F;
+    public static float waterDispenserWattageInUse = 0.1F;
+    public static float waterDispenserWattageActive= 0.5F;
+    public static float waterDispenserWattageActiveHigh =  4.3f;
 
     //Monitor
-    public static float monitorWattage = 16.0F;
+    public static float monitorWattage = 0.1F;
 
     //COFFEE
-    public static float coffeeMakerWattageLow = 28.0F;
-    public static float coffeeMakerWattageHigh = 140.0F;
+    public static float coffeeMakerWattageLow = 0.4f;
+    public static float coffeeMakerWattageHigh = 12.1F;
 
     // Average Interaction Duration
     public static float averageNonverbalDuration = 0;
@@ -155,9 +157,9 @@ public class Simulator {
     public static int currentGuardGuardCount = 0;
 
     // AGENT CHANCES
-    public static double greenChance = 0.1;
-    public static double nonGreenChance = 0.8;
-    public static double neutralChance = 0.1;
+    public static double greenChance = 0.74;
+    public static double nonGreenChance = 0.11;
+    public static double neutralChance = 0.15;
 
     public static int studentNum = 6;
     public static int facultyNum = 1;
@@ -194,6 +196,8 @@ public class Simulator {
     // WATTAGE COUNT
 
     public static float[] compiledTotalWattageCount;
+    public static float[] compiledCurrentPowerConsumption;
+    public static int[] compiledCurrentAirconChangeTempInteraction;
 
     // Average Interaction Duration
     public static float[] compiledAverageNonverbalDuration;
@@ -236,7 +240,7 @@ public class Simulator {
     /** Patch Count **/
     public static int[][] currentPatchCount;
 
-
+    public static Set<Monitor> countedMonitors = new HashSet<>();
 
 
 
@@ -272,8 +276,6 @@ public class Simulator {
                         try {
                             updateEnvironment(environment, currentTick, this.time);
                             updateAgentsInEnvironment(environment, currentTick, this.time);
-                            environment.tempChanger();
-                            runWattageCount(currentTick);
                             spawnAgent(environment, this.time, currentTick);
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -283,7 +285,7 @@ public class Simulator {
                         this.time.tick();
                         Thread.sleep(SimulationTime.SLEEP_TIME_MILLISECONDS.get());
 
-                        if (this.time.getTime().equals(LocalTime.of(8,30,5))) {
+                        if (this.time.getTime().equals(LocalTime.of(20,0))) {
                             ((ScreenController) Main.mainScreenController).playAction();
                             break;
                         }
@@ -312,11 +314,13 @@ public class Simulator {
 
 
     /** Agents **/
-    // Sets where agents spawn and can set what will be their assigned seat
+    public static List<Integer> researchtables = new LinkedList<Integer>(List.of(3));
+    public static List<Integer> learningtables = new LinkedList<Integer>(List.of(0,1,2,3,8,9,10,11));
+
     private void spawnAgent(Environment environment, SimulationTime time, long currentTick) {
 
         // Every 20 seconds change elev entrance
-        if ((currentTick + 5L) / 4L == 0L) {
+        if ((currentTick + 5L) % 4L == 0L) {
             if (elevIndex < environment.getElevators().size() - 1) {
                 elevIndex++;
             }
@@ -375,7 +379,13 @@ public class Simulator {
                     break;
                 }
                 else if (time.getTime().isAfter(agent.getTimeIn()) && agent.getType() == Agent.Type.STUDENT) {
-                    agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), team, null));
+                    if (!researchtables.isEmpty()) {
+                        agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), team, environment.getResearchTables().get(researchtables.getFirst()).getResearchChairs().getFirst()));
+                        researchtables.removeFirst();
+                    }
+                    else {
+                        agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), team, null));
+                    }
                     environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
                     currentStudentCount++;
                     // System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
@@ -397,45 +407,14 @@ public class Simulator {
 
     public void spawnInitialAgents(Environment environment) {
         environment.createInitialAgentDemographics(greenChance, nonGreenChance, neutralChance, studentNum, facultyNum, teamNum);
-        Agent student = environment.getAgents().get(0);
-
-
-        /***** TODO: Comment out all below when done testing *****/
-        student.setAgentMovement(new AgentMovement(environment.getPatch(92,3), student, 1.27, environment.getPatch(92,3).getPatchCenterCoordinates(), 0, environment.getDataCollTables().getFirst().getDataCollChairs().get(0)));
-        environment.getAgentPatchSet().add(student.getAgentMovement().getCurrentPatch());
-        currentStudentCount++;
-        Agent.studentCount++;
-        Agent.agentCount++;
-
-        Agent student1 = environment.getAgents().get(1);
-        student1.setAgentMovement(new AgentMovement(environment.getPatch(92,4), student1, 1.27, environment.getPatch(92,4).getPatchCenterCoordinates(),0, environment.getDataCollTables().getFirst().getDataCollChairs().get(1)));
-        environment.getAgentPatchSet().add(student1.getAgentMovement().getCurrentPatch());
-        currentStudentCount++;
-        Agent.studentCount++;
-        Agent.agentCount++;
-
-        Agent student2 = environment.getAgents().get(2);
-        student2.setAgentMovement(new AgentMovement(environment.getPatch(92,5), student2, 1.27, environment.getPatch(92,5).getPatchCenterCoordinates(),0, environment.getDataCollTables().getFirst().getDataCollChairs().get(2)));
-        environment.getAgentPatchSet().add(student2.getAgentMovement().getCurrentPatch());
-        currentStudentCount++;
-        Agent.studentCount++;
-        Agent.agentCount++;
-
-        Agent student3 = environment.getAgents().get(3);
-        student3.setAgentMovement(new AgentMovement(environment.getPatch(92,6), student3, 1.27, environment.getPatch(92,6).getPatchCenterCoordinates(), 0, environment.getDataCollTables().getFirst().getDataCollChairs().get(3)));
-        environment.getAgentPatchSet().add(student3.getAgentMovement().getCurrentPatch());
-        currentStudentCount++;
-        Agent.studentCount++;
-        Agent.agentCount++;
 
     }
 
     public static void updateEnvironment (Environment environment, long currentTick, SimulationTime time) {
-        if (currentTick % 12 == 0) {
-            System.out.println(environment.getAircons().getLast().getRoomTemp());
-        }
         // System.out.println("Number of used amenities: " + environment.getUsedAmenities().size());
         // Change to night
+        currentPowerConsumption = miscWattageCount;
+        totalWattageCount += miscWattageCount * 5 / 3600;
         if (time.getTime().isAfter(LocalTime.of(16,30))) {
             for (WindowBlinds windowBlinds : environment.getWindowBlinds()) {
                 if (windowBlinds.isOpened()) {
@@ -444,11 +423,32 @@ public class Simulator {
                 }
             }
         }
+
+        if (time.getTime().equals(LocalTime.of(10,0))) {
+            for (Aircon aircon : environment.getAircons()) {
+                if (!aircon.isTurnedOn() && aircon.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("dimLS1")) {
+                    aircon.setOn(true);
+                    aircon.setAirconTemp(19);
+                }
+            }
+
+            for (Light light : environment.getLights()) {
+                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                    if (attractor.getPatch().getPatchField().getKey().equals(LearningSpace.class) &&
+                            attractor.getPatch().getPatchField().getValue().equals("dimLS1")) {
+                        light.setOn(true);
+                        break;
+                    }
+                }
+            }
+//            environment.updatePatchfieldVariation(patchField, false);
+        }
     }
 
     public static void updateAgentsInEnvironment(Environment environment, long currentTick, SimulationTime time) throws InterruptedException {
         moveAll(environment, currentTick, time);
-
+        environment.tempChanger();
+        runWattageCount(currentTick, environment);
         // Current Agent Count Per Type
         compiledCurrentDirectorCount[(int) currentTick] = currentDirectorCount;
         compiledCurrentFacultyCount[(int) currentTick] = currentFacultyCount;
@@ -477,9 +477,11 @@ public class Simulator {
         compiledCurrentFridgeInteractionCount[(int) currentTick] = currentFridgeInteractionCount;
         compiledCurrentWaterDispenserInteractionCount[(int) currentTick] = currentWaterDispenserInteractionCount;
 
+        compiledCurrentAirconChangeTempInteraction[(int) currentTick] = currentAirconChangeTempInteraction;
+
         //Wattage Count
-//        compiledCurrentWattageCount[(int) currentTick] = currentWattageCount;
-//        compiledTotalWattageCount[(int) currentTick] = totalWattageCount;
+        compiledCurrentPowerConsumption[(int) currentTick] = currentPowerConsumption;
+        compiledTotalWattageCount[(int) currentTick] = totalWattageCount;
 
         // Average Interaction Duration
         compiledAverageNonverbalDuration[(int) currentTick] = averageNonverbalDuration;
@@ -1597,6 +1599,7 @@ public class Simulator {
                 }
                 agentMovement.setUsingAppliance(true);
                 totalWattageCount+= ((waterDispenserWattageInUse * 5) / 3600);
+                currentPowerConsumption += waterDispenserWattageInUse;
 //                 System.out.println("getting water wattage: "+ totalWattageCount);
             }
             else if (state.getName() == State.Name.REFRIGERATOR && action.getName() == Action.Name.GETTING_FOOD) {
@@ -1607,12 +1610,14 @@ public class Simulator {
                 }
                 agentMovement.setUsingAppliance(true);
                 totalWattageCount += ((fridgeWattageInUse * 5) / 3600);
-                // System.out.println("getting fridge wattage: "+ totalWattageCount);
+                currentPowerConsumption += fridgeWattageInUse;
             }
             else if (state.getName() == State.Name.COFFEE && action.getName() == Action.Name.MAKE_COFFEE) {
                 if(coffeeMakerWattageLow < coffeeMakerWattageHigh) {
                     agentMovement.setUsingAppliance(true);
-                    totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(coffeeMakerWattageLow, coffeeMakerWattageHigh) * 5) / 3600);
+                    float watt = RANDOM_NUMBER_GENERATOR.nextFloat(coffeeMakerWattageLow, coffeeMakerWattageHigh);
+                    totalWattageCount += ((watt * 5) / 3600);
+                    currentPowerConsumption += watt;
                 }
                 // System.out.println("getting fridge wattage: "+ totalWattageCount);
             }
@@ -2328,38 +2333,41 @@ public class Simulator {
                 }
                 else {
                     if (action.getName() == Action.Name.TURN_OFF_LIGHT) {
-                        Pair<PatchField, String> patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField();
-                        for (Light light : environmentInstance.getLights()) {
-                            for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-                                if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
-                                        attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
-                                    light.setOn(false);
-                                    break;
+                        if (agentMovement.getLightsToOpen().isOn()) {
+                            currentLightTurnOffCount++;
+                            Pair<PatchField, String> patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField();
+                            for (Light light : environmentInstance.getLights()) {
+                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
+                                            attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
+                                        light.setOn(false);
+                                        break;
+                                    }
                                 }
                             }
-                        }
 
-                        environmentInstance.updatePatchfieldVariation(patchField, true);
-                        currentLightTurnOffCount++;
+                            environmentInstance.updatePatchfieldVariation(patchField, true);
+                        }
                     }
                     else if (action.getName() == Action.Name.TURN_ON_LIGHT) {
 
                         Pair<PatchField, String> patchField = agentMovement.getLightsToOpen().getAttractors().getFirst().getPatch().getPatchField();
-//                        System.out.println("PatchField Key: " + patchField.getKey().toString());
-//                        System.out.println("PatchField Value: " + patchField.getValue());
-                        for (Light light : environmentInstance.getLights()) {
-//                            System.out.println("Light: " + light.getAttractors().getFirst().getPatch());
-                            for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-                                if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
-                                        attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
-                                    light.setOn(true);
-                                    break;
+
+                        if (!agentMovement.getLightsToOpen().isOn()) {
+                            currentLightTurnOnCount++;
+                            for (Light light : environmentInstance.getLights()) {
+                                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
+                                    if (attractor.getPatch().getPatchField().getKey().toString().equals(patchField.getKey().toString()) &&
+                                            attractor.getPatch().getPatchField().getValue().equals(patchField.getValue())) {
+                                        light.setOn(true);
+                                        break;
+                                    }
                                 }
                             }
+
+                            environmentInstance.updatePatchfieldVariation(patchField, false);
                         }
 
-                        environmentInstance.updatePatchfieldVariation(patchField, false);
-                        currentLightTurnOnCount++;
                     }
 
                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -2492,12 +2500,12 @@ public class Simulator {
                     }
                 }
                 else {
-                    if (action.getName() == Action.Name.TURN_OFF_AC) {
+                    if (action.getName() == Action.Name.TURN_OFF_AC && agentMovement.getAirconToChange().isTurnedOn()) {
                         agentMovement.getAirconToChange().setOn(false);
                         agentMovement.getAirconToChange().getAirconGraphic().change();
                         currentAirconTurnOffCount++;
                     }
-                    else if (action.getName() == Action.Name.TURN_ON_AC) {
+                    else if (action.getName() == Action.Name.TURN_ON_AC && !agentMovement.getAirconToChange().isTurnedOn()) {
                         agentMovement.getAirconToChange().setOn(true);
                         if (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN) {
                             if (agent.getTempPreference() + 2 <= 25) {
@@ -2511,7 +2519,7 @@ public class Simulator {
                         agentMovement.getAirconToChange().getAirconGraphic().change();
                         currentAirconTurnOnCount++;
                     }
-                    else if(action.getName() == Action.Name.SET_AC_TO_COOL || action.getName() == Action.Name.SET_AC_TO_WARM){
+                    else if(action.getName() == Action.Name.SET_AC_TO_COOL || action.getName() == Action.Name.SET_AC_TO_WARM && !agentMovement.getAirconToChange().isTurnedOn()){
                         if (agent.getEnergyProfile() == Agent.EnergyProfile.GREEN) {
                             if (agent.getTempPreference() + 2 <= 25) {
                                 agentMovement.getAirconToChange().setAirconTemp(agent.getTempPreference() + 2);
@@ -2523,6 +2531,7 @@ public class Simulator {
                         }
                         agentMovement.setToCool(false);
                         agentMovement.setToHeat(false);
+                        currentAirconChangeTempInteraction++;
                     }
 
                     if (!agentMovement.getCurrentState().getActions().isEmpty()) {
@@ -4944,8 +4953,8 @@ public class Simulator {
         agent.getAgentGraphic().change();
     }
 
-    Set<Monitor> countedMonitors = new HashSet<>();
-    public void runWattageCount(long currentTick){
+
+    public static void runWattageCount(long currentTick, Environment environment){
         // System.out.println("CURRENT TICK: "+currentTick);
         //PUT RANDOM TIMES OF FLUCTUATION
         //multiplied to 5 since 5 seconds per tick?
@@ -4960,21 +4969,26 @@ public class Simulator {
         for(WaterDispenser dispenser : environment.getWaterDispensers()){
             if(!dispenser.isActiveCycle()){
                 totalWattageCount += ((waterDispenserWattage * 5) / 3600);
+                currentPowerConsumption += waterDispenserWattage;
             }
         }
         for(Refrigerator refrigerator : environment.getRefrigerators()){
             if(!refrigerator.isActiveCycle()){
                 totalWattageCount += ((fridgeWattage * 5) / 3600);
+                currentPowerConsumption += fridgeWattage;
             }
         }
 
         for (Aircon aircon : environment.getAircons()) {
             if (aircon.isTurnedOn() && !aircon.isInActiveCycle() && airconWattage < airconWattageActive) {
                 totalWattageCount+= ((airconWattage * 5) / 3600);
+                currentPowerConsumption += airconWattage;
                 activeAirConCount++;
             }
             else if(aircon.isTurnedOn() && aircon.isInActiveCycle() && airconWattage < airconWattageActive){
-                totalWattageCount+= ((RANDOM_NUMBER_GENERATOR.nextFloat(airconWattage, airconWattageActive) * 5) / 3600);
+                float watts = RANDOM_NUMBER_GENERATOR.nextFloat(airconWattage, airconWattageActive);
+                totalWattageCount+= (watts * 5) / 3600;
+                currentPowerConsumption += watts;
                 activeAirConCount++;
             }
         }
@@ -4982,21 +4996,12 @@ public class Simulator {
         //set current switched on aircon
         currentAirconCount = activeAirConCount;
 
-//        int count = 0;
-//        for (Aircon aircon : environment.getAircons()) {
-//            if (aircon.isTurnedOn()) {
-//                count++;
-//            }
-//        }
-        // // System.out.println("Number of Aircon: " + count);
-
         for (Light light : environment.getLights()) {
             if (light.isOn()) {
                 activeLightCount++;
             }
         }
         currentLightCount = activeLightCount;
-        // System.out.println("Number of Lights: " + activeLightCount);
 
         // Check Monitor in Cubicle
         for (Cubicle cubicle : environment.getCubicles()) {
@@ -5042,7 +5047,7 @@ public class Simulator {
         //TODO: EVERY USE OF REF, COOLNESS LEVEL GOES DOWN BY 1 OR 2
         //ACTIVE CYCLE FOR EVERY REFRIGERATOR
         for(Refrigerator ref : environment.getRefrigerators()){
-            if(fridgeWattageActive <= 0 || fridgeWattageInUse <= 0 || fridgeWattage <= 0 || fridgeWattageActiveHigh <= 0){
+            if(fridgeWattageActive <= 0 || fridgeWattageInUse <= 0 || fridgeWattage <= 0){
                 break;
             }
             //IF REF IS IN ACTIVE CYCLE
@@ -5051,8 +5056,9 @@ public class Simulator {
                 ref.setCoolnessLevel((ref.getCoolnessLevel() + 1));
                 if(ref.getDuration() > 0){
 //                    System.out.println("initial wattage: " + totalWattageCount);
-
-                    totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(fridgeWattage, fridgeWattageActive) * 5) / 3600);
+                    float watt = RANDOM_NUMBER_GENERATOR.nextFloat(fridgeWattage, fridgeWattageActive);
+                    totalWattageCount += (watt * 5) / 3600;
+                    currentPowerConsumption += watt;
 //                    System.out.println("HELLO NAGFLUCTUATE SI FRIDGE. WATTAGE: " + totalWattageCount);
                     ref.setDuration((ref.getDuration() - 1));
                 }
@@ -5091,10 +5097,13 @@ public class Simulator {
                     // Check if in high wattage active cycle
                     if(dispenser.isHighActiveCycle() && dispenser.getWaterLevel() < 80){
                         totalWattageCount += (waterDispenserWattageActiveHigh * 5) / 3600;
+                        currentPowerConsumption += waterDispenserWattageActiveHigh;
                         dispenser.setWaterLevel(dispenser.getWaterLevel() + 1);
 //                        System.out.println("HIGH WATTAGE CYCLE. WATTAGE: " + totalWattageCount);
                     } else if(dispenser.isActiveCycle()){
-                        totalWattageCount += ((RANDOM_NUMBER_GENERATOR.nextFloat(waterDispenserWattage, waterDispenserWattageActive) * 5) / 3600);
+                        float watt = RANDOM_NUMBER_GENERATOR.nextFloat(waterDispenserWattage, waterDispenserWattageActive);
+                        totalWattageCount += ((watt * 5) / 3600);
+                        currentPowerConsumption += watt;
 //                        System.out.println("NORMAL ACTIVE CYCLE. WATTAGE: " + totalWattageCount);
                     }
 //                    System.out.println("HELLO NAGFLUCTUATE SI WATER DISPENSER. WATTAGE: " + totalWattageCount);
@@ -5143,9 +5152,10 @@ public class Simulator {
 
 //        System.out.println("aircon wattage= "+airconWattage);
         totalWattageCount+= ((lightWattage * activeLightCount * 5) / 3600);
+        currentPowerConsumption += lightWattage * activeLightCount;
 
         totalWattageCount+= ((monitorWattage * activeMonitorCount * 5) / 3600);
-
+        currentPowerConsumption += monitorWattage * activeMonitorCount;
     }
     public void replenishStaticVars() {
 
@@ -5243,6 +5253,11 @@ public class Simulator {
         compiledCurrentWaterDispenserInteractionCount = new int[MAX_CURRENT_TICKS];
 
 
+        compiledCurrentAirconChangeTempInteraction = new int[MAX_CURRENT_TICKS];
+        compiledCurrentPowerConsumption = new float[MAX_CURRENT_TICKS];
+        compiledTotalWattageCount = new float [MAX_CURRENT_TICKS];
+
+
 
 
         // Average Interaction Duration
@@ -5292,6 +5307,10 @@ public class Simulator {
     public static void exportToCSV() throws Exception{
         PrintWriter writer = new PrintWriter("Office Simulation Statistics.csv");
         StringBuilder sb = new StringBuilder();
+        sb.append("Energy Consumption");
+        sb.append(",");
+        sb.append("Power Consumption");
+        sb.append(",");
         sb.append("Current Director Count");
         sb.append(",");
         sb.append("Current Faculty Count");
@@ -5319,6 +5338,8 @@ public class Simulator {
         sb.append("Current Aircon Turn On Count");
         sb.append(",");
         sb.append("Current Aircon Turn Off Count");
+        sb.append(",");
+        sb.append("Current Aircon Change Temp Count");
         sb.append(",");
         sb.append("Current Light Turn On Count");
         sb.append(",");
@@ -5363,6 +5384,10 @@ public class Simulator {
         sb.append("Current Guard Guard Count");
         sb.append("\n");
         for (int i = 0; i < MAX_CURRENT_TICKS; i++){
+            sb.append(compiledTotalWattageCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentPowerConsumption[i]);
+            sb.append(",");
             sb.append(compiledCurrentDirectorCount[i]);
             sb.append(",");
             sb.append(compiledCurrentFacultyCount[i]);
@@ -5390,6 +5415,8 @@ public class Simulator {
             sb.append(compiledCurrentAirconTurnOnCount[i]);
             sb.append(",");
             sb.append(compiledCurrentAirconTurnOffCount[i]);
+            sb.append(",");
+            sb.append(compiledCurrentAirconChangeTempInteraction[i]);
             sb.append(",");
             sb.append(compiledCurrentLightTurnOnCount[i]);
             sb.append(",");
