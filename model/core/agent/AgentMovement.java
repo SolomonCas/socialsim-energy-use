@@ -774,7 +774,7 @@ public class AgentMovement {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
                 // if same, check if within the cooling range then do the thermal comfort logic
                 // do thermal comfort logic
-                boolean withinRange = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) <= 1;
+                boolean withinRange = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) <= 2;
                 boolean withinRangeWithACTemp = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()) <= 2;
                 // CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE
                 if (this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange) {

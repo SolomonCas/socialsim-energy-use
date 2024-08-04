@@ -525,10 +525,10 @@ public class ScreenController extends Controller {
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR2, "dimSR2"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR3, "dimSR3"));
         simulator.getEnvironment().getSoloRooms().add(SoloRoom.soloRoomFactory.create(SR4, "dimSR4"));
-        /***** Uncomment when done testing *****/
+        /***** TODO Uncomment when done testing *****/
         simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS1, "dimLS1"));
-//        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS2, "dimLS2"));
-//        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS3, "dimLS3"));
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS2, "dimLS2"));
+        simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS3, "dimLS3"));
         simulator.getEnvironment().getLearningSpaces().add(LearningSpace.learningSpaceFactory.create(LS4, "dimLS4"));
         simulator.getEnvironment().getResearchCenters().add(ResearchCenter.researchCenterFactory.create(researchCenter, "dimResearchCenter"));
         simulator.getEnvironment().getFacultyRooms().add(FacultyRoom.facultyRoomFactory.create(facultyRoom, "dimFacultyRoom"));
@@ -803,7 +803,7 @@ public class ScreenController extends Controller {
                 {22, 23, 56},
                 {43, 23, 56},
                 /***** TODO: Uncomment when done testing *****/
-//                {64, 23, 56}, {85, 23, 56},
+                {64, 23, 56}, {85, 23, 56},
                 {106, 23, 56},
 
                 // Solo Rooms

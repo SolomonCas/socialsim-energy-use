@@ -162,9 +162,9 @@ public class Simulator {
     public static double nonGreenChance = 0.11;
     public static double neutralChance = 0.15;
 
-    public static int studentNum = 6;
-    public static int facultyNum = 1;
-    public static int teamNum = 1;
+    public static int studentNum = 44;
+    public static int facultyNum = 3;
+    public static int teamNum = 10;
     /** COMPILED **/
 
     // Current Agent Count Per Type
