@@ -10,6 +10,9 @@ import java.util.Objects;
 public class Agent extends PatchObject {
 
     // VARIABLES
+    public static int originValue = 19;
+
+
     private static int idCtr = 0;
     public static int agentCount = 0;
     public static int directorCount = 0;
@@ -62,8 +65,13 @@ public class Agent extends PatchObject {
             this.gender = Gender.MALE;
             this.persona = Persona.DIRECTOR;
             this.personaActionGroup = PersonaActionGroup.DIRECTOR;
-            this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
             this.energyProfile = EnergyProfile.GREEN;
+            if (energyProfile.equals(EnergyProfile.GREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(originValue, 26);
+            else if (energyProfile.equals(EnergyProfile.NONGREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19, 23);
+            else
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
         }
 
 
@@ -81,8 +89,13 @@ public class Agent extends PatchObject {
                 this.persona = Persona.APP_FACULTY;
                 this.personaActionGroup = PersonaActionGroup.APP_FACULTY;
             }
-            this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
             this.energyProfile = energyProfile;
+            if (energyProfile.equals(EnergyProfile.GREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(originValue, 26);
+            else if (energyProfile.equals(EnergyProfile.NONGREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19, 23);
+            else
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
         }
 
 
@@ -100,8 +113,13 @@ public class Agent extends PatchObject {
                 this.persona = Persona.EXT_STUDENT;
                 this.personaActionGroup = PersonaActionGroup.EXT_STUDENT;
             }
-            this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
             this.energyProfile = energyProfile;
+            if (energyProfile.equals(EnergyProfile.GREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(originValue, 26);
+            else if (energyProfile.equals(EnergyProfile.NONGREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19, 23);
+            else
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
         }
 
 
@@ -112,8 +130,14 @@ public class Agent extends PatchObject {
             this.ageGroup = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? AgeGroup.FROM_25_TO_54 : AgeGroup.FROM_55_TO_64;
             this.persona = Persona.MAINTENANCE;
             this.personaActionGroup = PersonaActionGroup.MAINTENANCE;
-            this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
+
             this.energyProfile = EnergyProfile.GREEN;
+            if (energyProfile.equals(EnergyProfile.GREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(originValue, 26);
+            else if (energyProfile.equals(EnergyProfile.NONGREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19, 23);
+            else
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
         }
 
 
@@ -123,8 +147,14 @@ public class Agent extends PatchObject {
             this.ageGroup = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean() ? Agent.AgeGroup.FROM_25_TO_54 : Agent.AgeGroup.FROM_55_TO_64;
             this.persona = Agent.Persona.GUARD;
             this.personaActionGroup = PersonaActionGroup.GUARD;
-            this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
+
             this.energyProfile = EnergyProfile.GREEN;
+            if (energyProfile.equals(EnergyProfile.GREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(originValue, 26);
+            else if (energyProfile.equals(EnergyProfile.NONGREEN))
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19, 23);
+            else
+                this.tempPreference = Simulator.RANDOM_NUMBER_GENERATOR.nextInt(19,26);
         }
 
 
@@ -141,6 +171,7 @@ public class Agent extends PatchObject {
         // Assign energy profile based on the random value and probabilities
         if (randomValue < greenProb) {
             return EnergyProfile.GREEN;
+
         } else if (randomValue < greenProb + nonGreenProb) {
             return EnergyProfile.NONGREEN;
         } else {

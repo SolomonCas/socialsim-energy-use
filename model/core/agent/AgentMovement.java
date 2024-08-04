@@ -705,8 +705,18 @@ public class AgentMovement {
                 if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) &&
                         this.currentPatch.getPatchField().getValue().equals(distancesToAirconEntry.getKey().getPatch().getPatchField().getValue())) {
                     // if same, check if within the cooling range then do the thermal comfort logic
-                    boolean withinRange = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) <= 2;
-                    boolean withinRangeWithACTemp = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()) <= 2;
+                    boolean withinRange = true;
+                    boolean withinRangeWithACTemp = true;
+                    if (this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN) {
+                        int originValue = 22;
+                        withinRange = ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() <= 25 && ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() >= originValue;
+                        withinRangeWithACTemp = ((Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp() <= 25 && ((Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp() >= originValue;
+                    }
+                    else if (this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN) {
+                        withinRange = ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() >= 19 && ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() <= 22;
+                        withinRangeWithACTemp = ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() >= 19 && ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() <= 22;
+                    }
+
                     // do thermal comfort logic
                     // CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE
                     if (this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange) {
@@ -774,8 +784,17 @@ public class AgentMovement {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
                 // if same, check if within the cooling range then do the thermal comfort logic
                 // do thermal comfort logic
-                boolean withinRange = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) <= 2;
-                boolean withinRangeWithACTemp = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()) <= 2;
+                boolean withinRange = true;
+                boolean withinRangeWithACTemp = true;
+                if (this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN) {
+                    int originValue = 22;
+                    withinRange = ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() <= 25 && ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() >= originValue;
+                    withinRangeWithACTemp = ((Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp() <= 25 && ((Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp() >= originValue;
+                }
+                else if (this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN) {
+                    withinRange = ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() >= 19 && ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() <= 22;
+                    withinRangeWithACTemp = ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() >= 19 && ((Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() <= 22;
+                }
                 // CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE
                 if (this.parent.getTempPreference() < ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange) {
                     //IF ROOM TEMP IS LOWER, COMPARE TEMP PREFERENCE TO AIRCON TEMP
