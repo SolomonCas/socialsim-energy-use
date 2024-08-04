@@ -158,8 +158,8 @@ public class Simulator {
     public static int currentGuardGuardCount = 0;
 
     // AGENT CHANCES
-    public static double greenChance = 0.74;
-    public static double nonGreenChance = 0.11;
+    public static double greenChance = 0.75;
+    public static double nonGreenChance = 0.10;
     public static double neutralChance = 0.15;
 
     public static int studentNum = 44;
