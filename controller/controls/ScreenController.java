@@ -1515,7 +1515,8 @@ public class ScreenController extends Controller {
                 {41, 118}, {50, 118},
 
                 // Data Center
-                {41, 132}, {41, 139},
+                {41, 132},
+//                {41, 139},
 
                 // Hallway
                 {72, 24}, {72, 62}, {72, 108}, {72, 120},
@@ -1556,6 +1557,10 @@ public class ScreenController extends Controller {
         }
 
         AirconMapper.draw(aircons, false);
+
+        List<Patch> aircon1 = new ArrayList<>();
+        aircon1.add(environment.getPatch(41, 139));
+        AirconMapper.draw(aircon1, true);
 
         /* Original Layout: Windows and Blinds */
         List<Patch> glass = new ArrayList<>(), southFacultyClosedBlinds = new ArrayList<>(),
@@ -2693,7 +2698,8 @@ public class ScreenController extends Controller {
                 {78, 138}, {98, 131},
 
                 // Data Center
-                {47, 128}, {47, 137},
+                {47, 128},
+//                {47, 137},
 
                 // Hallway
                 {59, 22}, {59, 62}, {59, 99}, {59, 111},
@@ -2734,6 +2740,10 @@ public class ScreenController extends Controller {
         }
 
         AirconMapper.draw(aircons, false);
+
+        List<Patch> aircon1 = new ArrayList<>();
+        aircon1.add(environment.getPatch(41, 137));
+        AirconMapper.draw(aircon1, true);
 
 
         /* Layout A: Windows and Blinds */
@@ -3935,7 +3945,8 @@ public class ScreenController extends Controller {
                 {41, 118}, {50, 118},
 
                 // Data Center
-                {41, 132}, {41, 139},
+                {41, 132},
+//                {41, 139},
 
                 // Hallway
                 {72, 22}, {72, 62}, {72, 108}, {72, 120},
@@ -3976,6 +3987,10 @@ public class ScreenController extends Controller {
         }
 
         AirconMapper.draw(aircons, false);
+
+        List<Patch> aircon1 = new ArrayList<>();
+        aircon1.add(environment.getPatch(41, 139));
+        AirconMapper.draw(aircon1, true);
 
 
         /* Layout B: Windows and Blinds */

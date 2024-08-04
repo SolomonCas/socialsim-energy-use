@@ -1360,7 +1360,6 @@ public class Environment extends BaseObject implements Serializable {
                     }
                 }
             }
-            System.out.println("is it active? "+ aircon.isInActiveCycle());
         }
     }
 

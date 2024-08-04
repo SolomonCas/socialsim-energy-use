@@ -90,7 +90,7 @@ public class Simulator {
 
     // Total Wattage Count
     public static float totalWattageCount = 0.0f;
-    public static float miscWattageCount = 12.5f;
+    public static float miscWattageCount = 11.8f;
 
     public static int currentAirconChangeTempInteraction = 0;
 
