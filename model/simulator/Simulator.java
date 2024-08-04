@@ -125,7 +125,8 @@ public class Simulator {
     public static float averageExchangeDuration = 0;
 
 
-    // Current Team Count
+    // Current Interaction Count
+    public static int currentTotalSocialInteractionCountPer5Mins;
 
 
     // Current Director to ____ Interaction Count
@@ -206,7 +207,7 @@ public class Simulator {
 
 
     // Current Team Count
-
+    public static int[] compiledTotalSocialInteractionper5min;
 
     // Current Director to ____ Interaction Count
     public static int[] compiledCurrentDirectorFacultyCount;
@@ -314,8 +315,6 @@ public class Simulator {
 
 
     /** Agents **/
-    public static List<Integer> researchtables = new LinkedList<Integer>(List.of(3));
-    public static List<Integer> learningtables = new LinkedList<Integer>(List.of(0,1,2,3,8,9,10,11));
 
     private void spawnAgent(Environment environment, SimulationTime time, long currentTick) {
 
@@ -379,13 +378,7 @@ public class Simulator {
                     break;
                 }
                 else if (time.getTime().isAfter(agent.getTimeIn()) && agent.getType() == Agent.Type.STUDENT) {
-                    if (!researchtables.isEmpty()) {
-                        agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), team, environment.getResearchTables().get(researchtables.getFirst()).getResearchChairs().getFirst()));
-                        researchtables.removeFirst();
-                    }
-                    else {
-                        agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), team, null));
-                    }
+                    agent.setAgentMovement(new AgentMovement(spawner.getPatch(), agent, 1.27, spawner.getPatch().getPatchCenterCoordinates(), team, null));
                     environment.getAgentPatchSet().add(agent.getAgentMovement().getCurrentPatch());
                     currentStudentCount++;
                     // System.out.println("my energy profile is: "+ agent.getEnergyProfile() + "AGENT: " + agent.getType());
@@ -413,6 +406,9 @@ public class Simulator {
     public static void updateEnvironment (Environment environment, long currentTick, SimulationTime time) {
         // System.out.println("Number of used amenities: " + environment.getUsedAmenities().size());
         // Change to night
+        if (currentTick % 60 == 0) {
+            currentTotalSocialInteractionCountPer5Mins = 0;
+        }
         currentPowerConsumption = miscWattageCount;
         totalWattageCount += miscWattageCount * 5 / 3600;
         if (time.getTime().isAfter(LocalTime.of(16,30))) {
@@ -422,26 +418,6 @@ public class Simulator {
                     windowBlinds.getWindowBlindsGraphic().change();
                 }
             }
-        }
-
-        if (time.getTime().equals(LocalTime.of(10,0))) {
-            for (Aircon aircon : environment.getAircons()) {
-                if (!aircon.isTurnedOn() && aircon.getAttractors().getFirst().getPatch().getPatchField().getValue().equals("dimLS1")) {
-                    aircon.setOn(true);
-                    aircon.setAirconTemp(19);
-                }
-            }
-
-            for (Light light : environment.getLights()) {
-                for (Amenity.AmenityBlock attractor : light.getAttractors()) {
-                    if (attractor.getPatch().getPatchField().getKey().equals(LearningSpace.class) &&
-                            attractor.getPatch().getPatchField().getValue().equals("dimLS1")) {
-                        light.setOn(true);
-                        break;
-                    }
-                }
-            }
-//            environment.updatePatchfieldVariation(patchField, false);
         }
     }
 
@@ -489,7 +465,8 @@ public class Simulator {
         compiledAverageExchangeDuration[(int) currentTick] = averageExchangeDuration;
 
 
-        // Current Team Count
+        // Current Total Social Interaction per 5 min
+        compiledTotalSocialInteractionper5min [(int) currentTick] = currentTotalSocialInteractionCountPer5Mins;
 
 
         // Current Director to ____ Interaction Count
@@ -653,12 +630,6 @@ public class Simulator {
 
                 moveOne(agent, currentTick, time);
             } catch (Throwable ex) {
-//                System.out.println("Error in moveAll");
-//                System.out.println("Type: " + agent.getType() + " Persona: " + agent.getPersona()
-//                        + " State: " + agent.getAgentMovement().getCurrentState().getName() +
-//                        " Action: " + agent.getAgentMovement().getCurrentAction().getName());
-//                System.out.println("Team: " + agent.getTeam());
-//                System.out.println("Energy Profile: " + agent.getEnergyProfile().name());
                 if (time.getTime().isAfter(agent.getTimeOut()) || (Agent.Type.STUDENT == agent.getType() && time.getTime().equals(LocalTime.of(19,0))) ||
                         (Agent.Type.MAINTENANCE == agent.getType() && time.getTime().equals(LocalTime.of(20,0))) ||
                         (Agent.Type.FACULTY == agent.getType() && time.getTime().equals(LocalTime.of(22,0))) ||
@@ -937,38 +908,37 @@ public class Simulator {
                                 }
                             }
 
-                            /***** TODO: Uncomment when done testing *****/
 
-//                            if (agentMovement.airconChecker() && agentMovement.thermalComfortCoolDown()) {
-//                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
-//                                agentMovement.setCurrentState(agentMovement.getStateIndex());
-//                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-//                                agentMovement.setActionIndex(0); // JIC if needed
-//                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
-//                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                    agentMovement.resetGoal();
-//                                    agentMovement.getRoutePlan().setAtDesk(false);
-//                                }
-//                                else {
-//                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
-//                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
-//                                    agentMovement.setStateIndex(0); // JIC if needed
-//                                    agentMovement.setActionIndex(0); // JIC if needed to set the new action
-//                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
-//                                    agentMovement.resetGoal();
-//                                }
-//
-//                            }
-//                            if (!agentMovement.visualComfortChecker(time) && agentMovement.visualComfortCoolDown()) {
-//                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
-//                                agentMovement.setCurrentState(agentMovement.getStateIndex());
-//                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
-//                                agentMovement.setActionIndex(0); // JIC if needed
-//                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
-//                                agentMovement.resetGoal();
-//                                agentMovement.getRoutePlan().setAtDesk(false);
-//                            }
+                            if (agentMovement.airconChecker() && agentMovement.thermalComfortCoolDown()) {
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_THERMAL_COMFORT", agent, environmentInstance));
+                                agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                if (!agentMovement.getCurrentState().getActions().isEmpty()) {
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.resetGoal();
+                                    agentMovement.getRoutePlan().setAtDesk(false);
+                                }
+                                else {
+                                    agentMovement.getRoutePlan().getCurrentRoutePlan().remove(agentMovement.getStateIndex()); // removing finished state
+                                    agentMovement.setCurrentState(0); // JIC if needed to setting the next current state based on the agent's route plan
+                                    agentMovement.setStateIndex(0); // JIC if needed
+                                    agentMovement.setActionIndex(0); // JIC if needed to set the new action
+                                    agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                    agentMovement.setDuration(agentMovement.getCurrentAction().getDuration()); // setting the new duration of the action
+                                    agentMovement.resetGoal();
+                                }
+
+                            }
+                            if (!agentMovement.visualComfortChecker(time) && agentMovement.visualComfortCoolDown()) {
+                                agentMovement.getRoutePlan().getCurrentRoutePlan().add(agentMovement.getStateIndex(), agentMovement.getRoutePlan().addUrgentRoute("FIX_VISUAL_COMFORT", agent, environmentInstance));
+                                agentMovement.setCurrentState(agentMovement.getStateIndex());
+                                agentMovement.setStateIndex(agentMovement.getStateIndex()); // JIC if needed
+                                agentMovement.setActionIndex(0); // JIC if needed
+                                agentMovement.setCurrentAction(agentMovement.getCurrentState().getActions().get(agentMovement.getActionIndex()));
+                                agentMovement.resetGoal();
+                                agentMovement.getRoutePlan().setAtDesk(false);
+                            }
                         }
                     }
                 }
@@ -4980,16 +4950,17 @@ public class Simulator {
         }
 
         for (Aircon aircon : environment.getAircons()) {
-            if (aircon.isTurnedOn() && !aircon.isInActiveCycle() && airconWattage < airconWattageActive) {
-                totalWattageCount+= ((airconWattage * 5) / 3600);
-                currentPowerConsumption += airconWattage;
+            if (aircon.isTurnedOn() && airconWattage < airconWattageActive) {
                 activeAirConCount++;
-            }
-            else if(aircon.isTurnedOn() && aircon.isInActiveCycle() && airconWattage < airconWattageActive){
-                float watts = RANDOM_NUMBER_GENERATOR.nextFloat(airconWattage, airconWattageActive);
-                totalWattageCount+= (watts * 5) / 3600;
-                currentPowerConsumption += watts;
-                activeAirConCount++;
+                if (!aircon.isInActiveCycle()) {
+                    totalWattageCount+= ((airconWattage * 5) / 3600);
+                    currentPowerConsumption += airconWattage;
+                }
+                else {
+                    float watts = RANDOM_NUMBER_GENERATOR.nextFloat(airconWattage, airconWattageActive);
+                    totalWattageCount+= (watts * 5) / 3600;
+                    currentPowerConsumption += watts;
+                }
             }
         }
 
@@ -5192,7 +5163,8 @@ public class Simulator {
         averageExchangeDuration = 0;
 
 
-        // Current Team Count
+        // Current Total Social Interaction Count per 5 mins
+        currentTotalSocialInteractionCountPer5Mins = 0;
 
 
         // Current Director to ____ Interaction Count
@@ -5267,7 +5239,7 @@ public class Simulator {
 
 
         // Current Team Count
-
+        compiledTotalSocialInteractionper5min = new int[MAX_CURRENT_TICKS];
 
         // Current Director to ____ Interaction Count
         compiledCurrentDirectorFacultyCount = new int[MAX_CURRENT_TICKS];
@@ -5310,6 +5282,8 @@ public class Simulator {
         sb.append("Energy Consumption");
         sb.append(",");
         sb.append("Power Consumption");
+        sb.append(",");
+        sb.append("Total Social Interaction per 5 mins");
         sb.append(",");
         sb.append("Current Director Count");
         sb.append(",");
@@ -5387,6 +5361,8 @@ public class Simulator {
             sb.append(compiledTotalWattageCount[i]);
             sb.append(",");
             sb.append(compiledCurrentPowerConsumption[i]);
+            sb.append(",");
+            sb.append(compiledTotalSocialInteractionper5min[i]);
             sb.append(",");
             sb.append(compiledCurrentDirectorCount[i]);
             sb.append(",");

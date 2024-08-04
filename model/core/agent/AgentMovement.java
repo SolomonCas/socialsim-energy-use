@@ -251,6 +251,7 @@ public class AgentMovement {
                     CHANCE_EXCHANGE2 = ((double) environment.getInteractionTypeChances().get(agent.getPersonaActionGroup().getID()).get(agent.getAgentMovement().getCurrentAction().getName().getID()).get(2)) / 100;
             if (CHANCE < (CHANCE_NONVERBAL1 + CHANCE_NONVERBAL2) / 2){
                 Simulator.currentNonverbalCount++;
+                Simulator.currentTotalSocialInteractionCountPer5Mins++;
                 this.setInteractionType(InteractionType.NON_VERBAL);
                 agent.getAgentMovement().setInteractionType(InteractionType.NON_VERBAL);
                 interactionMean = getEnvironment().getNonverbalMean();
@@ -258,6 +259,7 @@ public class AgentMovement {
             }
             else if (CHANCE < (CHANCE_NONVERBAL1 + CHANCE_NONVERBAL2 + CHANCE_COOPERATIVE1 + CHANCE_COOPERATIVE2) / 2){
                 Simulator.currentCooperativeCount++;
+                Simulator.currentTotalSocialInteractionCountPer5Mins++;
                 this.setInteractionType(InteractionType.COOPERATIVE);
                 agent.getAgentMovement().setInteractionType(InteractionType.COOPERATIVE);
                 interactionMean = getEnvironment().getCooperativeMean();
@@ -265,6 +267,7 @@ public class AgentMovement {
             }
             else if (CHANCE < (CHANCE_NONVERBAL1 + CHANCE_NONVERBAL2 + CHANCE_COOPERATIVE1 + CHANCE_COOPERATIVE2 + CHANCE_EXCHANGE1 + CHANCE_EXCHANGE2) / 2){
                 Simulator.currentExchangeCount++;
+                Simulator.currentTotalSocialInteractionCountPer5Mins++;
                 this.setInteractionType(InteractionType.EXCHANGE);
                 agent.getAgentMovement().setInteractionType(InteractionType.EXCHANGE);
                 interactionMean = getEnvironment().getExchangeMean();
@@ -645,7 +648,7 @@ public class AgentMovement {
     }
 
     public boolean airconChecker(){
-        System.out.println("@airconChecker");
+//        System.out.println("@airconChecker");
         HashMap<Amenity.AmenityBlock, Double> distancesToAircon = new HashMap<>();
         List<Map.Entry<Amenity.AmenityBlock, Double> > list = new LinkedList<Map.Entry<Amenity.AmenityBlock, Double> >();
         isToCool = false;
@@ -699,7 +702,8 @@ public class AgentMovement {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAirconEntry : sortedDistances.entrySet()) {
                 // check if ac is in the same room
                 PatchField patchField = distancesToAirconEntry.getKey().getPatch().getPatchField().getKey();
-                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(distancesToAirconEntry.getKey().getPatch().getPatchField().getValue())) {
+                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) &&
+                        this.currentPatch.getPatchField().getValue().equals(distancesToAirconEntry.getKey().getPatch().getPatchField().getValue())) {
                     // if same, check if within the cooling range then do the thermal comfort logic
                     boolean withinRange = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()) <= 2;
                     boolean withinRangeWithACTemp = Math.abs(this.parent.getTempPreference() - ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()) <= 2;
@@ -714,7 +718,7 @@ public class AgentMovement {
                                 //TODO: PASS THE CHOSEN AIRCON TO AIRCON VARIABLE //DONE
                                 airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
                                 isToCool = true;
-                                System.out.println("GUSTO KO BABAAN");
+//                                System.out.println("GUSTO KO BABAAN");
                                 return true;
                             }
                             else {
@@ -726,20 +730,19 @@ public class AgentMovement {
                         }
                         else{
                             //IF IT'S THE SAME, DO NOTHING
-                            this.thermalComfortCoolDown();
                             return false;
                         }
                     }
                     //CHECKS WHETHER AGENT TEMP PREFERENCE IS WITHIN TO ROOM TEMP RANGE
-                    else if (this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp()){
+                    else if (this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getRoomTemp() && !withinRange){
                         //IF ROOM TEMP IS LOWER, COMPARE TEMP PREFERENCE TO AIRCON TEMP
-                        if(this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp()){
+                        if(this.parent.getTempPreference() > ( (Aircon) distancesToAirconEntry.getKey().getParent()).getAirconTemp() && !withinRangeWithACTemp){
                             if(((Aircon) distancesToAirconEntry.getKey().getParent()).isTurnedOn()){
                                 //IF ITS NOT THE SAME, HIGHER THE AIRCON TEMP
                                 //TODO: PASS THE CHOSEN AIRCON TO AIRCON VARIABLE //DONE
                                 airconToChange = (Aircon) distancesToAirconEntry.getKey().getParent();
                                 isToHeat = true;
-                                System.out.println("GUSTO KO TAASAN");
+//                                System.out.println("GUSTO KO TAAS.AN");
                                 return true;
                             }
                             else {
@@ -753,13 +756,11 @@ public class AgentMovement {
                         }
                         else{
                             //IF IT'S THE SAME, DO NOTHING
-                            this.thermalComfortCoolDown();
                             return false;
                         }
                     }
                     else {
                         //IF IT'S THE SAME, DO NOTHING
-                        this.thermalComfortCoolDown();
                         return false;
                     }
 
@@ -797,7 +798,6 @@ public class AgentMovement {
                     }
                     else{
                         //IF IT'S THE SAME, DO NOTHING
-                        this.thermalComfortCoolDown();
                         return false;
                     }
                 }
@@ -824,13 +824,11 @@ public class AgentMovement {
                     }
                     else{
                         //IF IT'S THE SAME, DO NOTHING
-                        this.thermalComfortCoolDown();
                         return false;
                     }
                 }
                 else {
                     //IF IT'S THE SAME, DO NOTHING
-                    this.thermalComfortCoolDown();
                     return false;
                 }
             }
@@ -917,18 +915,23 @@ public class AgentMovement {
             return true; // since there are no nearest blinds and light from agent do nothing
         }
 
-        //CHECK IF AGENT IS GREEN, NEUTRAL OR NONGREEN
-        //IF GREEN, CHECK BLINDS FIRST THEN LIGHTS IF NO BLINDS WITHIN RANGE FOUND
+
         double CHANCE = Simulator.roll();
-        //FOR GREEN OR NEUTRAL CHANCE
+        // First use windows to check if the agent is satisfied its visual comfort.
+        // Check if the chances of using the window blinds satisfy for a given energy profile.
+        // Also check if there are existing window blinds near the agent and
+        // if the time is before 4 pm, where the environment is not dark.
         if(((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN && CHANCE < 0.75)
-                || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && CHANCE < 0.5) || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN && CHANCE < 0.25)) && !sortedDistancesBlinds.isEmpty()
+                || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && CHANCE < 0.5) ||
+                (this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN && CHANCE < 0.25)) &&
+                !sortedDistancesBlinds.isEmpty()
                 && time.getTime().isBefore(LocalTime.of(16,0))) {
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToAttractorEntry : sortedDistancesBlinds.entrySet()) {
                 PatchField patchField = distancesToAttractorEntry.getKey().getPatch().getPatchField().getKey();
-                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(distancesToAttractorEntry.getKey().getPatch().getPatchField().getValue())) {
+                String keyField = distancesToAttractorEntry.getKey().getPatch().getPatchField().getValue();
+                if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) &&
+                        this.currentPatch.getPatchField().getValue().equals(keyField)) {
                     if (((WindowBlinds) distancesToAttractorEntry.getKey().getParent()).isOpened()) {
-                        this.visualComfortCoolDown();
                         return true;
                     }
                     else {
@@ -938,7 +941,11 @@ public class AgentMovement {
                 }
             }
         }
-        else if(!sortedDistancesLight.isEmpty()) {
+        // Otherwise, check visual comfort using lights in the office
+        else if(((this.parent.getEnergyProfile() == Agent.EnergyProfile.GREEN && CHANCE < 0.25)
+                || (this.parent.getEnergyProfile() == Agent.EnergyProfile.NEUTRAL && CHANCE < 0.5) ||
+                (this.parent.getEnergyProfile() == Agent.EnergyProfile.NONGREEN && CHANCE < 0.75)) &&
+                !sortedDistancesLight.isEmpty()) {
             // check first if there are lights near the agent that is within the same room
             for (Map.Entry<Amenity.AmenityBlock, Double> distancesToLightEntry : sortedDistancesLight.entrySet()) {
 
@@ -947,7 +954,6 @@ public class AgentMovement {
                 //if same patchfield, check if within the light range to do visual comfort logic
                 if (this.currentPatch.getPatchField().getKey().toString().equals(patchField.toString()) && this.currentPatch.getPatchField().getValue().equals(distancesToLightEntry.getKey().getPatch().getPatchField().getValue())) {
                     if (( (Light) distancesToLightEntry.getKey().getParent()).isOn()){
-                        this.visualComfortCoolDown();
                         return true;
                     }
                     else {
@@ -957,6 +963,7 @@ public class AgentMovement {
                 }
             }
         }
+
         return true;
     }
 
@@ -1665,35 +1672,28 @@ public class AgentMovement {
             int table = -1;
             List<? extends Amenity> amenityListInFloor = this.environment.getLearningTables();
 
-            // if not group not randomize which table to choose
-            if (this.team == 0) {
-                table = Simulator.rollIntIN(amenityListInFloor.size()) + 1;
+            for (Amenity amenity : amenityListInFloor) {
+                if(amenity.getAmenityBlocks().getFirst().getPatch().getTeam() == this.team){
+                    table = count;
+                    break;
+                }
+                count++;
+                if(count>Main.simulator.getEnvironment().getLearningTables().size()){
+                    count = 0;
+                    break;
+                }
             }
 
-            else {
+            if(table == -1) {
                 for (Amenity amenity : amenityListInFloor) {
-                    if(amenity.getAmenityBlocks().getFirst().getPatch().getTeam() == this.team){
-                        table = count;
-                        break;
-                    }
                     count++;
-                    if(count>Main.simulator.getEnvironment().getLearningTables().size()){
-                        count = 0;
+                    if(amenity.getAmenityBlocks().getFirst().getPatch().getTeam() == -1){
+                        table = count;
+                        amenity.getAmenityBlocks().getFirst().getPatch().setTeam(this.team);
                         break;
                     }
-                }
-
-                if(table == -1) {
-                    for (Amenity amenity : amenityListInFloor) {
-                        count++;
-                        if(amenity.getAmenityBlocks().getFirst().getPatch().getTeam() == -1){
-                            table = count;
-                            amenity.getAmenityBlocks().getFirst().getPatch().setTeam(this.team);
-                            break;
-                        }
-                        if(count == Main.simulator.getEnvironment().getLearningTables().size()){
-                            break;
-                        }
+                    if(count == Main.simulator.getEnvironment().getLearningTables().size()){
+                        break;
                     }
                 }
             }

@@ -320,36 +320,96 @@ public class Environment extends BaseObject implements Serializable {
         // Calculate the number of students per team
         int studentsPerTeam = 4;
 
-        for (int i = 0; i < 2; i++) {
-            if (i == 0) {
+        for (int i = 0; i < 4; i++) {
+            if (i < 2) {
                 Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(7, 30), LocalTime.of(17, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
                 this.getAgents().add(agent);
             }
             else {
-                Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(7, 30, 15), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
-                this.getAgents().add(agent);
-            }
-        }
-
-        for (int i = 0; i < 2; i++) {
-            if (i == 0) {
-                Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(9, 0), LocalTime.of(17, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
-                this.getAgents().add(agent);
-            }
-            else {
-                Agent agent = AgentFactory.create(Type.STUDENT, true, 1, LocalTime.of(9, 0), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+                LocalTime randomizeTimeIn = LocalTime.of(9,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 31));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 1, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
                 this.getAgents().add(agent);
             }
         }
 
         for (int i = 0; i < 4; i++) {
-            Agent agent = AgentFactory.create(Type.STUDENT, true, 2, LocalTime.of(10, 30), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            LocalTime randomizeTimeIn = LocalTime.of(9,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 31));
+            LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+            Agent agent = AgentFactory.create(Type.STUDENT, true, 2, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
             this.getAgents().add(agent);
         }
 
         for (int i = 0; i < 4; i++) {
-            Agent agent = AgentFactory.create(Type.STUDENT, true, 3, LocalTime.of(11, 30), LocalTime.of(18, 0), Agent.energyProfilePicker(green, nonGreen, neutral));
+            LocalTime randomizeTimeIn = LocalTime.of(9,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 31));
+            LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+            Agent agent = AgentFactory.create(Type.STUDENT, true, 3, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
             this.getAgents().add(agent);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            LocalTime randomizeTimeIn = LocalTime.of(9,Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 31));
+            LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+            Agent agent = AgentFactory.create(Type.STUDENT, true, 4, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+            this.getAgents().add(agent);
+        }
+
+        for (int i = 0; i < 36; i++) {
+            if (i < 4) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(10, 15),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 5, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+            else if (i >=4 && i < 8) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(10, 15),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 6, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+            else if (i >= 8 && i < 12) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(10, 15),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 7, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+            else if (i >= 12 && i < 16) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(10, 15),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 8, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+            else if (i >=16 && i < 20) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(10, 15),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 9, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+            else if (i >= 20 && i < 24) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(10, 15),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 10, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+            else if (i >= 24 && i < 28) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(10, 15),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 11, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+            else if (i >=28 && i < 32) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(10, 15),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 12, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+            else if (i >= 32 && i < 36) {
+                LocalTime randomizeTimeIn = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(10, 15),Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 60));
+                LocalTime randomizeTimeOut = LocalTime.of(Simulator.RANDOM_NUMBER_GENERATOR.nextInt(16, 18), Simulator.RANDOM_NUMBER_GENERATOR.nextInt(0, 51));
+                Agent agent = AgentFactory.create(Type.STUDENT, true, 13, randomizeTimeIn, randomizeTimeOut, Agent.energyProfilePicker(green, nonGreen, neutral));
+                this.getAgents().add(agent);
+            }
+
         }
 
 //        if(numOfTeams > 0){
