@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Agent extends PatchObject {
 
     // VARIABLES
-    public static int originValue = 19;
+    public static int originValue = 22;
 
 
     private static int idCtr = 0;

@@ -20,7 +20,7 @@ public class Aircon extends Goal {
     private int airconTemp;
     private int coolingTimeInTicks;
     private boolean isInActiveCycle;
-    private boolean isTurnedOn;
+    private boolean isOn;
     private int coolingRange;
     private boolean isCoolingStarted;
     static {
@@ -28,9 +28,9 @@ public class Aircon extends Goal {
     }
 
     /***** CONSTRUCTOR *****/
-    protected Aircon(List<AmenityBlock> amenityBlocks, boolean enabled, boolean isTurnedOn) {
+    protected Aircon(List<AmenityBlock> amenityBlocks, boolean enabled, boolean isOn) {
         super(amenityBlocks, enabled);
-        this.isTurnedOn = isTurnedOn;
+        this.isOn = isOn;
         this.isInActiveCycle = false;
 
         this.roomTemp = 28;
@@ -39,12 +39,12 @@ public class Aircon extends Goal {
         this.coolingRange = 25;
         this.isCoolingStarted = false;
 
-        this.airconGraphic = new AirconGraphic(this, isTurnedOn);
+        this.airconGraphic = new AirconGraphic(this, isOn);
     }
 
     /***** GETTER *****/
     public boolean isTurnedOn() {
-        return isTurnedOn;
+        return isOn;
     }
 
     public AirconGraphic getAirconGraphic() {
@@ -77,8 +77,8 @@ public class Aircon extends Goal {
 
     /***** SETTER *****/
     public void setOn(boolean on) {
-        isTurnedOn = on;
-        if (!isTurnedOn) {
+        isOn = on;
+        if (!isOn) {
             airconTemp = 28;
         }
     }

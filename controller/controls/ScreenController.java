@@ -2742,7 +2742,7 @@ public class ScreenController extends Controller {
         AirconMapper.draw(aircons, false);
 
         List<Patch> aircon1 = new ArrayList<>();
-        aircon1.add(environment.getPatch(41, 137));
+        aircon1.add(environment.getPatch(47, 139));
         AirconMapper.draw(aircon1, true);
 
 

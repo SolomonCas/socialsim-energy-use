@@ -108,9 +108,10 @@ public class Environment extends BaseObject implements Serializable {
     private final List<Aircon> aircons;
     private final List<Light> lights;
     private final List<Switch> switches;
+
+    // Used to Identify what amenities did the agents in the environment used for maintenance and guard agent to inspect
     private final Set<Amenity> usedAmenities;
 
-    private List<Patch> patchesToChange = new ArrayList<>();
 
 
     // Agents
@@ -1731,9 +1732,6 @@ public class Environment extends BaseObject implements Serializable {
         else if(amenityClass == TrashCan.class) {
             return this.getTrashCans();
         }
-//        else if(amenityClass == Box.class) {
-//            return this.getBoxes();
-//        }
         else if(amenityClass == Whiteboard.class) {
             return this.getWhiteboards();
         }
@@ -1751,6 +1749,7 @@ public class Environment extends BaseObject implements Serializable {
         }
     }
 
+    // Logic used in updatePatchfieldVariation to change the visualization variation for a given room.
     private String getNewVariation(String currentVariation, boolean isLightOn) {
         if (!isLightOn && currentVariation.contains("dim")) {
             return currentVariation.replace("dim", "");
@@ -2176,9 +2175,7 @@ public class Environment extends BaseObject implements Serializable {
             for (Reception patchField: getReceptions()) {
                 if (patchField.getVariation().equals(patchfieldClass.getValue())) {
                     List<Patch> area = patchField.getArea();
-//                    System.out.println("Patch Field Variation: " + patchField.getVariation());
                     String newVariation = getNewVariation(patchField.getVariation(), isLightOn);
-//                    System.out.println("New Variation: " + newVariation);
                     patchField.setVariation(newVariation);
 
                     simulator.getEnvironment().getReceptions().remove(patchField);
