@@ -82,12 +82,12 @@ public class Agent extends PatchObject {
             this.gender = Gender.MALE;
             boolean isStrict = Simulator.RANDOM_NUMBER_GENERATOR.nextBoolean();
             if (isStrict) {
-                this.persona = Persona.STRICT_FACULTY;
-                this.personaActionGroup = PersonaActionGroup.STRICT_FACULTY;
+                this.persona = Persona.INT_FACULTY;
+                this.personaActionGroup = PersonaActionGroup.INT_FACULTY;
             }
             else {
-                this.persona = Persona.APP_FACULTY;
-                this.personaActionGroup = PersonaActionGroup.APP_FACULTY;
+                this.persona = Persona.EXT_FACULTY;
+                this.personaActionGroup = PersonaActionGroup.EXT_FACULTY;
             }
             this.energyProfile = energyProfile;
             if (energyProfile.equals(EnergyProfile.GREEN))
@@ -305,7 +305,7 @@ public class Agent extends PatchObject {
 
     public enum Persona {
         DIRECTOR(0),
-        STRICT_FACULTY(1), APP_FACULTY(2),
+        INT_FACULTY(1), EXT_FACULTY(2),
         INT_STUDENT(3), EXT_STUDENT(4),
         MAINTENANCE(5),
         GUARD(6);
@@ -323,8 +323,8 @@ public class Agent extends PatchObject {
 
     public enum PersonaActionGroup {
         DIRECTOR(),
-        STRICT_FACULTY(),
-        APP_FACULTY(),
+        INT_FACULTY(),
+        EXT_FACULTY(),
         INT_STUDENT(),
         EXT_STUDENT(),
         MAINTENANCE(),

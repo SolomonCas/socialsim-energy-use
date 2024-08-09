@@ -2407,12 +2407,12 @@ public class AgentMovement {
         return false;
     }
 
-    // Check if this passenger has reached its goal
+    // Check if this agent has reached its goal
     public boolean hasReachedGoal() {
         return isOnOrCloseToPatch(this.goalAttractor.getPatch());
     }
 
-    // Set the passenger's current amenity and position as it reaches the next goal
+    // Set the agent's current amenity and position as it reaches the next goal
     public void reachGoal() {
         // Just in case the agent isn't actually on its goal, but is adequately close to it, just move the agent there
         Coordinates patchCenter = this.goalAttractor.getPatch().getPatchCenterCoordinates();

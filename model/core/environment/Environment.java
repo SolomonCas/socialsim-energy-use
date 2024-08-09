@@ -543,22 +543,22 @@ public class Environment extends BaseObject implements Serializable {
                     case DIRECTOR -> {
                         switch (persona2) {
                             case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1)));
-                            case STRICT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(5)));
-                            case APP_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(5)));
+                            case INT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(5)));
+                            case EXT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(5)));
                             case INT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
                             case EXT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
                             case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
                             case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
                         }
                     }
-                    case STRICT_FACULTY -> {
+                    case INT_FACULTY -> {
                         switch (persona2) {
                             case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6)));
-                            case STRICT_FACULTY -> {
+                            case INT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                             }
-                            case APP_FACULTY -> {
+                            case EXT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                             }
@@ -574,14 +574,14 @@ public class Environment extends BaseObject implements Serializable {
                             case GUARD -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 4)));
                         }
                     }
-                    case APP_FACULTY -> {
+                    case EXT_FACULTY -> {
                         switch (persona2) {
                             case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6)));
-                            case STRICT_FACULTY -> {
+                            case INT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                             }
-                            case APP_FACULTY -> {
+                            case EXT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6, 7)));
                             }
@@ -601,11 +601,11 @@ public class Environment extends BaseObject implements Serializable {
                     case INT_STUDENT -> {
                         switch (persona2){
                             case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
-                            case STRICT_FACULTY -> {
+                            case INT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
                             }
-                            case APP_FACULTY -> {
+                            case EXT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3, 4)));
                             }
@@ -626,11 +626,11 @@ public class Environment extends BaseObject implements Serializable {
                     case EXT_STUDENT -> {
                         switch (persona2){
                             case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
-                            case STRICT_FACULTY -> {
+                            case INT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
                             }
-                            case APP_FACULTY -> {
+                            case EXT_FACULTY -> {
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(2, 3, 4)));
                                 personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
                             }
@@ -651,8 +651,8 @@ public class Environment extends BaseObject implements Serializable {
                     case MAINTENANCE -> {
                         switch (persona2){
                             case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3)));
-                            case STRICT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 5)));
-                            case APP_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 5)));
+                            case INT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 5)));
+                            case EXT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 5)));
                             case INT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 2, 3)));
                             case EXT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 4)));
                             case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(5)));
@@ -663,8 +663,8 @@ public class Environment extends BaseObject implements Serializable {
                     case GUARD -> {
                         switch (persona2){
                             case DIRECTOR -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(4)));
-                            case STRICT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 5)));
-                            case APP_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6)));
+                            case INT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 5)));
+                            case EXT_FACULTY -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6)));
                             case INT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 3)));
                             case EXT_STUDENT -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(1, 3)));
                             case MAINTENANCE -> personaIOS.add(new CopyOnWriteArrayList<>(List.of(3, 6)));
@@ -692,14 +692,14 @@ public class Environment extends BaseObject implements Serializable {
                     Agent agent1 = agents.get(i), agent2 = agents.get(j);
                     int IOS;
 
-                    if (   agent1.getPersonaActionGroup() == PersonaActionGroup.STRICT_FACULTY
-                            || agent1.getPersonaActionGroup() == PersonaActionGroup.APP_FACULTY
+                    if (   agent1.getPersonaActionGroup() == PersonaActionGroup.INT_FACULTY
+                            || agent1.getPersonaActionGroup() == PersonaActionGroup.EXT_FACULTY
                             || agent1.getPersonaActionGroup() == PersonaActionGroup.INT_STUDENT
                             || agent1.getPersonaActionGroup() == PersonaActionGroup.EXT_STUDENT) {
 
                         int offset;
                         switch (agent2.getPersona()){
-                            case DIRECTOR, STRICT_FACULTY, APP_FACULTY -> offset = 0;
+                            case DIRECTOR, INT_FACULTY, EXT_FACULTY -> offset = 0;
                             case INT_STUDENT -> offset = 1;
                             case EXT_STUDENT -> offset = 2;
                             case MAINTENANCE -> offset = 3;
@@ -813,7 +813,7 @@ public class Environment extends BaseObject implements Serializable {
                             case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(30, 30, 40)));
                         }
                     }
-                    case STRICT_FACULTY -> {
+                    case INT_FACULTY -> {
                         switch(action){
                             case LEAVE_OFFICE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
                             case GO_TO_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 30, 50)));
@@ -868,7 +868,7 @@ public class Environment extends BaseObject implements Serializable {
                             case MAKE_COFFEE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(20, 20, 60)));
                         }
                     }
-                    case APP_FACULTY -> {
+                    case EXT_FACULTY -> {
                         switch(action){
                             case LEAVE_OFFICE -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
                             case GO_TO_LUNCH -> interactionChances.add(new CopyOnWriteArrayList<>(List.of(10, 40, 50)));
@@ -1195,7 +1195,6 @@ public class Environment extends BaseObject implements Serializable {
     int coolingTemp = 1; // high to low temp
     int heatingTemp = 1; // low temp to high temp
     int baseHighTemp = 28; // highest temp
-    int baseLowTemp = 19; // lowest temp
     //DONE BY CHANCE ACTIVE CYCLE (HIGHER CHANCE IF COOLING, LOWER CHANCE IF HEATING)
     //DONE CHANCE FOR TEMPERATURE TO GO UP WHEN ROOM TEMPERATURE ALREADY REACHED AIRCON TEMPERATURE
     public void tempChanger() {

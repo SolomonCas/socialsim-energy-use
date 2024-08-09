@@ -168,15 +168,15 @@ public class IOSController {
                 }
                 else {
                     if (other) {
-                        if (    (  Agent.Persona.values()[j - 1] == Agent.Persona.STRICT_FACULTY
-                                || Agent.Persona.values()[j - 1] == Agent.Persona.APP_FACULTY
+                        if (    (  Agent.Persona.values()[j - 1] == Agent.Persona.INT_FACULTY
+                                || Agent.Persona.values()[j - 1] == Agent.Persona.EXT_FACULTY
                                 || Agent.Persona.values()[j - 1] == Agent.Persona.INT_STUDENT
                                 || Agent.Persona.values()[j - 1] == Agent.Persona.EXT_STUDENT)
 
                                 &&
 
-                                (  Agent.Persona.values()[i - 1] == Agent.Persona.STRICT_FACULTY
-                                || Agent.Persona.values()[i - 1] == Agent.Persona.APP_FACULTY
+                                (  Agent.Persona.values()[i - 1] == Agent.Persona.INT_FACULTY
+                                || Agent.Persona.values()[i - 1] == Agent.Persona.EXT_FACULTY
                                 || Agent.Persona.values()[i - 1] == Agent.Persona.INT_STUDENT
                                 || Agent.Persona.values()[i - 1] == Agent.Persona.EXT_STUDENT))
                         {
@@ -202,8 +202,8 @@ public class IOSController {
                         other = false;
                     }
                     else if (j == Agent.Persona.values().length) {
-                        if (   Agent.Persona.values()[i - 1] == Agent.Persona.STRICT_FACULTY
-                            || Agent.Persona.values()[i - 1] == Agent.Persona.APP_FACULTY
+                        if (   Agent.Persona.values()[i - 1] == Agent.Persona.INT_FACULTY
+                            || Agent.Persona.values()[i - 1] == Agent.Persona.EXT_FACULTY
                             || Agent.Persona.values()[i - 1] == Agent.Persona.INT_STUDENT
                             || Agent.Persona.values()[i - 1] == Agent.Persona.EXT_STUDENT) {
 
@@ -259,15 +259,15 @@ public class IOSController {
                 }
                 else {
                     if (other) {
-                        if (    (  Agent.Persona.values()[j - 1] == Agent.Persona.STRICT_FACULTY
-                                || Agent.Persona.values()[j - 1] == Agent.Persona.APP_FACULTY
+                        if (    (  Agent.Persona.values()[j - 1] == Agent.Persona.INT_FACULTY
+                                || Agent.Persona.values()[j - 1] == Agent.Persona.EXT_FACULTY
                                 || Agent.Persona.values()[j - 1] == Agent.Persona.INT_STUDENT
                                 || Agent.Persona.values()[j - 1] == Agent.Persona.EXT_STUDENT)
 
                                 &&
 
-                                (  Agent.Persona.values()[i - 1] == Agent.Persona.STRICT_FACULTY
-                                || Agent.Persona.values()[i - 1] == Agent.Persona.APP_FACULTY
+                                (  Agent.Persona.values()[i - 1] == Agent.Persona.INT_FACULTY
+                                || Agent.Persona.values()[i - 1] == Agent.Persona.EXT_FACULTY
                                 || Agent.Persona.values()[i - 1] == Agent.Persona.INT_STUDENT
                                 || Agent.Persona.values()[i - 1] == Agent.Persona.EXT_STUDENT))
                         {
@@ -294,8 +294,8 @@ public class IOSController {
                         other = false;
                     }
                     else if (j == Agent.Persona.values().length) {
-                        if (   Agent.Persona.values()[i - 1] == Agent.Persona.STRICT_FACULTY
-                            || Agent.Persona.values()[i - 1] == Agent.Persona.APP_FACULTY
+                        if (   Agent.Persona.values()[i - 1] == Agent.Persona.INT_FACULTY
+                            || Agent.Persona.values()[i - 1] == Agent.Persona.EXT_FACULTY
                             || Agent.Persona.values()[i - 1] == Agent.Persona.INT_STUDENT
                             || Agent.Persona.values()[i - 1] == Agent.Persona.EXT_STUDENT) {
 

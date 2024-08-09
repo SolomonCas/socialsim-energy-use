@@ -1,6 +1,5 @@
 package com.socialsim.model.core.agent;
 
-import com.socialsim.controller.Main;
 import com.socialsim.model.core.environment.Environment;
 import com.socialsim.model.core.environment.Patch;
 import com.socialsim.model.core.environment.patchfield.Floor;
@@ -261,7 +260,7 @@ public class RoutePlan {
             actions.add(new Action(Action.Name.GO_TO_STATION, 3));
             routePlan.add(new State(State.Name.GOING_HOME, this, agent, actions));
         }
-        else if (agent.getPersona() == Agent.Persona.STRICT_FACULTY || agent.getPersona() == Agent.Persona.APP_FACULTY) {
+        else if (agent.getPersona() == Agent.Persona.INT_FACULTY || agent.getPersona() == Agent.Persona.EXT_FACULTY) {
             setBathAM(false);
             setBathPM(false);
             setAtDesk(false);
@@ -276,14 +275,14 @@ public class RoutePlan {
             EAT_OUTSIDE_CHANCE = 0.8;
             EAT_FROM_WORKPLACE = 0.1;
 
-            if (agent.getPersona() == Agent.Persona.STRICT_FACULTY) {
+            if (agent.getPersona() == Agent.Persona.INT_FACULTY) {
                 INQUIRE_STUDENT_CHANCE = 0.0;
                 INQUIRE_FACULTY_CHANCE = 0.0;
                 INQUIRE_DIRECTOR_CHANCE = 0.0;
                 INQUIRE_GUARD_CHANCE = 0.0;
                 INQUIRE_MAINTENANCE_CHANCE = 0.0;
             }
-            else if (agent.getPersona() == Agent.Persona.APP_FACULTY) {
+            else if (agent.getPersona() == Agent.Persona.EXT_FACULTY) {
                 INQUIRE_STUDENT_CHANCE = 0.16;
                 INQUIRE_FACULTY_CHANCE = 0.1;
                 INQUIRE_DIRECTOR_CHANCE = 0.0;
